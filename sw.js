@@ -1,9 +1,9 @@
 const CACHE_NAME = 'pokebestbcn-v1';
 const ASSETS = [
-  '/index.html',
-  '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png'
+  '/pokebestbcn/index.html',
+  '/pokebestbcn/manifest.json',
+  '/pokebestbcn/icon-192.png',
+  '/pokebestbcn/icon-512.png'
 ];
 
 self.addEventListener('install', e => {
