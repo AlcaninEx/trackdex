@@ -1,0 +1,22 @@
+{
+  "name": "PokeBestBCN",
+  "short_name": "PokeBestBCN",
+  "description": "Álbum de los mejores pokémon attackers para raids",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f0f0f0",
+  "theme_color": "#CC0000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#CC0000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="PokeBestBCN">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>PokeBestBCN</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#f0f0f0!important;color:#222!important;-webkit-tap-highlight-color:transparent}
+#app{max-width:420px;margin:0 auto;min-height:100vh;background:#f0f0f0}
+.screen{display:none}
+.screen.active{display:block}
+.app-header{background:#CC0000;color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:10}
+.back-btn{background:#fff!important;color:#CC0000!important;border:none;cursor:pointer;font-size:18px;padding:4px 10px;border-radius:8px;font-weight:700;line-height:1}
+.app-header h1{font-size:17px;font-weight:700;flex:1;color:#fff!important}
+/* PROFILE */
+#profile-screen-inner{padding:20px 16px;background:#f0f0f0}
+.logo-wrap{text-align:center;margin-bottom:16px}
+.app-title{text-align:center;font-size:24px;font-weight:700;margin-bottom:3px;color:#222!important}
+.app-sub{text-align:center;font-size:14px;color:#666!important;margin-bottom:20px}
+.profiles-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.profile-row{display:flex;align-items:center;gap:12px;padding:14px;background:#fff!important;border:1px solid #ddd;border-radius:12px}
+.avatar{width:42px;height:42px;border-radius:50%;background:#CC0000!important;color:#fff!important;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex-shrink:0}
+.profile-info{flex:1;cursor:pointer}
+.profile-name{font-size:15px;font-weight:700;color:#222!important}
+.profile-stat{font-size:12px;color:#888!important;margin-top:2px}
+.profile-actions{display:flex;gap:6px;align-items:center}
+.view-btn{font-size:12px!important;color:#fff!important;background:#CC0000!important;border:none!important;border-radius:20px;padding:6px 14px;cursor:pointer;font-weight:700!important}
+.del-btn{background:#ffe0e0!important;border:1.5px solid #CC0000!important;color:#CC0000!important;cursor:pointer;font-size:14px;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+.add-section{border-top:1px solid #e0e0e0;padding-top:14px}
+.add-label{font-size:13px;color:#666!important;margin-bottom:8px}
+.add-row{display:flex;gap:8px}
+.add-row input{flex:1;padding:10px 12px;border:1.5px solid #ccc;border-radius:8px;font-size:14px;background:#fff!important;color:#222!important}
+.add-row button{background:#CC0000!important;color:#fff!important;border:none;border-radius:8px;padding:0 16px;cursor:pointer;font-size:14px;font-weight:700}
+/* MAIN */
+.user-bar{padding:10px 16px;background:#fff!important;border-bottom:1px solid #e0e0e0;display:flex;align-items:center;justify-content:space-between}
+.user-bar-txt{font-size:13px;color:#555!important}
+.user-bar-txt b{color:#111!important;font-weight:700}
+.user-bar-right{display:flex;gap:8px;align-items:center}
+.guia-btn{font-size:12px!important;color:#CC0000!important;background:#fff!important;border:2px solid #CC0000!important;border-radius:20px;padding:5px 12px;cursor:pointer;font-weight:700!important}
+.cambiar-btn{font-size:12px!important;color:#fff!important;background:#CC0000!important;border:none!important;border-radius:20px;padding:6px 14px;cursor:pointer;font-weight:700!important}
+.types-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:14px}
+.type-card{border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .1s;border:1px solid rgba(0,0,0,.1)}
+.type-card:active{transform:scale(.97)}
+.type-card-top{padding:10px 12px 6px}
+.type-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:13px;font-weight:700;color:#fff!important}
+.type-card-bot{padding:4px 12px 10px;display:flex;align-items:center;gap:8px}
+.prog-bar{flex:1;height:5px;border-radius:3px;background:rgba(0,0,0,.12);overflow:hidden}
+.prog-fill{height:100%;border-radius:3px}
+.prog-count{font-size:12px;font-weight:700;white-space:nowrap}
+/* DETAIL */
+.tabs{display:flex;border-bottom:2px solid #e0e0e0;background:#fff!important}
+.tab{flex:1;padding:11px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;color:#888!important;border-bottom:3px solid transparent;background:#fff!important;border-top:none;border-left:none;border-right:none}
+.tab.active{color:#CC0000!important;border-bottom-color:#CC0000!important}
+/* ALBUM */
+.album-wrap{padding:12px;background:#f0f0f0;min-height:100vh}
+.pk-card{border-radius:12px;overflow:hidden;margin-bottom:10px}
+.pk-card.not-owned{opacity:.35;filter:grayscale(.6)}
+.pk-top{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer}
+.evo-chain{display:flex;align-items:center;gap:2px;flex-shrink:0}
+.evo-sm{width:28px;height:28px;object-fit:contain}
+.evo-arr{font-size:9px;color:rgba(255,255,255,.5)}
+.final-wrap{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.final-img{width:44px;height:44px;object-fit:contain}
+.pk-info{flex:1;min-width:0}
+.pk-name{font-size:13px;font-weight:700;color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+.tags-row{display:flex;gap:3px;flex-wrap:wrap;margin-top:3px}
+.tag{font-size:10px;padding:1px 6px;border-radius:8px;font-weight:700}
+.tl{background:rgba(255,255,255,.93)!important;color:#c65000!important}
+.tm{background:rgba(255,255,255,.93)!important;color:#3949ab!important}
+.ts{background:rgba(255,255,255,.93)!important;color:#6a1b9a!important}
+.tme{background:rgba(255,255,255,.93)!important;color:#c62828!important}
+.dps-wrap{margin-top:4px}
+.dps-lbl{font-size:10px;color:rgba(255,255,255,.9)!important;display:flex;justify-content:space-between;margin-bottom:2px}
+.dps-bar{height:4px;border-radius:2px;background:rgba(255,255,255,.2);overflow:hidden}
+.dps-fill{height:100%;border-radius:2px;background:rgba(255,255,255,.85)}
+.status-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.status-dot.owned{background:#fff!important;color:#2e7d32!important}
+.status-dot.missing{background:rgba(0,0,0,.2);color:rgba(255,255,255,.7)!important}
+.pk-body{border-top:1px solid rgba(255,255,255,.25);padding:12px 14px;display:none;background:#fff!important}
+.pk-body.open{display:block}
+.fl{font-size:11px;color:#888!important;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.fr{margin-bottom:12px}
+.tr{display:flex;align-items:center;justify-content:space-between}
+.tr span{color:#222!important;font-size:13px}
+.sw{position:relative;width:44px;height:24px;display:inline-block}
+.sw input{opacity:0;width:0;height:0}
+.sl{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ddd;border-radius:24px;transition:.2s}
+.sl:before{position:absolute;content:"";width:18px;height:18px;border-radius:50%;left:3px;bottom:3px;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.sw input:checked+.sl{background:#CC0000}
+.sw input:checked+.sl:before{transform:translateX(20px)}
+.iv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.iv-col{text-align:center}
+.iv-lbl{font-size:10px;color:#888!important;margin-bottom:2px}
+.iv-val{font-size:18px;font-weight:700;color:#222!important;margin-bottom:2px}
+.iv-col input[type=range]{width:100%}
+.mv-box{background:#f5f5f5!important;border-radius:8px;padding:8px 12px;border:1px solid #e8e8e8}
+.mv-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0}
+.mv-row+.mv-row{border-top:1px solid #eee}
+.mv-lbl{font-size:11px;color:#888!important;min-width:52px}
+.mv-name{font-size:13px;font-weight:600;color:#222!important}
+.leg-star{color:#e65100!important;font-size:11px;margin-left:3px}
+.dps-irow{display:flex;align-items:center;gap:8px;margin-top:4px}
+.dps-inp{width:90px;text-align:center;font-size:15px;font-weight:600;padding:6px;border:1.5px solid #ddd;border-radius:6px;background:#fff!important;color:#222!important}
+.dps-ref{font-size:11px;color:#888!important}
+/* RANKING */
+.rank-wrap{height:calc(100vh - 160px);overflow-y:auto;-webkit-overflow-scrolling:touch;background:#f0f0f0}
+.rank-note{font-size:11px;color:#666!important;padding:8px 14px 4px;text-align:center;background:#f0f0f0!important}
+.rank-list{padding:4px 10px 20px}
+.rank-row{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:8px;margin-bottom:2px;background:#fff!important}
+.rank-row.ours{border-left:3px solid var(--tc)}
+.rank-num{font-size:12px;font-weight:700;color:#aaa!important;min-width:26px;text-align:right;flex-shrink:0}
+.rank-img{width:36px;height:36px;object-fit:contain;flex-shrink:0}
+.rank-info{flex:1;min-width:0}
+.rank-name{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank-move{font-size:10px;color:#666!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dps-minibar{height:3px;border-radius:2px;background:#eee;overflow:hidden;margin-top:3px}
+.dps-minifill{height:100%;border-radius:2px}
+.rank-dps{font-size:13px;font-weight:700;flex-shrink:0;white-space:nowrap}
+.badge{font-size:9px;border-radius:6px;padding:1px 5px;margin-left:4px;color:#fff!important;font-weight:700;vertical-align:middle}
+.view-badge-bar{margin:8px 12px;padding:8px 12px;background:#fff8e1!important;border-radius:8px;font-size:12px;color:#795548!important;border:1px solid #ffe082;display:flex;align-items:center;gap:6px}
+/* MODAL */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal-box{background:#fff!important;border-radius:16px;padding:20px;max-width:360px;width:100%;max-height:80vh;overflow-y:auto}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;color:#222!important}
+.modal-close{background:#f0f0f0!important;border:none;font-size:20px;cursor:pointer;color:#444!important;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+.guia-item{display:flex;gap:10px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0f0}
+.guia-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.guia-icon{font-size:22px;flex-shrink:0;width:32px;text-align:center;margin-top:2px}
+.guia-text strong{display:block;font-size:14px;font-weight:700;margin-bottom:3px;color:#222!important}
+.guia-text p{font-size:12px;color:#555!important;line-height:1.5}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- MODAL GUÍA -->
+<div id="modal-guia" class="modal-overlay" style="display:none" onclick="closeGuia(event)">
+  <div class="modal-box">
+    <div class="modal-title">
+      <span>📖 Guía de iconos</span>
+      <button class="modal-close" onclick="closeGuiaBtn()">✕</button>
+    </div>
+    <div class="guia-item">
+      <div class="guia-icon">⭐</div>
+      <div class="guia-text">
+        <strong>Ataque Legacy</strong>
+        <p>Movimiento especial que ya no se puede aprender normalmente. Solo se obtuvo durante eventos pasados (Días de la Comunidad). Para enseñárselo ahora se necesita una <b>MT Élite</b>, muy escasa.</p>
+      </div>
+    </div>
+    <div class="guia-item">
+      <div class="guia-icon">👤</div>
+      <div class="guia-text">
+        <strong>Shadow / Oscuro</strong>
+        <p>Pokémon capturado al derrotar al Team GO Rocket o en <b>Incursiones Oscuras</b>. Tienen <b>+20% de Ataque</b> pero <b>-20% de Defensa</b>. Son los más poderosos en raids si aguantan.</p>
+      </div>
+    </div>
+    <div class="guia-item">
+      <div class="guia-icon">🔴</div>
+      <div class="guia-text">
+        <strong>Mega Evolución</strong>
+        <p>Forma temporal potenciada. Las <b>piedras Mega</b> se consiguen en Mega Incursiones, misiones temporales o raramente en PokéParadas. Potencian a los aliados del mismo tipo en raid.</p>
+      </div>
+    </div>
+    <div class="guia-item">
+      <div class="guia-icon">🎯</div>
+      <div class="guia-text">
+        <strong>Misión especial</strong>
+        <p>Pokémon obtenido completando una <b>Investigación Especial</b> o misión temporal. Suelen ser únicos o muy difíciles de conseguir de otra forma.</p>
+      </div>
+    </div>
+    <div class="guia-item">
+      <div class="guia-icon">📊</div>
+      <div class="guia-text">
+        <strong>DPS (Daño Por Segundo)</strong>
+        <p>Mide el daño sostenido en raids. Valores de referencia a nivel 40 con IVs perfectos (15/15/15). Fuente: Dittobase 2026.</p>
+      </div>
+    </div>
+    <div class="guia-item">
+      <div class="guia-icon">🧬</div>
+      <div class="guia-text">
+        <strong>IVs (Individual Values)</strong>
+        <p>Estadísticas de cada Pokémon: <b>Ataque, Defensa y Vida</b>, de 0 a 15. Un Pokémon con 15/15/15 es "hundo" (perfecto). En raids el Ataque es el más importante.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div id="profile-screen" class="screen active">
+  <div id="profile-screen-inner">
+    <div class="logo-wrap">
+      <svg width="56" height="56" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#CC0000" stroke="#222" stroke-width="3"/><rect x="2" y="29" width="60" height="6" fill="#222"/><circle cx="32" cy="32" r="10" fill="white" stroke="#222" stroke-width="3"/><circle cx="32" cy="32" r="5" fill="#CC0000" stroke="#222" stroke-width="2"/></svg>
+    </div>
+    <p class="app-title">PokeBestBCN</p>
+    <p class="app-sub">Selecciona tu entrenador</p>
+    <div class="profiles-list" id="profiles-list"></div>
+    <div class="add-section">
+      <p class="add-label">Añadir entrenador</p>
+      <div class="add-row">
+        <input type="text" id="new-name" placeholder="Tu nombre..." maxlength="20"/>
+        <button onclick="addProfile()">Añadir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="main-screen" class="screen">
+  <div class="app-header">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#CC0000" stroke="white" stroke-width="1.5"/><rect x="2" y="10.5" width="20" height="3" fill="white"/><circle cx="12" cy="12" r="3.5" fill="white" stroke="#CC0000" stroke-width="1.5"/></svg>
+    <h1>PokeBestBCN</h1>
+  </div>
+  <div class="user-bar">
+    <div class="user-bar-txt">Entrenador: <b id="uname"></b></div>
+    <div class="user-bar-right">
+      <button class="guia-btn" onclick="openGuia()">📖 Guía</button>
+      <button class="cambiar-btn" onclick="goProfiles()">Cambiar</button>
+    </div>
+  </div>
+  <div class="types-grid" id="types-grid"></div>
+</div>
+
+<!-- DETAIL -->
+<div id="detail-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="goBack()">←</button>
+    <h1 id="detail-title"></h1>
+  </div>
+  <div class="tabs">
+    <button class="tab active" id="tab-a" onclick="switchTab('album')">Mis Pokémon</button>
+    <button class="tab" id="tab-r" onclick="switchTab('ranking')">Ranking DPS</button>
+  </div>
+  <div id="view-badge-wrap" class="view-badge-bar" style="display:none">👁 Solo lectura — <span id="view-name"></span></div>
+  <div id="album-panel"><div class="album-wrap" id="album-list"></div></div>
+  <div id="ranking-panel" style="display:none">
+    <p class="rank-note" id="rank-note"></p>
+    <div class="rank-wrap"><div class="rank-list" id="rank-list"></div></div>
+  </div>
+</div>
+
+</div>
+<script>
+// PWA Service Worker
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+
+const SP='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
+const si=n=>SP+n+'.png';
+function openGuia(){document.getElementById('modal-guia').style.display='flex';}
+function closeGuiaBtn(){document.getElementById('modal-guia').style.display='none';}
+function closeGuia(e){if(e.target.id==='modal-guia')document.getElementById('modal-guia').style.display='none';}
+
+const TYPES=[
+  {name:'Fuego',color:'#E07020',bg:'#FDE8D5',key:'fire'},
+  {name:'Agua',color:'#4070D0',bg:'#D8E4FD',key:'water'},
+  {name:'Planta',color:'#409820',bg:'#DCEFD5',key:'grass'},
+  {name:'Eléctrico',color:'#B08000',bg:'#FDF5C0',key:'electric'},
+  {name:'Hielo',color:'#3898A0',bg:'#D5F4F4',key:'ice'},
+  {name:'Lucha',color:'#B02020',bg:'#F5D5D5',key:'fighting'},
+  {name:'Veneno',color:'#802880',bg:'#EDD5ED',key:'poison'},
+  {name:'Tierra',color:'#906820',bg:'#F5EDD5',key:'ground'},
+  {name:'Volador',color:'#5850B0',bg:'#E4E0F8',key:'flying'},
+  {name:'Psíquico',color:'#B02060',bg:'#FBD5E5',key:'psychic'},
+  {name:'Bicho',color:'#507010',bg:'#E5EDD5',key:'bug'},
+  {name:'Roca',color:'#807020',bg:'#F0EAD5',key:'rock'},
+  {name:'Fantasma',color:'#504070',bg:'#E0D5EE',key:'ghost'},
+  {name:'Dragón',color:'#4010C0',bg:'#DDD5FE',key:'dragon'},
+  {name:'Siniestro',color:'#403020',bg:'#E0D8D5',key:'dark'},
+  {name:'Acero',color:'#506090',bg:'#E5E5F0',key:'steel'},
+  {name:'Hada',color:'#B04070',bg:'#FBD5EC',key:'fairy'},
+];
+const TM={};TYPES.forEach(t=>TM[t.key]=t);
+
+const RANKINGS={
+  fire:[
+    {n:'Mega Charizard Y',dps:36.46,fast:'Giro Fuego',fastL:false,charge:'Sofoco',chargeL:true,img:'10034',aid:'fi-mega-char-y-l'},
+    {n:'Mega Blaziken',dps:37.17,fast:'Giro Fuego',fastL:false,charge:'Sofoco',chargeL:true,img:'10071',aid:'fi-mega-blaz-l'},
+    {n:'Shadow Heatran',dps:33.64,fast:'Giro Fuego',fastL:false,charge:'Tormenta Magma',chargeL:true,img:'485'},
+    {n:'Mega Charizard X',dps:31.49,fast:'Giro Fuego',fastL:false,charge:'Sofoco',chargeL:true,img:'10034'},
+    {n:'Blacephalon',dps:34.44,fast:'Calcinación',fastL:false,charge:'Explosión Mente',chargeL:false,img:'806'},
+    {n:'Reshiram',dps:29.81,fast:'Colmillo Ígneo',fastL:false,charge:'Llamarada Fusión',chargeL:false,img:'643'},
+    {n:'Shadow Delphox',dps:31.11,fast:'Giro Fuego',fastL:false,charge:'Sofoco',chargeL:true,img:'655'},
+    {n:'Shadow Emboar',dps:30.80,fast:'Ascuas',fastL:false,charge:'Sofoco',chargeL:true,img:'500'},
+    {n:'Shadow Chandelure',dps:30.80,fast:'Giro Fuego',fastL:false,charge:'Sofoco',chargeL:false,img:'609',aid:'fi-shd-chand'},
+    {n:'Shadow Darmanitan',dps:28.90,fast:'Colmillo Ígneo',fastL:false,charge:'Sofoco',chargeL:false,img:'555',aid:'fi-shd-darman'},
+    {n:'Heatran',dps:28.14,fast:'Giro Fuego',fastL:false,charge:'Tormenta Magma',chargeL:true,img:'485'},
+    {n:'Shadow Entei',dps:28.61,fast:'Giro Fuego',fastL:false,charge:'Lanzallamas',chargeL:false,img:'244'},
+    {n:'Mega Blaziken',dps:26.40,fast:'Giro Fuego',fastL:false,charge:'Patada Ígnea',chargeL:false,img:'10071',aid:'fi-mega-blaz'},
+    {n:'Primal Groudon',dps:27.08,fast:'Disparo Lodo',fastL:false,charge:'Puño Fuego',chargeL:false,img:'383'},
+    {n:'Mega Charizard Y',dps:24.80,fast:'Giro Fuego',fastL:false,charge:'Sofoco',chargeL:false,img:'10034',aid:'fi-mega-char-y'},
+    {n:'Shadow Moltres',dps:22.10,fast:'Giro Fuego',fastL:false,charge:'Sofoco',chargeL:false,img:'146'},
+    {n:'Mega Houndoom',dps:22.60,fast:'Colmillo Ígneo',fastL:false,charge:'Lanzallamas',chargeL:false,img:'10062',aid:'fi-mega-hound'},
+  ],
+  water:[
+    {n:'Primal Kyogre',dps:32.70,fast:'Cascada',fastL:false,charge:'Pulso Primigenio',chargeL:true,img:'382'},
+    {n:'Mega Swampert',dps:30.33,fast:'Pistola Agua',fastL:false,charge:'Hidrocañón',chargeL:true,img:'10064',aid:'wa-mega-swamp-l'},
+    {n:'Shadow Kyogre',dps:29.34,fast:'Cascada',fastL:false,charge:'Marejada',chargeL:false,img:'382'},
+    {n:'Mega Blastoise',dps:27.20,fast:'Pistola Agua',fastL:false,charge:'Hidrocañón',chargeL:true,img:'10043',aid:'wa-mega-blast-l'},
+    {n:'Shadow Swampert',dps:25.10,fast:'Pistola Agua',fastL:false,charge:'Hidrocañón',chargeL:true,img:'260'},
+    {n:'Mega Gyarados',dps:24.80,fast:'Cascada',fastL:false,charge:'Hidrobomba',chargeL:false,img:'10059',aid:'wa-mega-gyara'},
+    {n:'Shadow Kingler',dps:23.80,fast:'Burbuja',fastL:false,charge:'Cangrejo Martillo',chargeL:false,img:'99',aid:'wa-shd-kingler'},
+    {n:'Kyogre',dps:22.40,fast:'Cascada',fastL:false,charge:'Marejada',chargeL:false,img:'382'},
+    {n:'Mega Swampert',dps:24.10,fast:'Pistola Agua',fastL:false,charge:'Hidrocañón',chargeL:true,img:'10064',aid:'wa-mega-swamp'},
+    {n:'Shadow Empoleon',dps:21.90,fast:'Pistola Agua',fastL:false,charge:'Hidrobomba',chargeL:false,img:'395'},
+    {n:'Palkia',dps:21.20,fast:'Cola Dragón',fastL:false,charge:'Turbulencia Acuática',chargeL:false,img:'484'},
+    {n:'Mega Blastoise',dps:22.30,fast:'Pistola Agua',fastL:false,charge:'Hidrocañón',chargeL:true,img:'10043',aid:'wa-mega-blast'},
+  ],
+  grass:[
+    {n:'Mega Sceptile',dps:29.10,fast:'Semilla Bala',fastL:false,charge:'Creceplanta',chargeL:true,img:'254',aid:'gr-mega-scept-l'},
+    {n:'Kartana',dps:28.60,fast:'Hoja Aguda',fastL:false,charge:'Hoja Aguda',chargeL:false,img:'798'},
+    {n:'Shaymin (Sky)',dps:26.40,fast:'Poder Oculto',fastL:false,charge:'Hierba Lazo',chargeL:false,img:'10006',aid:'gr-shaymin'},
+    {n:'Mega Venusaur',dps:25.80,fast:'Látigo Cepa',fastL:false,charge:'Creceplanta',chargeL:true,img:'10033',aid:'gr-mega-venu-l'},
+    {n:'Shadow Torterra',dps:25.40,fast:'Látigo Cepa',fastL:false,charge:'Creceplanta',chargeL:true,img:'389'},
+    {n:'Shadow Sceptile',dps:24.20,fast:'Semilla Bala',fastL:false,charge:'Hoja Aguda',chargeL:false,img:'254'},
+    {n:'Rillaboom',dps:23.10,fast:'Hoja Aguda',fastL:false,charge:'Hierba Lazo',chargeL:false,img:'812',aid:'gr-rillaboom'},
+    {n:'Roserade',dps:22.40,fast:'Hoja Aguda',fastL:false,charge:'Hierba Lazo',chargeL:false,img:'407',aid:'gr-roserade'},
+    {n:'Mega Sceptile',dps:21.90,fast:'Semilla Bala',fastL:false,charge:'Hoja Aguda',chargeL:false,img:'254',aid:'gr-mega-scept'},
+    {n:'Mega Victreebel',dps:21.80,fast:'Hoja Aguda',fastL:false,charge:'Bomba Lodo',chargeL:false,img:'10070',aid:'gr-mega-victr'},
+    {n:'Mega Venusaur',dps:20.80,fast:'Látigo Cepa',fastL:false,charge:'Creceplanta',chargeL:true,img:'10033',aid:'gr-mega-venu'},
+  ],
+  electric:[
+    {n:'Regieleki',dps:34.20,fast:'Chispa',fastL:false,charge:'Rayo Electro',chargeL:false,img:'894'},
+    {n:'Zekrom',dps:31.80,fast:'Carga Eléctrica',fastL:false,charge:'Voltio Trueno',chargeL:false,img:'644'},
+    {n:'Xurkitree',dps:30.40,fast:'Chispa',fastL:false,charge:'Descarga',chargeL:false,img:'796'},
+    {n:'Shadow Electivire',dps:28.90,fast:'Chispa',fastL:false,charge:'Voltio Cruel',chargeL:false,img:'466',aid:'el-shd-electiv'},
+    {n:'Mega Manectric',dps:27.60,fast:'Colmillo Rayo',fastL:false,charge:'Voltio Cruel',chargeL:false,img:'10066',aid:'el-mega-manec'},
+    {n:'Shadow Magnezone',dps:27.10,fast:'Chispa',fastL:false,charge:'Voltio Cruel',chargeL:false,img:'462',aid:'el-shd-magnez'},
+    {n:'Shadow Raikou',dps:24.20,fast:'Chispa',fastL:false,charge:'Voltio Trueno',chargeL:false,img:'243'},
+    {n:'Mega Ampharos',dps:24.80,fast:'Intercambio',fastL:false,charge:'Rayo Zap',chargeL:false,img:'10044',aid:'el-mega-amphar'},
+    {n:'Shadow Zapdos',dps:23.10,fast:'Chispa',fastL:false,charge:'Rayo',chargeL:false,img:'145'},
+    {n:'Electivire',dps:22.10,fast:'Chispa',fastL:false,charge:'Voltio Cruel',chargeL:false,img:'466',aid:'el-electivire'},
+    {n:'Raikou',dps:21.80,fast:'Chispa',fastL:false,charge:'Voltio Trueno',chargeL:false,img:'243'},
+    {n:'Magnezone',dps:21.40,fast:'Chispa',fastL:false,charge:'Voltio Cruel',chargeL:false,img:'462',aid:'el-magnezone'},
+  ],
+  ice:[
+    {n:'Kyurem (Blanco)',dps:35.16,fast:'Colmillo Hielo',fastL:false,charge:'Llama Gélida',chargeL:false,img:'646'},
+    {n:'Kyurem (Negro)',dps:33.80,fast:'Garra Umbría',fastL:false,charge:'Rayo Gélido',chargeL:false,img:'646'},
+    {n:'Shadow Mamoswine',dps:28.67,fast:'Nieve Polvo',fastL:false,charge:'Alud',chargeL:false,img:'473',aid:'ic-shd-mamosw'},
+    {n:'Shadow Weavile',dps:27.40,fast:'Carámbano',fastL:false,charge:'Alud',chargeL:false,img:'461',aid:'ic-shd-weavile'},
+    {n:'Shadow Glaceon',dps:25.10,fast:'Vaho Gélido',fastL:false,charge:'Alud',chargeL:false,img:'471'},
+    {n:'Baxcalibur',dps:24.90,fast:'Colmillo Hielo',fastL:false,charge:'Alud',chargeL:false,img:'998',aid:'ic-baxcalibur'},
+    {n:'Shadow Articuno',dps:23.90,fast:'Vaho Gélido',fastL:false,charge:'Alud',chargeL:false,img:'144'},
+    {n:'Darmanitan Galar',dps:23.80,fast:'Colmillo Hielo',fastL:false,charge:'Alud',chargeL:false,img:'10176',aid:'ic-darman-galar'},
+    {n:'Mamoswine',dps:22.50,fast:'Nieve Polvo',fastL:false,charge:'Alud',chargeL:false,img:'473',aid:'ic-mamoswine'},
+    {n:'Mega Abomasnow',dps:21.90,fast:'Nieve Polvo',fastL:false,charge:'Bola Clima',chargeL:false,img:'460',aid:'ic-mega-aboma'},
+    {n:'Glaceon',dps:21.20,fast:'Vaho Gélido',fastL:false,charge:'Alud',chargeL:false,img:'471'},
+    {n:'Mega Glalie',dps:20.10,fast:'Vaho Gélido',fastL:false,charge:'Alud',chargeL:false,img:'10074',aid:'ic-mega-glalie'},
+  ],
+  fighting:[
+    {n:'Mega Blaziken',dps:35.72,fast:'Contraataque',fastL:false,charge:'Esfera Aural',chargeL:false,img:'10071',aid:'f-mega-blaziken'},
+    {n:'Mega Lucario',dps:36.46,fast:'Palma de Fuerza',fastL:true,charge:'Esfera Aural',chargeL:false,img:'10054',aid:'f-mega-lucario-l'},
+    {n:'Keldeo Resolute',dps:32.44,fast:'Patada Baja',fastL:false,charge:'Espada Santa',chargeL:false,img:'647'},
+    {n:'Mega Heracross',dps:27.64,fast:'Contraataque',fastL:false,charge:'Upercut',chargeL:false,img:'214'},
+    {n:'Terrakion',dps:27.83,fast:'Doble Patada',fastL:false,charge:'Espada Santa',chargeL:false,img:'639'},
+    {n:'Mega Latios',dps:26.53,fast:'Aliento Dragón',fastL:false,charge:'Esfera Aural',chargeL:false,img:'381'},
+    {n:'Shadow Blaziken',dps:28.10,fast:'Contraataque',fastL:false,charge:'Esfera Aural',chargeL:false,img:'257',aid:'f-shd-blaziken'},
+    {n:'Shadow Conkeldurr',dps:27.60,fast:'Contraataque',fastL:false,charge:'Puño Dinámico',chargeL:false,img:'534',aid:'f-shd-conkeldurr'},
+    {n:'Lucario',dps:27.90,fast:'Palma de Fuerza',fastL:false,charge:'Esfera Aural',chargeL:false,img:'448'},
+    {n:'Keldeo Ordinary',dps:26.71,fast:'Patada Baja',fastL:false,charge:'Espada Santa',chargeL:false,img:'647'},
+    {n:'Shadow Machamp',dps:26.62,fast:'Contraataque',fastL:false,charge:'Puño Dinámico',chargeL:false,img:'68',aid:'f-shd-machamp'},
+    {n:'Shadow Hariyama',dps:22.40,fast:'Palma de Fuerza',fastL:false,charge:'Puño Dinámico',chargeL:false,img:'297'},
+    {n:'Cobalion',dps:21.10,fast:'Patada Baja',fastL:false,charge:'A Bocajarro',chargeL:false,img:'638'},
+    {n:'Mega Lucario',dps:32.10,fast:'Contraataque',fastL:false,charge:'Esfera Aural',chargeL:false,img:'10054',aid:'f-mega-lucario'},
+    {n:'Machamp',dps:19.60,fast:'Contraataque',fastL:false,charge:'Puño Dinámico',chargeL:false,img:'68'},
+  ],
+  poison:[
+    {n:'Eternatus',dps:27.85,fast:'Picotón Veneno',fastL:false,charge:'Bomba Lodo',chargeL:false,img:'890'},
+    {n:'Mega Gengar',dps:27.88,fast:'Lametón',fastL:true,charge:'Bomba Lodo',chargeL:false,img:'10058'},
+    {n:'Nihilego',dps:24.20,fast:'Picotón Veneno',fastL:false,charge:'Bomba Lodo',chargeL:false,img:'793'},
+    {n:'Mega Beedrill',dps:23.10,fast:'Picotón Veneno',fastL:false,charge:'Bomba Lodo',chargeL:false,img:'10055',aid:'p-mega-beedrill'},
+    {n:'Shadow Overqwil',dps:20.80,fast:'Picotón Veneno',fastL:false,charge:'Bomba Lodo',chargeL:false,img:'904',aid:'p-shd-overqwil'},
+    {n:'Shadow Roserade',dps:19.80,fast:'Picotón Veneno',fastL:false,charge:'Bomba Lodo',chargeL:false,img:'407'},
+    {n:'Mega Victreebel',dps:19.60,fast:'Hoja Aguda',fastL:false,charge:'Bomba Lodo',chargeL:false,img:'10070',aid:'p-mega-victreebel'},
+    {n:'Toxicroak',dps:17.10,fast:'Contraataque',fastL:false,charge:'Bomba Lodo',chargeL:false,img:'454'},
+    {n:'Vileplume',dps:16.80,fast:'Picotón Veneno',fastL:false,charge:'Bomba Lodo',chargeL:false,img:'45'},
+  ],
+  ground:[
+    {n:'Primal Groudon',dps:30.58,fast:'Disparo Lodo',fastL:false,charge:'Filo de Tierra',chargeL:false,img:'383'},
+    {n:'Mega Garchomp',dps:29.51,fast:'Disparo Lodo',fastL:true,charge:'Poder Tierra',chargeL:false,img:'445',aid:'g-mega-garc-l'},
+    {n:'Shadow Garchomp',dps:27.61,fast:'Disparo Lodo',fastL:true,charge:'Poder Tierra',chargeL:false,img:'445',aid:'g-shd-garc-l'},
+    {n:'Mega Garchomp',dps:26.40,fast:'Disparo Lodo',fastL:false,charge:'Poder Tierra',chargeL:false,img:'445',aid:'g-mega-garc'},
+    {n:'Shadow Excadrill',dps:25.40,fast:'Disparo Lodo',fastL:false,charge:'Taladradora',chargeL:false,img:'530',aid:'g-shd-excadrill'},
+    {n:'Groudon',dps:23.10,fast:'Disparo Lodo',fastL:false,charge:'Terremoto',chargeL:false,img:'383'},
+    {n:'Landorus Tótem',dps:22.80,fast:'Bofetón Lodo',fastL:false,charge:'Poder Tierra',chargeL:false,img:'645'},
+    {n:'Shadow Rhyperior',dps:21.90,fast:'Bofetón Lodo',fastL:false,charge:'Terremoto',chargeL:false,img:'464',aid:'g-shd-rhyperior'},
+    {n:'Garchomp',dps:20.28,fast:'Disparo Lodo',fastL:false,charge:'Poder Tierra',chargeL:false,img:'445'},
+    {n:'Shadow Mamoswine',dps:20.80,fast:'Bofetón Lodo',fastL:false,charge:'Derribo',chargeL:false,img:'473',aid:'g-shd-mamoswin'},
+    {n:'Excadrill',dps:18.40,fast:'Disparo Lodo',fastL:false,charge:'Taladradora',chargeL:false,img:'530'},
+    {n:'Rhyperior',dps:17.10,fast:'Bofetón Lodo',fastL:false,charge:'Destrucción',chargeL:false,img:'464'},
+  ],
+  flying:[
+    {n:'Mega Rayquaza',dps:38.20,fast:'Cola Dragón',fastL:false,charge:'Ascenso Dragón',chargeL:true,img:'384'},
+    {n:'Rayquaza',dps:30.10,fast:'Cola Dragón',fastL:false,charge:'Ascenso Dragón',chargeL:true,img:'384'},
+    {n:'Shadow Toucannon',dps:29.40,fast:'Semilla Bala',fastL:true,charge:'Picotazo',chargeL:false,img:'733',aid:'v-shd-toucan-l'},
+    {n:'Shadow Staraptor',dps:27.80,fast:'Ráfaga',fastL:true,charge:'Vuelo',chargeL:false,img:'398',aid:'v-shd-starap-l'},
+    {n:'Shadow Moltres',dps:26.90,fast:'Giro Fuego',fastL:false,charge:'Vuelo',chargeL:false,img:'146'},
+    {n:'Mega Pidgeot',dps:25.60,fast:'Ráfaga',fastL:true,charge:'Pájaro Osado',chargeL:false,img:'10073',aid:'v-mega-pidgeot-l'},
+    {n:'Shadow Honchkrow',dps:24.80,fast:'Mordisco',fastL:false,charge:'Pájaro Osado',chargeL:false,img:'430'},
+    {n:'Shadow Staraptor',dps:24.20,fast:'Ataque Ala',fastL:false,charge:'Vuelo',chargeL:false,img:'398',aid:'v-shd-starap'},
+    {n:'Toucannon',dps:23.10,fast:'Semilla Bala',fastL:false,charge:'Picotazo',chargeL:false,img:'733'},
+    {n:'Mega Pidgeot',dps:22.80,fast:'Ataque Ala',fastL:false,charge:'Pájaro Osado',chargeL:false,img:'10073',aid:'v-mega-pidgeot'},
+    {n:'Shadow Unfezant',dps:22.40,fast:'Ataque Ala',fastL:false,charge:'Pájaro Osado',chargeL:false,img:'521'},
+    {n:'Yveltal',dps:21.40,fast:'Tajo Aéreo',fastL:false,charge:'Hiperrayo',chargeL:false,img:'717'},
+    {n:'Braviary',dps:22.10,fast:'Tajo Aéreo',fastL:false,charge:'Pájaro Osado',chargeL:false,img:'628',aid:'v-braviary'},
+    {n:'Staraptor',dps:19.20,fast:'Ataque Ala',fastL:false,charge:'Vuelo',chargeL:false,img:'398'},
+  ],
+  psychic:[
+    {n:'Shadow Mewtwo',dps:36.10,fast:'Psicocorte',fastL:false,charge:'Bola Sombra',chargeL:false,img:'150'},
+    {n:'Mega Mewtwo Y',dps:32.50,fast:'Psicocorte',fastL:false,charge:'Psíquico',chargeL:false,img:'10046'},
+    {n:'Mega Alakazam',dps:28.90,fast:'Psicocorte',fastL:true,charge:'Psíquico',chargeL:true,img:'10046',aid:'ps-mega-alak-l'},
+    {n:'Hoopa (Libre)',dps:27.40,fast:'Confusión',fastL:false,charge:'Psico Impulso',chargeL:false,img:'720'},
+    {n:'Mega Gallade',dps:26.80,fast:'Confusión',fastL:false,charge:'Psíquico',chargeL:false,img:'10068',aid:'ps-mega-gallade'},
+    {n:'Shadow Latios',dps:25.60,fast:'Confusión',fastL:false,charge:'Psíquico',chargeL:false,img:'381'},
+    {n:'Mega Gardevoir',dps:25.20,fast:'Confusión',fastL:false,charge:'Psíquico',chargeL:false,img:'10069',aid:'ps-mega-garde'},
+    {n:'Shadow Gardevoir',dps:24.10,fast:'Confusión',fastL:false,charge:'Psíquico',chargeL:false,img:'282',aid:'ps-shd-garde'},
+    {n:'Mewtwo',dps:22.40,fast:'Psicocorte',fastL:false,charge:'Psíquico',chargeL:false,img:'150'},
+    {n:'Latios',dps:21.80,fast:'Psicocorte',fastL:false,charge:'Psíquico',chargeL:false,img:'381'},
+    {n:'Mega Metagross',dps:21.80,fast:'Cabezazo Zen',fastL:false,charge:'Psíquico',chargeL:false,img:'10076',aid:'ps-mega-meta'},
+    {n:'Espeon',dps:20.60,fast:'Confusión',fastL:false,charge:'Psíquico',chargeL:false,img:'196',aid:'ps-espeon'},
+    {n:'Metagross',dps:19.40,fast:'Cabezazo Zen',fastL:false,charge:'Psíquico',chargeL:false,img:'376',aid:'ps-metagross'},
+  ],
+  bug:[
+    {n:'Mega Heracross',dps:28.13,fast:'Tajo Furia',fastL:false,charge:'Megacuerpo',chargeL:false,img:'214'},
+    {n:'Pheromosa',dps:27.40,fast:'Lucha Baja',fastL:false,charge:'Zumbido',chargeL:false,img:'795'},
+    {n:'Mega Pinsir',dps:25.40,fast:'Tajo Furia',fastL:false,charge:'Tijera X',chargeL:false,img:'10067',aid:'b-mega-pinsir'},
+    {n:'Genesect',dps:22.10,fast:'Tajo Furia',fastL:false,charge:'Zumbido',chargeL:false,img:'649'},
+    {n:'Mega Scizor',dps:23.80,fast:'Tajo Furia',fastL:false,charge:'Tijera X',chargeL:false,img:'10072',aid:'b-mega-scizor'},
+    {n:'Mega Beedrill',dps:23.60,fast:'Plaga',fastL:true,charge:'Tijera X',chargeL:false,img:'10055',aid:'b-mega-beed-l'},
+    {n:'Mega Beedrill',dps:22.90,fast:'Picadura',fastL:false,charge:'Tijera X',chargeL:false,img:'10055',aid:'b-mega-beed'},
+    {n:'Shadow Vikavolt',dps:21.40,fast:'Picadura',fastL:false,charge:'Tijera X',chargeL:false,img:'738',aid:'b-shd-vikavolt'},
+    {n:'Volcarona',dps:20.18,fast:'Picadura',fastL:false,charge:'Zumbido',chargeL:false,img:'637'},
+    {n:'Yanmega',dps:17.90,fast:'Picadura',fastL:false,charge:'Zumbido',chargeL:false,img:'469'},
+    {n:'Scizor',dps:16.40,fast:'Tajo Furia',fastL:false,charge:'Tijera X',chargeL:false,img:'212'},
+    {n:'Pinsir',dps:15.80,fast:'Tajo Furia',fastL:false,charge:'Tijera X',chargeL:false,img:'127'},
+  ],
+  rock:[
+    {n:'Mega Diancie',dps:30.85,fast:'Lanzarroca',fastL:false,charge:'Avalancha',chargeL:false,img:'10109',aid:'r-mega-diancie'},
+    {n:'Shadow Rampardos',dps:30.26,fast:'Golpe Roca',fastL:false,charge:'Avalancha',chargeL:false,img:'409'},
+    {n:'Shadow Rhyperior',dps:30.11,fast:'Golpe Roca',fastL:true,charge:'Destrucción',chargeL:false,img:'464',aid:'r-shd-rhyp-l'},
+    {n:'Mega Tyranitar',dps:27.28,fast:'Golpe Roca',fastL:true,charge:'Antiaéreo',chargeL:false,img:'10060',aid:'r-mega-tyran-l'},
+    {n:'Shadow Tyrantrum',dps:27.25,fast:'Lanzarroca',fastL:false,charge:'Rayo Meteoro',chargeL:false,img:'697'},
+    {n:'Mega Aerodactyl',dps:27.17,fast:'Lanzarroca',fastL:false,charge:'Avalancha',chargeL:false,img:'10042'},
+    {n:'Shadow Gigalith',dps:25.40,fast:'Golpe Roca',fastL:false,charge:'Antiaéreo',chargeL:false,img:'526'},
+    {n:'Terrakion',dps:24.80,fast:'Lanzarroca',fastL:false,charge:'Antiaéreo',chargeL:false,img:'639'},
+    {n:'Rampardos',dps:24.30,fast:'Golpe Roca',fastL:false,charge:'Avalancha',chargeL:false,img:'409',aid:'r-rampardos'},
+    {n:'Rhyperior',dps:20.10,fast:'Bofetón Lodo',fastL:false,charge:'Destrucción',chargeL:false,img:'464'},
+    {n:'Tyranitar',dps:18.40,fast:'Golpe Roca',fastL:false,charge:'Antiaéreo',chargeL:false,img:'248'},
+  ],
+  ghost:[
+    {n:'Mega Gengar',dps:32.65,fast:'Lametón',fastL:true,charge:'Bola Sombra',chargeL:false,img:'10058',aid:'gh-mega-geng-l'},
+    {n:'Necrozma Alas',dps:30.73,fast:'Garra Umbría',fastL:false,charge:'Rayo Lunar',chargeL:false,img:'800'},
+    {n:'Shadow Darkrai',dps:28.86,fast:'Embargo',fastL:false,charge:'Bola Sombra',chargeL:false,img:'491'},
+    {n:'Mega Gengar',dps:28.90,fast:'Garra Umbría',fastL:false,charge:'Bola Sombra',chargeL:false,img:'10058',aid:'gh-mega-geng'},
+    {n:'Mega Banette',dps:27.85,fast:'Garra Umbría',fastL:false,charge:'Bola Sombra',chargeL:false,img:'10065',aid:'gh-mega-bane'},
+    {n:'Shadow Chandelure',dps:27.69,fast:'Maleficio',fastL:false,charge:'Bola Sombra',chargeL:false,img:'609',aid:'gh-shd-chand'},
+    {n:'Shadow Mewtwo',dps:26.41,fast:'Psicocorte',fastL:false,charge:'Bola Sombra',chargeL:false,img:'150'},
+    {n:'Lunala',dps:25.66,fast:'Garra Umbría',fastL:false,charge:'Bola Sombra',chargeL:false,img:'792'},
+    {n:'Mega Alakazam',dps:25.07,fast:'Psicocorte',fastL:false,charge:'Bola Sombra',chargeL:false,img:'10046'},
+    {n:'Kyurem Negro',dps:24.74,fast:'Garra Umbría',fastL:false,charge:'Rayo Gélido',chargeL:false,img:'646'},
+    {n:'Dragapult',dps:20.72,fast:'Impresionar',fastL:false,charge:'Bola Sombra',chargeL:false,img:'887',aid:'gh-dragapult'},
+    {n:'Giratina Origen',dps:19.80,fast:'Garra Umbría',fastL:false,charge:'Bola Sombra',chargeL:false,img:'487'},
+    {n:'Chandelure',dps:19.40,fast:'Maleficio',fastL:false,charge:'Bola Sombra',chargeL:false,img:'609',aid:'gh-chandelure'},
+    {n:'Gengar',dps:17.40,fast:'Lametón',fastL:false,charge:'Bola Sombra',chargeL:false,img:'94'},
+  ],
+  dragon:[
+    {n:'Mega Rayquaza',dps:38.20,fast:'Cola Dragón',fastL:false,charge:'Ascenso Dragón',chargeL:true,img:'384'},
+    {n:'Shadow Salamence',dps:29.80,fast:'Cola Dragón',fastL:false,charge:'Enfado',chargeL:false,img:'373'},
+    {n:'Mega Garchomp',dps:29.51,fast:'Cola Dragón',fastL:false,charge:'Corte Ferocidad',chargeL:false,img:'445',aid:'dr-mega-garc'},
+    {n:'Shadow Dragonite',dps:28.90,fast:'Cola Dragón',fastL:false,charge:'Cometa Draco',chargeL:false,img:'149'},
+    {n:'Shadow Garchomp',dps:27.61,fast:'Cola Dragón',fastL:false,charge:'Enfado',chargeL:false,img:'445',aid:'dr-shd-garc'},
+    {n:'Eternatus',dps:27.40,fast:'Cola Dragón',fastL:false,charge:'Cañón Dinamax',chargeL:false,img:'890'},
+    {n:'Mega Salamence',dps:26.80,fast:'Cola Dragón',fastL:false,charge:'Enfado',chargeL:false,img:'10079',aid:'dr-mega-salamen'},
+    {n:'Kyurem Blanco',dps:25.80,fast:'Colmillo Hielo',fastL:false,charge:'Enfado',chargeL:false,img:'646'},
+    {n:'Rayquaza',dps:25.10,fast:'Cola Dragón',fastL:false,charge:'Enfado',chargeL:false,img:'384'},
+    {n:'Palkia',dps:22.90,fast:'Cola Dragón',fastL:false,charge:'Enfado',chargeL:false,img:'484'},
+    {n:'Latios',dps:23.40,fast:'Cola Dragón',fastL:false,charge:'Cometa Draco',chargeL:false,img:'381'},
+    {n:'Dialga',dps:22.10,fast:'Cola Dragón',fastL:false,charge:'Rugido Dragón',chargeL:false,img:'483'},
+    {n:'Garchomp',dps:22.80,fast:'Cola Dragón',fastL:false,charge:'Enfado',chargeL:false,img:'445',aid:'dr-garchomp'},
+    {n:'Dragonite',dps:21.50,fast:'Cola Dragón',fastL:false,charge:'Cometa Draco',chargeL:false,img:'149',aid:'dr-dragonite'},
+    {n:'Salamence',dps:20.40,fast:'Cola Dragón',fastL:false,charge:'Enfado',chargeL:false,img:'373',aid:'dr-salamence'},
+    {n:'Dragapult',dps:19.80,fast:'Cola Dragón',fastL:false,charge:'Flechas Dragón',chargeL:false,img:'887',aid:'dr-dragapult'},
+    {n:'Haxorus',dps:18.20,fast:'Cola Dragón',fastL:false,charge:'Corte Ferocidad',chargeL:false,img:'612',aid:'dr-haxorus'},
+  ],
+  dark:[
+    {n:'Mega Tyranitar',dps:30.00,fast:'Mordisco',fastL:false,charge:'Giro Maléfico',chargeL:false,img:'10060',aid:'dk-mega-tyran'},
+    {n:'Shadow Tyranitar',dps:29.88,fast:'Mordisco',fastL:false,charge:'Giro Maléfico',chargeL:false,img:'248',aid:'dk-shd-tyran'},
+    {n:'Shadow Hydreigon',dps:27.20,fast:'Mordisco',fastL:false,charge:'Giro Maléfico',chargeL:true,img:'635',aid:'dk-shd-hydrei-l'},
+    {n:'Mega Absol',dps:25.40,fast:'Embargo',fastL:true,charge:'Pulso Umbrío',chargeL:false,img:'10057',aid:'dk-mega-absol-l'},
+    {n:'Yveltal',dps:24.10,fast:'Embargo',fastL:false,charge:'Hiperrayo',chargeL:false,img:'717'},
+    {n:'Shadow Darkrai',dps:23.90,fast:'Embargo',fastL:false,charge:'Bola Sombra',chargeL:false,img:'491'},
+    {n:'Mega Houndoom',dps:22.80,fast:'Embargo',fastL:false,charge:'Truco Sucio',chargeL:false,img:'10062',aid:'dk-mega-hound'},
+    {n:'Darkrai',dps:21.40,fast:'Embargo',fastL:false,charge:'Bola Sombra',chargeL:false,img:'491'},
+    {n:'Hydreigon',dps:21.40,fast:'Mordisco',fastL:false,charge:'Giro Maléfico',chargeL:false,img:'635',aid:'dk-hydreigon'},
+    {n:'Tyranitar',dps:20.10,fast:'Mordisco',fastL:false,charge:'Giro Maléfico',chargeL:false,img:'248',aid:'dk-tyranitar'},
+    {n:'Houndoom',dps:17.80,fast:'Embargo',fastL:false,charge:'Llamarada',chargeL:false,img:'229'},
+    {n:'Kingambit',dps:18.80,fast:'Embargo',fastL:false,charge:'Pulso Umbrío',chargeL:false,img:'983',aid:'dk-kingambit'},
+  ],
+  steel:[
+    {n:'Zacian Corona',dps:34.10,fast:'Garra Metal',fastL:false,charge:'Hoja Espada',chargeL:false,img:'888'},
+    {n:'Zamazenta Corona',dps:32.80,fast:'Garra Metal',fastL:false,charge:'Escudo Feroz',chargeL:false,img:'889'},
+    {n:'Dusk Mane Necrozma',dps:31.20,fast:'Garra Metal',fastL:false,charge:'Puño Sombra',chargeL:false,img:'800'},
+    {n:'Mega Metagross',dps:28.90,fast:'Puño Bala',fastL:false,charge:'Puño Meteoro',chargeL:true,img:'10076',aid:'st-mega-meta-l'},
+    {n:'Shadow Metagross',dps:27.40,fast:'Puño Bala',fastL:false,charge:'Puño Meteoro',chargeL:true,img:'376',aid:'st-shd-meta-l'},
+    {n:'Mega Lucario',dps:26.80,fast:'Contraataque',fastL:false,charge:'Esfera Aural',chargeL:false,img:'10054',aid:'st-mega-lucar'},
+    {n:'Dialga',dps:24.10,fast:'Garra Metal',fastL:false,charge:'Rugido Dragón',chargeL:false,img:'483'},
+    {n:'Shadow Excadrill',dps:23.10,fast:'Garra Metal',fastL:false,charge:'Cabeza de Hierro',chargeL:false,img:'530',aid:'st-shd-excad'},
+    {n:'Melmetal',dps:22.40,fast:'Puño Trueno',fastL:false,charge:'Doble Golpe Hierro',chargeL:false,img:'809'},
+    {n:'Mega Metagross',dps:22.60,fast:'Puño Bala',fastL:false,charge:'Puño Meteoro',chargeL:true,img:'10076',aid:'st-mega-meta'},
+    {n:'Metagross',dps:19.80,fast:'Puño Bala',fastL:false,charge:'Puño Meteoro',chargeL:true,img:'376'},
+    {n:'Mega Aggron',dps:20.40,fast:'Cola Férrea',fastL:false,charge:'Cuerpo Pesado',chargeL:false,img:'10061',aid:'st-mega-aggron'},
+    {n:'Lucario',dps:18.80,fast:'Contraataque',fastL:false,charge:'Esfera Aural',chargeL:false,img:'448'},
+    {n:'Excadrill',dps:17.10,fast:'Garra Metal',fastL:false,charge:'Cabeza de Hierro',chargeL:false,img:'530'},
+  ],
+  fairy:[
+    {n:'Mega Gardevoir',dps:28.40,fast:'Encanto',fastL:false,charge:'Joya de la Luz',chargeL:false,img:'10069',aid:'fa-mega-garde'},
+    {n:'Zacian Corona',dps:27.80,fast:'Encanto',fastL:false,charge:'Hoja Espada',chargeL:false,img:'888'},
+    {n:'Xerneas',dps:25.10,fast:'Beso Drenaje',fastL:false,charge:'Joya de la Luz',chargeL:false,img:'716'},
+    {n:'Togekiss',dps:23.40,fast:'Encanto',fastL:false,charge:'Joya de la Luz',chargeL:false,img:'468',aid:'fa-togekiss'},
+    {n:'Gardevoir',dps:21.80,fast:'Encanto',fastL:false,charge:'Joya de la Luz',chargeL:false,img:'282',aid:'fa-gardevoir'},
+    {n:'Primarina',dps:20.40,fast:'Encanto',fastL:false,charge:'Hidrobomba',chargeL:false,img:'730'},
+    {n:'Hatterene',dps:20.60,fast:'Encanto',fastL:false,charge:'Joya de la Luz',chargeL:false,img:'858',aid:'fa-hatterene'},
+    {n:'Sylveon',dps:19.40,fast:'Encanto',fastL:false,charge:'Joya de la Luz',chargeL:false,img:'700',aid:'fa-sylveon'},
+    {n:'Shadow Granbull',dps:18.80,fast:'Encanto',fastL:false,charge:'Golpe Karate',chargeL:false,img:'210',aid:'fa-shd-granbull'},
+    {n:'Florges',dps:17.80,fast:'Encanto',fastL:false,charge:'Joya de la Luz',chargeL:false,img:'671'},
+    {n:'Clefable',dps:15.40,fast:'Encanto',fastL:false,charge:'Meteoro',chargeL:false,img:'36'},
+  ],
+};
+
+const PD=[
+  {id:'f-mega-lucario-l',name:'Mega Lucario',type:'fighting',evo:['447','448'],img:'10054',tags:['mega','legacy'],fast:'Palma de Fuerza*',charge:'Esfera Aural',dps:34.80},
+  {id:'f-mega-blaziken',name:'Mega Blaziken',type:'fighting',evo:['255','256','257'],img:'10071',tags:['mega'],fast:'Contraataque',charge:'Esfera Aural',dps:35.72},
+  {id:'f-mega-lucario',name:'Mega Lucario',type:'fighting',evo:['447','448'],img:'10054',tags:['mega'],fast:'Contraataque',charge:'Esfera Aural',dps:30.10},
+  {id:'f-shd-blaziken',name:'Shadow Blaziken',type:'fighting',evo:['255','256','257'],img:'257',tags:['shadow'],fast:'Contraataque',charge:'Esfera Aural',dps:28.10},
+  {id:'f-shd-conkeldurr',name:'Shadow Conkeldurr',type:'fighting',evo:['532','533','534'],img:'534',tags:['shadow'],fast:'Contraataque',charge:'Puño Dinámico',dps:27.60},
+  {id:'f-shd-machamp',name:'Shadow Machamp',type:'fighting',evo:['66','67','68'],img:'68',tags:['shadow'],fast:'Contraataque',charge:'Puño Dinámico',dps:26.62},
+  {id:'v-shd-toucan-l',name:'Shadow Toucannon',type:'flying',evo:['731','732','733'],img:'733',tags:['shadow','legacy'],fast:'Semilla Bala*',charge:'Picotazo',dps:29.40},
+  {id:'v-shd-starap-l',name:'Shadow Staraptor',type:'flying',evo:['396','397','398'],img:'398',tags:['shadow','legacy'],fast:'Ráfaga*',charge:'Vuelo',dps:27.80},
+  {id:'v-mega-pidgeot-l',name:'Mega Pidgeot',type:'flying',evo:['16','17','18'],img:'10073',tags:['mega','legacy'],fast:'Ráfaga*',charge:'Pájaro Osado',dps:25.60},
+  {id:'v-shd-starap',name:'Shadow Staraptor',type:'flying',evo:['396','397','398'],img:'398',tags:['shadow'],fast:'Ataque Ala',charge:'Vuelo',dps:24.20},
+  {id:'v-mega-pidgeot',name:'Mega Pidgeot',type:'flying',evo:['16','17','18'],img:'10073',tags:['mega'],fast:'Ataque Ala',charge:'Pájaro Osado',dps:22.80},
+  {id:'v-braviary',name:'Braviary',type:'flying',evo:['627','628'],img:'628',tags:[],fast:'Tajo Aéreo',charge:'Pájaro Osado',dps:22.10},
+  {id:'p-mega-beedrill',name:'Mega Beedrill',type:'poison',evo:['13','14','15'],img:'10055',tags:['mega'],fast:'Picotón Veneno',charge:'Bomba Lodo',dps:23.10},
+  {id:'p-shd-overqwil',name:'Shadow Overqwil',type:'poison',evo:['211','904'],img:'904',tags:['shadow'],fast:'Picotón Veneno',charge:'Bomba Lodo',dps:20.80},
+  {id:'p-mega-victreebel',name:'Mega Victreebel',type:'poison',evo:['69','70','71'],img:'10070',tags:['mega'],fast:'Hoja Aguda',charge:'Bomba Lodo',dps:19.60},
+  {id:'g-mega-garc-l',name:'Mega Garchomp',type:'ground',evo:['443','444','445'],img:'445',tags:['mega','legacy'],fast:'Disparo Lodo*',charge:'Poder Tierra',dps:29.51},
+  {id:'g-shd-garc-l',name:'Shadow Garchomp',type:'ground',evo:['443','444','445'],img:'445',tags:['shadow','legacy'],fast:'Disparo Lodo*',charge:'Poder Tierra',dps:27.61},
+  {id:'g-mega-garc',name:'Mega Garchomp',type:'ground',evo:['443','444','445'],img:'445',tags:['mega'],fast:'Disparo Lodo',charge:'Poder Tierra',dps:26.40},
+  {id:'g-shd-excadrill',name:'Shadow Excadrill',type:'ground',evo:['529','530'],img:'530',tags:['shadow'],fast:'Disparo Lodo',charge:'Taladradora',dps:25.40},
+  {id:'g-shd-rhyperior',name:'Shadow Rhyperior',type:'ground',evo:['111','112','464'],img:'464',tags:['shadow'],fast:'Bofetón Lodo',charge:'Terremoto',dps:21.90},
+  {id:'g-shd-mamoswin',name:'Shadow Mamoswine',type:'ground',evo:['220','221','473'],img:'473',tags:['shadow'],fast:'Bofetón Lodo',charge:'Derribo',dps:20.80},
+  {id:'r-mega-diancie',name:'Mega Diancie',type:'rock',evo:['719'],img:'10109',tags:['mega','mission'],fast:'Lanzarroca',charge:'Avalancha',dps:30.85},
+  {id:'r-shd-rhyp-l',name:'Shadow Rhyperior',type:'rock',evo:['111','112','464'],img:'464',tags:['shadow','legacy'],fast:'Golpe Roca*',charge:'Destrucción',dps:30.11},
+  {id:'r-mega-tyran-l',name:'Mega Tyranitar',type:'rock',evo:['246','247','248'],img:'10060',tags:['mega','legacy'],fast:'Golpe Roca*',charge:'Antiaéreo',dps:27.28},
+  {id:'r-rampardos',name:'Rampardos',type:'rock',evo:['408','409'],img:'409',tags:[],fast:'Golpe Roca',charge:'Avalancha',dps:24.30},
+  {id:'b-mega-pinsir',name:'Mega Pinsir',type:'bug',evo:['127'],img:'10067',tags:['mega'],fast:'Tajo Furia',charge:'Tijera X',dps:25.40},
+  {id:'b-mega-scizor',name:'Mega Scizor',type:'bug',evo:['123','212'],img:'10072',tags:['mega'],fast:'Tajo Furia',charge:'Tijera X',dps:23.80},
+  {id:'b-shd-vikavolt',name:'Shadow Vikavolt',type:'bug',evo:['736','737','738'],img:'738',tags:['shadow'],fast:'Picadura',charge:'Tijera X',dps:21.40},
+  {id:'b-mega-beed-l',name:'Mega Beedrill',type:'bug',evo:['13','14','15'],img:'10055',tags:['mega','legacy'],fast:'Plaga*',charge:'Tijera X',dps:23.60},
+  {id:'b-mega-beed',name:'Mega Beedrill',type:'bug',evo:['13','14','15'],img:'10055',tags:['mega'],fast:'Picadura',charge:'Tijera X',dps:22.90},
+  {id:'gh-mega-geng-l',name:'Mega Gengar',type:'ghost',evo:['92','93','94'],img:'10058',tags:['mega','legacy'],fast:'Lametón*',charge:'Bola Sombra',dps:32.65},
+  {id:'gh-mega-geng',name:'Mega Gengar',type:'ghost',evo:['92','93','94'],img:'10058',tags:['mega'],fast:'Garra Umbría',charge:'Bola Sombra',dps:28.90},
+  {id:'gh-mega-bane',name:'Mega Banette',type:'ghost',evo:['355','354'],img:'10065',tags:['mega'],fast:'Garra Umbría',charge:'Bola Sombra',dps:27.85},
+  {id:'gh-shd-chand',name:'Shadow Chandelure',type:'ghost',evo:['607','608','609'],img:'609',tags:['shadow'],fast:'Maleficio',charge:'Bola Sombra',dps:27.69},
+  {id:'gh-dragapult',name:'Dragapult',type:'ghost',evo:['885','886','887'],img:'887',tags:[],fast:'Impresionar',charge:'Bola Sombra',dps:20.72},
+  {id:'gh-chandelure',name:'Chandelure',type:'ghost',evo:['607','608','609'],img:'609',tags:[],fast:'Maleficio',charge:'Bola Sombra',dps:19.40},
+  {id:'st-mega-meta-l',name:'Mega Metagross',type:'steel',evo:['374','375','376'],img:'10076',tags:['mega','legacy'],fast:'Puño Bala',charge:'Puño Meteoro*',dps:28.90},
+  {id:'st-shd-meta-l',name:'Shadow Metagross',type:'steel',evo:['374','375','376'],img:'376',tags:['shadow','legacy'],fast:'Puño Bala',charge:'Puño Meteoro*',dps:27.40},
+  {id:'st-mega-lucar',name:'Mega Lucario',type:'steel',evo:['447','448'],img:'10054',tags:['mega'],fast:'Contraataque',charge:'Esfera Aural',dps:26.80},
+  {id:'st-shd-excad',name:'Shadow Excadrill',type:'steel',evo:['529','530'],img:'530',tags:['shadow'],fast:'Garra Metal',charge:'Cabeza de Hierro',dps:23.10},
+  {id:'st-mega-meta',name:'Mega Metagross',type:'steel',evo:['374','375','376'],img:'10076',tags:['mega'],fast:'Puño Bala',charge:'Puño Meteoro*',dps:22.60},
+  {id:'st-mega-aggron',name:'Mega Aggron',type:'steel',evo:['304','305','306'],img:'10061',tags:['mega'],fast:'Cola Férrea',charge:'Cuerpo Pesado',dps:20.40},
+  {id:'fi-mega-blaz-l',name:'Mega Blaziken',type:'fire',evo:['255','256','257'],img:'10071',tags:['mega','legacy'],fast:'Giro Fuego',charge:'Sofoco*',dps:37.17},
+  {id:'fi-mega-char-y-l',name:'Mega Charizard Y',type:'fire',evo:['4','5','6'],img:'10034',tags:['mega','legacy'],fast:'Giro Fuego',charge:'Sofoco*',dps:36.46},
+  {id:'fi-mega-blaz',name:'Mega Blaziken',type:'fire',evo:['255','256','257'],img:'10071',tags:['mega'],fast:'Giro Fuego',charge:'Patada Ígnea',dps:26.40},
+  {id:'fi-mega-char-y',name:'Mega Charizard Y',type:'fire',evo:['4','5','6'],img:'10034',tags:['mega'],fast:'Giro Fuego',charge:'Sofoco',dps:24.80},
+  {id:'fi-shd-chand',name:'Shadow Chandelure',type:'fire',evo:['607','608','609'],img:'609',tags:['shadow'],fast:'Giro Fuego',charge:'Sofoco',dps:30.80},
+  {id:'fi-shd-darman',name:'Shadow Darmanitan',type:'fire',evo:['554','555'],img:'555',tags:['shadow'],fast:'Colmillo Ígneo',charge:'Sofoco',dps:28.90},
+  {id:'fi-mega-hound',name:'Mega Houndoom',type:'fire',evo:['228','229'],img:'10062',tags:['mega'],fast:'Colmillo Ígneo',charge:'Lanzallamas',dps:22.60},
+  {id:'wa-mega-swamp-l',name:'Mega Swampert',type:'water',evo:['258','259','260'],img:'10064',tags:['mega','legacy'],fast:'Pistola Agua',charge:'Hidrocañón*',dps:30.33},
+  {id:'wa-mega-blast-l',name:'Mega Blastoise',type:'water',evo:['7','8','9'],img:'10043',tags:['mega','legacy'],fast:'Pistola Agua',charge:'Hidrocañón*',dps:27.20},
+  {id:'wa-mega-gyara',name:'Mega Gyarados',type:'water',evo:['129','130'],img:'10059',tags:['mega'],fast:'Cascada',charge:'Hidrobomba',dps:24.80},
+  {id:'wa-shd-kingler',name:'Shadow Kingler',type:'water',evo:['98','99'],img:'99',tags:['shadow'],fast:'Burbuja',charge:'Cangrejo Martillo',dps:23.80},
+  {id:'wa-mega-swamp',name:'Mega Swampert',type:'water',evo:['258','259','260'],img:'10064',tags:['mega'],fast:'Pistola Agua',charge:'Hidrocañón*',dps:24.10},
+  {id:'wa-mega-blast',name:'Mega Blastoise',type:'water',evo:['7','8','9'],img:'10043',tags:['mega'],fast:'Pistola Agua',charge:'Hidrocañón*',dps:22.30},
+  {id:'gr-mega-scept-l',name:'Mega Sceptile',type:'grass',evo:['252','253','254'],img:'254',tags:['mega','legacy'],fast:'Semilla Bala',charge:'Creceplanta*',dps:29.10},
+  {id:'gr-mega-scept',name:'Mega Sceptile',type:'grass',evo:['252','253','254'],img:'254',tags:['mega'],fast:'Semilla Bala',charge:'Hoja Aguda',dps:21.90},
+  {id:'gr-shaymin',name:'Shaymin (Sky)',type:'grass',evo:['492'],img:'10006',tags:['mission'],fast:'Poder Oculto',charge:'Hierba Lazo',dps:26.40},
+  {id:'gr-mega-venu-l',name:'Mega Venusaur',type:'grass',evo:['1','2','3'],img:'10033',tags:['mega','legacy'],fast:'Látigo Cepa',charge:'Creceplanta*',dps:25.80},
+  {id:'gr-mega-victr',name:'Mega Victreebel',type:'grass',evo:['69','70','71'],img:'10070',tags:['mega'],fast:'Hoja Aguda',charge:'Bomba Lodo',dps:21.80},
+  {id:'gr-mega-venu',name:'Mega Venusaur',type:'grass',evo:['1','2','3'],img:'10033',tags:['mega'],fast:'Látigo Cepa',charge:'Creceplanta*',dps:20.80},
+  {id:'gr-rillaboom',name:'Rillaboom',type:'grass',evo:['810','811','812'],img:'812',tags:[],fast:'Hoja Aguda',charge:'Hierba Lazo',dps:23.10},
+  {id:'gr-roserade',name:'Roserade',type:'grass',evo:['406','315','407'],img:'407',tags:[],fast:'Hoja Aguda',charge:'Hierba Lazo',dps:22.40},
+  {id:'el-mega-manec',name:'Mega Manectric',type:'electric',evo:['309','310'],img:'10066',tags:['mega'],fast:'Colmillo Rayo',charge:'Voltio Cruel',dps:27.60},
+  {id:'el-shd-electiv',name:'Shadow Electivire',type:'electric',evo:['239','125','466'],img:'466',tags:['shadow'],fast:'Chispa',charge:'Voltio Cruel',dps:28.90},
+  {id:'el-shd-magnez',name:'Shadow Magnezone',type:'electric',evo:['81','82','462'],img:'462',tags:['shadow'],fast:'Chispa',charge:'Voltio Cruel',dps:27.10},
+  {id:'el-mega-amphar',name:'Mega Ampharos',type:'electric',evo:['179','180','181'],img:'10044',tags:['mega'],fast:'Intercambio',charge:'Rayo Zap',dps:24.80},
+  {id:'el-electivire',name:'Electivire',type:'electric',evo:['239','125','466'],img:'466',tags:[],fast:'Chispa',charge:'Voltio Cruel',dps:22.10},
+  {id:'el-magnezone',name:'Magnezone',type:'electric',evo:['81','82','462'],img:'462',tags:[],fast:'Chispa',charge:'Voltio Cruel',dps:21.40},
+  {id:'ps-mega-alak-l',name:'Mega Alakazam',type:'psychic',evo:['63','64','65'],img:'10046',tags:['mega','legacy'],fast:'Psicocorte',charge:'Psíquico*',dps:28.90},
+  {id:'ps-mega-gallade',name:'Mega Gallade',type:'psychic',evo:['280','281','475'],img:'10068',tags:['mega'],fast:'Confusión',charge:'Psíquico',dps:26.80},
+  {id:'ps-mega-garde',name:'Mega Gardevoir',type:'psychic',evo:['280','281','282'],img:'10069',tags:['mega'],fast:'Confusión',charge:'Psíquico',dps:25.20},
+  {id:'ps-mega-meta',name:'Mega Metagross',type:'psychic',evo:['374','375','376'],img:'10076',tags:['mega'],fast:'Cabezazo Zen',charge:'Psíquico',dps:21.80},
+  {id:'ps-shd-garde',name:'Shadow Gardevoir',type:'psychic',evo:['280','281','282'],img:'282',tags:['shadow'],fast:'Confusión',charge:'Psíquico',dps:24.10},
+  {id:'ps-metagross',name:'Metagross',type:'psychic',evo:['374','375','376'],img:'376',tags:[],fast:'Cabezazo Zen',charge:'Psíquico',dps:19.40},
+  {id:'ps-espeon',name:'Espeon',type:'psychic',evo:['133','196'],img:'196',tags:[],fast:'Confusión',charge:'Psíquico',dps:20.60},
+  {id:'ic-shd-mamosw',name:'Shadow Mamoswine',type:'ice',evo:['220','221','473'],img:'473',tags:['shadow'],fast:'Nieve Polvo',charge:'Alud',dps:28.67},
+  {id:'ic-shd-weavile',name:'Shadow Weavile',type:'ice',evo:['215','461'],img:'461',tags:['shadow'],fast:'Carámbano',charge:'Alud',dps:27.40},
+  {id:'ic-baxcalibur',name:'Baxcalibur',type:'ice',evo:['996','997','998'],img:'998',tags:[],fast:'Colmillo Hielo',charge:'Alud',dps:24.90},
+  {id:'ic-mega-aboma',name:'Mega Abomasnow',type:'ice',evo:['459','460'],img:'460',tags:['mega'],fast:'Nieve Polvo',charge:'Bola Clima',dps:21.90},
+  {id:'ic-darman-galar',name:'Darmanitan Galar',type:'ice',evo:['554','555'],img:'10176',tags:[],fast:'Colmillo Hielo',charge:'Alud',dps:23.80},
+  {id:'ic-mamoswine',name:'Mamoswine',type:'ice',evo:['220','221','473'],img:'473',tags:[],fast:'Nieve Polvo',charge:'Alud',dps:22.50},
+  {id:'ic-mega-glalie',name:'Mega Glalie',type:'ice',evo:['361','362'],img:'10074',tags:['mega'],fast:'Vaho Gélido',charge:'Alud',dps:20.10},
+  {id:'dr-mega-garc',name:'Mega Garchomp',type:'dragon',evo:['443','444','445'],img:'445',tags:['mega'],fast:'Cola Dragón',charge:'Corte Ferocidad',dps:29.51},
+  {id:'dr-shd-garc',name:'Shadow Garchomp',type:'dragon',evo:['443','444','445'],img:'445',tags:['shadow'],fast:'Cola Dragón',charge:'Enfado',dps:27.61},
+  {id:'dr-mega-salamen',name:'Mega Salamence',type:'dragon',evo:['371','372','373'],img:'10079',tags:['mega'],fast:'Cola Dragón',charge:'Enfado',dps:26.80},
+  {id:'dr-garchomp',name:'Garchomp',type:'dragon',evo:['443','444','445'],img:'445',tags:[],fast:'Cola Dragón',charge:'Enfado',dps:22.80},
+  {id:'dr-dragapult',name:'Dragapult',type:'dragon',evo:['885','886','887'],img:'887',tags:[],fast:'Cola Dragón',charge:'Flechas Dragón',dps:19.80},
+  {id:'dr-salamence',name:'Salamence',type:'dragon',evo:['371','372','373'],img:'373',tags:[],fast:'Cola Dragón',charge:'Enfado',dps:20.40},
+  {id:'dr-dragonite',name:'Dragonite',type:'dragon',evo:['147','148','149'],img:'149',tags:[],fast:'Cola Dragón',charge:'Cometa Draco',dps:21.50},
+  {id:'dr-haxorus',name:'Haxorus',type:'dragon',evo:['610','611','612'],img:'612',tags:[],fast:'Cola Dragón',charge:'Corte Ferocidad',dps:18.20},
+  {id:'dk-mega-tyran',name:'Mega Tyranitar',type:'dark',evo:['246','247','248'],img:'10060',tags:['mega'],fast:'Mordisco',charge:'Giro Maléfico',dps:30.00},
+  {id:'dk-shd-tyran',name:'Shadow Tyranitar',type:'dark',evo:['246','247','248'],img:'248',tags:['shadow'],fast:'Mordisco',charge:'Giro Maléfico',dps:29.88},
+  {id:'dk-shd-hydrei-l',name:'Shadow Hydreigon',type:'dark',evo:['633','634','635'],img:'635',tags:['shadow','legacy'],fast:'Mordisco',charge:'Giro Maléfico*',dps:27.20},
+  {id:'dk-mega-absol-l',name:'Mega Absol',type:'dark',evo:['359'],img:'10057',tags:['mega','legacy'],fast:'Embargo*',charge:'Pulso Umbrío',dps:25.40},
+  {id:'dk-mega-hound',name:'Mega Houndoom',type:'dark',evo:['228','229'],img:'10062',tags:['mega'],fast:'Embargo',charge:'Truco Sucio',dps:22.80},
+  {id:'dk-tyranitar',name:'Tyranitar',type:'dark',evo:['246','247','248'],img:'248',tags:[],fast:'Mordisco',charge:'Giro Maléfico',dps:20.10},
+  {id:'dk-hydreigon',name:'Hydreigon',type:'dark',evo:['633','634','635'],img:'635',tags:[],fast:'Mordisco',charge:'Giro Maléfico',dps:21.40},
+  {id:'dk-kingambit',name:'Kingambit',type:'dark',evo:['821','862','983'],img:'983',tags:[],fast:'Embargo',charge:'Pulso Umbrío',dps:18.80},
+  {id:'fa-mega-garde',name:'Mega Gardevoir',type:'fairy',evo:['280','281','282'],img:'10069',tags:['mega'],fast:'Encanto',charge:'Joya de la Luz',dps:28.40},
+  {id:'fa-gardevoir',name:'Gardevoir',type:'fairy',evo:['280','281','282'],img:'282',tags:[],fast:'Encanto',charge:'Joya de la Luz',dps:21.80},
+  {id:'fa-togekiss',name:'Togekiss',type:'fairy',evo:['175','176','468'],img:'468',tags:[],fast:'Encanto',charge:'Joya de la Luz',dps:23.40},
+  {id:'fa-shd-granbull',name:'Shadow Granbull',type:'fairy',evo:['209','210'],img:'210',tags:['shadow'],fast:'Encanto',charge:'Golpe Karate',dps:18.80},
+  {id:'fa-hatterene',name:'Hatterene',type:'fairy',evo:['856','857','858'],img:'858',tags:[],fast:'Encanto',charge:'Joya de la Luz',dps:20.60},
+  {id:'fa-sylveon',name:'Sylveon',type:'fairy',evo:['133','700'],img:'700',tags:[],fast:'Encanto',charge:'Joya de la Luz',dps:19.40},
+];
+
+let ST={profiles:[],cur:null,view:null,type:null,expanded:null,tab:'album'};
+function load(){try{const s=localStorage.getItem('pokeBCN_v8');if(s){const p=JSON.parse(s);ST.profiles=p.profiles||[];}}catch(e){ST.profiles=[];}}
+function save(){try{localStorage.setItem('pokeBCN_v8',JSON.stringify({profiles:ST.profiles}));}catch(e){}}
+function gp(n){return ST.profiles.find(p=>p.name===n);}
+function goc(n){let p=gp(n);if(!p){p={name:n,pk:{}};ST.profiles.push(p);save();}return p;}
+function countType(pn,tk){const pks=PD.filter(p=>p.type===tk);const p=gp(pn);if(!p)return{o:0,t:pks.length};return{o:pks.filter(pk=>p.pk[pk.id]&&p.pk[pk.id].owned).length,t:pks.length};}
+function addProfile(){const inp=document.getElementById('new-name');const n=inp.value.trim();if(!n)return;if(ST.profiles.find(p=>p.name===n)){alert('Ya existe ese entrenador');return;}goc(n);inp.value='';renderProfiles();}
+function delProfile(n,e){e.stopPropagation();if(!confirm('¿Eliminar a '+n+'?'))return;ST.profiles=ST.profiles.filter(p=>p.name!==n);save();renderProfiles();}
+function renderProfiles(){
+  const el=document.getElementById('profiles-list');
+  if(!ST.profiles.length){el.innerHTML='<p style="color:#aaa;text-align:center;padding:20px">Añade tu primer entrenador abajo</p>';return;}
+  el.innerHTML=ST.profiles.map(p=>{
+    const ini=p.name.substring(0,2).toUpperCase();
+    const cnt=Object.values(p.pk).filter(d=>d&&d.owned).length;
+    return `<div class="profile-row"><div class="avatar">${ini}</div><div class="profile-info" onclick="selProfile('${p.name}')"><div class="profile-name">${p.name}</div><div class="profile-stat">${cnt} pokémon registrados</div></div><div class="profile-actions"><button class="view-btn" onclick="viewProfile('${p.name}')">Ver</button><button class="del-btn" onclick="delProfile('${p.name}',event)">🗑</button></div></div>`;
+  }).join('');
+}
+function selProfile(n){ST.cur=n;ST.view=null;show('main-screen');renderMain();}
+function viewProfile(n){if(!ST.cur){selProfile(n);return;}ST.view=n;show('main-screen');renderMain();}
+function goProfiles(){show('profile-screen');renderProfiles();}
+function renderMain(){
+  document.getElementById('uname').textContent=ST.view?ST.cur+' → '+ST.view:ST.cur;
+  const v=ST.view||ST.cur;
+  document.getElementById('types-grid').innerHTML=TYPES.map(t=>{
+    const{o,t:tot}=countType(v,t.key);
+    const pct=tot>0?Math.round(o/tot*100):0;
+    return `<div class="type-card" onclick="openType('${t.key}')" style="background:${t.bg}"><div class="type-card-top"><span class="type-badge" style="background:${t.color};color:#fff">${t.name}</span></div><div class="type-card-bot"><div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${t.color}"></div></div><span class="prog-count" style="color:${t.color}">${o}/${tot}</span></div></div>`;
+  }).join('');
+}
+function openType(k){
+  ST.type=k;ST.expanded=null;ST.tab='album';
+  document.getElementById('detail-title').textContent=TM[k].name;
+  document.getElementById('tab-a').className='tab active';
+  document.getElementById('tab-r').className='tab';
+  document.getElementById('album-panel').style.display='';
+  document.getElementById('ranking-panel').style.display='none';
+  const vb=document.getElementById('view-badge-wrap');
+  if(ST.view){vb.style.display='flex';document.getElementById('view-name').textContent=ST.view;}
+  else vb.style.display='none';
+  renderAlbum();renderRanking();
+  show('detail-screen');
+}
+function switchTab(t){
+  ST.tab=t;
+  document.getElementById('tab-a').className='tab'+(t==='album'?' active':'');
+  document.getElementById('tab-r').className='tab'+(t==='ranking'?' active':'');
+  document.getElementById('album-panel').style.display=t==='album'?'':'none';
+  document.getElementById('ranking-panel').style.display=t==='ranking'?'':'none';
+}
+function evoH(evo,img){
+  if(!evo||evo.length<=1)return`<div class="final-wrap"><img class="final-img" src="${si(img)}" onerror="this.style.opacity=.1"></div>`;
+  let h='<div class="evo-chain">';
+  evo.slice(0,-1).forEach(id=>{h+=`<img class="evo-sm" src="${si(id)}" onerror="this.style.opacity=.1"><span class="evo-arr">▶</span>`;});
+  return h+`<div class="final-wrap"><img class="final-img" src="${si(img)}" style="width:40px;height:40px" onerror="this.style.opacity=.1"></div></div>`;
+}
+function renderAlbum(){
+  const profile=ST.view||ST.cur;const isV=!!ST.view;const t=TM[ST.type];
+  const pks=PD.filter(p=>p.type===ST.type);const maxD=Math.max(...pks.map(p=>p.dps),1);
+  document.getElementById('album-list').innerHTML=pks.map(pk=>{
+    const pp=gp(profile);const pd=(pp&&pp.pk[pk.id])||{};
+    const isO=pd.owned||false;const lg=pd.legacy||false;
+    const ia=pd.ivAtk||0,id2=pd.ivDef||0,ih=pd.ivHp||0;
+    const ud=pd.dps!==undefined?pd.dps:null;const dd=ud!==null?ud:pk.dps;
+    const isOpen=ST.expanded===pk.id;const bw=Math.round((dd/maxD)*100);
+    const tH=pk.tags.map(tg=>{if(tg==='legacy')return'<span class="tag tl">⭐ Legacy</span>';if(tg==='mission')return'<span class="tag tm">🎯 Misión</span>';if(tg==='shadow')return'<span class="tag ts">👤 Sombra</span>';if(tg==='mega')return'<span class="tag tme">🔴 Mega</span>';return'';}).join('');
+    const fl=pk.fast.endsWith('*');const cl=pk.charge.endsWith('*');
+    const fd=pk.fast.replace('*','');const cd=pk.charge.replace('*','');
+    const mvH=`<div class="mv-box"><div class="mv-row"><span class="mv-lbl">Rápido</span><span class="mv-name">${fd}${fl?'<span class="leg-star">⭐</span>':''}</span></div><div class="mv-row"><span class="mv-lbl">Cargado</span><span class="mv-name">${cd}${cl?'<span class="leg-star">⭐</span>':''}</span></div></div>`;
+    const editF=`<div class="fr tr"><span>¿Lo tienes?</span><label class="sw"><input type="checkbox" ${isO?'checked':''} onchange="togOwned('${pk.id}',this.checked)"><span class="sl"></span></label></div><div class="fr tr" style="margin-top:8px"><span>Legacy ⭐</span><label class="sw"><input type="checkbox" ${lg?'checked':''} onchange="togLeg('${pk.id}',this.checked)"><span class="sl"></span></label></div><div class="fr" style="margin-top:10px"><div class="fl">DPS de tu ejemplar</div><div class="dps-irow"><input class="dps-inp" type="number" step="0.01" min="0" max="50" placeholder="${pk.dps.toFixed(2)}" value="${pd.dps!==undefined?pd.dps:''}" oninput="updDPS('${pk.id}',this.value)"><span class="dps-ref">ref: ${pk.dps.toFixed(2)}</span></div></div><div class="fr"><div class="fl">IVs</div><div class="iv-grid"><div class="iv-col"><div class="iv-lbl">Ataque</div><div class="iv-val" id="ia-${pk.id}">${ia}</div><input type="range" min="0" max="15" value="${ia}" oninput="updIV('${pk.id}','a',this.value)"></div><div class="iv-col"><div class="iv-lbl">Defensa</div><div class="iv-val" id="id-${pk.id}">${id2}</div><input type="range" min="0" max="15" value="${id2}" oninput="updIV('${pk.id}','d',this.value)"></div><div class="iv-col"><div class="iv-lbl">Vida</div><div class="iv-val" id="ih-${pk.id}">${ih}</div><input type="range" min="0" max="15" value="${ih}" oninput="updIV('${pk.id}','h',this.value)"></div></div></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
+    const viewF=`<div class="fr"><div class="fl">Estado</div><p>${isO?'✓ Lo tiene':'✗ No lo tiene'}</p></div><div class="fr"><div class="fl">DPS</div><p style="font-size:16px;font-weight:700">${dd.toFixed(2)}</p></div><div class="fr"><div class="fl">IVs</div><p>${isO?'Atk:'+ia+' Def:'+id2+' HP:'+ih:'—'}</p></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
+    return `<div class="pk-card${isO?'':' not-owned'}" id="c-${pk.id}" style="background:${t.color}"><div class="pk-top" onclick="togCard('${pk.id}')"><div style="display:flex;align-items:center;gap:2px;flex-shrink:0">${evoH(pk.evo,pk.img)}</div><div class="pk-info"><div class="pk-name">${pk.name}</div>${pk.tags.length?`<div class="tags-row">${tH}</div>`:''}<div class="dps-wrap"><div class="dps-lbl"><span>DPS</span><span>${dd.toFixed(2)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${bw}%"></div></div></div></div><div class="status-dot ${isO?'owned':'missing'}">${isO?'✓':'?'}</div></div><div class="pk-body${isOpen?' open':''}">${isV?viewF:editF}</div></div>`;
+  }).join('');
+}
+function renderRanking(){
+  const profile=ST.cur||ST.view;const t=TM[ST.type];
+  const rawRank=RANKINGS[ST.type]||[];
+  const albumPks=PD.filter(p=>p.type===ST.type);
+  const albumIds=new Set(albumPks.map(p=>p.id));
+  const ownedIds=new Set();
+  if(profile){const p=gp(profile);if(p){albumPks.forEach(pk=>{if(p.pk[pk.id]&&p.pk[pk.id].owned)ownedIds.add(pk.id);});}}
+  const aidDps={};albumPks.forEach(pk=>{const pp=gp(profile);const saved=(pp&&pp.pk[pk.id]&&pp.pk[pk.id].dps!==undefined)?pp.pk[pk.id].dps:null;aidDps[pk.id]=saved!==null?saved:pk.dps;});
+  const combined=[...rawRank];
+  albumPks.forEach(pk=>{if(!combined.some(r=>r.aid===pk.id)){combined.push({n:pk.name,dps:aidDps[pk.id],fast:pk.fast.replace('*',''),fastL:pk.fast.endsWith('*'),charge:pk.charge.replace('*',''),chargeL:pk.charge.endsWith('*'),img:pk.img,aid:pk.id});}});
+  combined.sort((a,b)=>b.dps-a.dps);
+  let lastIdx=-1;combined.forEach((r,i)=>{if(r.aid&&albumIds.has(r.aid))lastIdx=i;});
+  const vis=combined.slice(0,lastIdx>=0?lastIdx+1:Math.min(15,combined.length));
+  const maxD=vis.length>0?vis[0].dps:1;
+  document.getElementById('rank-note').textContent=`Top ${vis.length} · Los del álbum en color · Dittobase 2026`;
+  document.getElementById('rank-list').innerHTML=vis.map((r,i)=>{
+    const isA=r.aid&&albumIds.has(r.aid);const isO=r.aid&&ownedIds.has(r.aid);
+    const bw=Math.round((r.dps/maxD)*100);
+    const nameCol=isA?t.color:'#222';const rowBg=isA?t.bg:'#fff';
+    const ft=(r.fast||'')+(r.fastL?'⭐':'');const ct=(r.charge||'')+(r.chargeL?'⭐':'');
+    return `<div class="rank-row${isA?' ours':''}" style="background:${rowBg};--tc:${t.color}"><span class="rank-num">#${i+1}</span><img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1"><div class="rank-info"><div class="rank-name" style="color:${nameCol}">${r.n}${isO?`<span class="badge" style="background:${t.color}">TUYO</span>`:''}${isA&&!isO?'<span class="badge" style="background:#bbb">ÁLBUM</span>':''}</div><div class="rank-move">${ft} / ${ct}</div><div class="dps-minibar"><div class="dps-minifill" style="width:${bw}%;background:${t.color}"></div></div></div><div class="rank-dps" style="color:${nameCol}">${r.dps.toFixed(2)}</div></div>`;
+  }).join('');
+}
+function togCard(id){ST.expanded=ST.expanded===id?null:id;renderAlbum();}
+function togOwned(id,v){const p=goc(ST.cur);if(!p.pk[id])p.pk[id]={};p.pk[id].owned=v;save();const c=document.getElementById('c-'+id);if(c){c.className='pk-card'+(v?'':' not-owned');const s=c.querySelector('.status-dot');if(s){s.textContent=v?'✓':'?';s.className='status-dot '+(v?'owned':'missing');}}renderMain();renderRanking();}
+function togLeg(id,v){const p=goc(ST.cur);if(!p.pk[id])p.pk[id]={};p.pk[id].legacy=v;save();}
+function updIV(id,s,v){const n=parseInt(v);const p=goc(ST.cur);if(!p.pk[id])p.pk[id]={};if(s==='a'){p.pk[id].ivAtk=n;document.getElementById('ia-'+id).textContent=n;}if(s==='d'){p.pk[id].ivDef=n;document.getElementById('id-'+id).textContent=n;}if(s==='h'){p.pk[id].ivHp=n;document.getElementById('ih-'+id).textContent=n;}save();}
+function updDPS(id,v){const n=parseFloat(v);const p=goc(ST.cur);if(!p.pk[id])p.pk[id]={};p.pk[id].dps=isNaN(n)?undefined:n;save();}
+function goBack(){ST.expanded=null;show('main-screen');renderMain();}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.style.display='none');document.getElementById(id).style.display='block';}
+load();renderProfiles();show('profile-screen');
+</script>
+</body>
+</html>
