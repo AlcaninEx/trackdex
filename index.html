@@ -278,6 +278,7 @@ html,body{background:#f0f0f0!important;color:#222!important;-webkit-tap-highligh
     </div>
     <p class="app-title">PokeBestBCN</p>
     <p class="app-sub">Selecciona tu entrenador</p>
+    <p id="status-msg" style="text-align:center;font-size:12px;color:#888;min-height:18px;margin-bottom:4px"></p>
     <div class="profiles-list" id="profiles-list"></div>
     <div class="add-section">
       <p class="add-label">Añadir entrenador</p>
@@ -325,7 +326,153 @@ html,body{background:#f0f0f0!important;color:#222!important;-webkit-tap-highligh
 </div>
 
 </div>
-<script>
+<script type="module">
+// ── Firebase ────────────────────────────────────────────────────────────────
+import{initializeApp}from'https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js';
+import{getFirestore,doc,getDoc,setDoc,collection,getDocs,deleteDoc}from'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
+
+const firebaseConfig={
+  apiKey:"AIzaSyAy32J4YkD6mEeZ9tBryT3-lk3nzi42a34",
+  authDomain:"pokebestbcn.firebaseapp.com",
+  projectId:"pokebestbcn",
+  storageBucket:"pokebestbcn.firebasestorage.app",
+  messagingSenderId:"38103788359",
+  appId:"1:38103788359:web:142c0d9c0e1cb91047ba62"
+};
+const fbApp=initializeApp(firebaseConfig);
+const db=getFirestore(fbApp);
+
+// ── Estado global ───────────────────────────────────────────────────────────
+window.ST={profiles:[],cur:null,view:null,type:null,expanded:null,tab:'album'};
+
+// ── Helpers Firestore ───────────────────────────────────────────────────────
+async function fbLoad(){
+  try{
+    setStatus('⏳ Cargando perfiles...');
+    const snap=await getDocs(collection(db,'profiles'));
+    ST.profiles=snap.docs.map(d=>({name:d.id,...d.data()}));
+    ST.profiles.sort((a,b)=>a.name.localeCompare(b.name));
+  }catch(e){
+    console.error('Error cargando Firebase:',e);
+    ST.profiles=[];
+  }
+}
+async function fbSaveProfile(name,pkData){
+  try{
+    await setDoc(doc(db,'profiles',name),{pk:pkData||{}});
+  }catch(e){console.error('Error guardando:',e);}
+}
+async function fbDeleteProfile(name){
+  try{
+    await deleteDoc(doc(db,'profiles',name));
+  }catch(e){console.error('Error borrando:',e);}
+}
+function setStatus(msg){
+  const el=document.getElementById('status-msg');
+  if(el)el.textContent=msg;
+}
+
+// ── Funciones globales expuestas en window ──────────────────────────────────
+window.gp=function(n){return ST.profiles.find(p=>p.name===n);}
+window.goc=function(n){let p=window.gp(n);if(!p){p={name:n,pk:{}};ST.profiles.push(p);}return p;}
+window.countType=function(pn,tk){const pks=PD.filter(p=>p.type===tk);const p=window.gp(pn);if(!p)return{o:0,t:pks.length};return{o:pks.filter(pk=>p.pk[pk.id]&&p.pk[pk.id].owned).length,t:pks.length};}
+
+window.addProfile=async function(){
+  const inp=document.getElementById('new-name');
+  const n=inp.value.trim();
+  if(!n)return;
+  if(ST.profiles.find(p=>p.name===n)){alert('Ya existe ese entrenador');return;}
+  window.goc(n);
+  inp.value='';
+  await fbSaveProfile(n,{});
+  renderProfiles();
+}
+
+window.delProfile=async function(n,e){
+  e.stopPropagation();
+  if(!confirm('¿Eliminar a '+n+'?'))return;
+  ST.profiles=ST.profiles.filter(p=>p.name!==n);
+  await fbDeleteProfile(n);
+  renderProfiles();
+}
+
+window.togOwned=async function(id,v){
+  const p=window.goc(ST.cur);
+  if(!p.pk[id])p.pk[id]={};
+  p.pk[id].owned=v;
+  await fbSaveProfile(ST.cur,p.pk);
+  const c=document.getElementById('c-'+id);
+  if(c){c.className='pk-card'+(v?'':' not-owned');const s=c.querySelector('.status-dot');if(s){s.textContent=v?'✓':'?';s.className='status-dot '+(v?'owned':'missing');}}
+  renderMain();renderRanking();
+}
+
+window.togLeg=async function(id,v){
+  const p=window.goc(ST.cur);
+  if(!p.pk[id])p.pk[id]={};
+  p.pk[id].legacy=v;
+  await fbSaveProfile(ST.cur,p.pk);
+}
+
+window.updIV=async function(id,s,v){
+  const n=parseInt(v);
+  const p=window.goc(ST.cur);
+  if(!p.pk[id])p.pk[id]={};
+  if(s==='a'){p.pk[id].ivAtk=n;document.getElementById('ia-'+id).textContent=n;}
+  if(s==='d'){p.pk[id].ivDef=n;document.getElementById('id-'+id).textContent=n;}
+  if(s==='h'){p.pk[id].ivHp=n;document.getElementById('ih-'+id).textContent=n;}
+  await fbSaveProfile(ST.cur,p.pk);
+}
+
+window.updDPS=async function(id,v){
+  const n=parseFloat(v);
+  const p=window.goc(ST.cur);
+  if(!p.pk[id])p.pk[id]={};
+  p.pk[id].dps=isNaN(n)?undefined:n;
+  await fbSaveProfile(ST.cur,p.pk);
+}
+
+window.selProfile=function(n){ST.cur=n;ST.view=null;show('main-screen');renderMain();}
+window.selProfileIdx=function(i){const p=ST.profiles[i];if(p)window.selProfile(p.name);}
+window.viewProfileIdx=function(i){const p=ST.profiles[i];if(p){if(!ST.cur){alert('Primero selecciona tu propio perfil');return;}ST.view=p.name;show('main-screen');renderMain();}}
+window.delProfileIdx=function(i,e){const p=ST.profiles[i];if(p)window.delProfile(p.name,e);}
+window.togCard=function(id){ST.expanded=ST.expanded===id?null:id;renderAlbum();}
+window.goProfiles=function(){show('profile-screen');renderProfiles();}
+window.goBack=function(){ST.expanded=null;show('main-screen');renderMain();}
+window.switchTab=function(t){
+  ST.tab=t;
+  document.getElementById('tab-a').className='tab'+(t==='album'?' active':'');
+  document.getElementById('tab-r').className='tab'+(t==='ranking'?' active':'');
+  document.getElementById('album-panel').style.display=t==='album'?'':'none';
+  document.getElementById('ranking-panel').style.display=t==='ranking'?'':'none';
+}
+window.openType=function(k){
+  ST.type=k;ST.expanded=null;ST.tab='album';
+  document.getElementById('detail-title').innerHTML='<span style="display:inline-flex;align-items:center;gap:6px;color:#fff">'+(TM[k].icon?'<span style="width:20px;height:20px;display:inline-flex;align-items:center">'+(TM[k].icon||'')+'</span>':'')+TM[k].name+'</span>';
+  document.getElementById('tab-a').className='tab active';
+  document.getElementById('tab-r').className='tab';
+  document.getElementById('album-panel').style.display='';
+  document.getElementById('ranking-panel').style.display='none';
+  const vb=document.getElementById('view-badge-wrap');
+  if(ST.view){vb.style.display='flex';document.getElementById('view-name').textContent=ST.view;}
+  else vb.style.display='none';
+  renderAlbum();renderRanking();
+  show('detail-screen');
+}
+window.openGuia=function(){document.getElementById('modal-guia').style.display='flex';}
+window.closeGuiaBtn=function(){document.getElementById('modal-guia').style.display='none';}
+window.closeGuia=function(e){if(e.target.id==='modal-guia')document.getElementById('modal-guia').style.display='none';}
+window.openInfo=function(){document.getElementById('modal-info').style.display='flex';}
+window.closeInfoBtn=function(){document.getElementById('modal-info').style.display='none';}
+window.closeInfo=function(e){if(e.target.id==='modal-info')document.getElementById('modal-info').style.display='none';}
+
+// ── Arranque ────────────────────────────────────────────────────────────────
+(async()=>{
+  await fbLoad();
+  renderProfiles();
+  show('profile-screen');
+  setStatus('');
+})();
+
 // PWA Service Worker
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
@@ -335,12 +482,7 @@ if('serviceWorker' in navigator){
 
 const SP='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
 const si=n=>SP+n+'.png';
-function openInfo(){document.getElementById('modal-info').style.display='flex';}
-function closeInfoBtn(){document.getElementById('modal-info').style.display='none';}
-function closeInfo(e){if(e.target.id==='modal-info')document.getElementById('modal-info').style.display='none';}
-function openGuia(){document.getElementById('modal-guia').style.display='flex';}
-function closeGuiaBtn(){document.getElementById('modal-guia').style.display='none';}
-function closeGuia(e){if(e.target.id==='modal-guia')document.getElementById('modal-guia').style.display='none';}
+// modal functions defined in module
 
 const TYPES=[
   {name:'Fuego',color:'#E07020',bg:'#FDE8D5',key:'fire',icon:`<img src="data:image/webp;base64,UklGRvICAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSE0BAAABgFtr29PmA+VW6kxL6xzYgVJMwQr/YQKpNJMoz8Gh1F86KVU5fo5/eL1ARDBw20hRsnvMMDNvIJ3ViyBOh/nLdvuSD9M48KpkZe1WdOSWFW7HHXFbs+CylS3PrPG8zNpXhhT9ZMKGThK/YIAb9lds7KofulrKTXlkC4+yWdbQEHO2dC4a6mkxYWsnQjXpRgsGOG+6f08USoYow8Jv/P4Rw7Hv/yZZM8hV8vtrmjDMySUR1VoMtFUjus2QZLdUFUskS1H1umck564XjBnqOIi3WLZxymCfh2iGOZr8Fc3LFs12Bwc/g98Ef6AUzDnFf4eBRH/n+P8I/5/SHTgOoONMuwaPY/A4+V9xuICL80VwHolcfJ5SWRcLbB4kKke2eTYq4/O43oKfTC3qhKJ5HbIyq0Ps6pyu3KqWbGVX3NbIyqoXxOkof9luXw3rKAIAVlA4IH4BAAAwCwCdASowADAAPpE6mEiloyIhLjQMyLASCWxmqUYZQIvpLp7p+KvOMcnmZfoFIA2wHmA86r0gebp1Q3oAdLMCHm8lSD5U2n32+z/bTOq+jhxL+fbuPXZs7XdUC0lxqzhEAAD+8Glamtw1zeUpZYydIwQaKl3OwoG8pym+9fYnxm8yMaRUK0pp14hnjzdSNmlrkH+ACKSxlQHe4c4SrSWTqhqneYZdKfzEmcfH8DVrzpKob71VXr9LOlJKgXE4dtIHteO8UAKgKUo8hfNQhDFMpTxBsKlRyv3VAFVTHKY6RNP1Uxor9qPk1jKpiZZmQRnMwzvWC57j/zeXvCJ7VN07f1m7XM3ylguuABXJBfJjIocOndt6Mh13KzHs5JvzjAJJupm5ccg5/8zH5xacYdiLwMFpYKw+yhuw8b9udE1fia7Abgoin6Lhy/lKcOxROqYMv7Ruu+hYDUHT913tY80rtpm+1SJT3HmDFXYqctLTc9iGFonv5T+X88VQAAAA" style="width:18px;height:18px;object-fit:contain;display:block">`},
@@ -726,14 +868,7 @@ const PD=[
   {id:'fa-sylveon',name:'Sylveon',type:'fairy',evo:['133','700'],img:'700',tags:[],fast:'Encanto',charge:'Joya de la Luz',dps:19.40},
 ];
 
-let ST={profiles:[],cur:null,view:null,type:null,expanded:null,tab:'album'};
-function load(){try{const s=localStorage.getItem('pokeBCN_v8');if(s){const p=JSON.parse(s);ST.profiles=p.profiles||[];}}catch(e){ST.profiles=[];}}
-function save(){try{localStorage.setItem('pokeBCN_v8',JSON.stringify({profiles:ST.profiles}));}catch(e){}}
-function gp(n){return ST.profiles.find(p=>p.name===n);}
-function goc(n){let p=gp(n);if(!p){p={name:n,pk:{}};ST.profiles.push(p);save();}return p;}
-function countType(pn,tk){const pks=PD.filter(p=>p.type===tk);const p=gp(pn);if(!p)return{o:0,t:pks.length};return{o:pks.filter(pk=>p.pk[pk.id]&&p.pk[pk.id].owned).length,t:pks.length};}
-function addProfile(){const inp=document.getElementById('new-name');const n=inp.value.trim();if(!n)return;if(ST.profiles.find(p=>p.name===n)){alert('Ya existe ese entrenador');return;}goc(n);inp.value='';renderProfiles();}
-function delProfile(n,e){e.stopPropagation();if(!confirm('¿Eliminar a '+n+'?'))return;ST.profiles=ST.profiles.filter(p=>p.name!==n);save();renderProfiles();}
+// State and helpers defined in Firebase module above (window.ST, window.gp, etc.)
 function renderProfiles(){
   const el=document.getElementById('profiles-list');
   if(!ST.profiles.length){el.innerHTML='<p style="color:#aaa;text-align:center;padding:20px">Añade tu primer entrenador abajo</p>';return;}
@@ -743,12 +878,9 @@ function renderProfiles(){
     return `<div class="profile-row"><div class="avatar">${ini}</div><div class="profile-info" onclick="selProfileIdx(${i})"><div class="profile-name">${p.name}</div><div class="profile-stat">${cnt} pokémon registrados</div></div><div class="profile-actions"><button class="view-btn" onclick="viewProfileIdx(${i})">Ver</button><button class="del-btn" onclick="delProfileIdx(${i},event)">🗑</button></div></div>`;
   }).join('');
 }
-function selProfile(n){ST.cur=n;ST.view=null;show('main-screen');renderMain();}
-function selProfileIdx(i){const p=ST.profiles[i];if(p)selProfile(p.name);}
-function viewProfileIdx(i){const p=ST.profiles[i];if(p){if(!ST.cur){alert('Primero selecciona tu propio perfil');return;}ST.view=p.name;show('main-screen');renderMain();}}
-function delProfileIdx(i,e){const p=ST.profiles[i];if(p)delProfile(p.name,e);}
+// selProfile* defined in Firebase module
 
-function goProfiles(){show('profile-screen');renderProfiles();}
+// goProfiles defined in module
 function renderMain(){
   document.getElementById('uname').textContent=ST.view?ST.cur+' → '+ST.view:ST.cur;
   const v=ST.view||ST.cur;
@@ -758,26 +890,7 @@ function renderMain(){
     return `<div class="type-card" onclick="openType('${t.key}')" style="background:${t.bg}"><div class="type-card-top"><span class="type-badge" style="background:${t.color};color:#fff"><span class="type-icon">${t.icon||''}</span>${t.name}</span></div><div class="type-card-bot"><div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${t.color}"></div></div><span class="prog-count" style="color:${t.color}">${o}/${tot}</span></div></div>`;
   }).join('');
 }
-function openType(k){
-  ST.type=k;ST.expanded=null;ST.tab='album';
-  document.getElementById('detail-title').innerHTML='<span style="display:inline-flex;align-items:center;gap:6px;color:#fff">'+(TM[k].icon?'<span style="width:20px;height:20px;display:inline-flex;align-items:center">'+(TM[k].icon||'')+'</span>':'')+TM[k].name+'</span>';
-  document.getElementById('tab-a').className='tab active';
-  document.getElementById('tab-r').className='tab';
-  document.getElementById('album-panel').style.display='';
-  document.getElementById('ranking-panel').style.display='none';
-  const vb=document.getElementById('view-badge-wrap');
-  if(ST.view){vb.style.display='flex';document.getElementById('view-name').textContent=ST.view;}
-  else vb.style.display='none';
-  renderAlbum();renderRanking();
-  show('detail-screen');
-}
-function switchTab(t){
-  ST.tab=t;
-  document.getElementById('tab-a').className='tab'+(t==='album'?' active':'');
-  document.getElementById('tab-r').className='tab'+(t==='ranking'?' active':'');
-  document.getElementById('album-panel').style.display=t==='album'?'':'none';
-  document.getElementById('ranking-panel').style.display=t==='ranking'?'':'none';
-}
+// openType/switchTab defined in module
 function evoH(evo,img,isShadow){
   const shadowBadge=isShadow?`<img src="shadow_icon.png" class="shadow-badge" alt="Shadow">`:'';
   if(!evo||evo.length<=1)return`<div class="final-wrap">${shadowBadge}<img class="final-img" src="${si(img)}" onerror="this.style.opacity=.1"></div>`;
@@ -828,14 +941,9 @@ function renderRanking(){
     return `<div class="rank-row${isA?' ours':''}" style="background:${rowBg};--tc:${t.color}"><span class="rank-num">#${i+1}</span><img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1"><div class="rank-info"><div class="rank-name" style="color:${nameCol}">${r.n}${isO?`<span class="badge" style="background:${t.color}">TUYO</span>`:''}${isA&&!isO?'<span class="badge" style="background:#bbb">ÁLBUM</span>':''}</div><div class="rank-move">${ft} / ${ct}</div><div class="dps-minibar"><div class="dps-minifill" style="width:${bw}%;background:${t.color}"></div></div></div><div class="rank-dps" style="color:${nameCol}">${r.dps.toFixed(2)}</div></div>`;
   }).join('');
 }
-function togCard(id){ST.expanded=ST.expanded===id?null:id;renderAlbum();}
-function togOwned(id,v){const p=goc(ST.cur);if(!p.pk[id])p.pk[id]={};p.pk[id].owned=v;save();const c=document.getElementById('c-'+id);if(c){c.className='pk-card'+(v?'':' not-owned');const s=c.querySelector('.status-dot');if(s){s.textContent=v?'✓':'?';s.className='status-dot '+(v?'owned':'missing');}}renderMain();renderRanking();}
-function togLeg(id,v){const p=goc(ST.cur);if(!p.pk[id])p.pk[id]={};p.pk[id].legacy=v;save();}
-function updIV(id,s,v){const n=parseInt(v);const p=goc(ST.cur);if(!p.pk[id])p.pk[id]={};if(s==='a'){p.pk[id].ivAtk=n;document.getElementById('ia-'+id).textContent=n;}if(s==='d'){p.pk[id].ivDef=n;document.getElementById('id-'+id).textContent=n;}if(s==='h'){p.pk[id].ivHp=n;document.getElementById('ih-'+id).textContent=n;}save();}
-function updDPS(id,v){const n=parseFloat(v);const p=goc(ST.cur);if(!p.pk[id])p.pk[id]={};p.pk[id].dps=isNaN(n)?undefined:n;save();}
-function goBack(){ST.expanded=null;show('main-screen');renderMain();}
+// togCard/togOwned/togLeg/updIV/updDPS/goBack defined in module
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.style.display='none');document.getElementById(id).style.display='block';}
-load();renderProfiles();show('profile-screen');
+// boot handled in module async IIFE
 </script>
 </body>
 </html>
