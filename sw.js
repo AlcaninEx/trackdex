@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokebestbcn-v6';
+const CACHE_NAME = 'pokebestbcn-v7';
 const ASSETS = [
   '/pokebestbcn/index.html',
   '/pokebestbcn/manifest.json',
@@ -17,7 +17,6 @@ self.addEventListener('activate', e => {
   self.clients.claim();
 });
 self.addEventListener('fetch', e => {
-  // No cachear peticiones a Firebase
   if(e.request.url.includes('firestore.googleapis.com') ||
      e.request.url.includes('firebase') ||
      e.request.url.includes('gstatic.com/firebasejs')) {

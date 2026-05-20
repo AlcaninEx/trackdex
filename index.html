@@ -348,19 +348,24 @@ window.ST={profiles:[],cur:null,view:null,type:null,expanded:null,tab:'album'};
 // ── Helpers Firestore ───────────────────────────────────────────────────────
 async function fbLoad(){
   try{
-    setStatus('⏳ Cargando perfiles...');
+    setStatus('⏳ Conectando con Firebase...');
     const snap=await getDocs(collection(db,'profiles'));
     ST.profiles=snap.docs.map(d=>({name:d.id,...d.data()}));
     ST.profiles.sort((a,b)=>a.name.localeCompare(b.name));
+    setStatus(ST.profiles.length?'':'');
   }catch(e){
-    console.error('Error cargando Firebase:',e);
+    console.error('Error Firebase:',e);
+    setStatus('❌ Error: '+e.code+' — Revisa las reglas de Firestore');
     ST.profiles=[];
   }
 }
 async function fbSaveProfile(name,pkData){
   try{
     await setDoc(doc(db,'profiles',name),{pk:pkData||{}});
-  }catch(e){console.error('Error guardando:',e);}
+  }catch(e){
+    console.error('Error guardando:',e);
+    setStatus('❌ Error guardando: '+e.code);
+  }
 }
 async function fbDeleteProfile(name){
   try{
@@ -466,11 +471,16 @@ window.closeInfoBtn=function(){document.getElementById('modal-info').style.displ
 window.closeInfo=function(e){if(e.target.id==='modal-info')document.getElementById('modal-info').style.display='none';}
 
 // ── Arranque ────────────────────────────────────────────────────────────────
+window.renderProfiles=renderProfiles;
+window.renderMain=renderMain;
+window.renderAlbum=renderAlbum;
+window.renderRanking=renderRanking;
+window.show=show;
+
 (async()=>{
   await fbLoad();
   renderProfiles();
   show('profile-screen');
-  setStatus('');
 })();
 
 // PWA Service Worker
