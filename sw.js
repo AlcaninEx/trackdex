@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokebestbcn-v3';
+const CACHE_NAME = 'pokebestbcn-v4';
 const ASSETS = [
   '/pokebestbcn/index.html',
   '/pokebestbcn/manifest.json',
