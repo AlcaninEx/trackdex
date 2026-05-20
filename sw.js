@@ -1,7 +1,8 @@
-const CACHE_NAME = 'pokebestbcn-v1';
+const CACHE_NAME = 'pokebestbcn-v3';
 const ASSETS = [
   '/pokebestbcn/index.html',
   '/pokebestbcn/manifest.json',
+  '/pokebestbcn/shadow_icon.png',
   '/pokebestbcn/icon-192.png',
   '/pokebestbcn/icon-512.png'
 ];
