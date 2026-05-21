@@ -1110,10 +1110,10 @@ function renderMain(){
     // Count dynamax owned vs max 3
     const pks=albumPksForType(v,t.key);
     const tot=Math.max(pks.length,1);
-    const{o}=countType(v,t.key);
+    const{o}=window.countType(v,t.key);
     const pct=tot>0?Math.round(o/tot*100):0;
     const dxPks=pks.filter(p=>p.tags.includes('dynamax'));
-    const dxOwned=dxPks.filter(p=>{const pp=gp(v);return pp&&pp.pk[p.id]&&pp.pk[p.id].owned;}).length;
+    const dxOwned=dxPks.filter(p=>{const pp=window.gp(v);return pp&&pp.pk[p.id]&&pp.pk[p.id].owned;}).length;
     const dxTot=Math.min(dxPks.length,3);
     const dxPct=dxTot>0?Math.round(dxOwned/dxTot*100):0;
     return `<div class="type-card" onclick="openType('${t.key}')" style="background:${t.color}">
@@ -1148,7 +1148,7 @@ function renderAlbum(){
     `<div class="empty-slot"><div class="empty-slot-icon">❓</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Necesitas un equipo de 6 para incursiones</div></div>`
   ).join(''):'';
   document.getElementById('album-list').innerHTML=pks.map(pk=>{
-    const pp=gp(profile);const pd=(pp&&pp.pk[pk.id])||{};
+    const pp=window.gp(profile);const pd=(pp&&pp.pk[pk.id])||{};
     const isO=pd.owned||false;const lg=pd.legacy||false;
     const ia=pd.ivAtk||0,id2=pd.ivDef||0,ih=pd.ivHp||0;
     const ud=pd.dps!==undefined?pd.dps:null;const dd=ud!==null?ud:pk.dps;
@@ -1162,7 +1162,7 @@ function renderAlbum(){
     const viewF=`<div class="fr"><div class="fl">Estado</div><p>${isO?'✓ Lo tiene':'✗ No lo tiene'}</p></div><div class="fr"><div class="fl">DPS</div><p style="font-size:16px;font-weight:700">${dd.toFixed(2)}</p></div><div class="fr"><div class="fl">IVs</div><p>${isO?'Atk:'+ia+' Def:'+id2+' HP:'+ih:'—'}</p></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
     const removeBtn=!isV?`<button class="album-remove" onclick="event.stopPropagation();removeFromAlbum('${pk.id}')" title="Quitar del álbum">✕</button>`:'';
     return `<div class="pk-card${isO?'':' not-owned'}" id="c-${pk.id}" style="background:${t.color}"><div class="pk-top" onclick="togCard('${pk.id}')"><div style="display:flex;align-items:center;gap:2px;flex-shrink:0">${evoH(pk.evo,pk.img,isShadow)}</div><div class="pk-info"><div class="pk-name">${pk.name}</div>${pk.tags.length?`<div class="tags-row">${tH}</div>`:''}<div class="dps-wrap"><div class="dps-lbl"><span>DPS</span><span>${dd.toFixed(2)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${bw}%"></div></div></div></div><div class="status-dot ${isO?'owned':'missing'}">${isO?'✓':'?'}</div>${removeBtn}</div><div class="pk-body${isOpen?' open':''}">${isV?viewF:editF}</div></div>`;
-  }).join('');
+  }).join('')+emptySlots;
 }
 function renderDmaxRanking(){
   const t=TM[ST.type];
@@ -1214,8 +1214,8 @@ function renderRanking(){
   const albumIds=new Set(allTypePks.filter(p=>userAlbum[p.id]).map(p=>p.id));
   const albumCount=albumIds.size;
   const ownedIds=new Set();
-  if(profile){const p=gp(profile);if(p){allTypePks.forEach(pk=>{if(p.pk[pk.id]&&p.pk[pk.id].owned)ownedIds.add(pk.id);});}}
-  const aidDps={};allTypePks.forEach(pk=>{const pp=gp(profile);const saved=(pp&&pp.pk[pk.id]&&pp.pk[pk.id].dps!==undefined)?pp.pk[pk.id].dps:null;aidDps[pk.id]=saved!==null?saved:pk.dps;});
+  if(profile){const p=window.gp(profile);if(p){allTypePks.forEach(pk=>{if(p.pk[pk.id]&&p.pk[pk.id].owned)ownedIds.add(pk.id);});}}
+  const aidDps={};allTypePks.forEach(pk=>{const pp=window.gp(profile);const saved=(pp&&pp.pk[pk.id]&&pp.pk[pk.id].dps!==undefined)?pp.pk[pk.id].dps:null;aidDps[pk.id]=saved!==null?saved:pk.dps;});
   const combined=[...rawRank];
   allTypePks.forEach(pk=>{if(!combined.some(r=>r.aid===pk.id)){combined.push({n:pk.name,dps:aidDps[pk.id],fast:pk.fast.replace('*',''),fastL:pk.fast.endsWith('*'),charge:pk.charge.replace('*',''),chargeL:pk.charge.endsWith('*'),img:pk.img,aid:pk.id});}});
   combined.sort((a,b)=>b.dps-a.dps);
