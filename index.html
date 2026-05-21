@@ -202,6 +202,80 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 <div id="app">
 
 
+<!-- PROFILE -->
+<div id="profile-screen" class="screen">
+  <div id="profile-screen-inner">
+    <div class="logo-wrap">
+      <svg width="56" height="56" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#CC0000" stroke="#222" stroke-width="3"/><rect x="2" y="29" width="60" height="6" fill="#222"/><circle cx="32" cy="32" r="10" fill="white" stroke="#222" stroke-width="3"/><circle cx="32" cy="32" r="5" fill="#CC0000" stroke="#222" stroke-width="2"/></svg>
+    </div>
+    <p class="app-title">PokeBestBCN</p>
+    <p class="app-sub">Selecciona tu entrenador</p>
+    <p id="status-msg" style="text-align:center;font-size:12px;color:#888;min-height:18px;margin-bottom:4px"></p>
+    <div class="profiles-list" id="profiles-list"></div>
+    <div class="add-section">
+      <p class="add-label">Añadir entrenador</p>
+      <div class="add-row">
+        <input type="text" id="new-name" placeholder="Tu nombre..." maxlength="20" onkeydown="if(event.key==='Enter')addProfile()"/>
+        <button onclick="addProfile()">Añadir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="main-screen" class="screen">
+  <div class="app-header">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#CC0000" stroke="white" stroke-width="1.5"/><rect x="2" y="10.5" width="20" height="3" fill="white"/><circle cx="12" cy="12" r="3.5" fill="white" stroke="#CC0000" stroke-width="1.5"/></svg>
+    <h1>PokeBestBCN</h1>
+  </div>
+  <div class="user-bar">
+    <div class="user-bar-txt">Entrenador: <b id="uname"></b></div>
+    <div class="user-bar-right">
+      <button class="guia-btn" onclick="openInfo()">ℹ️ Info</button>
+      <button class="guia-btn" onclick="openGuia()">📖 Guía</button>
+      <button class="guia-btn" id="dark-btn" onclick="toggleDark()" title="Modo oscuro">🌙</button>
+      <button class="cambiar-btn" onclick="goProfiles()">Cambiar</button>
+    </div>
+  </div>
+  <div class="types-grid" id="types-grid"></div>
+</div>
+
+<!-- DETAIL -->
+<div id="detail-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="goBack()">←</button>
+      <button class="guia-btn" id="dark-btn2" onclick="toggleDark()" title="Modo oscuro" style="font-size:14px;padding:4px 8px">🌙</button>
+    <h1 id="detail-title"></h1>
+  </div>
+  <div class="tabs">
+    <button class="tab active" id="tab-a" onclick="switchTab('album')">Mis Pokémon</button>
+    <button class="tab" id="tab-r" onclick="switchTab('ranking')">Ranking DPS</button>
+  </div>
+  <div id="view-badge-wrap" class="view-badge-bar" style="display:none">👁 Solo lectura — <span id="view-name"></span></div>
+  <div id="album-panel">
+  <div class="album-subtabs">
+    <button class="album-subtab active" id="atab-raid" onclick="switchAlbumTab('raid')">⚔️ Incursión</button>
+    <button class="album-subtab" id="atab-dmax" onclick="switchAlbumTab('dmax')">⚡ Dynamax</button>
+  </div>
+  <div id="apanel-raid"><div class="album-wrap" id="album-list"></div></div>
+  <div id="apanel-dmax" style="display:none"><div class="album-wrap" id="album-list-dmax"></div></div>
+</div>
+  <div id="ranking-panel" style="display:none">
+  <div style="display:flex;border-bottom:2px solid #e0e0e0;background:#fff">
+    <button id="rtab-raid" class="tab active" onclick="switchRankTab('raid')" style="flex:1;font-size:12px;padding:8px">⚔️ Incursiones</button>
+    <button id="rtab-dmax" class="tab" onclick="switchRankTab('dmax')" style="flex:1;font-size:12px;padding:8px">⚡ Dynamax</button>
+  </div>
+  <div id="rpanel-raid">
+    <p class="rank-note" id="rank-note"></p>
+    <div class="rank-wrap"><div class="rank-list" id="rank-list"></div></div>
+  </div>
+  <div id="rpanel-dmax" style="display:none">
+    <p id="rank-note-dmax" style="font-size:11px;color:#888;text-align:center;padding:6px 12px 0">Top Dynamax · Max Move Damage · pokemongohub.net</p>
+    <div class="rank-wrap"><div id="rank-list-dmax"></div></div>
+  </div>
+</div>
+
+</div>
 <!-- MODAL INFO -->
 <div id="modal-info" class="modal-overlay" style="display:none" onclick="closeInfo(event)">
   <div class="modal-box" style="max-width:390px">
@@ -336,80 +410,7 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
   </div>
 </div>
 
-<!-- PROFILE -->
-<div id="profile-screen" class="screen">
-  <div id="profile-screen-inner">
-    <div class="logo-wrap">
-      <svg width="56" height="56" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#CC0000" stroke="#222" stroke-width="3"/><rect x="2" y="29" width="60" height="6" fill="#222"/><circle cx="32" cy="32" r="10" fill="white" stroke="#222" stroke-width="3"/><circle cx="32" cy="32" r="5" fill="#CC0000" stroke="#222" stroke-width="2"/></svg>
-    </div>
-    <p class="app-title">PokeBestBCN</p>
-    <p class="app-sub">Selecciona tu entrenador</p>
-    <p id="status-msg" style="text-align:center;font-size:12px;color:#888;min-height:18px;margin-bottom:4px"></p>
-    <div class="profiles-list" id="profiles-list"></div>
-    <div class="add-section">
-      <p class="add-label">Añadir entrenador</p>
-      <div class="add-row">
-        <input type="text" id="new-name" placeholder="Tu nombre..." maxlength="20" onkeydown="if(event.key==='Enter')addProfile()"/>
-        <button onclick="addProfile()">Añadir</button>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- MAIN -->
-<div id="main-screen" class="screen">
-  <div class="app-header">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#CC0000" stroke="white" stroke-width="1.5"/><rect x="2" y="10.5" width="20" height="3" fill="white"/><circle cx="12" cy="12" r="3.5" fill="white" stroke="#CC0000" stroke-width="1.5"/></svg>
-    <h1>PokeBestBCN</h1>
-  </div>
-  <div class="user-bar">
-    <div class="user-bar-txt">Entrenador: <b id="uname"></b></div>
-    <div class="user-bar-right">
-      <button class="guia-btn" onclick="openInfo()">ℹ️ Info</button>
-      <button class="guia-btn" onclick="openGuia()">📖 Guía</button>
-      <button class="guia-btn" id="dark-btn" onclick="toggleDark()" title="Modo oscuro">🌙</button>
-      <button class="cambiar-btn" onclick="goProfiles()">Cambiar</button>
-    </div>
-  </div>
-  <div class="types-grid" id="types-grid"></div>
-</div>
-
-<!-- DETAIL -->
-<div id="detail-screen" class="screen">
-  <div class="app-header">
-    <button class="back-btn" onclick="goBack()">←</button>
-      <button class="guia-btn" id="dark-btn2" onclick="toggleDark()" title="Modo oscuro" style="font-size:14px;padding:4px 8px">🌙</button>
-    <h1 id="detail-title"></h1>
-  </div>
-  <div class="tabs">
-    <button class="tab active" id="tab-a" onclick="switchTab('album')">Mis Pokémon</button>
-    <button class="tab" id="tab-r" onclick="switchTab('ranking')">Ranking DPS</button>
-  </div>
-  <div id="view-badge-wrap" class="view-badge-bar" style="display:none">👁 Solo lectura — <span id="view-name"></span></div>
-  <div id="album-panel">
-  <div class="album-subtabs">
-    <button class="album-subtab active" id="atab-raid" onclick="switchAlbumTab('raid')">⚔️ Incursión</button>
-    <button class="album-subtab" id="atab-dmax" onclick="switchAlbumTab('dmax')">⚡ Dynamax</button>
-  </div>
-  <div id="apanel-raid"><div class="album-wrap" id="album-list"></div></div>
-  <div id="apanel-dmax" style="display:none"><div class="album-wrap" id="album-list-dmax"></div></div>
-</div>
-  <div id="ranking-panel" style="display:none">
-  <div style="display:flex;border-bottom:2px solid #e0e0e0;background:#fff">
-    <button id="rtab-raid" class="tab active" onclick="switchRankTab('raid')" style="flex:1;font-size:12px;padding:8px">⚔️ Incursiones</button>
-    <button id="rtab-dmax" class="tab" onclick="switchRankTab('dmax')" style="flex:1;font-size:12px;padding:8px">⚡ Dynamax</button>
-  </div>
-  <div id="rpanel-raid">
-    <p class="rank-note" id="rank-note"></p>
-    <div class="rank-wrap"><div class="rank-list" id="rank-list"></div></div>
-  </div>
-  <div id="rpanel-dmax" style="display:none">
-    <p id="rank-note-dmax" style="font-size:11px;color:#888;text-align:center;padding:6px 12px 0">Top Dynamax · Max Move Damage · pokemongohub.net</p>
-    <div class="rank-wrap"><div id="rank-list-dmax"></div></div>
-  </div>
-</div>
-
-</div>
 <script>
 // ── DATA ────────────────────────────────────────────────────────────────────
 const SP='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
