@@ -410,23 +410,8 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 </div>
 
 </div>
-<script type="module">
-// ── Firebase ────────────────────────────────────────────────────────────────
-import{initializeApp}from'https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js';
-import{getFirestore,doc,getDoc,setDoc,collection,getDocs,deleteDoc}from'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
-
-
-const firebaseConfig={
-  apiKey:"AIzaSyAy32J4YkD6mEeZ9tBryT3-lk3nzi42a34",
-  authDomain:"pokebestbcn.firebaseapp.com",
-  projectId:"pokebestbcn",
-  storageBucket:"pokebestbcn.firebasestorage.app",
-  messagingSenderId:"38103788359",
-  appId:"1:38103788359:web:142c0d9c0e1cb91047ba62"
-};
-const fbApp=initializeApp(firebaseConfig);
-const db=getFirestore(fbApp);
-
+<script>
+// ── DATA ────────────────────────────────────────────────────────────────────
 const SP='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
 const si=n=>SP+n+'.png';
 
@@ -448,7 +433,9 @@ const TYPES=[
   {name:'Siniestro',color:'#403020',bg:'#E0D8D5',key:'dark',icon:'<img src="data:image/webp;base64,UklGRioDAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSE0BAAABgFtr29PmA+VW6kxL6xzYgVJMwQr/YQKpNJMoz8Gh1F86KVU5fo5/eL1ARDBw20hRsnvMMDNvIJ3ViyBOh/nLdvuSD9M48KpkZe1WdOSWFW7HHXFbs+CylS3PrPG8zNpXhhT9ZMKGThK/YIAb9lds7KofulrKTXlkC4+yWdbQEHO2dC4a6mkxYWsnQjXpRgsGOG+6f08USoYow8Jv/P4Rw7Hv/yZZM8hV8vtrmjDMySUR1VoMtFUjus2QZLdUFUskS1H1umck564XjBnqOIi3WLZxymCfh2iGOZr8Fc3LFs12Bwc/g98Ef6AUzDnFf4eBRH/n+P8I/5/SHTgOoONMuwaPY/A4+V9xuICL80VwHolcfJ5SWRcLbB4kKke2eTYq4/O43oKfTC3qhKJ5HbIyq0Ps6pyu3KqWbGVX3NbIyqoXxOkof9luXw3rKAIAVlA4ILYBAABQCgCdASowADAAPpE8nEoloyKhqrVZWLASCWUAwQ/ndsUwW1VpgG85L9gbrLA0gTQKOsiNEJ0jWVcVLAqLkJX3kmbFKIBv2mfuFDBCNHkEgclfyX5o5JbtngXgAP4RLVsdwlep/85gCg7yqIm/CdRbGn5QDnP0F+Q2i1hhPj+BdGOCHYDOvuBflw4xID6d+1n49IS+5KZb/RNDkWXFb6uumc0hGPsXvgYFmLc0vWs7avGJ7j0iPShsDvHSKoCmksQnbbdPbuUFVwHaSr6FmAUq+C7+X+5Tc15C5z7TwK7khkzFl5FiRCXuaH/e1K2fiBLtgzF/Yuhvo7I5abFch1daAjkYqbVRRY+evZwnCeM2bcQtPR/WPuSDTSAjLv7NJlFocWM6Eji60IvI+CgLbEf+Cr3mvHh6woW+Zb7j5FHBRWb/Y2/hM7odEn3pbxt9aKZ45X5L82mPcyWHx8ogExWnPF17iWQfokw8HW8e8+vuI/RSkqgXFQ33ovlCGvSh39nM6NmLj8Ku6xxHIIK/it10wRUiaZ9W8Xn8BV85PgoTuPCkUwr7xaByQvM1B4JYhPFqI2AAAAA=" style="width:18px;height:18px;object-fit:contain;display:block">'},
   {name:'Acero',color:'#506090',bg:'#E5E5F0',key:'steel',icon:'<img src="data:image/webp;base64,UklGRkYDAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSE0BAAABgFtr29PmA+VW6kxL6xzYgVJMwQr/YQKpNJMoz8Gh1F86KVU5fo5/eL1ARDBw20hRsnvMMDNvIJ3ViyBOh/nLdvuSD9M48KpkZe1WdOSWFW7HHXFbs+CylS3PrPG8zNpXhhT9ZMKGThK/YIAb9lds7KofulrKTXlkC4+yWdbQEHO2dC4a6mkxYWsnQjXpRgsGOG+6f08USoYow8Jv/P4Rw7Hv/yZZM8hV8vtrmjDMySUR1VoMtFUjus2QZLdUFUskS1H1umck564XjBnqOIi3WLZxymCfh2iGOZr8Fc3LFs12Bwc/g98Ef6AUzDnFf4eBRH/n+P8I/5/SHTgOoONMuwaPY/A4+V9xuICL80VwHolcfJ5SWRcLbB4kKke2eTYq4/O43oKfTC3qhKJ5HbIyq0Ps6pyu3KqWbGVX3NbIyqoXxOkof9luXw3rKAIAVlA4INIBAACwCgCdASowADAAPpE8mUoloyIhpzgMkLASCWoAsR7tAe+7cgtpl7XbwFUDLJ0o7QRWknGrn9SNe+qvBGbVwYwel2wokGFRL60rYNaAJqEpUPCnRXwnOnWMEAF/BNhAAP7nH17kxS9fXK6kqOxwNuZqGEa4EaVkzteem2oCXawNvl0v30HAS7hgfKvtsE4KWUZy4Hf9VBBeXSHvj6TJl1d9Dh7FsJAvjWnZ3EmrhEk5zFiBIxg59vl97v5GFsIZLyENbo9nP4bnaM+cFxDjeLivp2xIk1yV3IehoXIlxCTDH5T4tFmK8K6HvpxknAKnJJA0D86g7niDMwmx6dSa0moi7ZA/MfMMMiIWeY5fxWEW80VHFLCD5oUwObxZzlqXVjGeG3BBLtvDfprXq74aYhH07Lp/GXRhK4zINwme/MGNmatCAv2z3nMoLE3QQ0IWogK1oRbqxS+dSn3KgopLuGjOrV8DTXfB3s5TNAi5M9HIcpUC1DTWrUTqruMg9sCDbk9o2NESp13mGKE+ofMBHwVGmpBy59o0dweyUbCjPjfREWhsnFC6lcQlbo2evzn9xVspTnlFdGqn0zrsV7XfWq13i47/3Qn+YmYyCFwZMmpg/AAA" style="width:18px;height:18px;object-fit:contain;display:block">'},
   {name:'Hada',color:'#B04070',bg:'#FBD5EC',key:'fairy',icon:'<img src="data:image/webp;base64,UklGRpQCAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSE0BAAABgFtr29PmA+VW6kxL6xzYgVJMwQr/YQKpNJMoz8Gh1F86KVU5fo5/eL1ARDBw20hRsnvMMDNvIJ3ViyBOh/nLdvuSD9M48KpkZe1WdOSWFW7HHXFbs+CylS3PrPG8zNpXhhT9ZMKGThK/YIAb9lds7KofulrKTXlkC4+yWdbQEHO2dC4a6mkxYWsnQjXpRgsGOG+6f08USoYow8Jv/P4Rw7Hv/yZZM8hV8vtrmjDMySUR1VoMtFUjus2QZLdUFUskS1H1umck564XjBnqOIi3WLZxymCfh2iGOZr8Fc3LFs12Bwc/g98Ef6AUzDnFf4eBRH/n+P8I/5/SHTgOoONMuwaPY/A4+V9xuICL80VwHolcfJ5SWRcLbB4kKke2eTYq4/O43oKfTC3qhKJ5HbIyq0Ps6pyu3KqWbGVX3NbIyqoXxOkof9luXw3rKAIAVlA4ICABAACQCACdASowADAAPpFAm0qlo6Iho4wAsBIJZgCnRvs+N89gF3H4xO2iAnFTlSUDb2KlgZh47VC+PhEk3SztobZo1q8KvhPPUn/0ArlqAAD+9NOf/7KcwMC8TepIvPFPRexHJRrPW+E98z+lk5ohbAeJrK1n165Y1OR/MPUhevGLQ9cgd/kuvMwASqPsXQjQ9jiXRrsZDQOUedPrVvcduPZ5vEQ54FxYBm9bE7nrBXocR5cy6RFrTzg2SmSduqMiuA2bS2XnpT0r5vGG1kf0+KSIda6f/aonTxjz7jaAqXK5BjEHYAbK8su/QBw2APPY3G47SBNsW8E1jZwVQBzE+/74UETjFQ5JnB3vTQQ3PNl68Puq3qa4iyJEKKADBNKIAAA=" style="width:18px;height:18px;object-fit:contain;display:block">'}];
+
 const TM={};
+
 const RANKINGS={
   fire:[
     {n:'Mega Blaziken',dps:37.17,fast:'Giro Fuego',fastL:false,charge:'Sofoco',chargeL:true,img:'10050',aid:'fi-mega-blaz-l'},
@@ -703,6 +690,7 @@ const RANKINGS={
     {n:'Clefable',dps:15.40,fast:'Encanto',fastL:false,charge:'Meteoro',chargeL:false,img:'36'}
   ],
 };
+
 const DMAX={
   fire:[{n:'G-Cinderace',dps:351.31,fast:'Fire Spin',charge:'G-Max Fireball',img:'815'},{n:'G-Charizard',dps:330.54,fast:'Fire Spin',charge:'G-Max Wildfire',img:'10035'},{n:'D-Darmanitan',dps:300.38,fast:'Incinerate',charge:'Max Flare',img:'555'},{n:'D-Moltres',dps:287.46,fast:'Fire Spin',charge:'Max Flare',img:'146'},{n:'D-Flareon',dps:282.08,fast:'Fire Spin',charge:'Max Flare',img:'136'},{n:'D-Ho-Oh',dps:274.54,fast:'Incinerate',charge:'Max Flare',img:'250'}],
   water:[{n:'G-Inteleon',dps:384.54,fast:'Water Gun',charge:'G-Max Hydrosnipe',img:'818'},{n:'G-Kingler',dps:354.08,fast:'Bubble',charge:'G-Max Foam Burst',img:'99'},{n:'D-Inteleon',dps:299.31,fast:'Water Gun',charge:'Max Geyser',img:'818'},{n:'D-Kingler',dps:275.62,fast:'Bubble',charge:'Max Geyser',img:'99'},{n:'G-Blastoise',dps:258.54,fast:'Water Gun',charge:'G-Max Cannonade',img:'10036'},{n:'D-Kabutops',dps:254.08,fast:'Waterfall',charge:'Max Geyser',img:'141'}],
@@ -722,6 +710,7 @@ const DMAX={
   steel:[{n:'Crowned Zacian',dps:374.69,fast:'Metal Claw',charge:'Behemoth Blade',img:'888'},{n:'D-Metagross',dps:293.92,fast:'Bullet Punch',charge:'Max Steelspike',img:'376'},{n:'D-Excadrill',dps:291.77,fast:'Metal Claw',charge:'Max Steelspike',img:'530'},{n:'Crowned Zamazenta',dps:286.38,fast:'Metal Claw',charge:'Behemoth Bash',img:'889'},{n:'D-Duraludon',dps:274.54,fast:'Metal Claw',charge:'Max Steelspike',img:'884'},{n:'D-Kingler',dps:229.85,fast:'Metal Claw',charge:'Max Steelspike',img:'99'}],
   fairy:[{n:'D-Hatterene',dps:272.38,fast:'Charm',charge:'Max Starfall',img:'858'},{n:'D-Gardevoir',dps:272.38,fast:'Charm',charge:'Max Starfall',img:'282'},{n:'D-Sylveon',dps:235.77,fast:'Charm',charge:'Max Starfall',img:'700'},{n:'D-Gallade',dps:227.15,fast:'Charm',charge:'Max Starfall',img:'475'},{n:'D-Latias',dps:219.08,fast:'Charm',charge:'Max Starfall',img:'380'},{n:'D-Tsareena',dps:213.69,fast:'Charm',charge:'Max Starfall',img:'763'}],
 };
+
 const PD=[
   {id:'f-mega-lucario-l',name:'Mega Lucario',type:'fighting',evo:['447','448'],img:'10059',tags:['mega','legacy'],fast:'Palma de Fuerza*',charge:'Esfera Aural',dps:34.80},
   {id:'f-mega-blaziken',name:'Mega Blaziken',type:'fighting',evo:['255','256','257'],img:'10050',tags:['mega'],fast:'Contraataque',charge:'Esfera Aural',dps:35.72},
@@ -820,424 +809,229 @@ const PD=[
   {id:'fa-hatterene',name:'Hatterene',type:'fairy',evo:['856','857','858'],img:'858',tags:[],fast:'Encanto',charge:'Joya de la Luz',dps:20.60},
   {id:'fa-sylveon',name:'Sylveon',type:'fairy',evo:['133','700'],img:'700',tags:[],fast:'Encanto',charge:'Joya de la Luz',dps:19.40}];
 
+TYPES.forEach(t => TM[t.key] = t);
 
+// ── STATE ────────────────────────────────────────────────────────────────────
+const ST = {profiles:[], cur:null, view:null, type:null, expanded:null, tab:'album', rankTab:'raid', albumTab:'raid'};
 
+function save() { try { localStorage.setItem('pokeBCN', JSON.stringify({profiles:ST.profiles})); } catch(e){} }
+function load() { try { const s=localStorage.getItem('pokeBCN'); if(s){const d=JSON.parse(s);ST.profiles=d.profiles||[];} } catch(e){ST.profiles=[];} }
 
+function gp(n) { return ST.profiles.find(p=>p.name===n); }
+function goc(n) { let p=gp(n); if(!p){p={name:n,pk:{}};ST.profiles.push(p);} return p; }
 
-// ── Estado global ───────────────────────────────────────────────────────────
-window.ST={profiles:[],cur:null,view:null,type:null,expanded:null,tab:'album',rankTab:'raid',albumTab:'raid'};
-
-// ── Helpers Firestore ───────────────────────────────────────────────────────
-async function fbLoad(){
-  try{
-    setStatus('⏳ Conectando con Firebase...');
-    const snap=await getDocs(collection(db,'profiles'));
-    ST.profiles=snap.docs.map(d=>({name:d.id,...d.data()}));
-    ST.profiles.sort((a,b)=>a.name.localeCompare(b.name));
-    setStatus(ST.profiles.length?'':'');
-  }catch(e){
-    console.error('Error Firebase:',e);
-    setStatus('❌ Error: '+e.code+' — Revisa las reglas de Firestore');
-    ST.profiles=[];
-  }
-}
-async function fbSaveProfile(name,pkData,albumData){
-  try{
-    const data={pk:pkData||{}};
-    if(albumData!==undefined)data.album=albumData;
-    await setDoc(doc(db,'profiles',name),data);
-  }catch(e){
-    console.error('Error guardando:',e);
-    setStatus('❌ Error guardando: '+e.code);
-  }
-}
-
-function defaultAlbum(){
-  // Top 6 per type from PD
-  const album={};
-  const types=[...new Set(PD.map(p=>p.type))];
-  types.forEach(t=>{
-    const top6=PD.filter(p=>p.type===t).sort((a,b)=>b.dps-a.dps).slice(0,6);
-    top6.forEach(p=>album[p.id]=true);
+function defaultAlbum() {
+  const a={};
+  [...new Set(PD.map(p=>p.type))].forEach(t=>{
+    PD.filter(p=>p.type===t).sort((a,b)=>b.dps-a.dps).slice(0,6).forEach(p=>a[p.id]=true);
   });
-  return album;
+  return a;
 }
+function getAlbum(n) { const p=gp(n); if(!p)return defaultAlbum(); return p.album||defaultAlbum(); }
+function albumPks(n,type) { const a=getAlbum(n); return PD.filter(p=>p.type===type&&a[p.id]).sort((a,b)=>b.dps-a.dps); }
+function countType(n,type) { const pks=albumPks(n,type); const p=gp(n); return {o: p?pks.filter(pk=>p.pk[pk.id]&&p.pk[pk.id].owned).length:0, t:Math.max(pks.length,1)}; }
 
-function getAlbum(profileName){
-  const p=window.gp(profileName);
-  if(!p)return defaultAlbum();
-  if(p.album)return p.album;
-  return defaultAlbum();
+// ── PROFILE ──────────────────────────────────────────────────────────────────
+function addProfile() {
+  const inp=document.getElementById('new-name'); const n=inp.value.trim();
+  if(!n)return; if(ST.profiles.find(p=>p.name===n)){alert('Ya existe');return;}
+  goc(n); inp.value=''; save(); renderProfiles();
 }
+function delProfile(n,e) { e.stopPropagation(); if(!confirm('¿Eliminar a '+n+'?'))return; ST.profiles=ST.profiles.filter(p=>p.name!==n); save(); renderProfiles(); }
+function selProfileIdx(i) { const p=ST.profiles[i]; if(p){ST.cur=p.name;ST.view=null;show('main-screen');renderMain();} }
+function viewProfileIdx(i) { const p=ST.profiles[i]; if(!p)return; if(!ST.cur){alert('Primero selecciona tu perfil');return;} ST.view=p.name;show('main-screen');renderMain(); }
+function delProfileIdx(i,e) { const p=ST.profiles[i]; if(p)delProfile(p.name,e); }
+function goProfiles() { show('profile-screen'); renderProfiles(); }
+function goBack() { ST.expanded=null; show('main-screen'); renderMain(); }
 
-function albumPksForType(profileName,type){
-  const album=getAlbum(profileName);
-  return PD.filter(p=>p.type===type&&album[p.id]).sort((a,b)=>b.dps-a.dps);
+// ── ALBUM ─────────────────────────────────────────────────────────────────────
+function addToAlbum(pkId) {
+  if(!ST.cur)return; const p=goc(ST.cur); if(!p.album)p.album=defaultAlbum();
+  const pk=PD.find(x=>x.id===pkId); if(!pk)return;
+  if(PD.filter(x=>p.album[x.id]&&x.type===pk.type).length>=6){alert('Máximo 6 por tipo');return;}
+  p.album[pkId]=true; save(); renderAlbum(); renderRanking(); renderMain();
 }
-async function fbDeleteProfile(name){
-  try{
-    await deleteDoc(doc(db,'profiles',name));
-  }catch(e){console.error('Error borrando:',e);}
+function removeFromAlbum(pkId) {
+  if(!ST.cur)return; const p=goc(ST.cur); if(!p.album)p.album=defaultAlbum();
+  delete p.album[pkId]; ST.expanded=null; save(); renderAlbum(); renderRanking(); renderMain();
 }
-function setStatus(msg){
-  const el=document.getElementById('status-msg');
-  if(el)el.textContent=msg;
+function togOwned(id,v) {
+  const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={}; p.pk[id].owned=v; save();
+  const card=document.getElementById('c-'+id);
+  if(card){card.className='pk-card'+(v?'':' not-owned');const s=card.querySelector('.status-dot');if(s){s.textContent=v?'✓':'?';s.className='status-dot '+(v?'owned':'missing');}}
+  renderMain(); renderRanking();
 }
-
-// ── Funciones globales expuestas en window ──────────────────────────────────
-window.gp=function(n){return ST.profiles.find(p=>p.name===n);}
-window.goc=function(n){let p=window.gp(n);if(!p){p={name:n,pk:{}};ST.profiles.push(p);}return p;}
-window.countType=function(pn,tk){
-  const pks=albumPksForType(pn,tk);
-  const p=window.gp(pn);
-  const owned=p?pks.filter(pk=>p.pk[pk.id]&&p.pk[pk.id].owned).length:0;
-  return{o:owned,t:Math.max(pks.length,1)};
-};
-
-window.addProfile=async function(){
-  const inp=document.getElementById('new-name');
-  const n=inp.value.trim();
-  if(!n)return;
-  if(ST.profiles.find(p=>p.name===n)){alert('Ya existe ese entrenador');return;}
-  window.goc(n);
-  inp.value='';
-  await fbSaveProfile(n,{});
-  renderProfiles();
-}
-
-window.delProfile=async function(n,e){
-  e.stopPropagation();
-  if(!confirm('¿Eliminar a '+n+'?'))return;
-  ST.profiles=ST.profiles.filter(p=>p.name!==n);
-  await fbDeleteProfile(n);
-  renderProfiles();
-}
-
-window.togOwned=async function(id,v){
-  const p=window.goc(ST.cur);
-  if(!p.pk[id])p.pk[id]={};
-  p.pk[id].owned=v;
-  await fbSaveProfile(ST.cur,p.pk);
-  if(ST.albumTab==='dmax'){renderAlbumDmax();renderMain();return;}
-  const c=document.getElementById('c-'+id);
-  if(c){c.className='pk-card'+(v?'':' not-owned');const s=c.querySelector('.status-dot');if(s){s.textContent=v?'✓':'?';s.className='status-dot '+(v?'owned':'missing');}}
-  renderMain();renderRanking();
-}
-
-window.togLeg=async function(id,v){
-  const p=window.goc(ST.cur);
-  if(!p.pk[id])p.pk[id]={};
-  p.pk[id].legacy=v;
-  await fbSaveProfile(ST.cur,p.pk);
-}
-
-window.updIV=async function(id,s,v){
-  const n=parseInt(v);
-  const p=window.goc(ST.cur);
-  if(!p.pk[id])p.pk[id]={};
+function togLeg(id,v) { const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={}; p.pk[id].legacy=v; save(); }
+function updIV(id,s,v) {
+  const n=parseInt(v); const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={};
   if(s==='a'){p.pk[id].ivAtk=n;document.getElementById('ia-'+id).textContent=n;}
   if(s==='d'){p.pk[id].ivDef=n;document.getElementById('id-'+id).textContent=n;}
   if(s==='h'){p.pk[id].ivHp=n;document.getElementById('ih-'+id).textContent=n;}
-  await fbSaveProfile(ST.cur,p.pk);
+  save();
 }
+function updDPS(id,v) { const n=parseFloat(v); const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={}; p.pk[id].dps=isNaN(n)?undefined:n; save(); }
+function togCard(id) { ST.expanded=ST.expanded===id?null:id; renderAlbum(); }
 
-window.updDPS=async function(id,v){
-  const n=parseFloat(v);
-  const p=window.goc(ST.cur);
-  if(!p.pk[id])p.pk[id]={};
-  p.pk[id].dps=isNaN(n)?undefined:n;
-  await fbSaveProfile(ST.cur,p.pk);
-}
-
-window.selProfile=function(n){ST.cur=n;ST.view=null;show('main-screen');renderMain();}
-window.selProfileIdx=function(i){const p=ST.profiles[i];if(p)window.selProfile(p.name);}
-window.viewProfileIdx=function(i){const p=ST.profiles[i];if(p){if(!ST.cur){alert('Primero selecciona tu propio perfil');return;}ST.view=p.name;show('main-screen');renderMain();}}
-window.delProfileIdx=function(i,e){const p=ST.profiles[i];if(p)window.delProfile(p.name,e);}
-window.togCard=function(id){ST.expanded=ST.expanded===id?null:id;renderAlbum();}
-window.goProfiles=function(){show('profile-screen');renderProfiles();}
-window.goBack=function(){ST.expanded=null;show('main-screen');renderMain();}
-window.switchTab=function(t){
+// ── TABS ──────────────────────────────────────────────────────────────────────
+function switchTab(t) {
   ST.tab=t;
   document.getElementById('tab-a').className='tab'+(t==='album'?' active':'');
   document.getElementById('tab-r').className='tab'+(t==='ranking'?' active':'');
   document.getElementById('album-panel').style.display=t==='album'?'':'none';
   document.getElementById('ranking-panel').style.display=t==='ranking'?'':'none';
 }
-window.openType=function(k){
-  ST.type=k;ST.expanded=null;ST.tab='album';ST.rankTab='raid';
-  document.getElementById('detail-title').innerHTML='<span style="display:inline-flex;align-items:center;gap:6px;color:#fff">'+(TM[k].icon?'<span style="width:20px;height:20px;display:inline-flex;align-items:center">'+(TM[k].icon||'')+'</span>':'')+TM[k].name+'</span>';
-  document.getElementById('tab-a').className='tab active';
-  document.getElementById('tab-r').className='tab';
-  ST.albumTab='raid';
-  if(document.getElementById('atab-raid')){
-    document.getElementById('atab-raid').className='album-subtab active';
-    document.getElementById('atab-dmax').className='album-subtab';
-    document.getElementById('apanel-raid').style.display='';
-    document.getElementById('apanel-dmax').style.display='none';
-  }
-  if(document.getElementById('rtab-raid')){
-    document.getElementById('rtab-raid').className='tab active';
-    document.getElementById('rtab-dmax').className='tab';
-    document.getElementById('rpanel-raid').style.display='';
-    document.getElementById('rpanel-dmax').style.display='none';
-  }
-  document.getElementById('album-panel').style.display='';
-  document.getElementById('ranking-panel').style.display='none';
-  const vb=document.getElementById('view-badge-wrap');
-  if(ST.view){vb.style.display='flex';document.getElementById('view-name').textContent=ST.view;}
-  else vb.style.display='none';
-  renderAlbum();renderRanking();
-  show('detail-screen');
-}
-window.openGuia=function(){document.getElementById('modal-guia').style.display='flex';}
-window.closeGuiaBtn=function(){document.getElementById('modal-guia').style.display='none';}
-window.closeGuia=function(e){if(e.target.id==='modal-guia')document.getElementById('modal-guia').style.display='none';}
-window.openInfo=function(){document.getElementById('modal-info').style.display='flex';}
-window.closeInfoBtn=function(){document.getElementById('modal-info').style.display='none';}
-window.closeInfo=function(e){if(e.target.id==='modal-info')document.getElementById('modal-info').style.display='none';}
-
-// ── Arranque ────────────────────────────────────────────────────────────────
-window.toggleDark=function(){
-  const d=document.body.classList.toggle('dark');
-  localStorage.setItem('darkMode',d?'1':'0');
-  const icon=d?'☀️':'🌙';
-  document.querySelectorAll('#dark-btn,#dark-btn2').forEach(b=>{if(b)b.textContent=icon;});
-};
-// Restore dark mode preference on load
-if(localStorage.getItem('darkMode')==='1'){
-  document.body.classList.add('dark');
-  document.addEventListener('DOMContentLoaded',()=>{
-    document.querySelectorAll('#dark-btn,#dark-btn2').forEach(b=>{if(b)b.textContent='☀️';});
-  });
-}
-// ── DYNAMAX RANKINGS (top DPS per type) ────────────────────────────────────
-
-
-window.switchAlbumTab=function(tab){
+function switchAlbumTab(tab) {
   ST.albumTab=tab;
   document.getElementById('atab-raid').className='album-subtab'+(tab==='raid'?' active':'');
   document.getElementById('atab-dmax').className='album-subtab'+(tab==='dmax'?' active':'');
   document.getElementById('apanel-raid').style.display=tab==='raid'?'':'none';
   document.getElementById('apanel-dmax').style.display=tab==='dmax'?'':'none';
   if(tab==='dmax')renderAlbumDmax();
-};
-
-window.switchRankTab=function(tab){
+}
+function switchRankTab(tab) {
   ST.rankTab=tab;
   document.getElementById('rtab-raid').className='tab'+(tab==='raid'?' active':'');
   document.getElementById('rtab-dmax').className='tab'+(tab==='dmax'?' active':'');
   document.getElementById('rpanel-raid').style.display=tab==='raid'?'':'none';
   document.getElementById('rpanel-dmax').style.display=tab==='dmax'?'':'none';
   if(tab==='dmax')renderDmaxRanking();
-};
+}
+function openType(k) {
+  ST.type=k; ST.expanded=null; ST.tab='album'; ST.rankTab='raid'; ST.albumTab='raid';
+  const t=TM[k];
+  document.getElementById('detail-title').innerHTML='<span style="display:inline-flex;align-items:center;gap:6px;color:#fff"><span style="width:20px;height:20px;display:inline-flex;align-items:center">'+t.icon+'</span>'+t.name+'</span>';
+  document.getElementById('tab-a').className='tab active'; document.getElementById('tab-r').className='tab';
+  document.getElementById('album-panel').style.display=''; document.getElementById('ranking-panel').style.display='none';
+  document.getElementById('atab-raid').className='album-subtab active'; document.getElementById('atab-dmax').className='album-subtab';
+  document.getElementById('apanel-raid').style.display=''; document.getElementById('apanel-dmax').style.display='none';
+  document.getElementById('rtab-raid').className='tab active'; document.getElementById('rtab-dmax').className='tab';
+  document.getElementById('rpanel-raid').style.display=''; document.getElementById('rpanel-dmax').style.display='none';
+  const vb=document.getElementById('view-badge-wrap');
+  if(ST.view){vb.style.display='flex';document.getElementById('view-name').textContent=ST.view;} else vb.style.display='none';
+  renderAlbum(); renderRanking(); show('detail-screen');
+}
+function toggleDark() {
+  const d=document.body.classList.toggle('dark'); localStorage.setItem('darkMode',d?'1':'0');
+  document.querySelectorAll('#dark-btn,#dark-btn2').forEach(b=>{if(b)b.textContent=d?'☀️':'🌙';});
+}
+function openGuia(){document.getElementById('modal-guia').style.display='flex';}
+function closeGuiaBtn(){document.getElementById('modal-guia').style.display='none';}
+function closeGuia(e){if(e.target.id==='modal-guia')document.getElementById('modal-guia').style.display='none';}
+function openInfo(){document.getElementById('modal-info').style.display='flex';}
+function closeInfoBtn(){document.getElementById('modal-info').style.display='none';}
+function closeInfo(e){if(e.target.id==='modal-info')document.getElementById('modal-info').style.display='none';}
 
-window.addToAlbum=async function(pkId){
-  if(!ST.cur)return;
-  const p=window.goc(ST.cur);
-  if(!p.album)p.album=defaultAlbum();
-  // Count how many in this type
-  const pk=PD.find(x=>x.id===pkId);
-  if(!pk)return;
-  const typeCount=PD.filter(x=>p.album[x.id]&&x.type===pk.type).length;
-  if(typeCount>=6){setStatus('⚠️ Máximo 6 Pokémon por tipo');setTimeout(()=>setStatus(''),2000);return;}
-  p.album[pkId]=true;
-  await fbSaveProfile(ST.cur,p.pk,p.album);
-  renderAlbum();renderRanking();renderMain();
-};
-window.removeFromAlbum=async function(pkId){
-  if(!ST.cur)return;
-  const p=window.goc(ST.cur);
-  if(!p.album)p.album=defaultAlbum();
-  delete p.album[pkId];
-  await fbSaveProfile(ST.cur,p.pk,p.album);
-  ST.expanded=null;
-  renderAlbum();renderRanking();renderMain();
-};
-window.renderProfiles=renderProfiles;
-window.renderMain=renderMain;
-window.renderAlbum=renderAlbum;
-window.renderAlbumDmax=renderAlbumDmax;
-window.renderRanking=renderRanking;
-window.show=show;
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.style.display='none');document.getElementById(id).style.display='block';}
 
-
-
-// Local aliases for module-scoped functions used in render
-const gp = (n) => window.gp(n);
-const goc = (n) => window.goc(n);
-
-function renderProfiles(){
+function renderProfiles() {
   const el=document.getElementById('profiles-list');
   if(!ST.profiles.length){el.innerHTML='<p style="color:#aaa;text-align:center;padding:20px">Añade tu primer entrenador abajo</p>';return;}
   el.innerHTML=ST.profiles.map((p,i)=>{
     const ini=p.name.substring(0,2).toUpperCase();
-    const cnt=Object.values(p.pk).filter(d=>d&&d.owned).length;
+    const cnt=Object.values(p.pk||{}).filter(d=>d&&d.owned).length;
     return `<div class="profile-row"><div class="avatar">${ini}</div><div class="profile-info" onclick="selProfileIdx(${i})"><div class="profile-name">${p.name}</div><div class="profile-stat">${cnt} pokémon registrados</div></div><div class="profile-actions"><button class="view-btn" onclick="viewProfileIdx(${i})">Ver</button><button class="del-btn" onclick="delProfileIdx(${i},event)">🗑</button></div></div>`;
   }).join('');
 }
 
-function renderMain(){
+function renderMain() {
   document.getElementById('uname').textContent=ST.view?ST.cur+' → '+ST.view:ST.cur;
   const v=ST.view||ST.cur;
   document.getElementById('types-grid').innerHTML=TYPES.map(t=>{
-    // Count dynamax owned vs max 3
-    const pks=albumPksForType(v,t.key);
-    const tot=Math.max(pks.length,1);
-    const{o}=window.countType(v,t.key);
-    const pct=tot>0?Math.round(o/tot*100):0;
+    const pks=albumPks(v,t.key); const tot=Math.max(pks.length,1);
+    const {o}=countType(v,t.key); const pct=Math.round(o/tot*100);
     const dxPks=pks.filter(p=>p.tags.includes('dynamax'));
-    const dxOwned=dxPks.filter(p=>{const pp=window.gp(v);return pp&&pp.pk[p.id]&&pp.pk[p.id].owned;}).length;
-    const dxTot=Math.min(dxPks.length,3);
-    const dxPct=dxTot>0?Math.round(dxOwned/dxTot*100):0;
-    return `<div class="type-card" onclick="openType('${t.key}')" style="background:${t.color}">
-      <div class="type-card-top" style="padding:10px 12px 4px">
-        <span class="type-badge" style="background:${t.bg};color:#333;border-color:${t.color}">
-          <span class="type-icon">${t.icon||''}</span>${t.name}
-        </span>
-      </div>
-      <div class="type-card-bars">
-        <div class="bar-row"><span class="bar-lbl" style="color:rgba(255,255,255,.8)">⚔️</span><div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:rgba(255,255,255,.9)"></div></div><span class="prog-count">${o}/6</span></div>
-        <div class="bar-row"><span class="bar-lbl" style="color:rgba(255,255,255,.7)">⚡</span><div class="dx-bar"><div class="dx-fill" style="width:${dxPct}%"></div></div><span class="dx-count">${dxOwned}/${dxTot||3}</span></div>
-      </div>
-    </div>`;
+    const pp=gp(v); const dxOwned=dxPks.filter(p=>pp&&pp.pk[p.id]&&pp.pk[p.id].owned).length;
+    const dxTot=Math.min(dxPks.length,3)||3; const dxPct=Math.round(dxOwned/dxTot*100);
+    return `<div class="type-card" onclick="openType('${t.key}')" style="background:${t.color}"><div class="type-card-top" style="padding:10px 12px 4px"><span class="type-badge" style="background:${t.bg};color:#333;border-color:${t.color}"><span class="type-icon">${t.icon}</span>${t.name}</span></div><div class="type-card-bars"><div class="bar-row"><span class="bar-lbl">⚔️</span><div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:rgba(255,255,255,.9)"></div></div><span class="prog-count">${o}/6</span></div><div class="bar-row"><span class="bar-lbl">⚡</span><div class="dx-bar"><div class="dx-fill" style="width:${dxPct}%"></div></div><span class="dx-count">${dxOwned}/${dxTot}</span></div></div></div>`;
   }).join('');
 }
-function evoH(evo,img,isShadow){
-  const shadowBadge=isShadow?`<img src="shadow_icon.png" class="shadow-badge" alt="Shadow">`:'';
-  if(!evo||evo.length<=1)return`<div class="final-wrap">${shadowBadge}<img class="final-img" src="${si(img)}" onerror="this.style.opacity=.1"></div>`;
-  const firstId=evo[0];
-  let h='<div class="evo-chain">';
-  h+=`<img class="evo-sm" src="${si(firstId)}" onerror="this.style.opacity=.1"><span class="evo-arr">▶</span>`;
-  return h+`<div class="final-wrap">${shadowBadge}<img class="final-img" src="${si(img)}" style="width:40px;height:40px" onerror="this.style.opacity=.1"></div></div>`;
+
+function evoH(evo,img,shadow) {
+  const sb=shadow?`<img src="shadow_icon.png" class="shadow-badge" alt="">`:'';
+  if(!evo||evo.length<=1)return`<div class="final-wrap">${sb}<img class="final-img" src="${si(img)}" onerror="this.style.opacity=.1"></div>`;
+  return`<div class="evo-chain"><img class="evo-sm" src="${si(evo[0])}" onerror="this.style.opacity=.1"><span class="evo-arr">▶</span><div class="final-wrap">${sb}<img class="final-img" src="${si(img)}" style="width:40px;height:40px" onerror="this.style.opacity=.1"></div></div>`;
 }
-function renderAlbum(){
-  const profile=ST.view||ST.cur;const isV=!!ST.view;const t=TM[ST.type];
-  const pks=albumPksForType(profile,ST.type);const maxD=Math.max(...pks.map(p=>p.dps),1);
-  const albumCount=pks.length;
-  // Build empty slots (up to 6 total)
-  const emptyCount=Math.max(0,6-pks.length);
-  const emptySlots=emptyCount>0?Array(emptyCount).fill(0).map(()=>
-    `<div class="empty-slot"><div class="empty-slot-icon">❓</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Necesitas un equipo de 6 para incursiones</div></div>`
-  ).join(''):'';
+
+function renderAlbum() {
+  const profile=ST.view||ST.cur; const isV=!!ST.view; const t=TM[ST.type];
+  const pks=albumPks(profile,ST.type); const maxD=Math.max(...pks.map(p=>p.dps),1);
+  const empty=Array(Math.max(0,6-pks.length)).fill('<div class="empty-slot"><div class="empty-slot-icon">❓</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Necesitas equipo de 6 para incursiones</div></div>').join('');
   document.getElementById('album-list').innerHTML=pks.map(pk=>{
-    const pp=window.gp(profile);const pd=(pp&&pp.pk[pk.id])||{};
-    const isO=pd.owned||false;const lg=pd.legacy||false;
+    const pp=gp(profile); const pd=(pp&&pp.pk[pk.id])||{};
+    const isO=pd.owned||false; const lg=pd.legacy||false;
     const ia=pd.ivAtk||0,id2=pd.ivDef||0,ih=pd.ivHp||0;
-    const ud=pd.dps!==undefined?pd.dps:null;const dd=ud!==null?ud:pk.dps;
-    const isOpen=ST.expanded===pk.id;const bw=Math.round((dd/maxD)*100);
-    const isShadow=pk.tags.includes('shadow');
-    const tH=pk.tags.map(tg=>{if(tg==='legacy')return'<span class="tag tl">⭐ Legacy</span>';if(tg==='mission')return'<span class="tag tm">🎯 Misión</span>';if(tg==='shadow')return'<span class="tag ts"><img src="shadow_icon.png" style="width:10px;height:10px;vertical-align:middle;margin-right:2px;filter:brightness(0) saturate(100%) invert(50%) sepia(100%) saturate(500%) hue-rotate(240deg)"> Shadow</span>';if(tg==='mega')return'<span class="tag tme">🔴 Mega</span>';if(tg==='dynamax')return'<span class="tag tdx">⚡ Dynamax</span>';return'';}).join('');
-    const fl=pk.fast.endsWith('*');const cl=pk.charge.endsWith('*');
-    const fd=pk.fast.replace('*','');const cd=pk.charge.replace('*','');
+    const dd=pd.dps!==undefined?pd.dps:pk.dps; const bw=Math.round((dd/maxD)*100);
+    const isOpen=ST.expanded===pk.id; const isShadow=pk.tags.includes('shadow');
+    const tH=pk.tags.map(tg=>tg==='legacy'?'<span class="tag tl">⭐ Legacy</span>':tg==='mission'?'<span class="tag tm">🎯 Misión</span>':tg==='shadow'?'<span class="tag ts">👤 Shadow</span>':tg==='mega'?'<span class="tag tme">🔴 Mega</span>':tg==='dynamax'?'<span class="tag tdx">⚡ Dynamax</span>':'').join('');
+    const fd=pk.fast.replace('*',''); const cd=pk.charge.replace('*','');
+    const fl=pk.fast.endsWith('*'); const cl=pk.charge.endsWith('*');
     const mvH=`<div class="mv-box"><div class="mv-row"><span class="mv-lbl">Rápido</span><span class="mv-name">${fd}${fl?'<span class="leg-star">⭐</span>':''}</span></div><div class="mv-row"><span class="mv-lbl">Cargado</span><span class="mv-name">${cd}${cl?'<span class="leg-star">⭐</span>':''}</span></div></div>`;
-    const editF=`<div class="fr tr"><span>¿Lo tienes?</span><label class="sw"><input type="checkbox" ${isO?'checked':''} onchange="togOwned('${pk.id}',this.checked)"><span class="sl"></span></label></div><div class="fr tr" style="margin-top:8px"><span>Legacy ⭐</span><label class="sw"><input type="checkbox" ${lg?'checked':''} onchange="togLeg('${pk.id}',this.checked)"><span class="sl"></span></label></div><div class="fr" style="margin-top:10px"><div class="fl">DPS de tu ejemplar</div><div class="dps-irow"><input class="dps-inp" type="number" step="0.01" min="0" max="50" placeholder="${pk.dps.toFixed(2)}" value="${pd.dps!==undefined?pd.dps:''}" oninput="updDPS('${pk.id}',this.value)"><span class="dps-ref">ref: ${pk.dps.toFixed(2)}</span></div></div><div class="fr"><div class="fl">IVs</div><div class="iv-grid"><div class="iv-col"><div class="iv-lbl">Ataque</div><div class="iv-val" id="ia-${pk.id}">${ia}</div><input type="range" min="0" max="15" value="${ia}" oninput="updIV('${pk.id}','a',this.value)"></div><div class="iv-col"><div class="iv-lbl">Defensa</div><div class="iv-val" id="id-${pk.id}">${id2}</div><input type="range" min="0" max="15" value="${id2}" oninput="updIV('${pk.id}','d',this.value)"></div><div class="iv-col"><div class="iv-lbl">Vida</div><div class="iv-val" id="ih-${pk.id}">${ih}</div><input type="range" min="0" max="15" value="${ih}" oninput="updIV('${pk.id}','h',this.value)"></div></div></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
-    const viewF=`<div class="fr"><div class="fl">Estado</div><p>${isO?'✓ Lo tiene':'✗ No lo tiene'}</p></div><div class="fr"><div class="fl">DPS</div><p style="font-size:16px;font-weight:700">${dd.toFixed(2)}</p></div><div class="fr"><div class="fl">IVs</div><p>${isO?'Atk:'+ia+' Def:'+id2+' HP:'+ih:'—'}</p></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
-    const removeBtn=!isV?`<button class="album-remove" onclick="event.stopPropagation();removeFromAlbum('${pk.id}')" title="Quitar del álbum">✕</button>`:'';
+    const editF=`<div class="fr tr"><span>¿Lo tienes?</span><label class="sw"><input type="checkbox" ${isO?'checked':''} onchange="togOwned('${pk.id}',this.checked)"><span class="sl"></span></label></div><div class="fr tr" style="margin-top:8px"><span>Legacy ⭐</span><label class="sw"><input type="checkbox" ${lg?'checked':''} onchange="togLeg('${pk.id}',this.checked)"><span class="sl"></span></label></div><div class="fr" style="margin-top:10px"><div class="fl">DPS</div><div class="dps-irow"><input class="dps-inp" type="number" step="0.01" min="0" max="50" placeholder="${pk.dps.toFixed(2)}" value="${pd.dps!==undefined?pd.dps:''}" oninput="updDPS('${pk.id}',this.value)"><span class="dps-ref">ref:${pk.dps.toFixed(2)}</span></div></div><div class="fr"><div class="fl">IVs</div><div class="iv-grid"><div class="iv-col"><div class="iv-lbl">Atk</div><div class="iv-val" id="ia-${pk.id}">${ia}</div><input type="range" min="0" max="15" value="${ia}" oninput="updIV('${pk.id}','a',this.value)"></div><div class="iv-col"><div class="iv-lbl">Def</div><div class="iv-val" id="id-${pk.id}">${id2}</div><input type="range" min="0" max="15" value="${id2}" oninput="updIV('${pk.id}','d',this.value)"></div><div class="iv-col"><div class="iv-lbl">HP</div><div class="iv-val" id="ih-${pk.id}">${ih}</div><input type="range" min="0" max="15" value="${ih}" oninput="updIV('${pk.id}','h',this.value)"></div></div></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
+    const viewF=`<div class="fr"><div class="fl">Estado</div><p>${isO?'✓ Lo tiene':'✗ No lo tiene'}</p></div><div class="fr"><div class="fl">DPS</div><p style="font-size:16px;font-weight:700">${dd.toFixed(2)}</p></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
+    const removeBtn=!isV?`<button class="album-remove" onclick="event.stopPropagation();removeFromAlbum('${pk.id}')">✕</button>`:'';
     return `<div class="pk-card${isO?'':' not-owned'}" id="c-${pk.id}" style="background:${t.color}"><div class="pk-top" onclick="togCard('${pk.id}')"><div style="display:flex;align-items:center;gap:2px;flex-shrink:0">${evoH(pk.evo,pk.img,isShadow)}</div><div class="pk-info"><div class="pk-name">${pk.name}</div>${pk.tags.length?`<div class="tags-row">${tH}</div>`:''}<div class="dps-wrap"><div class="dps-lbl"><span>DPS</span><span>${dd.toFixed(2)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${bw}%"></div></div></div></div><div class="status-dot ${isO?'owned':'missing'}">${isO?'✓':'?'}</div>${removeBtn}</div><div class="pk-body${isOpen?' open':''}">${isV?viewF:editF}</div></div>`;
-  }).join('')+emptySlots;
+  }).join('')+empty;
 }
-function renderDmaxRanking(){
-  const t=TM[ST.type];
-  const isV=!!ST.view;
-  const rows=DMAX[ST.type]||[];
-  if(!rows.length){
-    document.getElementById('rank-list-dmax').innerHTML='<p style="text-align:center;padding:20px;color:#aaa">Sin datos Dynamax para este tipo.<br>Solo hay datos para los tipos disponibles en el juego.</p>';
-    return;
-  }
+
+function renderAlbumDmax() {
+  const t=TM[ST.type]; const rows=DMAX[ST.type]||[];
+  const el=document.getElementById('album-list-dmax');
+  if(!rows.length){el.innerHTML='<p style="text-align:center;padding:20px;color:#aaa">Sin datos Dynamax.</p>';return;}
+  const slots=rows.slice(0,3); const maxD=slots[0].dps;
+  const isG=r=>r.charge.startsWith('G-Max')||['Drum Solo','Vine Lash','Cannonade','Hydrosnipe','Foam Burst','Fireball','Wildfire','Stun Shock','Befuddle','Terror','Snooze','Resonance','Chi Strike','Behemoth'].some(x=>r.charge.includes(x));
+  el.innerHTML=slots.map(r=>`<div class="pk-card" style="background:${t.color}"><div class="pk-top"><div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">${r.n.replace(/^[GD]-/,'')}</div><div class="tags-row">${isG(r)?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>'}</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>${r.dps.toFixed(1)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${Math.round(r.dps/maxD*100)}%"></div></div></div></div></div><div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div></div>`).join('')
+  +Array(Math.max(0,3-slots.length)).fill('<div class="empty-slot"><div class="empty-slot-icon">⚡</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Equipo de 3 para Dynamax</div></div>').join('');
+}
+
+function renderDmaxRanking() {
+  const t=TM[ST.type]; const rows=DMAX[ST.type]||[];
+  const el=document.getElementById('rank-list-dmax');
+  if(!rows.length){el.innerHTML='<p style="text-align:center;padding:20px;color:#aaa">Sin datos Dynamax.</p>';return;}
   const maxD=rows[0].dps;
-  document.getElementById('rank-note-dmax').textContent=`Top ${rows.length} Dynamax · Max Move Damage · pokemongohub.net`;
-  document.getElementById('rank-list-dmax').innerHTML=rows.map((r,i)=>{
-    const bw=Math.round((r.dps/maxD)*100);
-    const isG=r.n.startsWith('G-')||r.charge.startsWith('G-Max')||r.charge.includes('Drum Solo')||r.charge.includes('Vine Lash')||r.charge.includes('Cannonade')||r.charge.includes('Hydrosnipe')||r.charge.includes('Foam Burst')||r.charge.includes('Fireball')||r.charge.includes('Wildfire')||r.charge.includes('Stun Shock')||r.charge.includes('Befuddle')||r.charge.includes('Terror')||r.charge.includes('Snooze')||r.charge.includes('Resonance')||r.charge.includes('Chi Strike')||r.charge.includes('Behemoth');
-    const badge=isG?`<span style="font-size:9px;background:#7b1fa2;color:#fff;padding:1px 5px;border-radius:6px;margin-left:4px">GMAX</span>`:`<span style="font-size:9px;background:#1565c0;color:#fff;padding:1px 5px;border-radius:6px;margin-left:4px">DMAX</span>`;
-    const displayName=r.n.replace(/^[GD]-/,'');
-    return `<div class="rank-row" style="background:#fff"><span class="rank-num">#${i+1}</span><img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1"><div class="rank-info"><div class="rank-name" style="color:#222">${displayName}${badge}</div><div class="rank-move" style="color:#888">${r.fast} / ${r.charge}</div><div class="dps-minibar"><div class="dps-minifill" style="width:${bw}%;background:${t.color}"></div></div></div><div class="rank-dps" style="color:#222">${r.dps.toFixed(1)}</div></div>`;
-  }).join('');
+  document.getElementById('rank-note-dmax').textContent=`Top ${rows.length} Dynamax · pokemongohub.net`;
+  const isG=r=>r.charge.startsWith('G-Max')||['Drum Solo','Vine Lash','Cannonade','Hydrosnipe','Foam Burst','Fireball','Wildfire','Stun Shock','Befuddle','Terror','Snooze','Resonance','Chi Strike','Behemoth'].some(x=>r.charge.includes(x));
+  el.innerHTML=rows.map((r,i)=>`<div class="rank-row" style="background:#fff"><span class="rank-num">#${i+1}</span><img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1"><div class="rank-info"><div class="rank-name" style="color:#222">${r.n.replace(/^[GD]-/,'')}${isG(r)?'<span style="font-size:9px;background:#7b1fa2;color:#fff;padding:1px 5px;border-radius:6px;margin-left:4px">GMAX</span>':'<span style="font-size:9px;background:#1565c0;color:#fff;padding:1px 5px;border-radius:6px;margin-left:4px">DMAX</span>'}</div><div class="rank-move" style="color:#888">${r.fast} / ${r.charge}</div><div class="dps-minibar"><div class="dps-minifill" style="width:${Math.round(r.dps/maxD*100)}%;background:${t.color}"></div></div></div><div class="rank-dps" style="color:#222">${r.dps.toFixed(1)}</div></div>`).join('');
 }
 
-function renderAlbumDmax(){
-  const profile=ST.view||ST.cur;const t=TM[ST.type];
-  const dxRows=DMAX[ST.type]||[];
-  if(!dxRows.length){
-    document.getElementById('album-list-dmax').innerHTML='<p style="text-align:center;padding:20px;color:#aaa">Sin datos Dynamax para este tipo.</p>';
-    return;
-  }
-  const slots=dxRows.slice(0,3);
-  const emptyDx=Math.max(0,3-slots.length);
-  const maxD=slots.length>0?slots[0].dps:1;
-  const html=slots.map((r,i)=>{
-    const isG=r.charge.startsWith('G-Max')||r.charge.includes('Drum Solo')||r.charge.includes('Vine Lash')||r.charge.includes('Cannonade')||r.charge.includes('Hydrosnipe')||r.charge.includes('Foam Burst')||r.charge.includes('Fireball')||r.charge.includes('Wildfire')||r.charge.includes('Stun Shock')||r.charge.includes('Befuddle')||r.charge.includes('Terror')||r.charge.includes('Snooze')||r.charge.includes('Resonance')||r.charge.includes('Chi Strike')||r.charge.includes('Behemoth');
-    const badge=isG?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>';
-    const displayName=r.n.replace(/^[GD]-/,'');
-    const bw=Math.round((r.dps/maxD)*100);
-    return '<div class="pk-card" style="background:'+t.color+'"><div class="pk-top"><div style="display:flex;align-items:center;gap:2px;flex-shrink:0"><div class="final-wrap"><img class="final-img" src="'+si(r.img)+'" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">'+displayName+'</div><div class="tags-row">'+badge+'</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>'+r.dps.toFixed(1)+'</span></div><div class="dps-bar"><div class="dps-fill" style="width:'+bw+'%"></div></div></div></div></div><div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">'+r.fast+' → '+r.charge+'</div></div>';
-  }).join('');
-  const emptyHtml=emptyDx>0?Array(emptyDx).fill(0).map(()=>
-    '<div class="empty-slot"><div class="empty-slot-icon">⚡</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Necesitas un equipo de 3 para Dynamax</div></div>'
-  ).join(''):'';
-  document.getElementById('album-list-dmax').innerHTML=html+emptyHtml;
-}
-
-function renderRanking(){
-  const profile=ST.view||ST.cur;const isV=!!ST.view;const t=TM[ST.type];
-  const rawRank=RANKINGS[ST.type]||[];
-  const allTypePks=PD.filter(p=>p.type===ST.type);
+function renderRanking() {
+  const profile=ST.view||ST.cur; const isV=!!ST.view; const t=TM[ST.type];
+  const rawRank=RANKINGS[ST.type]||[]; const allPks=PD.filter(p=>p.type===ST.type);
   const userAlbum=getAlbum(profile);
-  const albumIds=new Set(allTypePks.filter(p=>userAlbum[p.id]).map(p=>p.id));
+  const albumIds=new Set(allPks.filter(p=>userAlbum[p.id]).map(p=>p.id));
   const albumCount=albumIds.size;
-  const ownedIds=new Set();
-  if(profile){const p=window.gp(profile);if(p){allTypePks.forEach(pk=>{if(p.pk[pk.id]&&p.pk[pk.id].owned)ownedIds.add(pk.id);});}}
-  const aidDps={};allTypePks.forEach(pk=>{const pp=window.gp(profile);const saved=(pp&&pp.pk[pk.id]&&pp.pk[pk.id].dps!==undefined)?pp.pk[pk.id].dps:null;aidDps[pk.id]=saved!==null?saved:pk.dps;});
+  const ownedIds=new Set(); const pp=gp(profile);
+  if(pp)allPks.forEach(pk=>{if(pp.pk[pk.id]&&pp.pk[pk.id].owned)ownedIds.add(pk.id);});
+  const aidDps={}; allPks.forEach(pk=>{const saved=pp&&pp.pk[pk.id]&&pp.pk[pk.id].dps!==undefined?pp.pk[pk.id].dps:null;aidDps[pk.id]=saved!==null?saved:pk.dps;});
   const combined=[...rawRank];
-  allTypePks.forEach(pk=>{if(!combined.some(r=>r.aid===pk.id)){combined.push({n:pk.name,dps:aidDps[pk.id],fast:pk.fast.replace('*',''),fastL:pk.fast.endsWith('*'),charge:pk.charge.replace('*',''),chargeL:pk.charge.endsWith('*'),img:pk.img,aid:pk.id});}});
+  allPks.forEach(pk=>{if(!combined.some(r=>r.aid===pk.id))combined.push({n:pk.name,dps:aidDps[pk.id],fast:pk.fast.replace('*',''),fastL:pk.fast.endsWith('*'),charge:pk.charge.replace('*',''),chargeL:pk.charge.endsWith('*'),img:pk.img,aid:pk.id});});
   combined.sort((a,b)=>b.dps-a.dps);
-  const vis=combined.slice(0,Math.min(30,combined.length));
-  const maxD=vis.length>0?vis[0].dps:1;
+  const vis=combined.slice(0,30); const maxD=vis.length?vis[0].dps:1;
   document.getElementById('rank-note').textContent=`Top ${vis.length} · Verde=en álbum · Dittobase 2026`;
   document.getElementById('rank-list').innerHTML=vis.map((r,i)=>{
-    const isA=r.aid&&albumIds.has(r.aid);const isO=r.aid&&ownedIds.has(r.aid);
-    const bw=Math.round((r.dps/maxD)*100);
-    const nameCol=isA?t.color:'#222';const rowBg=isA?t.bg:'#fff';
-    const ft=(r.fast||'')+(r.fastL?'⭐':'');const ct=(r.charge||'')+(r.chargeL?'⭐':'');
-    const canAdd=!isV&&r.aid&&!isA&&albumCount<6;
-    const canRemove=!isV&&r.aid&&isA;
+    const isA=r.aid&&albumIds.has(r.aid); const isO=r.aid&&ownedIds.has(r.aid);
+    const bw=Math.round(r.dps/maxD*100);
+    const nameCol=isA?t.color:'#222'; const rowBg=isA?t.bg:'#fff';
+    const ft=(r.fast||'')+(r.fastL?'⭐':''); const ct=(r.charge||'')+(r.chargeL?'⭐':'');
     const isFull=!isV&&r.aid&&!isA&&albumCount>=6;
-    const toggleBtn=r.aid&&!isV?`<button class="rank-toggle ${isA?'in-album':isFull?'full':'not-in-album'}" onclick="event.stopPropagation();${isA?`removeFromAlbum('${r.aid}')`:`addToAlbum('${r.aid}')`}" title="${isA?'Quitar del álbum':isFull?'Álbum lleno (máx 6)':'Añadir al álbum'}"></button>`:'';
+    const toggleBtn=r.aid&&!isV?`<button class="rank-toggle ${isA?'in-album':isFull?'full':'not-in-album'}" onclick="event.stopPropagation();${isA?`removeFromAlbum('${r.aid}')`:`addToAlbum('${r.aid}')`}"></button>`:'';
     return `<div class="rank-row${isA?' ours':''}" style="background:${rowBg};--tc:${t.color}"><span class="rank-num">#${i+1}</span><img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1"><div class="rank-info"><div class="rank-name" style="color:${nameCol}">${r.n}${isO?`<span class="badge" style="background:${t.color}">TUYO</span>`:''}</div><div class="rank-move">${ft} / ${ct}</div><div class="dps-minibar"><div class="dps-minifill" style="width:${bw}%;background:${t.color}"></div></div></div><div class="rank-dps" style="color:${nameCol}">${r.dps.toFixed(2)}</div>${toggleBtn}</div>`;
   }).join('');
 }
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.style.display='none');document.getElementById(id).style.display='block';}
 
-(async()=>{
-  await fbLoad();
+// ── BOOT ──────────────────────────────────────────────────────────────────────
+if(localStorage.getItem('darkMode')==='1'){
+  document.body.classList.add('dark');
+  document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('#dark-btn,#dark-btn2').forEach(b=>{if(b)b.textContent='☀️';});});
+}
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  load();
   renderProfiles();
   show('profile-screen');
-})();
-
-// PWA Service Worker - aggressively clear old caches
-if('serviceWorker' in navigator){
-  window.addEventListener('load',async()=>{
-    // Unregister any old service workers first
-    const regs = await navigator.serviceWorker.getRegistrations();
-    for(const reg of regs){
-      const swUrl = reg.active?.scriptURL || '';
-      // If the SW cache version doesn't match, unregister
-      if(!swUrl.includes('sw.js')) await reg.unregister();
-    }
-    // Register new SW
-    navigator.serviceWorker.register('sw.js').catch(()=>{});
-  });
-}
-
-// modal functions defined in module
-
-
-TYPES.forEach(t=>TM[t.key]=t);
-
-
-
-
-
+});
 </script>
 </body>
 </html>
