@@ -12,8 +12,34 @@
 <title>PokeBestBCN</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:#f0f0f0!important;color:#222!important;-webkit-tap-highlight-color:transparent}
-#app{max-width:420px;margin:0 auto;min-height:100vh;background:#f0f0f0}
+html,body{background:#f0f0f0!important;color:#222!important;-webkit-tap-highlight-color:transparent;transition:background .3s,color .3s}
+#app{max-width:420px;margin:0 auto;min-height:100vh;background:#f0f0f0;transition:background .3s}
+body.dark,body.dark html{background:#121212!important;color:#eee!important}
+body.dark #app{background:#121212}
+body.dark .profile-row{background:#1e1e1e!important;border-color:#333!important}
+body.dark .profile-name{color:#eee!important}
+body.dark .profile-stat{color:#aaa!important}
+body.dark .app-sub{color:#aaa!important}
+body.dark input,body.dark textarea{background:#1e1e1e!important;border-color:#444!important;color:#eee!important}
+body.dark .type-card{filter:brightness(.85)}
+body.dark .pk-card{filter:brightness(.85)}
+body.dark .pk-card.not-owned{filter:saturate(.35) brightness(.55)}
+body.dark .rank-row{background:#1e1e1e!important}
+body.dark .rank-row.ours{filter:brightness(.82)}
+body.dark .rank-name{color:#ddd!important}
+body.dark .rank-move{color:#aaa!important}
+body.dark .rank-dps{color:#ccc!important}
+body.dark .modal-box{background:#1e1e1e!important;color:#eee!important}
+body.dark .modal-close{color:#aaa!important}
+body.dark .mv-box{background:#2a2a2a!important}
+body.dark .mv-lbl{color:#aaa!important}
+body.dark .mv-name{color:#eee!important}
+body.dark .fr{border-color:#333!important}
+body.dark .fl{color:#ccc!important}
+body.dark .tab{background:#1e1e1e!important;color:#888!important;border-color:#333!important}
+body.dark .tab.active{color:#fff!important}
+body.dark .guia-btn{background:#2a2a2a!important;color:#ddd!important;border-color:#444!important}
+body.dark .add-btn{background:#333!important;color:#eee!important}
 .screen{display:none}
 .screen.active{display:block}
 .app-header{background:#CC0000;color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:10}
@@ -160,6 +186,16 @@ html,body{background:#f0f0f0!important;color:#222!important;-webkit-tap-highligh
     </p>
 
     <div style="border-top:1px solid #eee;padding-top:12px;margin-bottom:12px">
+      <p style="font-size:12px;font-weight:700;color:#1a237e;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">⚡ Dynamax y Mega Evolución</p>
+      <div style="background:#e8eaf6;border-radius:8px;padding:10px 12px;border-left:3px solid #3949ab;margin-bottom:8px">
+        <p style="font-size:12px;color:#444;line-height:1.7;margin:0">
+          <b>Un Pokémon Dynamax puede hacer Mega Evolución</b>, pero no puede estar en ambas formas a la vez.<br>
+          Mientras dure la Mega Evolución <b>(8 horas)</b>, ese Pokémon <b>no puede participar en combates Dynamax</b>.<br>
+          <span style="color:#555">💡 Solución urgente: Mega Evoluciona otro Pokémon de tu equipo. Al solo poder tener un Mega activo, el primero vuelve automáticamente a su forma normal y ya puede entrar en Max Battles.</span>
+        </p>
+      </div>
+    </div>
+    <div style="border-top:1px solid #eee;padding-top:12px;margin-bottom:12px">
       <p style="font-size:12px;font-weight:700;color:#CC0000;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">💰 El coste real de subir un Pokémon</p>
       <div style="background:#fff8e1;border-radius:8px;padding:10px 12px;border-left:3px solid #f9a825;margin-bottom:8px">
         <p style="font-size:12px;color:#444;line-height:1.7;margin:0">
@@ -301,6 +337,7 @@ html,body{background:#f0f0f0!important;color:#222!important;-webkit-tap-highligh
     <div class="user-bar-right">
       <button class="guia-btn" onclick="openInfo()">ℹ️ Info</button>
       <button class="guia-btn" onclick="openGuia()">📖 Guía</button>
+      <button class="guia-btn" id="dark-btn" onclick="toggleDark()" title="Modo oscuro">🌙</button>
       <button class="cambiar-btn" onclick="goProfiles()">Cambiar</button>
     </div>
   </div>
@@ -311,6 +348,7 @@ html,body{background:#f0f0f0!important;color:#222!important;-webkit-tap-highligh
 <div id="detail-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="goBack()">←</button>
+      <button class="guia-btn" id="dark-btn2" onclick="toggleDark()" title="Modo oscuro" style="font-size:14px;padding:4px 8px">🌙</button>
     <h1 id="detail-title"></h1>
   </div>
   <div class="tabs">
@@ -471,6 +509,19 @@ window.closeInfoBtn=function(){document.getElementById('modal-info').style.displ
 window.closeInfo=function(e){if(e.target.id==='modal-info')document.getElementById('modal-info').style.display='none';}
 
 // ── Arranque ────────────────────────────────────────────────────────────────
+window.toggleDark=function(){
+  const d=document.body.classList.toggle('dark');
+  localStorage.setItem('darkMode',d?'1':'0');
+  const icon=d?'☀️':'🌙';
+  document.querySelectorAll('#dark-btn,#dark-btn2').forEach(b=>{if(b)b.textContent=icon;});
+};
+// Restore dark mode preference on load
+if(localStorage.getItem('darkMode')==='1'){
+  document.body.classList.add('dark');
+  document.addEventListener('DOMContentLoaded',()=>{
+    document.querySelectorAll('#dark-btn,#dark-btn2').forEach(b=>{if(b)b.textContent='☀️';});
+  });
+}
 window.renderProfiles=renderProfiles;
 window.renderMain=renderMain;
 window.renderAlbum=renderAlbum;
@@ -530,13 +581,13 @@ const RANKINGS={
     {n:'Heatran',dps:28.14,fast:'Giro Fuego',fastL:false,charge:'Tormenta Magma',chargeL:true,img:'485'},
     {n:'Entei (Shadow)',dps:28.61,fast:'Giro Fuego',fastL:false,charge:'Lanzallamas',chargeL:false,img:'244'},
     {n:'Mega Blaziken',dps:26.40,fast:'Giro Fuego',fastL:false,charge:'Patada Ígnea',chargeL:false,img:'10050',aid:'fi-mega-blaz'},
-    {n:'Primal Groudon',dps:27.08,fast:'Disparo Lodo',fastL:false,charge:'Puño Fuego',chargeL:false,img:'383'},
+    {n:'Primal Groudon',dps:27.08,fast:'Disparo Lodo',fastL:false,charge:'Puño Fuego',chargeL:false,img:'10078'},
     {n:'Mega Charizard Y',dps:24.80,fast:'Giro Fuego',fastL:false,charge:'Sofoco',chargeL:false,img:'10035',aid:'fi-mega-char-y'},
     {n:'Moltres (Shadow)',dps:22.10,fast:'Giro Fuego',fastL:false,charge:'Sofoco',chargeL:false,img:'146'},
     {n:'Mega Houndoom',dps:22.60,fast:'Colmillo Ígneo',fastL:false,charge:'Lanzallamas',chargeL:false,img:'10048',aid:'fi-mega-hound'},
   ],
   water:[
-    {n:'Primal Kyogre',dps:32.70,fast:'Cascada',fastL:false,charge:'Pulso Primigenio',chargeL:true,img:'382'},
+    {n:'Primal Kyogre',dps:32.70,fast:'Cascada',fastL:false,charge:'Pulso Primigenio',chargeL:true,img:'10077'},
     {n:'Mega Swampert',dps:30.33,fast:'Pistola Agua',fastL:false,charge:'Hidrocañón',chargeL:true,img:'10064',aid:'wa-mega-swamp-l'},
     {n:'Kyogre (Shadow)',dps:29.34,fast:'Cascada',fastL:false,charge:'Marejada',chargeL:false,img:'382'},
     {n:'Mega Blastoise',dps:27.20,fast:'Pistola Agua',fastL:false,charge:'Hidrocañón',chargeL:true,img:'10036',aid:'wa-mega-blast-l'},
@@ -577,14 +628,14 @@ const RANKINGS={
     {n:'Magnezone',dps:21.40,fast:'Chispa',fastL:false,charge:'Voltio Cruel',chargeL:false,img:'462',aid:'el-magnezone'},
   ],
   ice:[
-    {n:'Kyurem (Blanco)',dps:35.16,fast:'Colmillo Hielo',fastL:false,charge:'Llama Gélida',chargeL:false,img:'646'},
-    {n:'Kyurem (Negro)',dps:33.80,fast:'Garra Umbría',fastL:false,charge:'Rayo Gélido',chargeL:false,img:'646'},
+    {n:'Kyurem (Blanco)',dps:35.16,fast:'Colmillo Hielo',fastL:false,charge:'Llama Gélida',chargeL:false,img:'10017'},
+    {n:'Kyurem (Negro)',dps:33.80,fast:'Garra Umbría',fastL:false,charge:'Rayo Gélido',chargeL:false,img:'10018'},
     {n:'Mamoswine (Shadow)',dps:28.67,fast:'Nieve Polvo',fastL:false,charge:'Alud',chargeL:false,img:'473',aid:'ic-shd-mamosw'},
     {n:'Weavile (Shadow)',dps:27.40,fast:'Carámbano',fastL:false,charge:'Alud',chargeL:false,img:'461',aid:'ic-shd-weavile'},
     {n:'Glaceon (Shadow)',dps:25.10,fast:'Vaho Gélido',fastL:false,charge:'Alud',chargeL:false,img:'471'},
     {n:'Baxcalibur',dps:24.90,fast:'Colmillo Hielo',fastL:false,charge:'Alud',chargeL:false,img:'998',aid:'ic-baxcalibur'},
     {n:'Articuno (Shadow)',dps:23.90,fast:'Vaho Gélido',fastL:false,charge:'Alud',chargeL:false,img:'144'},
-    {n:'Darmanitan Galar',dps:23.80,fast:'Colmillo Hielo',fastL:false,charge:'Alud',chargeL:false,img:'10176',aid:'ic-darman-galar'},
+    {n:'Darmanitan Galar',dps:23.80,fast:'Colmillo Hielo',fastL:false,charge:'Alud',chargeL:false,img:'10254',aid:'ic-darman-galar'},
     {n:'Mamoswine',dps:22.50,fast:'Nieve Polvo',fastL:false,charge:'Alud',chargeL:false,img:'473',aid:'ic-mamoswine'},
     {n:'Mega Abomasnow',dps:21.90,fast:'Nieve Polvo',fastL:false,charge:'Bola Clima',chargeL:false,img:'460',aid:'ic-mega-aboma'},
     {n:'Glaceon',dps:21.20,fast:'Vaho Gélido',fastL:false,charge:'Alud',chargeL:false,img:'471'},
@@ -593,7 +644,7 @@ const RANKINGS={
   fighting:[
     {n:'Mega Blaziken',dps:35.72,fast:'Contraataque',fastL:false,charge:'Esfera Aural',chargeL:false,img:'10050',aid:'f-mega-blaziken'},
     {n:'Mega Lucario',dps:36.46,fast:'Palma de Fuerza',fastL:true,charge:'Esfera Aural',chargeL:false,img:'10059',aid:'f-mega-lucario-l'},
-    {n:'Keldeo Resolute',dps:32.44,fast:'Patada Baja',fastL:false,charge:'Espada Santa',chargeL:false,img:'647'},
+    {n:'Keldeo Resolute',dps:32.44,fast:'Patada Baja',fastL:false,charge:'Espada Santa',chargeL:false,img:'10024'},
     {n:'Mega Heracross',dps:27.64,fast:'Contraataque',fastL:false,charge:'Upercut',chargeL:false,img:'10047'},
     {n:'Terrakion',dps:27.83,fast:'Doble Patada',fastL:false,charge:'Espada Santa',chargeL:false,img:'639'},
     {n:'Mega Latios',dps:26.53,fast:'Aliento Dragón',fastL:false,charge:'Esfera Aural',chargeL:false,img:'381'},
@@ -619,10 +670,10 @@ const RANKINGS={
     {n:'Vileplume',dps:16.80,fast:'Picotón Veneno',fastL:false,charge:'Bomba Lodo',chargeL:false,img:'45'},
   ],
   ground:[
-    {n:'Primal Groudon',dps:30.58,fast:'Disparo Lodo',fastL:false,charge:'Filo de Tierra',chargeL:false,img:'383'},
-    {n:'Mega Garchomp',dps:29.51,fast:'Disparo Lodo',fastL:true,charge:'Poder Tierra',chargeL:false,img:'445',aid:'g-mega-garc-l'},
+    {n:'Primal Groudon',dps:30.58,fast:'Disparo Lodo',fastL:false,charge:'Filo de Tierra',chargeL:false,img:'10078'},
+    {n:'Mega Garchomp',dps:29.51,fast:'Disparo Lodo',fastL:true,charge:'Poder Tierra',chargeL:false,img:'10058',aid:'g-mega-garc-l'},
     {n:'Garchomp (Shadow)',dps:27.61,fast:'Disparo Lodo',fastL:true,charge:'Poder Tierra',chargeL:false,img:'445',aid:'g-shd-garc-l'},
-    {n:'Mega Garchomp',dps:26.40,fast:'Disparo Lodo',fastL:false,charge:'Poder Tierra',chargeL:false,img:'445',aid:'g-mega-garc'},
+    {n:'Mega Garchomp',dps:26.40,fast:'Disparo Lodo',fastL:false,charge:'Poder Tierra',chargeL:false,img:'10058',aid:'g-mega-garc'},
     {n:'Excadrill (Shadow)',dps:25.40,fast:'Disparo Lodo',fastL:false,charge:'Taladradora',chargeL:false,img:'530',aid:'g-shd-excadrill'},
     {n:'Groudon',dps:23.10,fast:'Disparo Lodo',fastL:false,charge:'Terremoto',chargeL:false,img:'383'},
     {n:'Landorus Tótem',dps:22.80,fast:'Bofetón Lodo',fastL:false,charge:'Poder Tierra',chargeL:false,img:'645'},
@@ -709,7 +760,7 @@ const RANKINGS={
   dragon:[
     {n:'Mega Rayquaza',dps:38.20,fast:'Cola Dragón',fastL:false,charge:'Ascenso Dragón',chargeL:true,img:'384'},
     {n:'Salamence (Shadow)',dps:29.80,fast:'Cola Dragón',fastL:false,charge:'Enfado',chargeL:false,img:'373'},
-    {n:'Mega Garchomp',dps:29.51,fast:'Cola Dragón',fastL:false,charge:'Corte Ferocidad',chargeL:false,img:'445',aid:'dr-mega-garc'},
+    {n:'Mega Garchomp',dps:29.51,fast:'Cola Dragón',fastL:false,charge:'Corte Ferocidad',chargeL:false,img:'10058',aid:'dr-mega-garc'},
     {n:'Dragonite (Shadow)',dps:28.90,fast:'Cola Dragón',fastL:false,charge:'Cometa Draco',chargeL:false,img:'149'},
     {n:'Garchomp (Shadow)',dps:27.61,fast:'Cola Dragón',fastL:false,charge:'Enfado',chargeL:false,img:'445',aid:'dr-shd-garc'},
     {n:'Eternatus',dps:27.40,fast:'Cola Dragón',fastL:false,charge:'Cañón Dinamax',chargeL:false,img:'890'},
@@ -786,9 +837,9 @@ const PD=[
   {id:'p-mega-beedrill',name:'Mega Beedrill',type:'poison',evo:['13','14','15'],img:'10090',tags:['mega'],fast:'Picotón Veneno',charge:'Bomba Lodo',dps:23.10},
   {id:'p-shd-overqwil',name:'Overqwil (Shadow)',type:'poison',evo:['211','904'],img:'904',tags:['shadow'],fast:'Picotón Veneno',charge:'Bomba Lodo',dps:20.80},
   {id:'p-mega-victreebel',name:'Mega Victreebel',type:'poison',evo:['69','70','71'],img:'71',tags:['mega'],fast:'Hoja Aguda',charge:'Bomba Lodo',dps:19.60},
-  {id:'g-mega-garc-l',name:'Mega Garchomp',type:'ground',evo:['443','444','445'],img:'445',tags:['mega','legacy'],fast:'Disparo Lodo*',charge:'Poder Tierra',dps:29.51},
+  {id:'g-mega-garc-l',name:'Mega Garchomp',type:'ground',evo:['443','444','445'],img:'10058',tags:['mega','legacy'],fast:'Disparo Lodo*',charge:'Poder Tierra',dps:29.51},
   {id:'g-shd-garc-l',name:'Garchomp (Shadow)',type:'ground',evo:['443','444','445'],img:'445',tags:['shadow','legacy'],fast:'Disparo Lodo*',charge:'Poder Tierra',dps:27.61},
-  {id:'g-mega-garc',name:'Mega Garchomp',type:'ground',evo:['443','444','445'],img:'445',tags:['mega'],fast:'Disparo Lodo',charge:'Poder Tierra',dps:26.40},
+  {id:'g-mega-garc',name:'Mega Garchomp',type:'ground',evo:['443','444','445'],img:'10058',tags:['mega'],fast:'Disparo Lodo',charge:'Poder Tierra',dps:26.40},
   {id:'g-shd-excadrill',name:'Excadrill (Shadow)',type:'ground',evo:['529','530'],img:'530',tags:['shadow'],fast:'Disparo Lodo',charge:'Taladradora',dps:25.40},
   {id:'g-shd-rhyperior',name:'Rhyperior (Shadow)',type:'ground',evo:['111','112','464'],img:'464',tags:['shadow'],fast:'Bofetón Lodo',charge:'Terremoto',dps:21.90},
   {id:'g-shd-mamoswin',name:'Mamoswine (Shadow)',type:'ground',evo:['220','221','473'],img:'473',tags:['shadow'],fast:'Bofetón Lodo',charge:'Derribo',dps:20.80},
@@ -803,7 +854,7 @@ const PD=[
   {id:'b-mega-beed',name:'Mega Beedrill',type:'bug',evo:['13','14','15'],img:'10090',tags:['mega'],fast:'Picadura',charge:'Tijera X',dps:22.90},
   {id:'gh-mega-geng-l',name:'Mega Gengar',type:'ghost',evo:['92','93','94'],img:'10038',tags:['mega','legacy','dynamax'],fast:'Lametón*',charge:'Bola Sombra',dps:32.65},
   {id:'gh-mega-geng',name:'Mega Gengar',type:'ghost',evo:['92','93','94'],img:'10038',tags:['mega','dynamax'],fast:'Garra Umbría',charge:'Bola Sombra',dps:28.90},
-  {id:'gh-mega-bane',name:'Mega Banette',type:'ghost',evo:['355','354'],img:'10056',tags:['mega'],fast:'Garra Umbría',charge:'Bola Sombra',dps:27.85},
+  {id:'gh-mega-bane',name:'Mega Banette',type:'ghost',evo:['353','354'],img:'10056',tags:['mega'],fast:'Garra Umbría',charge:'Bola Sombra',dps:27.85},
   {id:'gh-shd-chand',name:'Chandelure (Shadow)',type:'ghost',evo:['607','608','609'],img:'609',tags:['shadow','dynamax'],fast:'Maleficio',charge:'Bola Sombra',dps:27.69},
   {id:'gh-dragapult',name:'Dragapult',type:'ghost',evo:['885','886','887'],img:'887',tags:[],fast:'Impresionar',charge:'Bola Sombra',dps:20.72},
   {id:'gh-chandelure',name:'Chandelure',type:'ghost',evo:['607','608','609'],img:'609',tags:[],fast:'Maleficio',charge:'Bola Sombra',dps:19.40},
@@ -854,11 +905,12 @@ const PD=[
   {id:'ic-darman-galar',name:'Darmanitan Galar',type:'ice',evo:['554','555'],img:'10254',tags:[],fast:'Colmillo Hielo',charge:'Alud',dps:23.80},
   {id:'ic-mamoswine',name:'Mamoswine',type:'ice',evo:['220','221','473'],img:'473',tags:['dynamax'],fast:'Nieve Polvo',charge:'Alud',dps:22.50},
   {id:'ic-mega-glalie',name:'Mega Glalie',type:'ice',evo:['361','362'],img:'10074',tags:['mega'],fast:'Vaho Gélido',charge:'Alud',dps:20.10},
-  {id:'dr-mega-garc',name:'Mega Garchomp',type:'dragon',evo:['443','444','445'],img:'445',tags:['mega','dynamax'],fast:'Cola Dragón',charge:'Corte Ferocidad',dps:29.51},
+  {id:'dr-mega-garc',name:'Mega Garchomp',type:'dragon',evo:['443','444','445'],img:'10058',tags:['mega','dynamax'],fast:'Cola Dragón',charge:'Corte Ferocidad',dps:29.51},
   {id:'dr-shd-garc',name:'Garchomp (Shadow)',type:'dragon',evo:['443','444','445'],img:'445',tags:['shadow','dynamax'],fast:'Cola Dragón',charge:'Enfado',dps:27.61},
   {id:'dr-mega-salamen',name:'Mega Salamence',type:'dragon',evo:['371','372','373'],img:'10089',tags:['mega','dynamax'],fast:'Cola Dragón',charge:'Enfado',dps:26.80},
   {id:'dr-garchomp',name:'Garchomp',type:'dragon',evo:['443','444','445'],img:'445',tags:[],fast:'Cola Dragón',charge:'Enfado',dps:22.80},
   {id:'dr-dragapult',name:'Dragapult',type:'dragon',evo:['885','886','887'],img:'887',tags:[],fast:'Cola Dragón',charge:'Flechas Dragón',dps:19.80},
+  {id:'dr-shd-salamen',name:'Salamence (Shadow)',type:'dragon',evo:['371','372','373'],img:'373',tags:['shadow'],fast:'Cola Dragón',charge:'Enfado',dps:29.80},
   {id:'dr-salamence',name:'Salamence',type:'dragon',evo:['371','372','373'],img:'373',tags:[],fast:'Cola Dragón',charge:'Enfado',dps:20.40},
   {id:'dr-dragonite',name:'Dragonite',type:'dragon',evo:['147','148','149'],img:'149',tags:[],fast:'Cola Dragón',charge:'Cometa Draco',dps:21.50},
   {id:'dr-haxorus',name:'Haxorus',type:'dragon',evo:['610','611','612'],img:'612',tags:[],fast:'Cola Dragón',charge:'Corte Ferocidad',dps:18.20},
