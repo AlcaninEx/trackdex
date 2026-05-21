@@ -415,6 +415,7 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 import{initializeApp}from'https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js';
 import{getFirestore,doc,getDoc,setDoc,collection,getDocs,deleteDoc}from'https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js';
 
+
 const firebaseConfig={
   apiKey:"AIzaSyAy32J4YkD6mEeZ9tBryT3-lk3nzi42a34",
   authDomain:"pokebestbcn.firebaseapp.com",
@@ -426,284 +427,8 @@ const firebaseConfig={
 const fbApp=initializeApp(firebaseConfig);
 const db=getFirestore(fbApp);
 
-// ── Estado global ───────────────────────────────────────────────────────────
-window.ST={profiles:[],cur:null,view:null,type:null,expanded:null,tab:'album',rankTab:'raid',albumTab:'raid'};
-
-// ── Helpers Firestore ───────────────────────────────────────────────────────
-async function fbLoad(){
-  try{
-    setStatus('⏳ Conectando con Firebase...');
-    const snap=await getDocs(collection(db,'profiles'));
-    ST.profiles=snap.docs.map(d=>({name:d.id,...d.data()}));
-    ST.profiles.sort((a,b)=>a.name.localeCompare(b.name));
-    setStatus(ST.profiles.length?'':'');
-  }catch(e){
-    console.error('Error Firebase:',e);
-    setStatus('❌ Error: '+e.code+' — Revisa las reglas de Firestore');
-    ST.profiles=[];
-  }
-}
-async function fbSaveProfile(name,pkData,albumData){
-  try{
-    const data={pk:pkData||{}};
-    if(albumData!==undefined)data.album=albumData;
-    await setDoc(doc(db,'profiles',name),data);
-  }catch(e){
-    console.error('Error guardando:',e);
-    setStatus('❌ Error guardando: '+e.code);
-  }
-}
-
-function defaultAlbum(){
-  // Top 6 per type from PD
-  const album={};
-  const types=[...new Set(PD.map(p=>p.type))];
-  types.forEach(t=>{
-    const top6=PD.filter(p=>p.type===t).sort((a,b)=>b.dps-a.dps).slice(0,6);
-    top6.forEach(p=>album[p.id]=true);
-  });
-  return album;
-}
-
-function getAlbum(profileName){
-  const p=window.gp(profileName);
-  if(!p)return defaultAlbum();
-  if(p.album)return p.album;
-  return defaultAlbum();
-}
-
-function albumPksForType(profileName,type){
-  const album=getAlbum(profileName);
-  return PD.filter(p=>p.type===type&&album[p.id]).sort((a,b)=>b.dps-a.dps);
-}
-async function fbDeleteProfile(name){
-  try{
-    await deleteDoc(doc(db,'profiles',name));
-  }catch(e){console.error('Error borrando:',e);}
-}
-function setStatus(msg){
-  const el=document.getElementById('status-msg');
-  if(el)el.textContent=msg;
-}
-
-// ── Funciones globales expuestas en window ──────────────────────────────────
-window.gp=function(n){return ST.profiles.find(p=>p.name===n);}
-window.goc=function(n){let p=window.gp(n);if(!p){p={name:n,pk:{}};ST.profiles.push(p);}return p;}
-window.countType=function(pn,tk){
-  const pks=albumPksForType(pn,tk);
-  const p=window.gp(pn);
-  const owned=p?pks.filter(pk=>p.pk[pk.id]&&p.pk[pk.id].owned).length:0;
-  return{o:owned,t:Math.max(pks.length,1)};
-};
-
-window.addProfile=async function(){
-  const inp=document.getElementById('new-name');
-  const n=inp.value.trim();
-  if(!n)return;
-  if(ST.profiles.find(p=>p.name===n)){alert('Ya existe ese entrenador');return;}
-  window.goc(n);
-  inp.value='';
-  await fbSaveProfile(n,{});
-  renderProfiles();
-}
-
-window.delProfile=async function(n,e){
-  e.stopPropagation();
-  if(!confirm('¿Eliminar a '+n+'?'))return;
-  ST.profiles=ST.profiles.filter(p=>p.name!==n);
-  await fbDeleteProfile(n);
-  renderProfiles();
-}
-
-window.togOwned=async function(id,v){
-  const p=window.goc(ST.cur);
-  if(!p.pk[id])p.pk[id]={};
-  p.pk[id].owned=v;
-  await fbSaveProfile(ST.cur,p.pk);
-  if(ST.albumTab==='dmax'){renderAlbumDmax();renderMain();return;}
-  const c=document.getElementById('c-'+id);
-  if(c){c.className='pk-card'+(v?'':' not-owned');const s=c.querySelector('.status-dot');if(s){s.textContent=v?'✓':'?';s.className='status-dot '+(v?'owned':'missing');}}
-  renderMain();renderRanking();
-}
-
-window.togLeg=async function(id,v){
-  const p=window.goc(ST.cur);
-  if(!p.pk[id])p.pk[id]={};
-  p.pk[id].legacy=v;
-  await fbSaveProfile(ST.cur,p.pk);
-}
-
-window.updIV=async function(id,s,v){
-  const n=parseInt(v);
-  const p=window.goc(ST.cur);
-  if(!p.pk[id])p.pk[id]={};
-  if(s==='a'){p.pk[id].ivAtk=n;document.getElementById('ia-'+id).textContent=n;}
-  if(s==='d'){p.pk[id].ivDef=n;document.getElementById('id-'+id).textContent=n;}
-  if(s==='h'){p.pk[id].ivHp=n;document.getElementById('ih-'+id).textContent=n;}
-  await fbSaveProfile(ST.cur,p.pk);
-}
-
-window.updDPS=async function(id,v){
-  const n=parseFloat(v);
-  const p=window.goc(ST.cur);
-  if(!p.pk[id])p.pk[id]={};
-  p.pk[id].dps=isNaN(n)?undefined:n;
-  await fbSaveProfile(ST.cur,p.pk);
-}
-
-window.selProfile=function(n){ST.cur=n;ST.view=null;show('main-screen');renderMain();}
-window.selProfileIdx=function(i){const p=ST.profiles[i];if(p)window.selProfile(p.name);}
-window.viewProfileIdx=function(i){const p=ST.profiles[i];if(p){if(!ST.cur){alert('Primero selecciona tu propio perfil');return;}ST.view=p.name;show('main-screen');renderMain();}}
-window.delProfileIdx=function(i,e){const p=ST.profiles[i];if(p)window.delProfile(p.name,e);}
-window.togCard=function(id){ST.expanded=ST.expanded===id?null:id;renderAlbum();}
-window.goProfiles=function(){show('profile-screen');renderProfiles();}
-window.goBack=function(){ST.expanded=null;show('main-screen');renderMain();}
-window.switchTab=function(t){
-  ST.tab=t;
-  document.getElementById('tab-a').className='tab'+(t==='album'?' active':'');
-  document.getElementById('tab-r').className='tab'+(t==='ranking'?' active':'');
-  document.getElementById('album-panel').style.display=t==='album'?'':'none';
-  document.getElementById('ranking-panel').style.display=t==='ranking'?'':'none';
-}
-window.openType=function(k){
-  ST.type=k;ST.expanded=null;ST.tab='album';ST.rankTab='raid';
-  document.getElementById('detail-title').innerHTML='<span style="display:inline-flex;align-items:center;gap:6px;color:#fff">'+(TM[k].icon?'<span style="width:20px;height:20px;display:inline-flex;align-items:center">'+(TM[k].icon||'')+'</span>':'')+TM[k].name+'</span>';
-  document.getElementById('tab-a').className='tab active';
-  document.getElementById('tab-r').className='tab';
-  ST.albumTab='raid';
-  if(document.getElementById('atab-raid')){
-    document.getElementById('atab-raid').className='album-subtab active';
-    document.getElementById('atab-dmax').className='album-subtab';
-    document.getElementById('apanel-raid').style.display='';
-    document.getElementById('apanel-dmax').style.display='none';
-  }
-  if(document.getElementById('rtab-raid')){
-    document.getElementById('rtab-raid').className='tab active';
-    document.getElementById('rtab-dmax').className='tab';
-    document.getElementById('rpanel-raid').style.display='';
-    document.getElementById('rpanel-dmax').style.display='none';
-  }
-  document.getElementById('album-panel').style.display='';
-  document.getElementById('ranking-panel').style.display='none';
-  const vb=document.getElementById('view-badge-wrap');
-  if(ST.view){vb.style.display='flex';document.getElementById('view-name').textContent=ST.view;}
-  else vb.style.display='none';
-  renderAlbum();renderRanking();
-  show('detail-screen');
-}
-window.openGuia=function(){document.getElementById('modal-guia').style.display='flex';}
-window.closeGuiaBtn=function(){document.getElementById('modal-guia').style.display='none';}
-window.closeGuia=function(e){if(e.target.id==='modal-guia')document.getElementById('modal-guia').style.display='none';}
-window.openInfo=function(){document.getElementById('modal-info').style.display='flex';}
-window.closeInfoBtn=function(){document.getElementById('modal-info').style.display='none';}
-window.closeInfo=function(e){if(e.target.id==='modal-info')document.getElementById('modal-info').style.display='none';}
-
-// ── Arranque ────────────────────────────────────────────────────────────────
-window.toggleDark=function(){
-  const d=document.body.classList.toggle('dark');
-  localStorage.setItem('darkMode',d?'1':'0');
-  const icon=d?'☀️':'🌙';
-  document.querySelectorAll('#dark-btn,#dark-btn2').forEach(b=>{if(b)b.textContent=icon;});
-};
-// Restore dark mode preference on load
-if(localStorage.getItem('darkMode')==='1'){
-  document.body.classList.add('dark');
-  document.addEventListener('DOMContentLoaded',()=>{
-    document.querySelectorAll('#dark-btn,#dark-btn2').forEach(b=>{if(b)b.textContent='☀️';});
-  });
-}
-// ── DYNAMAX RANKINGS (top DPS per type) ────────────────────────────────────
-const DMAX={
-  fire:[{n:'G-Cinderace',dps:351.31,fast:'Fire Spin',charge:'G-Max Fireball',img:'815'},{n:'G-Charizard',dps:330.54,fast:'Fire Spin',charge:'G-Max Wildfire',img:'10035'},{n:'D-Darmanitan',dps:300.38,fast:'Incinerate',charge:'Max Flare',img:'555'},{n:'D-Moltres',dps:287.46,fast:'Fire Spin',charge:'Max Flare',img:'146'},{n:'D-Flareon',dps:282.08,fast:'Fire Spin',charge:'Max Flare',img:'136'},{n:'D-Ho-Oh',dps:274.54,fast:'Incinerate',charge:'Max Flare',img:'250'}],
-  water:[{n:'G-Inteleon',dps:384.54,fast:'Water Gun',charge:'G-Max Hydrosnipe',img:'818'},{n:'G-Kingler',dps:354.08,fast:'Bubble',charge:'G-Max Foam Burst',img:'99'},{n:'D-Inteleon',dps:299.31,fast:'Water Gun',charge:'Max Geyser',img:'818'},{n:'D-Kingler',dps:275.62,fast:'Bubble',charge:'Max Geyser',img:'99'},{n:'G-Blastoise',dps:258.54,fast:'Water Gun',charge:'G-Max Cannonade',img:'10036'},{n:'D-Kabutops',dps:254.08,fast:'Waterfall',charge:'Max Geyser',img:'141'}],
-  grass:[{n:'G-Rillaboom',dps:352.69,fast:'Razor Leaf',charge:'G-Max Drum Solo',img:'812'},{n:'G-Venusaur',dps:295.92,fast:'Vine Whip',charge:'G-Max Vine Lash',img:'10033'},{n:'D-Rillaboom',dps:274.54,fast:'Razor Leaf',charge:'Max Overgrowth',img:'812'},{n:'D-Tsareena',dps:256.23,fast:'Razor Leaf',charge:'Max Overgrowth',img:'763'},{n:'D-Leafeon',dps:249.77,fast:'Razor Leaf',charge:'Max Overgrowth',img:'470'},{n:'D-Venusaur',dps:230.38,fast:'Vine Whip',charge:'Max Overgrowth',img:'3'}],
-  electric:[{n:'G-Toxtricity',dps:331.92,fast:'Spark',charge:'G-Max Stun Shock',img:'849'},{n:'D-Zapdos',dps:289.62,fast:'Thunder Shock',charge:'Max Lightning',img:'145'},{n:'D-Raikou',dps:276.69,fast:'Volt Switch',charge:'Max Lightning',img:'243'},{n:'D-Jolteon',dps:267.0,fast:'Volt Switch',charge:'Max Lightning',img:'135'},{n:'D-Toxtricity LK',dps:258.38,fast:'Spark',charge:'Max Lightning',img:'849'},{n:'D-Toxtricity AMP',dps:258.38,fast:'Spark',charge:'Max Lightning',img:'849'}],
-  ice:[{n:'D-Glaceon',dps:273.46,fast:'Ice Shard',charge:'Max Hailstorm',img:'471'},{n:'G-Lapras',dps:250.23,fast:'Ice Shard',charge:'G-Max Resonance',img:'131'},{n:'D-Articuno',dps:223.92,fast:'Powder Snow',charge:'Max Hailstorm',img:'144'},{n:'D-Cryogonal',dps:221.77,fast:'Ice Shard',charge:'Max Hailstorm',img:'615'},{n:'D-Walrein',dps:213.15,fast:'Powder Snow',charge:'Max Hailstorm',img:'365'},{n:'D-Regice',dps:209.92,fast:'Frost Breath',charge:'Max Hailstorm',img:'378'}],
-  fighting:[{n:'G-Machamp',dps:345.77,fast:'Karate Chop',charge:'G-Max Chi Strike',img:'68'},{n:'D-Gallade',dps:272.38,fast:'Low Kick',charge:'Max Knuckle',img:'475'},{n:'D-Machamp',dps:269.15,fast:'Karate Chop',charge:'Max Knuckle',img:'68'},{n:'D-Hitmonlee',dps:258.38,fast:'Rock Smash',charge:'Max Knuckle',img:'106'},{n:'D-Alakazam',dps:257.67,fast:'Counter',charge:'Max Knuckle',img:'65'},{n:'D-Passimian',dps:256.23,fast:'Rock Smash',charge:'Max Knuckle',img:'766'}],
-  poison:[{n:'D-Toxtricity LK',dps:258.38,fast:'Poison Jab',charge:'Max Ooze',img:'849'},{n:'D-Toxtricity AMP',dps:258.38,fast:'Poison Jab',charge:'Max Ooze',img:'849'}],
-  ground:[{n:'D-Excadrill',dps:291.77,fast:'Mud-Slap',charge:'Max Quake',img:'530'},{n:'D-Kingler',dps:229.85,fast:'Mud Shot',charge:'Max Quake',img:'99'},{n:'D-Gigalith',dps:217.28,fast:'Mud-Slap',charge:'Max Quake',img:'526'},{n:'D-Kabutops',dps:211.9,fast:'Mud Shot',charge:'Max Quake',img:'141'},{n:'D-Omastar',dps:200.23,fast:'Mud Shot',charge:'Max Quake',img:'139'},{n:'D-Drilbur',dps:183.0,fast:'Mud-Slap',charge:'Max Quake',img:'529'}],
-  flying:[{n:'D-Moltres',dps:287.46,fast:'Wing Attack',charge:'Max Airstream',img:'146'},{n:'D-Unfezant',dps:260.54,fast:'Air Slash',charge:'Max Airstream',img:'521'},{n:'D-Charizard',dps:257.31,fast:'Wing Attack',charge:'Max Airstream',img:'6'},{n:'D-Corviknight',dps:192.69,fast:'Air Slash',charge:'Max Airstream',img:'823'},{n:'D-Swoobat',dps:190.54,fast:'Air Slash',charge:'Max Airstream',img:'528'},{n:'D-Malamar',dps:173.31,fast:'Peck',charge:'Max Airstream',img:'687'}],
-  psychic:[{n:'D-Alakazam',dps:309.0,fast:'Psycho Cut',charge:'Max Mindstorm',img:'65'},{n:'D-Latios',dps:305.77,fast:'Zen Headbutt',charge:'Max Mindstorm',img:'381'},{n:'D-Espeon',dps:298.23,fast:'Zen Headbutt',charge:'Max Mindstorm',img:'196'},{n:'D-Metagross',dps:293.92,fast:'Zen Headbutt',charge:'Max Mindstorm',img:'376'},{n:'D-Hatterene',dps:272.38,fast:'Psycho Cut',charge:'Max Mindstorm',img:'858'},{n:'D-Gallade',dps:272.38,fast:'Psycho Cut',charge:'Max Mindstorm',img:'475'}],
-  bug:[{n:'G-Butterfree',dps:253.0,fast:'Struggle Bug',charge:'G-Max Befuddle',img:'12'},{n:'D-Metagross',dps:245.1,fast:'Fury Cutter',charge:'Max Flutterby',img:'376'},{n:'D-Kabutops',dps:211.9,fast:'Fury Cutter',charge:'Max Flutterby',img:'141'},{n:'D-Butterfree',dps:197.0,fast:'Struggle Bug',charge:'Max Flutterby',img:'12'},{n:'D-Garbodor',dps:176.9,fast:'Infestation',charge:'Max Flutterby',img:'569'},{n:'D-Metang',dps:138.31,fast:'Fury Cutter',charge:'Max Flutterby',img:'375'}],
-  rock:[{n:'D-Gigalith',dps:260.54,fast:'Smack Down',charge:'Max Rockfall',img:'526'},{n:'D-Omastar',dps:240.08,fast:'Rock Throw',charge:'Max Rockfall',img:'139'},{n:'D-Regirock',dps:209.92,fast:'Rock Throw',charge:'Max Rockfall',img:'377'},{n:'D-Boldore',dps:204.54,fast:'Smack Down',charge:'Max Rockfall',img:'525'},{n:'D-Wailord',dps:171.51,fast:'Rollout',charge:'Max Rockfall',img:'321'},{n:'D-Blastoise',dps:167.92,fast:'Rollout',charge:'Max Rockfall',img:'9'}],
-  ghost:[{n:'G-Gengar',dps:383.15,fast:'Shadow Claw',charge:'G-Max Terror',img:'10038'},{n:'D-Gengar',dps:298.23,fast:'Shadow Claw',charge:'Max Phantasm',img:'94'},{n:'D-Haunter',dps:257.31,fast:'Shadow Claw',charge:'Max Phantasm',img:'93'},{n:'D-Metagross',dps:245.1,fast:'Shadow Claw',charge:'Max Phantasm',img:'376'},{n:'D-Gastly',dps:217.46,fast:'Lick',charge:'Max Phantasm',img:'92'},{n:'D-Sableye',dps:169.0,fast:'Shadow Claw',charge:'Max Phantasm',img:'302'}],
-  dragon:[{n:'Eternatus',dps:406.69,fast:'Dragon Tail',charge:'Dynamax Cannon',img:'890'},{n:'D-Latios',dps:305.77,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'381'},{n:'D-Duraludon',dps:274.54,fast:'Dragon Tail',charge:'Max Wyrmwind',img:'884'},{n:'D-Drampa',dps:265.92,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'780'},{n:'D-Latias',dps:262.69,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'380'},{n:'D-Charizard',dps:214.59,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'6'}],
-  dark:[{n:'G-Grimmsnarl',dps:336.08,fast:'Sucker Punch',charge:'G-Max Snooze',img:'799'},{n:'D-Gengar',dps:248.69,fast:'Sucker Punch',charge:'Max Darkness',img:'94'},{n:'D-Arcanine',dps:218.18,fast:'Snarl',charge:'Max Darkness',img:'59'},{n:'D-Gastly',dps:181.38,fast:'Sucker Punch',charge:'Max Darkness',img:'92'},{n:'D-Suicune',dps:176.0,fast:'Snarl',charge:'Max Darkness',img:'245'},{n:'D-Sableye',dps:169.0,fast:'Feint Attack',charge:'Max Darkness',img:'302'}],
-  steel:[{n:'Crowned Zacian',dps:374.69,fast:'Metal Claw',charge:'Behemoth Blade',img:'888'},{n:'D-Metagross',dps:293.92,fast:'Bullet Punch',charge:'Max Steelspike',img:'376'},{n:'D-Excadrill',dps:291.77,fast:'Metal Claw',charge:'Max Steelspike',img:'530'},{n:'Crowned Zamazenta',dps:286.38,fast:'Metal Claw',charge:'Behemoth Bash',img:'889'},{n:'D-Duraludon',dps:274.54,fast:'Metal Claw',charge:'Max Steelspike',img:'884'},{n:'D-Kingler',dps:229.85,fast:'Metal Claw',charge:'Max Steelspike',img:'99'}],
-  fairy:[{n:'D-Hatterene',dps:272.38,fast:'Charm',charge:'Max Starfall',img:'858'},{n:'D-Gardevoir',dps:272.38,fast:'Charm',charge:'Max Starfall',img:'282'},{n:'D-Sylveon',dps:235.77,fast:'Charm',charge:'Max Starfall',img:'700'},{n:'D-Gallade',dps:227.15,fast:'Charm',charge:'Max Starfall',img:'475'},{n:'D-Latias',dps:219.08,fast:'Charm',charge:'Max Starfall',img:'380'},{n:'D-Tsareena',dps:213.69,fast:'Charm',charge:'Max Starfall',img:'763'}],
-};
-
-window.switchAlbumTab=function(tab){
-  ST.albumTab=tab;
-  document.getElementById('atab-raid').className='album-subtab'+(tab==='raid'?' active':'');
-  document.getElementById('atab-dmax').className='album-subtab'+(tab==='dmax'?' active':'');
-  document.getElementById('apanel-raid').style.display=tab==='raid'?'':'none';
-  document.getElementById('apanel-dmax').style.display=tab==='dmax'?'':'none';
-  if(tab==='dmax')renderAlbumDmax();
-};
-
-window.switchRankTab=function(tab){
-  ST.rankTab=tab;
-  document.getElementById('rtab-raid').className='tab'+(tab==='raid'?' active':'');
-  document.getElementById('rtab-dmax').className='tab'+(tab==='dmax'?' active':'');
-  document.getElementById('rpanel-raid').style.display=tab==='raid'?'':'none';
-  document.getElementById('rpanel-dmax').style.display=tab==='dmax'?'':'none';
-  if(tab==='dmax')renderDmaxRanking();
-};
-
-window.addToAlbum=async function(pkId){
-  if(!ST.cur)return;
-  const p=window.goc(ST.cur);
-  if(!p.album)p.album=defaultAlbum();
-  // Count how many in this type
-  const pk=PD.find(x=>x.id===pkId);
-  if(!pk)return;
-  const typeCount=PD.filter(x=>p.album[x.id]&&x.type===pk.type).length;
-  if(typeCount>=6){setStatus('⚠️ Máximo 6 Pokémon por tipo');setTimeout(()=>setStatus(''),2000);return;}
-  p.album[pkId]=true;
-  await fbSaveProfile(ST.cur,p.pk,p.album);
-  renderAlbum();renderRanking();renderMain();
-};
-window.removeFromAlbum=async function(pkId){
-  if(!ST.cur)return;
-  const p=window.goc(ST.cur);
-  if(!p.album)p.album=defaultAlbum();
-  delete p.album[pkId];
-  await fbSaveProfile(ST.cur,p.pk,p.album);
-  ST.expanded=null;
-  renderAlbum();renderRanking();renderMain();
-};
-window.renderProfiles=renderProfiles;
-window.renderMain=renderMain;
-window.renderAlbum=renderAlbum;
-window.renderAlbumDmax=renderAlbumDmax;
-window.renderRanking=renderRanking;
-window.show=show;
-
-(async()=>{
-  await fbLoad();
-  renderProfiles();
-  show('profile-screen');
-})();
-
-// PWA Service Worker - aggressively clear old caches
-if('serviceWorker' in navigator){
-  window.addEventListener('load',async()=>{
-    // Unregister any old service workers first
-    const regs = await navigator.serviceWorker.getRegistrations();
-    for(const reg of regs){
-      const swUrl = reg.active?.scriptURL || '';
-      // If the SW cache version doesn't match, unregister
-      if(!swUrl.includes('sw.js')) await reg.unregister();
-    }
-    // Register new SW
-    navigator.serviceWorker.register('sw.js').catch(()=>{});
-  });
-}
-
 const SP='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
 const si=n=>SP+n+'.png';
-// modal functions defined in module
 
 const TYPES=[
   {name:'Fuego',color:'#E07020',bg:'#FDE8D5',key:'fire',icon:'<img src="data:image/webp;base64,UklGRvICAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSE0BAAABgFtr29PmA+VW6kxL6xzYgVJMwQr/YQKpNJMoz8Gh1F86KVU5fo5/eL1ARDBw20hRsnvMMDNvIJ3ViyBOh/nLdvuSD9M48KpkZe1WdOSWFW7HHXFbs+CylS3PrPG8zNpXhhT9ZMKGThK/YIAb9lds7KofulrKTXlkC4+yWdbQEHO2dC4a6mkxYWsnQjXpRgsGOG+6f08USoYow8Jv/P4Rw7Hv/yZZM8hV8vtrmjDMySUR1VoMtFUjus2QZLdUFUskS1H1umck564XjBnqOIi3WLZxymCfh2iGOZr8Fc3LFs12Bwc/g98Ef6AUzDnFf4eBRH/n+P8I/5/SHTgOoONMuwaPY/A4+V9xuICL80VwHolcfJ5SWRcLbB4kKke2eTYq4/O43oKfTC3qhKJ5HbIyq0Ps6pyu3KqWbGVX3NbIyqoXxOkof9luXw3rKAIAVlA4IH4BAAAwCwCdASowADAAPpE6mEiloyIhLjQMyLASCWxmqUYZQIvpLp7p+KvOMcnmZfoFIA2wHmA86r0gebp1Q3oAdLMCHm8lSD5U2n32+z/bTOq+jhxL+fbuPXZs7XdUC0lxqzhEAAD+8Glamtw1zeUpZYydIwQaKl3OwoG8pym+9fYnxm8yMaRUK0pp14hnjzdSNmlrkH+ACKSxlQHe4c4SrSWTqhqneYZdKfzEmcfH8DVrzpKob71VXr9LOlJKgXE4dtIHteO8UAKgKUo8hfNQhDFMpTxBsKlRyv3VAFVTHKY6RNP1Uxor9qPk1jKpiZZmQRnMwzvWC57j/zeXvCJ7VN07f1m7XM3ylguuABXJBfJjIocOndt6Mh13KzHs5JvzjAJJupm5ccg5/8zH5xacYdiLwMFpYKw+yhuw8b9udE1fia7Abgoin6Lhy/lKcOxROqYMv7Ruu+hYDUHT913tY80rtpm+1SJT3HmDFXYqctLTc9iGFonv5T+X88VQAAAA" style="width:18px;height:18px;object-fit:contain;display:block">'},
@@ -723,8 +448,7 @@ const TYPES=[
   {name:'Siniestro',color:'#403020',bg:'#E0D8D5',key:'dark',icon:'<img src="data:image/webp;base64,UklGRioDAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSE0BAAABgFtr29PmA+VW6kxL6xzYgVJMwQr/YQKpNJMoz8Gh1F86KVU5fo5/eL1ARDBw20hRsnvMMDNvIJ3ViyBOh/nLdvuSD9M48KpkZe1WdOSWFW7HHXFbs+CylS3PrPG8zNpXhhT9ZMKGThK/YIAb9lds7KofulrKTXlkC4+yWdbQEHO2dC4a6mkxYWsnQjXpRgsGOG+6f08USoYow8Jv/P4Rw7Hv/yZZM8hV8vtrmjDMySUR1VoMtFUjus2QZLdUFUskS1H1umck564XjBnqOIi3WLZxymCfh2iGOZr8Fc3LFs12Bwc/g98Ef6AUzDnFf4eBRH/n+P8I/5/SHTgOoONMuwaPY/A4+V9xuICL80VwHolcfJ5SWRcLbB4kKke2eTYq4/O43oKfTC3qhKJ5HbIyq0Ps6pyu3KqWbGVX3NbIyqoXxOkof9luXw3rKAIAVlA4ILYBAABQCgCdASowADAAPpE8nEoloyKhqrVZWLASCWUAwQ/ndsUwW1VpgG85L9gbrLA0gTQKOsiNEJ0jWVcVLAqLkJX3kmbFKIBv2mfuFDBCNHkEgclfyX5o5JbtngXgAP4RLVsdwlep/85gCg7yqIm/CdRbGn5QDnP0F+Q2i1hhPj+BdGOCHYDOvuBflw4xID6d+1n49IS+5KZb/RNDkWXFb6uumc0hGPsXvgYFmLc0vWs7avGJ7j0iPShsDvHSKoCmksQnbbdPbuUFVwHaSr6FmAUq+C7+X+5Tc15C5z7TwK7khkzFl5FiRCXuaH/e1K2fiBLtgzF/Yuhvo7I5abFch1daAjkYqbVRRY+evZwnCeM2bcQtPR/WPuSDTSAjLv7NJlFocWM6Eji60IvI+CgLbEf+Cr3mvHh6woW+Zb7j5FHBRWb/Y2/hM7odEn3pbxt9aKZ45X5L82mPcyWHx8ogExWnPF17iWQfokw8HW8e8+vuI/RSkqgXFQ33ovlCGvSh39nM6NmLj8Ku6xxHIIK/it10wRUiaZ9W8Xn8BV85PgoTuPCkUwr7xaByQvM1B4JYhPFqI2AAAAA=" style="width:18px;height:18px;object-fit:contain;display:block">'},
   {name:'Acero',color:'#506090',bg:'#E5E5F0',key:'steel',icon:'<img src="data:image/webp;base64,UklGRkYDAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSE0BAAABgFtr29PmA+VW6kxL6xzYgVJMwQr/YQKpNJMoz8Gh1F86KVU5fo5/eL1ARDBw20hRsnvMMDNvIJ3ViyBOh/nLdvuSD9M48KpkZe1WdOSWFW7HHXFbs+CylS3PrPG8zNpXhhT9ZMKGThK/YIAb9lds7KofulrKTXlkC4+yWdbQEHO2dC4a6mkxYWsnQjXpRgsGOG+6f08USoYow8Jv/P4Rw7Hv/yZZM8hV8vtrmjDMySUR1VoMtFUjus2QZLdUFUskS1H1umck564XjBnqOIi3WLZxymCfh2iGOZr8Fc3LFs12Bwc/g98Ef6AUzDnFf4eBRH/n+P8I/5/SHTgOoONMuwaPY/A4+V9xuICL80VwHolcfJ5SWRcLbB4kKke2eTYq4/O43oKfTC3qhKJ5HbIyq0Ps6pyu3KqWbGVX3NbIyqoXxOkof9luXw3rKAIAVlA4INIBAACwCgCdASowADAAPpE8mUoloyIhpzgMkLASCWoAsR7tAe+7cgtpl7XbwFUDLJ0o7QRWknGrn9SNe+qvBGbVwYwel2wokGFRL60rYNaAJqEpUPCnRXwnOnWMEAF/BNhAAP7nH17kxS9fXK6kqOxwNuZqGEa4EaVkzteem2oCXawNvl0v30HAS7hgfKvtsE4KWUZy4Hf9VBBeXSHvj6TJl1d9Dh7FsJAvjWnZ3EmrhEk5zFiBIxg59vl97v5GFsIZLyENbo9nP4bnaM+cFxDjeLivp2xIk1yV3IehoXIlxCTDH5T4tFmK8K6HvpxknAKnJJA0D86g7niDMwmx6dSa0moi7ZA/MfMMMiIWeY5fxWEW80VHFLCD5oUwObxZzlqXVjGeG3BBLtvDfprXq74aYhH07Lp/GXRhK4zINwme/MGNmatCAv2z3nMoLE3QQ0IWogK1oRbqxS+dSn3KgopLuGjOrV8DTXfB3s5TNAi5M9HIcpUC1DTWrUTqruMg9sCDbk9o2NESp13mGKE+ofMBHwVGmpBy59o0dweyUbCjPjfREWhsnFC6lcQlbo2evzn9xVspTnlFdGqn0zrsV7XfWq13i47/3Qn+YmYyCFwZMmpg/AAA" style="width:18px;height:18px;object-fit:contain;display:block">'},
   {name:'Hada',color:'#B04070',bg:'#FBD5EC',key:'fairy',icon:'<img src="data:image/webp;base64,UklGRpQCAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSE0BAAABgFtr29PmA+VW6kxL6xzYgVJMwQr/YQKpNJMoz8Gh1F86KVU5fo5/eL1ARDBw20hRsnvMMDNvIJ3ViyBOh/nLdvuSD9M48KpkZe1WdOSWFW7HHXFbs+CylS3PrPG8zNpXhhT9ZMKGThK/YIAb9lds7KofulrKTXlkC4+yWdbQEHO2dC4a6mkxYWsnQjXpRgsGOG+6f08USoYow8Jv/P4Rw7Hv/yZZM8hV8vtrmjDMySUR1VoMtFUjus2QZLdUFUskS1H1umck564XjBnqOIi3WLZxymCfh2iGOZr8Fc3LFs12Bwc/g98Ef6AUzDnFf4eBRH/n+P8I/5/SHTgOoONMuwaPY/A4+V9xuICL80VwHolcfJ5SWRcLbB4kKke2eTYq4/O43oKfTC3qhKJ5HbIyq0Ps6pyu3KqWbGVX3NbIyqoXxOkof9luXw3rKAIAVlA4ICABAACQCACdASowADAAPpFAm0qlo6Iho4wAsBIJZgCnRvs+N89gF3H4xO2iAnFTlSUDb2KlgZh47VC+PhEk3SztobZo1q8KvhPPUn/0ArlqAAD+9NOf/7KcwMC8TepIvPFPRexHJRrPW+E98z+lk5ohbAeJrK1n165Y1OR/MPUhevGLQ9cgd/kuvMwASqPsXQjQ9jiXRrsZDQOUedPrVvcduPZ5vEQ54FxYBm9bE7nrBXocR5cy6RFrTzg2SmSduqMiuA2bS2XnpT0r5vGG1kf0+KSIda6f/aonTxjz7jaAqXK5BjEHYAbK8su/QBw2APPY3G47SBNsW8E1jZwVQBzE+/74UETjFQ5JnB3vTQQ3PNl68Puq3qa4iyJEKKADBNKIAAA=" style="width:18px;height:18px;object-fit:contain;display:block">'}];
-const TM={};TYPES.forEach(t=>TM[t.key]=t);
-
+const TM={};
 const RANKINGS={
   fire:[
     {n:'Mega Blaziken',dps:37.17,fast:'Giro Fuego',fastL:false,charge:'Sofoco',chargeL:true,img:'10050',aid:'fi-mega-blaz-l'},
@@ -979,7 +703,25 @@ const RANKINGS={
     {n:'Clefable',dps:15.40,fast:'Encanto',fastL:false,charge:'Meteoro',chargeL:false,img:'36'}
   ],
 };
-
+const DMAX={
+  fire:[{n:'G-Cinderace',dps:351.31,fast:'Fire Spin',charge:'G-Max Fireball',img:'815'},{n:'G-Charizard',dps:330.54,fast:'Fire Spin',charge:'G-Max Wildfire',img:'10035'},{n:'D-Darmanitan',dps:300.38,fast:'Incinerate',charge:'Max Flare',img:'555'},{n:'D-Moltres',dps:287.46,fast:'Fire Spin',charge:'Max Flare',img:'146'},{n:'D-Flareon',dps:282.08,fast:'Fire Spin',charge:'Max Flare',img:'136'},{n:'D-Ho-Oh',dps:274.54,fast:'Incinerate',charge:'Max Flare',img:'250'}],
+  water:[{n:'G-Inteleon',dps:384.54,fast:'Water Gun',charge:'G-Max Hydrosnipe',img:'818'},{n:'G-Kingler',dps:354.08,fast:'Bubble',charge:'G-Max Foam Burst',img:'99'},{n:'D-Inteleon',dps:299.31,fast:'Water Gun',charge:'Max Geyser',img:'818'},{n:'D-Kingler',dps:275.62,fast:'Bubble',charge:'Max Geyser',img:'99'},{n:'G-Blastoise',dps:258.54,fast:'Water Gun',charge:'G-Max Cannonade',img:'10036'},{n:'D-Kabutops',dps:254.08,fast:'Waterfall',charge:'Max Geyser',img:'141'}],
+  grass:[{n:'G-Rillaboom',dps:352.69,fast:'Razor Leaf',charge:'G-Max Drum Solo',img:'812'},{n:'G-Venusaur',dps:295.92,fast:'Vine Whip',charge:'G-Max Vine Lash',img:'10033'},{n:'D-Rillaboom',dps:274.54,fast:'Razor Leaf',charge:'Max Overgrowth',img:'812'},{n:'D-Tsareena',dps:256.23,fast:'Razor Leaf',charge:'Max Overgrowth',img:'763'},{n:'D-Leafeon',dps:249.77,fast:'Razor Leaf',charge:'Max Overgrowth',img:'470'},{n:'D-Venusaur',dps:230.38,fast:'Vine Whip',charge:'Max Overgrowth',img:'3'}],
+  electric:[{n:'G-Toxtricity',dps:331.92,fast:'Spark',charge:'G-Max Stun Shock',img:'849'},{n:'D-Zapdos',dps:289.62,fast:'Thunder Shock',charge:'Max Lightning',img:'145'},{n:'D-Raikou',dps:276.69,fast:'Volt Switch',charge:'Max Lightning',img:'243'},{n:'D-Jolteon',dps:267.0,fast:'Volt Switch',charge:'Max Lightning',img:'135'},{n:'D-Toxtricity LK',dps:258.38,fast:'Spark',charge:'Max Lightning',img:'849'},{n:'D-Toxtricity AMP',dps:258.38,fast:'Spark',charge:'Max Lightning',img:'849'}],
+  ice:[{n:'D-Glaceon',dps:273.46,fast:'Ice Shard',charge:'Max Hailstorm',img:'471'},{n:'G-Lapras',dps:250.23,fast:'Ice Shard',charge:'G-Max Resonance',img:'131'},{n:'D-Articuno',dps:223.92,fast:'Powder Snow',charge:'Max Hailstorm',img:'144'},{n:'D-Cryogonal',dps:221.77,fast:'Ice Shard',charge:'Max Hailstorm',img:'615'},{n:'D-Walrein',dps:213.15,fast:'Powder Snow',charge:'Max Hailstorm',img:'365'},{n:'D-Regice',dps:209.92,fast:'Frost Breath',charge:'Max Hailstorm',img:'378'}],
+  fighting:[{n:'G-Machamp',dps:345.77,fast:'Karate Chop',charge:'G-Max Chi Strike',img:'68'},{n:'D-Gallade',dps:272.38,fast:'Low Kick',charge:'Max Knuckle',img:'475'},{n:'D-Machamp',dps:269.15,fast:'Karate Chop',charge:'Max Knuckle',img:'68'},{n:'D-Hitmonlee',dps:258.38,fast:'Rock Smash',charge:'Max Knuckle',img:'106'},{n:'D-Alakazam',dps:257.67,fast:'Counter',charge:'Max Knuckle',img:'65'},{n:'D-Passimian',dps:256.23,fast:'Rock Smash',charge:'Max Knuckle',img:'766'}],
+  poison:[{n:'D-Toxtricity LK',dps:258.38,fast:'Poison Jab',charge:'Max Ooze',img:'849'},{n:'D-Toxtricity AMP',dps:258.38,fast:'Poison Jab',charge:'Max Ooze',img:'849'}],
+  ground:[{n:'D-Excadrill',dps:291.77,fast:'Mud-Slap',charge:'Max Quake',img:'530'},{n:'D-Kingler',dps:229.85,fast:'Mud Shot',charge:'Max Quake',img:'99'},{n:'D-Gigalith',dps:217.28,fast:'Mud-Slap',charge:'Max Quake',img:'526'},{n:'D-Kabutops',dps:211.9,fast:'Mud Shot',charge:'Max Quake',img:'141'},{n:'D-Omastar',dps:200.23,fast:'Mud Shot',charge:'Max Quake',img:'139'},{n:'D-Drilbur',dps:183.0,fast:'Mud-Slap',charge:'Max Quake',img:'529'}],
+  flying:[{n:'D-Moltres',dps:287.46,fast:'Wing Attack',charge:'Max Airstream',img:'146'},{n:'D-Unfezant',dps:260.54,fast:'Air Slash',charge:'Max Airstream',img:'521'},{n:'D-Charizard',dps:257.31,fast:'Wing Attack',charge:'Max Airstream',img:'6'},{n:'D-Corviknight',dps:192.69,fast:'Air Slash',charge:'Max Airstream',img:'823'},{n:'D-Swoobat',dps:190.54,fast:'Air Slash',charge:'Max Airstream',img:'528'},{n:'D-Malamar',dps:173.31,fast:'Peck',charge:'Max Airstream',img:'687'}],
+  psychic:[{n:'D-Alakazam',dps:309.0,fast:'Psycho Cut',charge:'Max Mindstorm',img:'65'},{n:'D-Latios',dps:305.77,fast:'Zen Headbutt',charge:'Max Mindstorm',img:'381'},{n:'D-Espeon',dps:298.23,fast:'Zen Headbutt',charge:'Max Mindstorm',img:'196'},{n:'D-Metagross',dps:293.92,fast:'Zen Headbutt',charge:'Max Mindstorm',img:'376'},{n:'D-Hatterene',dps:272.38,fast:'Psycho Cut',charge:'Max Mindstorm',img:'858'},{n:'D-Gallade',dps:272.38,fast:'Psycho Cut',charge:'Max Mindstorm',img:'475'}],
+  bug:[{n:'G-Butterfree',dps:253.0,fast:'Struggle Bug',charge:'G-Max Befuddle',img:'12'},{n:'D-Metagross',dps:245.1,fast:'Fury Cutter',charge:'Max Flutterby',img:'376'},{n:'D-Kabutops',dps:211.9,fast:'Fury Cutter',charge:'Max Flutterby',img:'141'},{n:'D-Butterfree',dps:197.0,fast:'Struggle Bug',charge:'Max Flutterby',img:'12'},{n:'D-Garbodor',dps:176.9,fast:'Infestation',charge:'Max Flutterby',img:'569'},{n:'D-Metang',dps:138.31,fast:'Fury Cutter',charge:'Max Flutterby',img:'375'}],
+  rock:[{n:'D-Gigalith',dps:260.54,fast:'Smack Down',charge:'Max Rockfall',img:'526'},{n:'D-Omastar',dps:240.08,fast:'Rock Throw',charge:'Max Rockfall',img:'139'},{n:'D-Regirock',dps:209.92,fast:'Rock Throw',charge:'Max Rockfall',img:'377'},{n:'D-Boldore',dps:204.54,fast:'Smack Down',charge:'Max Rockfall',img:'525'},{n:'D-Wailord',dps:171.51,fast:'Rollout',charge:'Max Rockfall',img:'321'},{n:'D-Blastoise',dps:167.92,fast:'Rollout',charge:'Max Rockfall',img:'9'}],
+  ghost:[{n:'G-Gengar',dps:383.15,fast:'Shadow Claw',charge:'G-Max Terror',img:'10038'},{n:'D-Gengar',dps:298.23,fast:'Shadow Claw',charge:'Max Phantasm',img:'94'},{n:'D-Haunter',dps:257.31,fast:'Shadow Claw',charge:'Max Phantasm',img:'93'},{n:'D-Metagross',dps:245.1,fast:'Shadow Claw',charge:'Max Phantasm',img:'376'},{n:'D-Gastly',dps:217.46,fast:'Lick',charge:'Max Phantasm',img:'92'},{n:'D-Sableye',dps:169.0,fast:'Shadow Claw',charge:'Max Phantasm',img:'302'}],
+  dragon:[{n:'Eternatus',dps:406.69,fast:'Dragon Tail',charge:'Dynamax Cannon',img:'890'},{n:'D-Latios',dps:305.77,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'381'},{n:'D-Duraludon',dps:274.54,fast:'Dragon Tail',charge:'Max Wyrmwind',img:'884'},{n:'D-Drampa',dps:265.92,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'780'},{n:'D-Latias',dps:262.69,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'380'},{n:'D-Charizard',dps:214.59,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'6'}],
+  dark:[{n:'G-Grimmsnarl',dps:336.08,fast:'Sucker Punch',charge:'G-Max Snooze',img:'799'},{n:'D-Gengar',dps:248.69,fast:'Sucker Punch',charge:'Max Darkness',img:'94'},{n:'D-Arcanine',dps:218.18,fast:'Snarl',charge:'Max Darkness',img:'59'},{n:'D-Gastly',dps:181.38,fast:'Sucker Punch',charge:'Max Darkness',img:'92'},{n:'D-Suicune',dps:176.0,fast:'Snarl',charge:'Max Darkness',img:'245'},{n:'D-Sableye',dps:169.0,fast:'Feint Attack',charge:'Max Darkness',img:'302'}],
+  steel:[{n:'Crowned Zacian',dps:374.69,fast:'Metal Claw',charge:'Behemoth Blade',img:'888'},{n:'D-Metagross',dps:293.92,fast:'Bullet Punch',charge:'Max Steelspike',img:'376'},{n:'D-Excadrill',dps:291.77,fast:'Metal Claw',charge:'Max Steelspike',img:'530'},{n:'Crowned Zamazenta',dps:286.38,fast:'Metal Claw',charge:'Behemoth Bash',img:'889'},{n:'D-Duraludon',dps:274.54,fast:'Metal Claw',charge:'Max Steelspike',img:'884'},{n:'D-Kingler',dps:229.85,fast:'Metal Claw',charge:'Max Steelspike',img:'99'}],
+  fairy:[{n:'D-Hatterene',dps:272.38,fast:'Charm',charge:'Max Starfall',img:'858'},{n:'D-Gardevoir',dps:272.38,fast:'Charm',charge:'Max Starfall',img:'282'},{n:'D-Sylveon',dps:235.77,fast:'Charm',charge:'Max Starfall',img:'700'},{n:'D-Gallade',dps:227.15,fast:'Charm',charge:'Max Starfall',img:'475'},{n:'D-Latias',dps:219.08,fast:'Charm',charge:'Max Starfall',img:'380'},{n:'D-Tsareena',dps:213.69,fast:'Charm',charge:'Max Starfall',img:'763'}],
+};
 const PD=[
   {id:'f-mega-lucario-l',name:'Mega Lucario',type:'fighting',evo:['447','448'],img:'10059',tags:['mega','legacy'],fast:'Palma de Fuerza*',charge:'Esfera Aural',dps:34.80},
   {id:'f-mega-blaziken',name:'Mega Blaziken',type:'fighting',evo:['255','256','257'],img:'10050',tags:['mega'],fast:'Contraataque',charge:'Esfera Aural',dps:35.72},
@@ -1077,6 +819,276 @@ const PD=[
   {id:'fa-shd-granbull',name:'Granbull (Shadow)',type:'fairy',evo:['209','210'],img:'210',tags:['shadow'],fast:'Encanto',charge:'Golpe Karate',dps:18.80},
   {id:'fa-hatterene',name:'Hatterene',type:'fairy',evo:['856','857','858'],img:'858',tags:[],fast:'Encanto',charge:'Joya de la Luz',dps:20.60},
   {id:'fa-sylveon',name:'Sylveon',type:'fairy',evo:['133','700'],img:'700',tags:[],fast:'Encanto',charge:'Joya de la Luz',dps:19.40}];
+
+
+
+
+
+// ── Estado global ───────────────────────────────────────────────────────────
+window.ST={profiles:[],cur:null,view:null,type:null,expanded:null,tab:'album',rankTab:'raid',albumTab:'raid'};
+
+// ── Helpers Firestore ───────────────────────────────────────────────────────
+async function fbLoad(){
+  try{
+    setStatus('⏳ Conectando con Firebase...');
+    const snap=await getDocs(collection(db,'profiles'));
+    ST.profiles=snap.docs.map(d=>({name:d.id,...d.data()}));
+    ST.profiles.sort((a,b)=>a.name.localeCompare(b.name));
+    setStatus(ST.profiles.length?'':'');
+  }catch(e){
+    console.error('Error Firebase:',e);
+    setStatus('❌ Error: '+e.code+' — Revisa las reglas de Firestore');
+    ST.profiles=[];
+  }
+}
+async function fbSaveProfile(name,pkData,albumData){
+  try{
+    const data={pk:pkData||{}};
+    if(albumData!==undefined)data.album=albumData;
+    await setDoc(doc(db,'profiles',name),data);
+  }catch(e){
+    console.error('Error guardando:',e);
+    setStatus('❌ Error guardando: '+e.code);
+  }
+}
+
+function defaultAlbum(){
+  // Top 6 per type from PD
+  const album={};
+  const types=[...new Set(PD.map(p=>p.type))];
+  types.forEach(t=>{
+    const top6=PD.filter(p=>p.type===t).sort((a,b)=>b.dps-a.dps).slice(0,6);
+    top6.forEach(p=>album[p.id]=true);
+  });
+  return album;
+}
+
+function getAlbum(profileName){
+  const p=window.gp(profileName);
+  if(!p)return defaultAlbum();
+  if(p.album)return p.album;
+  return defaultAlbum();
+}
+
+function albumPksForType(profileName,type){
+  const album=getAlbum(profileName);
+  return PD.filter(p=>p.type===type&&album[p.id]).sort((a,b)=>b.dps-a.dps);
+}
+async function fbDeleteProfile(name){
+  try{
+    await deleteDoc(doc(db,'profiles',name));
+  }catch(e){console.error('Error borrando:',e);}
+}
+function setStatus(msg){
+  const el=document.getElementById('status-msg');
+  if(el)el.textContent=msg;
+}
+
+// ── Funciones globales expuestas en window ──────────────────────────────────
+window.gp=function(n){return ST.profiles.find(p=>p.name===n);}
+window.goc=function(n){let p=window.gp(n);if(!p){p={name:n,pk:{}};ST.profiles.push(p);}return p;}
+window.countType=function(pn,tk){
+  const pks=albumPksForType(pn,tk);
+  const p=window.gp(pn);
+  const owned=p?pks.filter(pk=>p.pk[pk.id]&&p.pk[pk.id].owned).length:0;
+  return{o:owned,t:Math.max(pks.length,1)};
+};
+
+window.addProfile=async function(){
+  const inp=document.getElementById('new-name');
+  const n=inp.value.trim();
+  if(!n)return;
+  if(ST.profiles.find(p=>p.name===n)){alert('Ya existe ese entrenador');return;}
+  window.goc(n);
+  inp.value='';
+  await fbSaveProfile(n,{});
+  renderProfiles();
+}
+
+window.delProfile=async function(n,e){
+  e.stopPropagation();
+  if(!confirm('¿Eliminar a '+n+'?'))return;
+  ST.profiles=ST.profiles.filter(p=>p.name!==n);
+  await fbDeleteProfile(n);
+  renderProfiles();
+}
+
+window.togOwned=async function(id,v){
+  const p=window.goc(ST.cur);
+  if(!p.pk[id])p.pk[id]={};
+  p.pk[id].owned=v;
+  await fbSaveProfile(ST.cur,p.pk);
+  if(ST.albumTab==='dmax'){renderAlbumDmax();renderMain();return;}
+  const c=document.getElementById('c-'+id);
+  if(c){c.className='pk-card'+(v?'':' not-owned');const s=c.querySelector('.status-dot');if(s){s.textContent=v?'✓':'?';s.className='status-dot '+(v?'owned':'missing');}}
+  renderMain();renderRanking();
+}
+
+window.togLeg=async function(id,v){
+  const p=window.goc(ST.cur);
+  if(!p.pk[id])p.pk[id]={};
+  p.pk[id].legacy=v;
+  await fbSaveProfile(ST.cur,p.pk);
+}
+
+window.updIV=async function(id,s,v){
+  const n=parseInt(v);
+  const p=window.goc(ST.cur);
+  if(!p.pk[id])p.pk[id]={};
+  if(s==='a'){p.pk[id].ivAtk=n;document.getElementById('ia-'+id).textContent=n;}
+  if(s==='d'){p.pk[id].ivDef=n;document.getElementById('id-'+id).textContent=n;}
+  if(s==='h'){p.pk[id].ivHp=n;document.getElementById('ih-'+id).textContent=n;}
+  await fbSaveProfile(ST.cur,p.pk);
+}
+
+window.updDPS=async function(id,v){
+  const n=parseFloat(v);
+  const p=window.goc(ST.cur);
+  if(!p.pk[id])p.pk[id]={};
+  p.pk[id].dps=isNaN(n)?undefined:n;
+  await fbSaveProfile(ST.cur,p.pk);
+}
+
+window.selProfile=function(n){ST.cur=n;ST.view=null;show('main-screen');renderMain();}
+window.selProfileIdx=function(i){const p=ST.profiles[i];if(p)window.selProfile(p.name);}
+window.viewProfileIdx=function(i){const p=ST.profiles[i];if(p){if(!ST.cur){alert('Primero selecciona tu propio perfil');return;}ST.view=p.name;show('main-screen');renderMain();}}
+window.delProfileIdx=function(i,e){const p=ST.profiles[i];if(p)window.delProfile(p.name,e);}
+window.togCard=function(id){ST.expanded=ST.expanded===id?null:id;renderAlbum();}
+window.goProfiles=function(){show('profile-screen');renderProfiles();}
+window.goBack=function(){ST.expanded=null;show('main-screen');renderMain();}
+window.switchTab=function(t){
+  ST.tab=t;
+  document.getElementById('tab-a').className='tab'+(t==='album'?' active':'');
+  document.getElementById('tab-r').className='tab'+(t==='ranking'?' active':'');
+  document.getElementById('album-panel').style.display=t==='album'?'':'none';
+  document.getElementById('ranking-panel').style.display=t==='ranking'?'':'none';
+}
+window.openType=function(k){
+  ST.type=k;ST.expanded=null;ST.tab='album';ST.rankTab='raid';
+  document.getElementById('detail-title').innerHTML='<span style="display:inline-flex;align-items:center;gap:6px;color:#fff">'+(TM[k].icon?'<span style="width:20px;height:20px;display:inline-flex;align-items:center">'+(TM[k].icon||'')+'</span>':'')+TM[k].name+'</span>';
+  document.getElementById('tab-a').className='tab active';
+  document.getElementById('tab-r').className='tab';
+  ST.albumTab='raid';
+  if(document.getElementById('atab-raid')){
+    document.getElementById('atab-raid').className='album-subtab active';
+    document.getElementById('atab-dmax').className='album-subtab';
+    document.getElementById('apanel-raid').style.display='';
+    document.getElementById('apanel-dmax').style.display='none';
+  }
+  if(document.getElementById('rtab-raid')){
+    document.getElementById('rtab-raid').className='tab active';
+    document.getElementById('rtab-dmax').className='tab';
+    document.getElementById('rpanel-raid').style.display='';
+    document.getElementById('rpanel-dmax').style.display='none';
+  }
+  document.getElementById('album-panel').style.display='';
+  document.getElementById('ranking-panel').style.display='none';
+  const vb=document.getElementById('view-badge-wrap');
+  if(ST.view){vb.style.display='flex';document.getElementById('view-name').textContent=ST.view;}
+  else vb.style.display='none';
+  renderAlbum();renderRanking();
+  show('detail-screen');
+}
+window.openGuia=function(){document.getElementById('modal-guia').style.display='flex';}
+window.closeGuiaBtn=function(){document.getElementById('modal-guia').style.display='none';}
+window.closeGuia=function(e){if(e.target.id==='modal-guia')document.getElementById('modal-guia').style.display='none';}
+window.openInfo=function(){document.getElementById('modal-info').style.display='flex';}
+window.closeInfoBtn=function(){document.getElementById('modal-info').style.display='none';}
+window.closeInfo=function(e){if(e.target.id==='modal-info')document.getElementById('modal-info').style.display='none';}
+
+// ── Arranque ────────────────────────────────────────────────────────────────
+window.toggleDark=function(){
+  const d=document.body.classList.toggle('dark');
+  localStorage.setItem('darkMode',d?'1':'0');
+  const icon=d?'☀️':'🌙';
+  document.querySelectorAll('#dark-btn,#dark-btn2').forEach(b=>{if(b)b.textContent=icon;});
+};
+// Restore dark mode preference on load
+if(localStorage.getItem('darkMode')==='1'){
+  document.body.classList.add('dark');
+  document.addEventListener('DOMContentLoaded',()=>{
+    document.querySelectorAll('#dark-btn,#dark-btn2').forEach(b=>{if(b)b.textContent='☀️';});
+  });
+}
+// ── DYNAMAX RANKINGS (top DPS per type) ────────────────────────────────────
+
+
+window.switchAlbumTab=function(tab){
+  ST.albumTab=tab;
+  document.getElementById('atab-raid').className='album-subtab'+(tab==='raid'?' active':'');
+  document.getElementById('atab-dmax').className='album-subtab'+(tab==='dmax'?' active':'');
+  document.getElementById('apanel-raid').style.display=tab==='raid'?'':'none';
+  document.getElementById('apanel-dmax').style.display=tab==='dmax'?'':'none';
+  if(tab==='dmax')renderAlbumDmax();
+};
+
+window.switchRankTab=function(tab){
+  ST.rankTab=tab;
+  document.getElementById('rtab-raid').className='tab'+(tab==='raid'?' active':'');
+  document.getElementById('rtab-dmax').className='tab'+(tab==='dmax'?' active':'');
+  document.getElementById('rpanel-raid').style.display=tab==='raid'?'':'none';
+  document.getElementById('rpanel-dmax').style.display=tab==='dmax'?'':'none';
+  if(tab==='dmax')renderDmaxRanking();
+};
+
+window.addToAlbum=async function(pkId){
+  if(!ST.cur)return;
+  const p=window.goc(ST.cur);
+  if(!p.album)p.album=defaultAlbum();
+  // Count how many in this type
+  const pk=PD.find(x=>x.id===pkId);
+  if(!pk)return;
+  const typeCount=PD.filter(x=>p.album[x.id]&&x.type===pk.type).length;
+  if(typeCount>=6){setStatus('⚠️ Máximo 6 Pokémon por tipo');setTimeout(()=>setStatus(''),2000);return;}
+  p.album[pkId]=true;
+  await fbSaveProfile(ST.cur,p.pk,p.album);
+  renderAlbum();renderRanking();renderMain();
+};
+window.removeFromAlbum=async function(pkId){
+  if(!ST.cur)return;
+  const p=window.goc(ST.cur);
+  if(!p.album)p.album=defaultAlbum();
+  delete p.album[pkId];
+  await fbSaveProfile(ST.cur,p.pk,p.album);
+  ST.expanded=null;
+  renderAlbum();renderRanking();renderMain();
+};
+window.renderProfiles=renderProfiles;
+window.renderMain=renderMain;
+window.renderAlbum=renderAlbum;
+window.renderAlbumDmax=renderAlbumDmax;
+window.renderRanking=renderRanking;
+window.show=show;
+
+(async()=>{
+  await fbLoad();
+  renderProfiles();
+  show('profile-screen');
+})();
+
+// PWA Service Worker - aggressively clear old caches
+if('serviceWorker' in navigator){
+  window.addEventListener('load',async()=>{
+    // Unregister any old service workers first
+    const regs = await navigator.serviceWorker.getRegistrations();
+    for(const reg of regs){
+      const swUrl = reg.active?.scriptURL || '';
+      // If the SW cache version doesn't match, unregister
+      if(!swUrl.includes('sw.js')) await reg.unregister();
+    }
+    // Register new SW
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+
+// modal functions defined in module
+
+
+TYPES.forEach(t=>TM[t.key]=t);
+
+
+
+
 
 // State and helpers defined in Firebase module above (window.ST, window.gp, etc.)
 function renderProfiles(){
