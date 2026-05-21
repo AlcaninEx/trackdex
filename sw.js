@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokebestbcn-v16';
+const CACHE_NAME = 'pokebestbcn-v17';
 const ASSETS = [
   '/pokebestbcn/index.html',
   '/pokebestbcn/manifest.json',
@@ -11,9 +11,14 @@ self.addEventListener('install', e => {
   self.skipWaiting();
 });
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys =>
-    Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-  ));
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => {
+        console.log('Deleting old cache:', k);
+        return caches.delete(k);
+      }))
+    )
+  );
   self.clients.claim();
 });
 self.addEventListener('fetch', e => {
@@ -21,6 +26,11 @@ self.addEventListener('fetch', e => {
      e.request.url.includes('firebase')||
      e.request.url.includes('gstatic.com/firebasejs')){
     e.respondWith(fetch(e.request));return;
+  }
+  // Network first for HTML, cache first for others
+  if(e.request.destination === 'document'){
+    e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));
+    return;
   }
   e.respondWith(caches.match(e.request).then(cached=>cached||fetch(e.request)));
 });
