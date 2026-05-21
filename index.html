@@ -93,6 +93,16 @@ body.dark .add-btn{background:#333!important;color:#eee!important}
 .tab.active{color:#CC0000!important;border-bottom-color:#CC0000!important}
 /* ALBUM */
 .album-wrap{padding:12px;background:#f0f0f0;min-height:100vh}
+.album-subtabs{display:flex;border-bottom:2px solid #e0e0e0;background:#fff}
+.album-subtab{flex:1;padding:9px;text-align:center;font-size:12px;font-weight:700;cursor:pointer;color:#888;border-bottom:3px solid transparent;background:#fff;border-top:none;border-left:none;border-right:none}
+.album-subtab.active{color:#CC0000;border-bottom-color:#CC0000}
+.empty-slot{border-radius:12px;overflow:hidden;margin-bottom:10px;border:2px dashed #ccc;background:#f8f8f8;display:flex;align-items:center;justify-content:center;padding:14px 12px;gap:10px;opacity:.7}
+.empty-slot-icon{width:48px;height:48px;border-radius:50%;background:#e0e0e0;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.empty-slot-txt{font-size:12px;color:#888;line-height:1.4}
+body.dark .empty-slot{border-color:#444;background:#1e1e1e}
+body.dark .empty-slot-txt{color:#666}
+body.dark .album-subtab{background:#1e1e1e;color:#666;border-color:#333}
+body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 .pk-card{border-radius:12px;overflow:hidden;margin-bottom:10px}
 .pk-card.not-owned{opacity:.35;filter:grayscale(.6)}
 .pk-top{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer}
@@ -377,7 +387,14 @@ body.dark .add-btn{background:#333!important;color:#eee!important}
     <button class="tab" id="tab-r" onclick="switchTab('ranking')">Ranking DPS</button>
   </div>
   <div id="view-badge-wrap" class="view-badge-bar" style="display:none">👁 Solo lectura — <span id="view-name"></span></div>
-  <div id="album-panel"><div class="album-wrap" id="album-list"></div></div>
+  <div id="album-panel">
+  <div class="album-subtabs">
+    <button class="album-subtab active" id="atab-raid" onclick="switchAlbumTab('raid')">⚔️ Incursión</button>
+    <button class="album-subtab" id="atab-dmax" onclick="switchAlbumTab('dmax')">⚡ Dynamax</button>
+  </div>
+  <div id="apanel-raid"><div class="album-wrap" id="album-list"></div></div>
+  <div id="apanel-dmax" style="display:none"><div class="album-wrap" id="album-list-dmax"></div></div>
+</div>
   <div id="ranking-panel" style="display:none">
   <div style="display:flex;border-bottom:2px solid #e0e0e0;background:#fff">
     <button id="rtab-raid" class="tab active" onclick="switchRankTab('raid')" style="flex:1;font-size:12px;padding:8px">⚔️ Incursiones</button>
@@ -386,6 +403,10 @@ body.dark .add-btn{background:#333!important;color:#eee!important}
   <div id="rpanel-raid">
     <p class="rank-note" id="rank-note"></p>
     <div class="rank-wrap"><div class="rank-list" id="rank-list"></div></div>
+  </div>
+  <div id="rpanel-dmax" style="display:none">
+    <p id="rank-note-dmax" style="font-size:11px;color:#888;text-align:center;padding:6px 12px 0">Top Dynamax · Max Move Damage · pokemongohub.net</p>
+    <div class="rank-wrap"><div id="rank-list-dmax"></div></div>
   </div>
 </div>
 
@@ -407,7 +428,7 @@ const fbApp=initializeApp(firebaseConfig);
 const db=getFirestore(fbApp);
 
 // ── Estado global ───────────────────────────────────────────────────────────
-window.ST={profiles:[],cur:null,view:null,type:null,expanded:null,tab:'album'};
+window.ST={profiles:[],cur:null,view:null,type:null,expanded:null,tab:'album',rankTab:'raid',albumTab:'raid'};
 
 // ── Helpers Firestore ───────────────────────────────────────────────────────
 async function fbLoad(){
@@ -500,6 +521,7 @@ window.togOwned=async function(id,v){
   if(!p.pk[id])p.pk[id]={};
   p.pk[id].owned=v;
   await fbSaveProfile(ST.cur,p.pk);
+  if(ST.albumTab==='dmax'){renderAlbumDmax();renderMain();return;}
   const c=document.getElementById('c-'+id);
   if(c){c.className='pk-card'+(v?'':' not-owned');const s=c.querySelector('.status-dot');if(s){s.textContent=v?'✓':'?';s.className='status-dot '+(v?'owned':'missing');}}
   renderMain();renderRanking();
@@ -549,6 +571,13 @@ window.openType=function(k){
   document.getElementById('detail-title').innerHTML='<span style="display:inline-flex;align-items:center;gap:6px;color:#fff">'+(TM[k].icon?'<span style="width:20px;height:20px;display:inline-flex;align-items:center">'+(TM[k].icon||'')+'</span>':'')+TM[k].name+'</span>';
   document.getElementById('tab-a').className='tab active';
   document.getElementById('tab-r').className='tab';
+  ST.albumTab='raid';
+  if(document.getElementById('atab-raid')){
+    document.getElementById('atab-raid').className='album-subtab active';
+    document.getElementById('atab-dmax').className='album-subtab';
+    document.getElementById('apanel-raid').style.display='';
+    document.getElementById('apanel-dmax').style.display='none';
+  }
   if(document.getElementById('rtab-raid')){
     document.getElementById('rtab-raid').className='tab active';
     document.getElementById('rtab-dmax').className='tab';
@@ -605,6 +634,15 @@ const DMAX={
   fairy:[{n:'D-Hatterene',dps:272.38,fast:'Charm',charge:'Max Starfall',img:'858'},{n:'D-Gardevoir',dps:272.38,fast:'Charm',charge:'Max Starfall',img:'282'},{n:'D-Sylveon',dps:235.77,fast:'Charm',charge:'Max Starfall',img:'700'},{n:'D-Gallade',dps:227.15,fast:'Charm',charge:'Max Starfall',img:'475'},{n:'D-Latias',dps:219.08,fast:'Charm',charge:'Max Starfall',img:'380'},{n:'D-Tsareena',dps:213.69,fast:'Charm',charge:'Max Starfall',img:'763'}],
 };
 
+window.switchAlbumTab=function(tab){
+  ST.albumTab=tab;
+  document.getElementById('atab-raid').className='album-subtab'+(tab==='raid'?' active':'');
+  document.getElementById('atab-dmax').className='album-subtab'+(tab==='dmax'?' active':'');
+  document.getElementById('apanel-raid').style.display=tab==='raid'?'':'none';
+  document.getElementById('apanel-dmax').style.display=tab==='dmax'?'':'none';
+  if(tab==='dmax')renderAlbumDmax();
+};
+
 window.switchRankTab=function(tab){
   ST.rankTab=tab;
   document.getElementById('rtab-raid').className='tab'+(tab==='raid'?' active':'');
@@ -639,6 +677,7 @@ window.removeFromAlbum=async function(pkId){
 window.renderProfiles=renderProfiles;
 window.renderMain=renderMain;
 window.renderAlbum=renderAlbum;
+window.renderAlbumDmax=renderAlbumDmax;
 window.renderRanking=renderRanking;
 window.show=show;
 
@@ -1084,7 +1123,12 @@ function renderAlbum(){
   const profile=ST.view||ST.cur;const isV=!!ST.view;const t=TM[ST.type];
   const pks=albumPksForType(profile,ST.type);const maxD=Math.max(...pks.map(p=>p.dps),1);
   const albumCount=pks.length;
-  document.getElementById('album-list').innerHTML=(pks.length===0?'<p style="text-align:center;padding:20px;color:#aaa">Sin Pokémon en el álbum.<br>Añade desde el Ranking DPS.</p>':'')+pks.map(pk=>{
+  // Build empty slots (up to 6 total)
+  const emptyCount=Math.max(0,6-pks.length);
+  const emptySlots=emptyCount>0?Array(emptyCount).fill(0).map(()=>
+    `<div class="empty-slot"><div class="empty-slot-icon">❓</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Necesitas un equipo de 6 para incursiones</div></div>`
+  ).join(''):'';
+  document.getElementById('album-list').innerHTML=pks.map(pk=>{
     const pp=gp(profile);const pd=(pp&&pp.pk[pk.id])||{};
     const isO=pd.owned||false;const lg=pd.legacy||false;
     const ia=pd.ivAtk||0,id2=pd.ivDef||0,ih=pd.ivHp||0;
@@ -1118,6 +1162,29 @@ function renderDmaxRanking(){
     const displayName=r.n.replace(/^[GD]-/,'');
     return `<div class="rank-row" style="background:#fff"><span class="rank-num">#${i+1}</span><img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1"><div class="rank-info"><div class="rank-name" style="color:#222">${displayName}${badge}</div><div class="rank-move" style="color:#888">${r.fast} / ${r.charge}</div><div class="dps-minibar"><div class="dps-minifill" style="width:${bw}%;background:${t.color}"></div></div></div><div class="rank-dps" style="color:#222">${r.dps.toFixed(1)}</div></div>`;
   }).join('');
+}
+
+function renderAlbumDmax(){
+  const profile=ST.view||ST.cur;const t=TM[ST.type];
+  const dxRows=DMAX[ST.type]||[];
+  if(!dxRows.length){
+    document.getElementById('album-list-dmax').innerHTML='<p style="text-align:center;padding:20px;color:#aaa">Sin datos Dynamax para este tipo.</p>';
+    return;
+  }
+  const slots=dxRows.slice(0,3);
+  const emptyDx=Math.max(0,3-slots.length);
+  const maxD=slots.length>0?slots[0].dps:1;
+  const html=slots.map((r,i)=>{
+    const isG=r.charge.startsWith('G-Max')||r.charge.includes('Drum Solo')||r.charge.includes('Vine Lash')||r.charge.includes('Cannonade')||r.charge.includes('Hydrosnipe')||r.charge.includes('Foam Burst')||r.charge.includes('Fireball')||r.charge.includes('Wildfire')||r.charge.includes('Stun Shock')||r.charge.includes('Befuddle')||r.charge.includes('Terror')||r.charge.includes('Snooze')||r.charge.includes('Resonance')||r.charge.includes('Chi Strike')||r.charge.includes('Behemoth');
+    const badge=isG?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>';
+    const displayName=r.n.replace(/^[GD]-/,'');
+    const bw=Math.round((r.dps/maxD)*100);
+    return '<div class="pk-card" style="background:'+t.color+'"><div class="pk-top"><div style="display:flex;align-items:center;gap:2px;flex-shrink:0"><div class="final-wrap"><img class="final-img" src="'+si(r.img)+'" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">'+displayName+'</div><div class="tags-row">'+badge+'</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>'+r.dps.toFixed(1)+'</span></div><div class="dps-bar"><div class="dps-fill" style="width:'+bw+'%"></div></div></div></div></div><div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">'+r.fast+' → '+r.charge+'</div></div>';
+  }).join('');
+  const emptyHtml=emptyDx>0?Array(emptyDx).fill(0).map(()=>
+    '<div class="empty-slot"><div class="empty-slot-icon">⚡</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Necesitas un equipo de 3 para Dynamax</div></div>'
+  ).join(''):'';
+  document.getElementById('album-list-dmax').innerHTML=html+emptyHtml;
 }
 
 function renderRanking(){
