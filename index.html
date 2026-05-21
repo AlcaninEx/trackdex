@@ -1027,11 +1027,10 @@ if(localStorage.getItem('darkMode')==='1'){
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }
-window.addEventListener('DOMContentLoaded',()=>{
-  load();
-  renderProfiles();
-  show('profile-screen');
-});
+// DOM is ready (script is at end of body) - call directly
+load();
+renderProfiles();
+show('profile-screen');
 </script>
 </body>
 </html>
