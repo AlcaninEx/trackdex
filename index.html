@@ -1060,37 +1060,12 @@ window.renderAlbumDmax=renderAlbumDmax;
 window.renderRanking=renderRanking;
 window.show=show;
 
-(async()=>{
-  await fbLoad();
-  renderProfiles();
-  show('profile-screen');
-})();
-
-// PWA Service Worker - aggressively clear old caches
-if('serviceWorker' in navigator){
-  window.addEventListener('load',async()=>{
-    // Unregister any old service workers first
-    const regs = await navigator.serviceWorker.getRegistrations();
-    for(const reg of regs){
-      const swUrl = reg.active?.scriptURL || '';
-      // If the SW cache version doesn't match, unregister
-      if(!swUrl.includes('sw.js')) await reg.unregister();
-    }
-    // Register new SW
-    navigator.serviceWorker.register('sw.js').catch(()=>{});
-  });
-}
-
-// modal functions defined in module
 
 
-TYPES.forEach(t=>TM[t.key]=t);
+// Local aliases for module-scoped functions used in render
+const gp = (n) => window.gp(n);
+const goc = (n) => window.goc(n);
 
-
-
-
-
-// State and helpers defined in Firebase module above (window.ST, window.gp, etc.)
 function renderProfiles(){
   const el=document.getElementById('profiles-list');
   if(!ST.profiles.length){el.innerHTML='<p style="color:#aaa;text-align:center;padding:20px">Añade tu primer entrenador abajo</p>';return;}
@@ -1100,9 +1075,7 @@ function renderProfiles(){
     return `<div class="profile-row"><div class="avatar">${ini}</div><div class="profile-info" onclick="selProfileIdx(${i})"><div class="profile-name">${p.name}</div><div class="profile-stat">${cnt} pokémon registrados</div></div><div class="profile-actions"><button class="view-btn" onclick="viewProfileIdx(${i})">Ver</button><button class="del-btn" onclick="delProfileIdx(${i},event)">🗑</button></div></div>`;
   }).join('');
 }
-// selProfile* defined in Firebase module
 
-// goProfiles defined in module
 function renderMain(){
   document.getElementById('uname').textContent=ST.view?ST.cur+' → '+ST.view:ST.cur;
   const v=ST.view||ST.cur;
@@ -1129,7 +1102,6 @@ function renderMain(){
     </div>`;
   }).join('');
 }
-// openType/switchTab defined in module
 function evoH(evo,img,isShadow){
   const shadowBadge=isShadow?`<img src="shadow_icon.png" class="shadow-badge" alt="Shadow">`:'';
   if(!evo||evo.length<=1)return`<div class="final-wrap">${shadowBadge}<img class="final-img" src="${si(img)}" onerror="this.style.opacity=.1"></div>`;
@@ -1234,9 +1206,38 @@ function renderRanking(){
     return `<div class="rank-row${isA?' ours':''}" style="background:${rowBg};--tc:${t.color}"><span class="rank-num">#${i+1}</span><img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1"><div class="rank-info"><div class="rank-name" style="color:${nameCol}">${r.n}${isO?`<span class="badge" style="background:${t.color}">TUYO</span>`:''}</div><div class="rank-move">${ft} / ${ct}</div><div class="dps-minibar"><div class="dps-minifill" style="width:${bw}%;background:${t.color}"></div></div></div><div class="rank-dps" style="color:${nameCol}">${r.dps.toFixed(2)}</div>${toggleBtn}</div>`;
   }).join('');
 }
-// togCard/togOwned/togLeg/updIV/updDPS/goBack defined in module
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.style.display='none');document.getElementById(id).style.display='block';}
-// boot handled in module async IIFE
+
+(async()=>{
+  await fbLoad();
+  renderProfiles();
+  show('profile-screen');
+})();
+
+// PWA Service Worker - aggressively clear old caches
+if('serviceWorker' in navigator){
+  window.addEventListener('load',async()=>{
+    // Unregister any old service workers first
+    const regs = await navigator.serviceWorker.getRegistrations();
+    for(const reg of regs){
+      const swUrl = reg.active?.scriptURL || '';
+      // If the SW cache version doesn't match, unregister
+      if(!swUrl.includes('sw.js')) await reg.unregister();
+    }
+    // Register new SW
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+
+// modal functions defined in module
+
+
+TYPES.forEach(t=>TM[t.key]=t);
+
+
+
+
+
 </script>
 </body>
 </html>
