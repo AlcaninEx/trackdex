@@ -337,7 +337,7 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 </div>
 
 <!-- PROFILE -->
-<div id="profile-screen" class="screen active">
+<div id="profile-screen" class="screen">
   <div id="profile-screen-inner">
     <div class="logo-wrap">
       <svg width="56" height="56" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#CC0000" stroke="#222" stroke-width="3"/><rect x="2" y="29" width="60" height="6" fill="#222"/><circle cx="32" cy="32" r="10" fill="white" stroke="#222" stroke-width="3"/><circle cx="32" cy="32" r="5" fill="#CC0000" stroke="#222" stroke-width="2"/></svg>
@@ -1028,9 +1028,16 @@ if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }
 // DOM is ready (script is at end of body) - call directly
-load();
-renderProfiles();
-show('profile-screen');
+try {
+  load();
+  renderProfiles();
+  show('profile-screen');
+  // Force visibility as backup
+  document.getElementById('profile-screen').style.display='block';
+  window.scrollTo(0,0);
+} catch(e) {
+  document.body.innerHTML='<div style="padding:20px;color:red;font-size:16px">ERROR: '+e.message+'<br><br>'+e.stack+'</div>';
+}
 </script>
 </body>
 </html>
