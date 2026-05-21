@@ -1003,11 +1003,11 @@ function renderMain(){
   document.getElementById('uname').textContent=ST.view?ST.cur+' → '+ST.view:ST.cur;
   const v=ST.view||ST.cur;
   document.getElementById('types-grid').innerHTML=TYPES.map(t=>{
-    const{o}=countType(v,t.key);
-    const pct=tot>0?Math.round(o/tot*100):0;
     // Count dynamax owned vs max 3
     const pks=albumPksForType(v,t.key);
     const tot=Math.max(pks.length,1);
+    const{o}=countType(v,t.key);
+    const pct=tot>0?Math.round(o/tot*100):0;
     const dxPks=pks.filter(p=>p.tags.includes('dynamax'));
     const dxOwned=dxPks.filter(p=>{const pp=gp(v);return pp&&pp.pk[p.id]&&pp.pk[p.id].owned;}).length;
     const dxTot=Math.min(dxPks.length,3);
