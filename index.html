@@ -856,8 +856,8 @@ function addToAlbum(pkId) {
   if(!ST.cur)return;
   const p=goc(ST.cur);
   const pk=PD.find(x=>x.id===pkId); if(!pk)return;
-  // Initialize album if needed (without auto-filling defaults)
-  if(!p.album) p.album={};
+  // If album not yet customized, start from defaults
+  if(p.album===undefined||p.album===null) p.album=Object.assign({},defaultAlbum());
   // Count how many are currently in album for this type
   const currentCount=PD.filter(x=>p.album[x.id]===true&&x.type===pk.type).length;
   if(currentCount>=6){alert('Máximo 6 por tipo');return;}
@@ -866,8 +866,10 @@ function addToAlbum(pkId) {
 function removeFromAlbum(pkId) {
   if(!ST.cur)return;
   const p=goc(ST.cur);
-  if(!p.album) p.album={};
-  delete p.album[pkId]; ST.expanded=null; save(); renderAlbum(); renderRanking(); renderMain();
+  // If album not yet customized, start from defaults before removing
+  if(p.album===undefined||p.album===null) p.album=Object.assign({},defaultAlbum());
+  delete p.album[pkId];
+  ST.expanded=null; save(); renderAlbum(); renderRanking(); renderMain();
 }
 function togOwned(id,v) {
   const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={}; p.pk[id].owned=v; save();
