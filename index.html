@@ -123,12 +123,8 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 .ts{background:rgba(255,255,255,.93)!important;color:#6a1b9a!important}
 .tme{background:rgba(255,255,255,.93)!important;color:#c62828!important}
 .tdx{background:rgba(255,255,255,.93)!important;color:#1a237e!important}
-.rank-toggle{flex-shrink:0;width:38px;height:22px;border-radius:11px;border:none;cursor:pointer;position:relative;transition:background .2s;outline:none}
-.rank-toggle.in-album{background:#4caf50}
-.rank-toggle.not-in-album{background:#ccc}
-.rank-toggle.full{background:#ffb300;cursor:not-allowed}
-.rank-toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
-.rank-toggle.in-album::after{transform:translateX(16px)}
+.rank-add-btn{flex-shrink:0;width:28px;height:28px;border-radius:50%;border:none;background:#43a047;color:#fff;font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:transform .1s,background .1s}
+.rank-add-btn:active{transform:scale(.88);background:#2e7d32}
 .album-remove{background:none;border:none;cursor:pointer;font-size:16px;padding:2px 6px;color:rgba(255,255,255,.7);flex-shrink:0;line-height:1}
 .album-remove:hover{color:#fff}
 .album-count{font-size:11px;color:rgba(255,255,255,.8);text-align:center;padding:4px 0 8px;font-weight:600}
@@ -141,7 +137,7 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 .status-dot.missing{background:rgba(0,0,0,.2);color:rgba(255,255,255,.7)!important}
 .type-icon{display:inline-flex;align-items:center;vertical-align:middle;width:16px;height:16px;margin-right:5px;flex-shrink:0}
 .type-icon svg{width:16px;height:16px}
-.pk-card.not-owned{opacity:.78;filter:saturate(.72) brightness(.88)}
+
 .final-wrap{position:relative}
 .shadow-badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;object-fit:contain;z-index:2;filter:drop-shadow(0 0 2px rgba(0,0,0,.6))}
 .pk-body{border-top:1px solid rgba(255,255,255,.25);padding:12px 14px;display:none;background:#fff!important}
@@ -713,6 +709,105 @@ const DMAX={
 };
 
 const DMAX_NAMES=new Set(["alakazam", "arcanine", "articuno", "blastoise", "boldore", "butterfree", "chandelure", "charizard", "cinderace", "corviknight", "crowned zacian", "crowned zamazenta", "cryogonal", "darmanitan", "drampa", "drilbur", "duraludon", "espeon", "eternatus", "excadrill", "flareon", "gallade", "garbodor", "garchomp", "gardevoir", "gastly", "gengar", "gigalith", "glaceon", "grimmsnarl", "hatterene", "haunter", "hitmonlee", "ho-oh", "inteleon", "jolteon", "kabutops", "kingler", "lapras", "latias", "latios", "leafeon", "machamp", "magnezone", "malamar", "mamoswine", "mega blastoise", "mega blaziken", "mega charizard y", "mega garchomp", "mega gardevoir", "mega gengar", "mega gyarados", "mega metagross", "mega salamence", "mega sceptile", "mega swampert", "mega tyranitar", "mega venusaur", "metagross", "metang", "moltres", "omastar", "passimian", "raikou", "regice", "regirock", "rillaboom", "sableye", "suicune", "swoobat", "sylveon", "toxtricity", "toxtricity amp", "toxtricity lk", "tsareena", "tyranitar", "unfezant", "venusaur", "wailord", "walrein", "zapdos"]);
+const BASE_STATS={
+  'f-mega-lucario-l':[236,144,172],
+  'f-mega-lucario':[236,144,172],
+  'f-mega-blaziken':[239,141,190],
+  'f-shd-blaziken':[239,141,190],
+  'f-shd-conkeldurr':[243,158,233],
+  'f-shd-machamp':[234,159,207],
+  'v-shd-toucan-l':[200,164,198],
+  'v-shd-starap-l':[234,140,198],
+  'v-mega-pidgeot-l':[166,154,186],
+  'v-shd-starap':[234,140,198],
+  'v-mega-pidgeot':[166,154,186],
+  'v-braviary':[232,152,198],
+  'p-mega-beedrill':[169,130,163],
+  'p-shd-overqwil':[175,179,190],
+  'p-mega-victreebel':[207,135,190],
+  'g-mega-garc-l':[261,193,239],
+  'g-shd-garc-l':[261,193,239],
+  'g-mega-garc':[261,193,239],
+  'g-shd-excadrill':[255,129,242],
+  'g-shd-rhyperior':[241,190,251],
+  'g-shd-mamoswin':[247,146,242],
+  'r-mega-diancie':[190,285,137],
+  'r-shd-rhyp-l':[241,190,251],
+  'r-mega-tyran-l':[251,207,225],
+  'r-rampardos':[295,109,181],
+  'b-mega-pinsir':[238,197,163],
+  'b-mega-scizor':[236,191,172],
+  'b-shd-vikavolt':[254,155,163],
+  'b-mega-beed-l':[169,130,163],
+  'b-mega-beed':[169,130,163],
+  'gh-mega-geng-l':[261,149,155],
+  'gh-mega-geng':[261,149,155],
+  'gh-mega-bane':[218,127,162],
+  'gh-shd-chand':[271,182,155],
+  'gh-dragapult':[275,175,188],
+  'gh-chandelure':[271,182,155],
+  'st-mega-meta-l':[257,228,190],
+  'st-shd-meta-l':[257,228,190],
+  'st-mega-lucar':[236,144,172],
+  'st-shd-excad':[255,129,242],
+  'st-mega-meta':[257,228,190],
+  'st-mega-aggron':[198,257,172],
+  'fi-mega-blaz-l':[239,141,190],
+  'fi-mega-char-y-l':[223,173,186],
+  'fi-mega-blaz':[239,141,190],
+  'fi-mega-char-y':[223,173,186],
+  'fi-shd-chand':[271,182,155],
+  'fi-shd-darman':[263,128,233],
+  'wa-mega-swamp-l':[208,175,225],
+  'wa-mega-blast-l':[171,207,188],
+  'wa-mega-gyara':[237,186,216],
+  'wa-shd-kingler':[240,143,163],
+  'wa-mega-swamp':[208,175,225],
+  'wa-mega-blast':[171,207,188],
+  'gr-mega-scept-l':[223,169,172],
+  'gr-mega-scept':[223,169,172],
+  'gr-shaymin':[261,166,176],
+  'gr-mega-venu-l':[198,189,190],
+  'gr-rillaboom':[225,186,233],
+  'gr-roserade':[243,185,155],
+  'el-mega-manec':[215,127,163],
+  'el-shd-electiv':[249,163,181],
+  'el-shd-magnez':[238,205,172],
+  'el-mega-amphar':[211,169,207],
+  'el-electivire':[249,163,181],
+  'el-magnezone':[238,205,172],
+  'ps-mega-alak-l':[271,167,146],
+  'ps-mega-gallade':[237,195,169],
+  'ps-mega-garde':[237,195,169],
+  'ps-mega-meta':[257,228,190],
+  'ps-shd-garde':[237,195,169],
+  'ps-espeon':[261,175,163],
+  'ic-shd-mamosw':[247,146,242],
+  'ic-shd-weavile':[243,171,172],
+  'ic-baxcalibur':[258,167,216],
+  'ic-mega-aboma':[178,158,207],
+  'ic-darman-galar':[263,128,233],
+  'ic-mamoswine':[247,146,242],
+  'dr-mega-garc':[261,193,239],
+  'dr-shd-garc':[261,193,239],
+  'dr-mega-salamen':[277,168,190],
+  'dr-garchomp':[261,193,239],
+  'dr-shd-salamen':[277,168,190],
+  'dr-dragonite':[263,201,209],
+  'dk-mega-tyran':[251,207,225],
+  'dk-shd-tyran':[251,207,225],
+  'dk-shd-hydrei-l':[256,188,211],
+  'dk-mega-absol-l':[246,120,163],
+  'dk-mega-hound':[224,144,181],
+  'dk-hydreigon':[256,188,211],
+  'fa-mega-garde':[237,195,169],
+  'fa-gardevoir':[237,195,169],
+  'fa-togekiss':[225,217,198],
+  'fa-shd-granbull':[212,131,207],
+  'fa-hatterene':[214,199,163],
+  'fa-sylveon':[203,205,216],
+};
+
 const PD=[
   {id:'f-mega-lucario-l',name:'Mega Lucario',type:'fighting',evo:['447','448'],img:'10059',tags:['mega','legacy'],fast:'Palma de Fuerza*',charge:'Esfera Aural',dps:34.80},
   {id:'f-mega-blaziken',name:'Mega Blaziken',type:'fighting',evo:['255','256','257'],img:'10050',tags:['mega'],fast:'Contraataque',charge:'Esfera Aural',dps:35.72},
@@ -823,11 +918,7 @@ function gp(n) { return ST.profiles.find(p=>p.name===n); }
 function goc(n) { let p=gp(n); if(!p){p={name:n,pk:{}};ST.profiles.push(p);} return p; }
 
 function defaultAlbum() {
-  const a={};
-  [...new Set(PD.map(p=>p.type))].forEach(t=>{
-    PD.filter(p=>p.type===t).sort((a,b)=>b.dps-a.dps).slice(0,6).forEach(p=>a[p.id]=true);
-  });
-  return a;
+  return {}; // No defaults — user builds their own team
 }
 function getAlbum(n) {
   const p=gp(n); if(!p)return defaultAlbum();
@@ -835,8 +926,29 @@ function getAlbum(n) {
   if(p.album===undefined||p.album===null)return defaultAlbum();
   return p.album;
 }
-function albumPks(n,type) { const a=getAlbum(n); return PD.filter(p=>p.type===type&&a[p.id]).sort((a,b)=>b.dps-a.dps); }
-function countType(n,type) { const pks=albumPks(n,type); const p=gp(n); return {o: p?pks.filter(pk=>p.pk[pk.id]&&p.pk[pk.id].owned).length:0, t:Math.max(pks.length,1)}; }
+function albumPks(n,type) {
+  const a=getAlbum(n);
+  const p=gp(n);
+  // PD entries in album
+  const pdPks=PD.filter(pk=>pk.type===type&&a[pk.id]);
+  // Custom entries in album
+  const customPks=[];
+  if(p&&p.custom){
+    Object.entries(p.custom).forEach(([id,d])=>{
+      if(d.type===type&&a[id]===true){
+        // If this is a copy of a PD entry, use PD data for evo/tags
+        const pdRef=d.pdRef?PD.find(x=>x.id===d.pdRef):null;
+        customPks.push({
+          id, name:d.n, type:d.type, img:d.img||( pdRef?pdRef.img:''),
+          dps:d.dps, fast:d.fast, charge:d.charge,
+          tags:pdRef?pdRef.tags:[], evo:pdRef?pdRef.evo:null, isCustom:true
+        });
+      }
+    });
+  }
+  return [...pdPks,...customPks].sort((a,b)=>b.dps-a.dps);
+}
+function countType(n,type) { const pks=albumPks(n,type); return {o:pks.length, t:Math.max(pks.length,1)}; }
 
 // ── PROFILE ──────────────────────────────────────────────────────────────────
 function addProfile() {
@@ -852,6 +964,47 @@ function goProfiles() { show('profile-screen'); renderProfiles(); }
 function goBack() { ST.expanded=null; show('main-screen'); renderMain(); }
 
 // ── ALBUM ─────────────────────────────────────────────────────────────────────
+function addFromRanking(id) {
+  if(!ST.cur)return;
+  const data=(window._rankCache&&window._rankCache[id])||{};
+  const type=data.type||ST.type;
+  const p=goc(ST.cur);
+  if(!p.album)p.album={};
+  if(!p.custom)p.custom={};
+  // Count current entries for this type
+  const typeCount=countAlbumForType(p, type);
+  if(typeCount>=6){alert('Ya tienes 6 Pokémon de este tipo en tu equipo');return;}
+  // Generate unique id for this copy (allow multiple copies)
+  let newId=id;
+  let n=1;
+  while(p.album[newId]===true){newId=id+'-'+n;n++;}
+  p.album[newId]=true;
+  // Store data (use PD data if available, else rank cache)
+  const pdEntry=PD.find(x=>x.id===id);
+  if(pdEntry){
+    // Copy PD entry with new id
+    if(newId!==id) p.custom[newId]={n:pdEntry.name,dps:pdEntry.dps,img:pdEntry.img,fast:pdEntry.fast,charge:pdEntry.charge,type:pdEntry.type,pdRef:id};
+  } else if(data.n){
+    p.custom[newId]={n:data.n,dps:data.dps||0,img:data.img||'',fast:data.fast||'',charge:data.charge||'',type:type};
+  }
+  save(); renderAlbum(); renderMain();
+}
+function removeRankEntry(id, type) {
+  if(!ST.cur)return;
+  const p=goc(ST.cur);
+  if(p.album===undefined||p.album===null) p.album=Object.assign({},defaultAlbum());
+  delete p.album[id];
+  if(p.custom) delete p.custom[id];
+  ST.expanded=null; save(); renderAlbum(); renderRanking(); renderMain();
+}
+function countAlbumForType(p, type) {
+  if(!p||p.album===undefined||p.album===null)return 0;
+  // Count PD entries explicitly in album for this type
+  const pdCount=PD.filter(x=>p.album[x.id]===true&&x.type===type).length;
+  // Count custom entries for this type
+  const customCount=p.custom?Object.entries(p.custom).filter(([id,d])=>d.type===type&&p.album&&p.album[id]===true).length:0;
+  return pdCount+customCount;
+}
 function addToAlbum(pkId) {
   if(!ST.cur)return;
   const p=goc(ST.cur);
@@ -859,16 +1012,16 @@ function addToAlbum(pkId) {
   // If album not yet customized, start from defaults
   if(p.album===undefined||p.album===null) p.album=Object.assign({},defaultAlbum());
   // Count how many are currently in album for this type
-  const currentCount=PD.filter(x=>p.album[x.id]===true&&x.type===pk.type).length;
+  const currentCount=countAlbumForType(p, pk.type);
   if(currentCount>=6){alert('Máximo 6 por tipo');return;}
   p.album[pkId]=true; save(); renderAlbum(); renderRanking(); renderMain();
 }
 function removeFromAlbum(pkId) {
   if(!ST.cur)return;
   const p=goc(ST.cur);
-  // If album not yet customized, start from defaults before removing
-  if(p.album===undefined||p.album===null) p.album=Object.assign({},defaultAlbum());
+  if(!p.album)p.album={};
   delete p.album[pkId];
+  if(p.custom) delete p.custom[pkId];
   ST.expanded=null; save(); renderAlbum(); renderRanking(); renderMain();
 }
 function togOwned(id,v) {
@@ -880,9 +1033,35 @@ function togOwned(id,v) {
 function togLeg(id,v) { const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={}; p.pk[id].legacy=v; save(); }
 function updIV(id,s,v) {
   const n=parseInt(v); const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={};
-  if(s==='a'){p.pk[id].ivAtk=n;document.getElementById('ia-'+id).textContent=n;}
-  if(s==='d'){p.pk[id].ivDef=n;document.getElementById('id-'+id).textContent=n;}
-  if(s==='h'){p.pk[id].ivHp=n;document.getElementById('ih-'+id).textContent=n;}
+  const bs=BASE_STATS[id]||[200,150,180];
+  if(s==='a'){
+    p.pk[id].ivAtk=n;
+    const pct=Math.round((bs[0]+n)/(bs[0]+15)*100);
+    const el=document.getElementById('ia-'+id);
+    if(el)el.innerHTML=n+'<span style="font-size:10px;color:#888;font-weight:400"> ('+pct+'%)</span>';
+    // Update real DPS in real time
+    const pk=PD.find(x=>x.id===id)||(p.custom&&p.custom[id]?{dps:p.custom[id].dps}:null);
+    if(pk){
+      const realDps=pk.dps*(bs[0]+n)/(bs[0]+15);
+      const dpsEl=document.getElementById('dps-real-'+id);
+      if(dpsEl)dpsEl.textContent=realDps.toFixed(2);
+      // Also update the card header bar
+      const dpsBar=document.getElementById('dps-bar-'+id);
+      if(dpsBar)dpsBar.textContent=realDps.toFixed(2);
+    }
+  }
+  if(s==='d'){
+    p.pk[id].ivDef=n;
+    const pct=Math.round((bs[1]+n)/(bs[1]+15)*100);
+    const el=document.getElementById('id-'+id);
+    if(el)el.innerHTML=n+'<span style="font-size:10px;color:#888;font-weight:400"> ('+pct+'%)</span>';
+  }
+  if(s==='h'){
+    p.pk[id].ivHp=n;
+    const pct=Math.round((bs[2]+n)/(bs[2]+15)*100);
+    const el=document.getElementById('ih-'+id);
+    if(el)el.innerHTML=n+'<span style="font-size:10px;color:#888;font-weight:400"> ('+pct+'%)</span>';
+  }
   save();
 }
 function updDPS(id,v) { const n=parseFloat(v); const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={}; p.pk[id].dps=isNaN(n)?undefined:n; save(); }
@@ -961,7 +1140,7 @@ function renderMain() {
     const pks=albumPks(v,t.key); const tot=Math.max(pks.length,1);
     const {o}=countType(v,t.key); const pct=Math.round(o/tot*100);
     const dxPks=pks.filter(p=>p.tags.includes('dynamax'));
-    const pp=gp(v); const dxOwned=dxPks.filter(p=>pp&&pp.pk[p.id]&&pp.pk[p.id].owned).length;
+    const dxOwned=dxPks.length;
     const dxTot=Math.min(dxPks.length,3)||3; const dxPct=Math.round(dxOwned/dxTot*100);
     return `<div class="type-card" onclick="openType('${t.key}')" style="background:${t.color}"><div class="type-card-top" style="padding:10px 12px 4px"><span class="type-badge" style="background:${t.bg};color:#333;border-color:${t.color}"><span class="type-icon">${t.icon}</span>${t.name}</span></div><div class="type-card-bars"><div class="bar-row"><span class="bar-lbl">⚔️</span><div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:rgba(255,255,255,.9)"></div></div><span class="prog-count">${o}/6</span></div><div class="bar-row"><span class="bar-lbl">⚡</span><div class="dx-bar"><div class="dx-fill" style="width:${dxPct}%"></div></div><span class="dx-count">${dxOwned}/${dxTot}</span></div></div></div>`;
   }).join('');
@@ -981,16 +1160,25 @@ function renderAlbum() {
     const pp=gp(profile); const pd=(pp&&pp.pk[pk.id])||{};
     const isO=pd.owned||false; const lg=pd.legacy||false;
     const ia=pd.ivAtk||0,id2=pd.ivDef||0,ih=pd.ivHp||0;
-    const dd=pd.dps!==undefined?pd.dps:pk.dps; const bw=Math.round((dd/maxD)*100);
+    const baseDps=pk.dps;
+    const bs2=BASE_STATS[pk.id]||[200,150,180];
+    const realDps=baseDps*(bs2[0]+ia)/(bs2[0]+15);
+    const dd=realDps; const bw=Math.round((realDps/maxD)*100);
     const isOpen=ST.expanded===pk.id; const isShadow=pk.tags.includes('shadow');
     const tH=pk.tags.map(tg=>tg==='legacy'?'<span class="tag tl">⭐ Legacy</span>':tg==='mission'?'<span class="tag tm">🎯 Misión</span>':tg==='shadow'?'<span class="tag ts">👤 Shadow</span>':tg==='mega'?'<span class="tag tme">🔴 Mega</span>':tg==='dynamax'?'<span class="tag tdx">⚡ Dynamax</span>':'').join('');
     const fd=pk.fast.replace('*',''); const cd=pk.charge.replace('*','');
     const fl=pk.fast.endsWith('*'); const cl=pk.charge.endsWith('*');
     const mvH=`<div class="mv-box"><div class="mv-row"><span class="mv-lbl">Rápido</span><span class="mv-name">${fd}${fl?'<span class="leg-star">⭐</span>':''}</span></div><div class="mv-row"><span class="mv-lbl">Cargado</span><span class="mv-name">${cd}${cl?'<span class="leg-star">⭐</span>':''}</span></div></div>`;
-    const editF=`<div class="fr tr"><span>¿Lo tienes?</span><label class="sw"><input type="checkbox" ${isO?'checked':''} onchange="togOwned('${pk.id}',this.checked)"><span class="sl"></span></label></div><div class="fr tr" style="margin-top:8px"><span>Legacy ⭐</span><label class="sw"><input type="checkbox" ${lg?'checked':''} onchange="togLeg('${pk.id}',this.checked)"><span class="sl"></span></label></div><div class="fr" style="margin-top:10px"><div class="fl">DPS</div><div class="dps-irow"><input class="dps-inp" type="number" step="0.01" min="0" max="50" placeholder="${pk.dps.toFixed(2)}" value="${pd.dps!==undefined?pd.dps:''}" oninput="updDPS('${pk.id}',this.value)"><span class="dps-ref">ref:${pk.dps.toFixed(2)}</span></div></div><div class="fr"><div class="fl">IVs</div><div class="iv-grid"><div class="iv-col"><div class="iv-lbl">Atk</div><div class="iv-val" id="ia-${pk.id}">${ia}</div><input type="range" min="0" max="15" value="${ia}" oninput="updIV('${pk.id}','a',this.value)"></div><div class="iv-col"><div class="iv-lbl">Def</div><div class="iv-val" id="id-${pk.id}">${id2}</div><input type="range" min="0" max="15" value="${id2}" oninput="updIV('${pk.id}','d',this.value)"></div><div class="iv-col"><div class="iv-lbl">HP</div><div class="iv-val" id="ih-${pk.id}">${ih}</div><input type="range" min="0" max="15" value="${ih}" oninput="updIV('${pk.id}','h',this.value)"></div></div></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
-    const viewF=`<div class="fr"><div class="fl">Estado</div><p>${isO?'✓ Lo tiene':'✗ No lo tiene'}</p></div><div class="fr"><div class="fl">DPS</div><p style="font-size:16px;font-weight:700">${dd.toFixed(2)}</p></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
-    const removeBtn=!isV?`<button class="album-remove" onclick="event.stopPropagation();removeFromAlbum('${pk.id}')">✕</button>`:'';
-    return `<div class="pk-card${isO?'':' not-owned'}" id="c-${pk.id}" style="background:${t.color}"><div class="pk-top" onclick="togCard('${pk.id}')"><div style="display:flex;align-items:center;gap:2px;flex-shrink:0">${evoH(pk.evo,pk.img,isShadow)}</div><div class="pk-info"><div class="pk-name">${pk.name.replace(' (Shadow)','')}</div>${pk.tags.length?`<div class="tags-row">${tH}</div>`:''}<div class="dps-wrap"><div class="dps-lbl"><span>DPS</span><span>${dd.toFixed(2)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${bw}%"></div></div></div></div><div class="status-dot ${isO?'owned':'missing'}">${isO?'✓':'?'}</div>${removeBtn}</div><div class="pk-body${isOpen?' open':''}">${isV?viewF:editF}</div></div>`;
+    // Calculate IV percentages using base stats
+    const bs=BASE_STATS[pk.id]||[200,150,180]; // fallback if not in table
+    const pctA=Math.round((bs[0]+ia)/(bs[0]+15)*100);
+    const pctD=Math.round((bs[1]+id2)/(bs[1]+15)*100);
+    const pctH=Math.round((bs[2]+ih)/(bs[2]+15)*100);
+    const editF=`<div class="fr" style="margin-top:4px"><div class="fl">DPS con tus IVs</div><p style="font-size:18px;font-weight:700;color:#222"><span id="dps-real-${pk.id}">${dd.toFixed(2)}</span> <span style="font-size:12px;color:#888;font-weight:400">/ Max ${baseDps.toFixed(2)}</span></p></div><div class="fr"><div class="fl">IVs</div><div class="iv-grid"><div class="iv-col"><div class="iv-lbl">Ataque</div><div class="iv-val" id="ia-${pk.id}">${ia}<span style="font-size:10px;color:#888;font-weight:400"> (${pctA}%)</span></div><input type="range" min="0" max="15" value="${ia}" oninput="updIV('${pk.id}','a',this.value)"></div><div class="iv-col"><div class="iv-lbl">Defensa</div><div class="iv-val" id="id-${pk.id}">${id2}<span style="font-size:10px;color:#888;font-weight:400"> (${pctD}%)</span></div><input type="range" min="0" max="15" value="${id2}" oninput="updIV('${pk.id}','d',this.value)"></div><div class="iv-col"><div class="iv-lbl">Vida</div><div class="iv-val" id="ih-${pk.id}">${ih}<span style="font-size:10px;color:#888;font-weight:400"> (${pctH}%)</span></div><input type="range" min="0" max="15" value="${ih}" oninput="updIV('${pk.id}','h',this.value)"></div></div></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
+    const viewF=`<div class="fr"><div class="fl">DPS con sus IVs</div><p style="font-size:18px;font-weight:700;color:#222"><span id="dps-real-${pk.id}">${dd.toFixed(2)}</span> <span style="font-size:12px;color:#888;font-weight:400">/ Max ${baseDps.toFixed(2)}</span></p></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
+    const removeBtn=!isV?(pk.isCustom?`<button class="album-remove" onclick="event.stopPropagation();removeRankEntry('${pk.id}','${ST.type}')">✕</button>`:`<button class="album-remove" onclick="event.stopPropagation();removeFromAlbum('${pk.id}')">✕</button>`):'';
+    const evoDisplay=pk.isCustom?`<div class="final-wrap"><img class="final-img" src="${si(pk.img)}" onerror="this.style.opacity=.1"></div>`:evoH(pk.evo,pk.img,isShadow);
+    return `<div class="pk-card" id="c-${pk.id}" style="background:${t.color}"><div class="pk-top" onclick="togCard('${pk.id}')"><div style="display:flex;align-items:center;gap:2px;flex-shrink:0">${evoDisplay}</div><div class="pk-info"><div class="pk-name">${pk.name.replace(' (Shadow)','')}</div>${pk.tags.length?`<div class="tags-row">${tH}</div>`:''}<div class="dps-wrap"><div class="dps-lbl"><span>DPS <span id="dps-bar-${pk.id}">${dd.toFixed(2)}</span></span><span style="color:rgba(255,255,255,.6);font-size:9px">Max ${baseDps.toFixed(2)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${bw}%"></div></div></div></div>${removeBtn}</div><div class="pk-body${isOpen?' open':''}">${isV?viewF:editF}</div></div>`;
   }).join('')+empty;
 }
 
@@ -1018,8 +1206,24 @@ function renderRanking() {
   const profile=ST.view||ST.cur; const isV=!!ST.view; const t=TM[ST.type];
   const rawRank=RANKINGS[ST.type]||[]; const allPks=PD.filter(p=>p.type===ST.type);
   const userAlbum=getAlbum(profile);
-  const albumIds=new Set(allPks.filter(p=>userAlbum[p.id]).map(p=>p.id));
-  const albumCount=albumIds.size;
+  const albumIds=new Set([
+    ...allPks.filter(p=>userAlbum[p.id]).map(p=>p.id),
+    ...Object.keys(userAlbum).filter(id=>userAlbum[id]===true&&!PD.find(p=>p.id===id)&&(id.startsWith(ST.type+'-ext-')||allPks.find(p=>p.id===id)))
+  ]);
+  // Count only entries for THIS type
+  const pp2=gp(profile);
+  // Count actual user-selected entries (not defaults)
+  // If album never customized, defaults show but user can still add/remove freely
+  const albumCount=(()=>{
+    if(!pp2||pp2.album===undefined||pp2.album===null){
+      // Never customized: show defaults but count as 0 so user can interact
+      return 0;
+    }
+    // Count explicit entries for this type
+    const pdC=PD.filter(x=>pp2.album[x.id]===true&&x.type===ST.type).length;
+    const custC=pp2.custom?Object.values(pp2.custom).filter(d=>d.type===ST.type&&pp2.album&&pp2.album[Object.keys(pp2.custom).find(k=>pp2.custom[k]===d)]===true).length:0;
+    return pdC+custC;
+  })();
   const ownedIds=new Set(); const pp=gp(profile);
   if(pp)allPks.forEach(pk=>{if(pp.pk[pk.id]&&pp.pk[pk.id].owned)ownedIds.add(pk.id);});
   const aidDps={}; allPks.forEach(pk=>{const saved=pp&&pp.pk[pk.id]&&pp.pk[pk.id].dps!==undefined?pp.pk[pk.id].dps:null;aidDps[pk.id]=saved!==null?saved:pk.dps;});
@@ -1034,15 +1238,12 @@ function renderRanking() {
     const nameCol=isA?t.color:'#222'; const rowBg=isA?t.bg:'#fff';
     const ft=(r.fast||'')+(r.fastL?'⭐':''); const ct=(r.charge||'')+(r.chargeL?'⭐':'');
     const isFull=!isV&&r.aid&&!isA&&albumCount>=6;
-    let toggleBtn='';
-    if(!isV){
-      if(r.aid){
-        toggleBtn=`<button class="rank-toggle ${isA?'in-album':isFull?'full':'not-in-album'}" onclick="event.stopPropagation();${isA?`removeFromAlbum('${r.aid}')`:`addToAlbum('${r.aid}')`}" title="${isA?'Quitar del álbum':isFull?'Álbum lleno':'Añadir al álbum'}"></button>`;
-      } else {
-        toggleBtn=`<button class="rank-toggle" style="background:#e0e0e0;cursor:default" title="No disponible en tu álbum" disabled></button>`;
-      }
-    }
-    return `<div class="rank-row${isA?' ours':''}" style="background:${rowBg};--tc:${t.color}"><span class="rank-num">#${i+1}</span><img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1"><div class="rank-info"><div class="rank-name" style="color:${nameCol}">${r.n.replace(' (Shadow)','')}${r.n.includes('(Shadow)')?'<span class="badge" style="background:#6a1b9a;color:#fff">Shadow</span>':''}${(()=>{if(r.n.includes('(Shadow)'))return'';const bn=r.n.trim().toLowerCase();return DMAX_NAMES.has(bn)?'<span class="badge" style="background:#1565c0;color:#fff">DMAX</span>':'';})()}${isO?`<span class="badge" style="background:${t.color}">TUYO</span>`:''}</div><div class="rank-move">${ft} / ${ct}</div><div class="dps-minibar"><div class="dps-minifill" style="width:${bw}%;background:${t.color}"></div></div></div><div class="rank-dps" style="color:${nameCol}">${r.dps.toFixed(2)}</div>${toggleBtn}</div>`;
+    // Store entry data for addFromRanking lookup
+    if(!window._rankCache)window._rankCache={};
+    const rid=r.aid||(ST.type+'-ext-'+r.n.toLowerCase().replace(/[^a-z0-9]/g,'-'));
+    window._rankCache[rid]={n:r.n,dps:r.dps,img:r.img,fast:r.fast||'',charge:r.charge||'',type:ST.type};
+    const addBtn=!isV?'<button class="rank-add-btn" onclick="event.stopPropagation();addFromRanking(\''+rid+'\')" title="Añadir a Mis Pokémon">+</button>':'';
+    return `<div class="rank-row${isA?' ours':''}" style="background:${rowBg};--tc:${t.color}"><span class="rank-num">#${i+1}</span><img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1"><div class="rank-info"><div class="rank-name" style="color:${nameCol}">${r.n.replace(' (Shadow)','')}${r.n.includes('(Shadow)')?'<span class="badge" style="background:#6a1b9a;color:#fff">Shadow</span>':''}${(()=>{if(r.n.includes('(Shadow)'))return'';const bn=r.n.trim().toLowerCase();return DMAX_NAMES.has(bn)?'<span class="badge" style="background:#1565c0;color:#fff">DMAX</span>':'';})()}${isO?`<span class="badge" style="background:${t.color}">TUYO</span>`:''}</div><div class="rank-move">${ft} / ${ct}</div><div class="dps-minibar"><div class="dps-minifill" style="width:${bw}%;background:${t.color}"></div></div></div><div class="rank-dps" style="color:${nameCol}">${r.dps.toFixed(2)}</div>${addBtn}</div>`;
   }).join('');
 }
 
