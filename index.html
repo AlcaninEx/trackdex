@@ -13,6 +13,8 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>PokeBestBCN</title>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:#f0f0f0!important;color:#222!important;-webkit-tap-highlight-color:transparent;transition:background .3s,color .3s}
@@ -408,6 +410,42 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 
 
 <script>
+// ── FIREBASE SETUP ───────────────────────────────────────────────────────────
+const firebaseConfig = {
+  apiKey: "AIzaSyAy32J4YkD6mEeZ9tBryT3-lk3nzi42a34",
+  authDomain: "pokebestbcn.firebaseapp.com",
+  projectId: "pokebestbcn",
+  storageBucket: "pokebestbcn.firebasestorage.app",
+  messagingSenderId: "38103788359",
+  appId: "1:38103788359:web:142c0d9c0e1cb91047ba62"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+async function fbLoadProfiles() {
+  try {
+    const snap = await db.collection('profiles').get();
+    return snap.docs.map(d => ({ name: d.id, ...d.data() }));
+  } catch(e) {
+    console.warn('Firebase load error:', e.code, '— using localStorage');
+    return null;
+  }
+}
+async function fbSave(name, data) {
+  try {
+    await db.collection('profiles').doc(name).set(data);
+  } catch(e) {
+    console.warn('Firebase save error:', e.code);
+  }
+}
+async function fbDelete(name) {
+  try {
+    await db.collection('profiles').doc(name).delete();
+  } catch(e) {
+    console.warn('Firebase delete error:', e.code);
+  }
+}
+
 // ── DATA ────────────────────────────────────────────────────────────────────
 const SP='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
 const si=n=>SP+n+'.png';
@@ -911,8 +949,22 @@ TYPES.forEach(t => TM[t.key] = t);
 // ── STATE ────────────────────────────────────────────────────────────────────
 const ST = {profiles:[], cur:null, view:null, type:null, expanded:null, tab:'album', rankTab:'raid', albumTab:'raid'};
 
-function save() { try { localStorage.setItem('pokeBCN', JSON.stringify({profiles:ST.profiles})); } catch(e){} }
-function load() { try { const s=localStorage.getItem('pokeBCN'); if(s){const d=JSON.parse(s);ST.profiles=d.profiles||[];} } catch(e){ST.profiles=[];} }
+function save() {
+  // Save to localStorage as backup
+  try { localStorage.setItem('pokeBCN', JSON.stringify({profiles:ST.profiles})); } catch(e){}
+  // Save changed profile to Firebase
+  if(ST._pendingSave) {
+    clearTimeout(ST._pendingSave);
+  }
+  ST._pendingSave = setTimeout(async () => {
+    for(const p of ST.profiles) {
+      await fbSave(p.name, {pk:p.pk||{}, album:p.album||null, custom:p.custom||null});
+    }
+  }, 500);
+}
+function load() {
+  try { const s=localStorage.getItem('pokeBCN'); if(s){const d=JSON.parse(s);ST.profiles=d.profiles||[];} } catch(e){ST.profiles=[];}
+}
 
 function gp(n) { return ST.profiles.find(p=>p.name===n); }
 function goc(n) { let p=gp(n); if(!p){p={name:n,pk:{}};ST.profiles.push(p);} return p; }
@@ -930,7 +982,9 @@ function albumPks(n,type) {
   const a=getAlbum(n);
   const p=gp(n);
   // PD entries in album
-  const pdPks=PD.filter(pk=>pk.type===type&&a[pk.id]);
+  // Get PD entries in album that are NOT overridden by custom
+  const customIds=new Set(p&&p.custom?Object.keys(p.custom):[]);
+  const pdPks=PD.filter(pk=>pk.type===type&&a[pk.id]&&!customIds.has(pk.id));
   // Custom entries in album
   const customPks=[];
   if(p&&p.custom){
@@ -954,9 +1008,11 @@ function countType(n,type) { const pks=albumPks(n,type); return {o:pks.length, t
 function addProfile() {
   const inp=document.getElementById('new-name'); const n=inp.value.trim();
   if(!n)return; if(ST.profiles.find(p=>p.name===n)){alert('Ya existe');return;}
-  goc(n); inp.value=''; save(); renderProfiles();
+  goc(n); inp.value='';
+  fbSave(n, {pk:{}, album:null, custom:null});
+  save(); renderProfiles();
 }
-function delProfile(n,e) { e.stopPropagation(); if(!confirm('¿Eliminar a '+n+'?'))return; ST.profiles=ST.profiles.filter(p=>p.name!==n); save(); renderProfiles(); }
+function delProfile(n,e) { e.stopPropagation(); if(!confirm('¿Eliminar a '+n+'?'))return; ST.profiles=ST.profiles.filter(p=>p.name!==n); fbDelete(n); save(); renderProfiles(); }
 function selProfileIdx(i) { const p=ST.profiles[i]; if(p){ST.cur=p.name;ST.view=null;show('main-screen');renderMain();} }
 function viewProfileIdx(i) { const p=ST.profiles[i]; if(!p)return; if(!ST.cur){alert('Primero selecciona tu perfil');return;} ST.view=p.name;show('main-screen');renderMain(); }
 function delProfileIdx(i,e) { const p=ST.profiles[i]; if(p)delProfile(p.name,e); }
@@ -982,8 +1038,8 @@ function addFromRanking(id) {
   // Store data (use PD data if available, else rank cache)
   const pdEntry=PD.find(x=>x.id===id);
   if(pdEntry){
-    // Copy PD entry with new id
-    if(newId!==id) p.custom[newId]={n:pdEntry.name,dps:pdEntry.dps,img:pdEntry.img,fast:pdEntry.fast,charge:pdEntry.charge,type:pdEntry.type,pdRef:id};
+    // Always store in custom with pdRef so evo/tags are always available
+    p.custom[newId]={n:pdEntry.name,dps:pdEntry.dps,img:pdEntry.img,fast:pdEntry.fast,charge:pdEntry.charge,type:pdEntry.type,pdRef:id};
   } else if(data.n){
     p.custom[newId]={n:data.n,dps:data.dps||0,img:data.img||'',fast:data.fast||'',charge:data.charge||'',type:type};
   }
@@ -1255,17 +1311,37 @@ if(localStorage.getItem('darkMode')==='1'){
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }
-// DOM is ready (script is at end of body) - call directly
-try {
-  load();
-  renderProfiles();
-  show('profile-screen');
-  // Force visibility as backup
-  document.getElementById('profile-screen').style.display='block';
-  window.scrollTo(0,0);
-} catch(e) {
-  document.body.innerHTML='<div style="padding:20px;color:red;font-size:16px">ERROR: '+e.message+'<br><br>'+e.stack+'</div>';
-}
+// DOM is ready — load from Firebase, fallback to localStorage
+(async () => {
+  try {
+    // Show loading state
+    document.getElementById('profile-screen').style.display='block';
+    window.scrollTo(0,0);
+    const el = document.getElementById('profiles-list');
+    if(el) el.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px">⏳ Cargando...</p>';
+
+    const fbProfiles = await fbLoadProfiles();
+    if(fbProfiles !== null && fbProfiles.length >= 0) {
+      // Firebase loaded successfully
+      ST.profiles = fbProfiles.sort((a,b) => a.name.localeCompare(b.name));
+      // Sync to localStorage as backup
+      try { localStorage.setItem('pokeBCN', JSON.stringify({profiles:ST.profiles})); } catch(e){}
+    } else {
+      // Fallback to localStorage
+      load();
+    }
+    renderProfiles();
+    show('profile-screen');
+    window.scrollTo(0,0);
+  } catch(e) {
+    // Fallback to localStorage on any error
+    load();
+    renderProfiles();
+    show('profile-screen');
+    window.scrollTo(0,0);
+    console.warn('Boot error, using localStorage:', e);
+  }
+})();
 </script>
 </body>
 </html>
