@@ -230,7 +230,11 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
     <div id="home-menu" style="display:none;padding:12px;display:none">
 
       <!-- BIG BUTTON: Equipos por Tipos -->
-      <button class="home-btn-big" onclick="goToTypes()">
+      <div style="display:flex;gap:8px;margin-top:10px;margin-bottom:0">
+        <button class="home-btn-small" style="flex:1;font-size:12px;padding:10px 8px" onclick="goProfiles()">👤 Cambiar Usuario</button>
+        <button class="home-btn-small" style="flex:1;font-size:12px;padding:10px 8px" onclick="goToTypes()">🏠 Mis Tipos</button>
+      </div>
+      <button class="home-btn-big" style="margin-top:10px" onclick="goToTypes()">
         <div style="font-size:18px;font-weight:800">⚔️ Equipos por Tipos</div>
         <div style="font-size:13px;opacity:.85;margin-top:6px"><span id="hm-raid-count">0</span>/102 Pokémon Incursiones</div>
         <div class="home-prog-bar"><div class="home-prog-fill" id="hm-raid-bar" style="width:0%"></div></div>
@@ -239,12 +243,15 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
       </button>
 
       <!-- SMALL BUTTONS ROW 1 -->
+      <button class="home-btn-small" style="width:100%;margin-top:10px;font-size:15px" onclick="showTypeChart()">
+        🔥 Eficacia de Tipos (Calculadora)
+      </button>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
-        <button class="home-btn-small" onclick="showTypeChart()">
-          🔥 Eficacia de Tipos
-        </button>
         <button class="home-btn-small" onclick="showMegaCandy()">
           🍬 Guía Caramelos Mega
+        </button>
+        <button class="home-btn-small" onclick="showLegacyGuide()">
+          ⭐ Guía Pokémon Legacy
         </button>
       </div>
 
@@ -272,7 +279,7 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
     <div class="user-bar-txt">Entrenador: <b id="uname"></b></div>
     <div class="user-bar-right">
       <button class="guia-btn" id="dark-btn" onclick="toggleDark()" title="Modo oscuro">🌙</button>
-      <button class="cambiar-btn" onclick="goProfiles()">Cambiar</button>
+      <button class="cambiar-btn" onclick="backToHome()">🏠 Inicio</button>
     </div>
   </div>
   <div class="types-grid" id="types-grid"></div>
@@ -326,6 +333,36 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
       <b>PokeBestBCN</b> es un álbum personal para saber qué Pokémon tienes y cuáles te faltan de los <b>mejores atacantes por tipo</b> en incursiones. El objetivo es ayudarte a <b>invertir tus polvos de forma eficiente</b> y saber qué Pokémon vale la pena subir.
     </p>
 
+    <div style="border-top:1px solid #eee;padding-top:12px;margin-bottom:4px">
+      <p style="font-size:12px;font-weight:700;color:#CC0000;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em">🔗 Enlaces útiles</p>
+      <a href="https://db.pokemongohub.net/best/attackers-per-type" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f5f5f5;border-radius:8px;text-decoration:none;margin-bottom:6px">
+        <span style="font-size:20px">⚔️</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#222">Mejores atacantes por tipo</div>
+          <div style="font-size:11px;color:#888">db.pokemongohub.net</div>
+        </div>
+        <span style="margin-left:auto;color:#aaa;font-size:16px">›</span>
+      </a>
+      <a href="https://db.pokemongohub.net/best/dynamax-attackers-per-type" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f5f5f5;border-radius:8px;text-decoration:none;margin-bottom:6px">
+        <span style="font-size:20px">⚡</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#222">Mejores Dinamax por tipo</div>
+          <div style="font-size:11px;color:#888">db.pokemongohub.net</div>
+        </div>
+        <span style="margin-left:auto;color:#aaa;font-size:16px">›</span>
+      </a>
+      <a href="https://snacknap.com/max-battles" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f5f5f5;border-radius:8px;text-decoration:none">
+        <span style="font-size:20px">🗺️</span>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#222">Rotación actual de Dinamax</div>
+          <div style="font-size:11px;color:#888">snacknap.com · actualizado cada 5 min</div>
+        </div>
+        <span style="margin-left:auto;color:#aaa;font-size:16px">›</span>
+      </a>
+    </div>
+  
+
+
     <div style="border-top:1px solid #eee;padding-top:12px;margin-bottom:12px">
       <p style="font-size:12px;font-weight:700;color:#1a237e;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">⚡ Dynamax y Mega Evolución</p>
       <div style="background:#e8eaf6;border-radius:8px;padding:10px 12px;border-left:3px solid #3949ab;margin-bottom:8px">
@@ -356,34 +393,7 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
       </p>
     </div>
 
-    <div style="border-top:1px solid #eee;padding-top:12px;margin-bottom:4px">
-      <p style="font-size:12px;font-weight:700;color:#CC0000;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em">🔗 Enlaces útiles</p>
-      <a href="https://db.pokemongohub.net/best/attackers-per-type" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f5f5f5;border-radius:8px;text-decoration:none;margin-bottom:6px">
-        <span style="font-size:20px">⚔️</span>
-        <div>
-          <div style="font-size:13px;font-weight:700;color:#222">Mejores atacantes por tipo</div>
-          <div style="font-size:11px;color:#888">db.pokemongohub.net</div>
-        </div>
-        <span style="margin-left:auto;color:#aaa;font-size:16px">›</span>
-      </a>
-      <a href="https://db.pokemongohub.net/best/dynamax-attackers-per-type" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f5f5f5;border-radius:8px;text-decoration:none;margin-bottom:6px">
-        <span style="font-size:20px">⚡</span>
-        <div>
-          <div style="font-size:13px;font-weight:700;color:#222">Mejores Dinamax por tipo</div>
-          <div style="font-size:11px;color:#888">db.pokemongohub.net</div>
-        </div>
-        <span style="margin-left:auto;color:#aaa;font-size:16px">›</span>
-      </a>
-      <a href="https://snacknap.com/max-battles" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f5f5f5;border-radius:8px;text-decoration:none">
-        <span style="font-size:20px">🗺️</span>
-        <div>
-          <div style="font-size:13px;font-weight:700;color:#222">Rotación actual de Dinamax</div>
-          <div style="font-size:11px;color:#888">snacknap.com · actualizado cada 5 min</div>
-        </div>
-        <span style="margin-left:auto;color:#aaa;font-size:16px">›</span>
-      </a>
     </div>
-  </div>
   </div>
 </div>
 
@@ -1068,13 +1078,23 @@ function goToTypes() {
   show('main-screen');
   renderMain();
 }
+function backToHome() {
+  show('profile-screen');
+  document.getElementById('home-profile-section').style.display='none';
+  const menu=document.getElementById('home-menu');
+  menu.style.display='block';
+  document.getElementById('trainer-name-bar').textContent='👋 '+ST.cur;
+  updateHomeMenu();
+}
 function showTypeChart() {
   // TODO: type effectiveness chart screen
   alert('Próximamente: Tabla de eficacia de tipos');
 }
 function showMegaCandy() {
-  // TODO: mega candy guide screen
   alert('Próximamente: Guía de Caramelos Mega');
+}
+function showLegacyGuide() {
+  alert('Próximamente: Guía de Pokémon Legacy');
 }
 function updateHomeMenu() {
   // Count total raid pokemons across all profiles for this user
