@@ -338,10 +338,6 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
   </div>
   <div style="padding:12px;background:#f0f0f0;min-height:100vh">
 
-    <!-- TYPE SELECTOR -->
-    <p style="font-size:12px;color:#666;text-align:center;margin-bottom:8px">Selecciona 1 o 2 tipos (toca para seleccionar/deseleccionar)</p>
-    <div id="tc-type-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:16px"></div>
-
     <!-- ATTACKING SECTION -->
     <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
       <p style="font-weight:800;font-size:15px;text-align:center;margin-bottom:12px;text-decoration:underline">⚔️ Atacando</p>
@@ -352,6 +348,10 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
       </div>
     </div>
 
+    <!-- TYPE SELECTOR -->
+    <p style="font-size:12px;color:#666;text-align:center;margin-bottom:8px">Selecciona 1 o 2 tipos (toca para seleccionar/deseleccionar)</p>
+    <div id="tc-type-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:16px"></div>
+
     <!-- DEFENDING SECTION -->
     <div style="background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
       <p style="font-weight:800;font-size:15px;text-align:center;margin-bottom:12px;text-decoration:underline">🛡️ Defendiendo</p>
@@ -360,6 +360,55 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
         <div><p style="font-size:10px;font-weight:700;color:#66bb6a;text-align:center;margin-bottom:6px">x0.625</p><div id="tc-def-resisted" class="tc-ball-col"></div></div>
         <div><p style="font-size:10px;font-weight:700;color:#ef5350;text-align:center;margin-bottom:6px">x1.6</p><div id="tc-def-super" class="tc-ball-col"></div></div>
         <div><p style="font-size:10px;font-weight:700;color:#b71c1c;text-align:center;margin-bottom:6px">x2.56</p><div id="tc-def-double" class="tc-ball-col"></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- MEGA CANDY GUIDE SCREEN -->
+<div id="megaguide-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="show('profile-screen');document.getElementById('home-menu').style.display='block'">←</button>
+    <h1>🍬 Guía Caramelos Mega</h1>
+  </div>
+  <div style="padding:14px;background:#f0f0f0;min-height:100vh;font-size:13px;line-height:1.7;color:#333">
+
+    <div style="background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:15px;font-weight:800;margin-bottom:10px">🔄 Rotación Actual de Misiones</p>
+
+      <p style="font-size:14px;font-weight:700;margin-bottom:8px">🏙️ En Poképaradas (Misiones de Campo)</p>
+      <p style="color:#555;margin-bottom:10px">Las misiones de campo que dan Megaenergía están ligadas a dos tipos de tareas muy concretas:</p>
+
+      <div style="background:#fff8e1;border-left:4px solid #f9a825;border-radius:8px;padding:10px 12px;margin-bottom:10px">
+        <p style="font-weight:700;margin-bottom:4px">⚡ Misión: "Potencia un Pokémon 5 veces"</p>
+        <p style="color:#555">Te dará de forma aleatoria <b>10 de Megaenergía</b> de uno de estos Pokémon:</p>
+        <p style="margin-top:6px">🌿 Venusaur · 🔥 Charizard · 💧 Blastoise · 🐝 Beedrill · 🐦 Pidgeot · 🪨 Aggron · ⚡ Manectric</p>
+      </div>
+
+      <div style="background:#e8f5e9;border-left:4px solid #43a047;border-radius:8px;padding:10px 12px;margin-bottom:10px">
+        <p style="font-weight:700;margin-bottom:6px">🎯 Misiones de captura especializada:</p>
+        <p>🔥 Atrapa 10 tipo <b>Fuego</b> → 10 Megaenergía de <b>Charizard o Blaziken</b></p>
+        <p>🌿 Atrapa 10 tipo <b>Planta</b> → 10 Megaenergía de <b>Venusaur o Sceptile</b></p>
+        <p>💧 Atrapa 10 tipo <b>Agua</b> → 10 Megaenergía de <b>Blastoise o Swampert</b></p>
+        <p>⭕ Atrapa 10 tipo <b>Normal</b> → 10 Megaenergía de <b>Pidgeot</b></p>
+      </div>
+    </div>
+
+    <div style="background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:14px;font-weight:700;margin-bottom:8px">👥 En Desafíos de Juego en Grupo (Party Play)</p>
+      <p style="color:#555;margin-bottom:10px">Cuando creas un grupo con amigos, el juego selecciona misiones de una lista cerrada. Las tareas que otorgan <b>20 de Megaenergía</b> (como "Ganar 2 incursiones" o "Derrotar 3 Reclutas del Team GO Rocket") pertenecen exclusivamente a la rotación de estos Pokémon:</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div style="background:#f5f5f5;border-radius:8px;padding:8px 10px;font-weight:600">🔥 Charizard</div>
+        <div style="background:#f5f5f5;border-radius:8px;padding:8px 10px;font-weight:600">💧 Blastoise</div>
+        <div style="background:#f5f5f5;border-radius:8px;padding:8px 10px;font-weight:600">🐝 Beedrill</div>
+        <div style="background:#f5f5f5;border-radius:8px;padding:8px 10px;font-weight:600">🐦 Pidgeot</div>
+        <div style="background:#f5f5f5;border-radius:8px;padding:8px 10px;font-weight:600">🐉 Gyarados</div>
+        <div style="background:#f5f5f5;border-radius:8px;padding:8px 10px;font-weight:600">👻 Gengar</div>
+        <div style="background:#f5f5f5;border-radius:8px;padding:8px 10px;font-weight:600">🦂 Pinsir</div>
+        <div style="background:#f5f5f5;border-radius:8px;padding:8px 10px;font-weight:600">🐱 Absol</div>
+        <div style="background:#f5f5f5;border-radius:8px;padding:8px 10px;font-weight:600">👁️ Sableye</div>
       </div>
     </div>
 
@@ -1229,7 +1278,7 @@ function showTypeChart(){
   renderTypeChart();
 }
 function showMegaCandy() {
-  alert('Próximamente: Guía de Caramelos Mega');
+  show('megaguide-screen');
 }
 function showLegacyGuide() {
   alert('Próximamente: Guía de Pokémon Legacy');
