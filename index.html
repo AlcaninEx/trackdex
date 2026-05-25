@@ -98,6 +98,14 @@ body.dark .add-btn{background:#333!important;color:#eee!important}
 .tab.active{color:#CC0000!important;border-bottom-color:#CC0000!important}
 /* ALBUM */
 .album-wrap{padding:12px;background:#f0f0f0;min-height:100vh}
+.home-btn-big{width:100%;background:#CC0000;color:#fff;border:none;border-radius:14px;padding:18px 16px;cursor:pointer;text-align:center;margin-top:10px;box-shadow:0 4px 12px rgba(204,0,0,.3);transition:transform .1s}
+.home-btn-big:active{transform:scale(.98)}
+.home-btn-small{background:#fff;color:#333;border:2px solid #e0e0e0;border-radius:12px;padding:14px 10px;cursor:pointer;font-size:13px;font-weight:700;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.08);transition:transform .1s,border-color .1s}
+.home-btn-small:active{transform:scale(.96);border-color:#CC0000}
+.home-prog-bar{width:100%;height:5px;border-radius:3px;background:rgba(255,255,255,.25);margin-top:4px;overflow:hidden}
+.home-prog-fill{height:100%;border-radius:3px;background:rgba(255,255,255,.9);transition:width .4s}
+body.dark .home-btn-small{background:#1e1e1e;color:#eee;border-color:#444}
+body.dark .home-btn-big{box-shadow:0 4px 12px rgba(0,0,0,.4)}
 .album-subtabs{display:flex;border-bottom:2px solid #e0e0e0;background:#fff}
 .album-subtab{flex:1;padding:9px;text-align:center;font-size:12px;font-weight:700;cursor:pointer;color:#888;border-bottom:3px solid transparent;background:#fff;border-top:none;border-left:none;border-right:none}
 .album-subtab.active{color:#CC0000;border-bottom-color:#CC0000}
@@ -203,19 +211,53 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 <!-- PROFILE -->
 <div id="profile-screen" class="screen">
   <div id="profile-screen-inner">
-    <div class="logo-wrap">
-      <svg width="56" height="56" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#CC0000" stroke="#222" stroke-width="3"/><rect x="2" y="29" width="60" height="6" fill="#222"/><circle cx="32" cy="32" r="10" fill="white" stroke="#222" stroke-width="3"/><circle cx="32" cy="32" r="5" fill="#CC0000" stroke="#222" stroke-width="2"/></svg>
-    </div>
-    <p class="app-title">PokeBestBCN</p>
-    <p class="app-sub">Selecciona tu entrenador</p>
-    <p id="status-msg" style="text-align:center;font-size:12px;color:#888;min-height:18px;margin-bottom:4px"></p>
-    <div class="profiles-list" id="profiles-list"></div>
-    <div class="add-section">
-      <p class="add-label">Añadir entrenador</p>
-      <div class="add-row">
-        <input type="text" id="new-name" placeholder="Tu nombre..." maxlength="20" onkeydown="if(event.key==='Enter')addProfile()"/>
-        <button onclick="addProfile()">Añadir</button>
+    <!-- HEADER -->
+    <div style="background:#CC0000;padding:16px;display:flex;align-items:center;gap:12px">
+      <svg width="36" height="36" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#CC0000" stroke="white" stroke-width="3"/><rect x="2" y="29" width="60" height="6" fill="white"/><circle cx="32" cy="32" r="10" fill="white" stroke="#CC0000" stroke-width="3"/><circle cx="32" cy="32" r="5" fill="#CC0000" stroke="white" stroke-width="2"/></svg>
+      <div>
+        <div style="color:#fff;font-size:20px;font-weight:800">PokeBestBCN</div>
+        <div style="color:rgba(255,255,255,.8);font-size:12px" id="trainer-name-bar">Selecciona tu entrenador</div>
       </div>
+    </div>
+
+    <!-- PROFILE SELECTOR -->
+    <div id="home-profile-section" style="padding:12px 12px 0">
+      <p id="status-msg" style="text-align:center;font-size:12px;color:#888;min-height:16px;margin-bottom:6px"></p>
+      <div class="profiles-list" id="profiles-list"></div>
+    </div>
+
+    <!-- MAIN MENU (hidden until profile selected) -->
+    <div id="home-menu" style="display:none;padding:12px;display:none">
+
+      <!-- BIG BUTTON: Equipos por Tipos -->
+      <button class="home-btn-big" onclick="goToTypes()">
+        <div style="font-size:18px;font-weight:800">⚔️ Equipos por Tipos</div>
+        <div style="font-size:13px;opacity:.85;margin-top:6px"><span id="hm-raid-count">0</span>/102 Pokémon Incursiones</div>
+        <div class="home-prog-bar"><div class="home-prog-fill" id="hm-raid-bar" style="width:0%"></div></div>
+        <div style="font-size:12px;opacity:.75;margin-top:6px"><span id="hm-dmax-count">0</span>/51 Pokémon Dynamax</div>
+        <div class="home-prog-bar" style="background:rgba(255,255,255,.2)"><div class="home-prog-fill" style="width:0%;background:rgba(255,255,255,.7)" id="hm-dmax-bar"></div></div>
+      </button>
+
+      <!-- SMALL BUTTONS ROW 1 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+        <button class="home-btn-small" onclick="showTypeChart()">
+          🔥 Eficacia de Tipos
+        </button>
+        <button class="home-btn-small" onclick="showMegaCandy()">
+          🍬 Guía Caramelos Mega
+        </button>
+      </div>
+
+      <!-- SMALL BUTTONS ROW 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+        <button class="home-btn-small" onclick="openGuia()">
+          📖 Guía
+        </button>
+        <button class="home-btn-small" onclick="openInfo()">
+          ℹ️ Info
+        </button>
+      </div>
+
     </div>
   </div>
 </div>
@@ -229,8 +271,6 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
   <div class="user-bar">
     <div class="user-bar-txt">Entrenador: <b id="uname"></b></div>
     <div class="user-bar-right">
-      <button class="guia-btn" onclick="openInfo()">ℹ️ Info</button>
-      <button class="guia-btn" onclick="openGuia()">📖 Guía</button>
       <button class="guia-btn" id="dark-btn" onclick="toggleDark()" title="Modo oscuro">🌙</button>
       <button class="cambiar-btn" onclick="goProfiles()">Cambiar</button>
     </div>
@@ -311,16 +351,7 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
       </p>
     </div>
 
-    <div style="border-top:1px solid #eee;padding-top:12px;margin-bottom:12px">
-      <p style="font-size:12px;font-weight:700;color:#CC0000;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">🧬 ¿Importan los IVs en raids?</p>
-      <div style="background:#f3e5f5;border-radius:8px;padding:10px 12px;border-left:3px solid #7b1fa2;margin-bottom:8px">
-        <p style="font-size:12px;color:#444;line-height:1.7;margin:0">
-          <b>0 IVs vs 15 IVs de Ataque → diferencia real: ~1–3%</b><br>
-          <span style="color:#888">Ejemplo: Mewtwo (300 de ataque base) con IV 14 vs 15 → diferencia de 0,3%</span><br>
-          <b>De 0% a 100% total de IVs → diferencia en daño: ~5%</b>
-        </p>
-      </div>
-      <p style="font-size:12px;color:#555;line-height:1.6">
+          <p style="font-size:12px;color:#555;line-height:1.6">
         La diferencia entre un Pokémon con IVs perfectos y uno con IVs bajos es <b>prácticamente irrelevante en raids</b>. Para atacantes Mega, Shadow o Dinamax con mucho ataque base, un IV de ataque 10 vs 15 supone menos del 2% de daño extra. <b>Es mucho más importante tener el Pokémon correcto que tener el hundo perfecto</b>. No descartes un buen atacante por tener IVs imperfectos.
       </p>
     </div>
@@ -1013,10 +1044,61 @@ function addProfile() {
   save(); renderProfiles();
 }
 function delProfile(n,e) { e.stopPropagation(); if(!confirm('¿Eliminar a '+n+'?'))return; ST.profiles=ST.profiles.filter(p=>p.name!==n); fbDelete(n); save(); renderProfiles(); }
-function selProfileIdx(i) { const p=ST.profiles[i]; if(p){ST.cur=p.name;ST.view=null;show('main-screen');renderMain();} }
+function selProfileIdx(i) {
+  const p=ST.profiles[i]; if(!p)return;
+  ST.cur=p.name; ST.view=null;
+  // Show home menu
+  document.getElementById('home-profile-section').style.display='none';
+  const menu=document.getElementById('home-menu');
+  menu.style.display='block';
+  document.getElementById('trainer-name-bar').textContent='👋 '+p.name;
+  updateHomeMenu();
+}
 function viewProfileIdx(i) { const p=ST.profiles[i]; if(!p)return; if(!ST.cur){alert('Primero selecciona tu perfil');return;} ST.view=p.name;show('main-screen');renderMain(); }
 function delProfileIdx(i,e) { const p=ST.profiles[i]; if(p)delProfile(p.name,e); }
-function goProfiles() { show('profile-screen'); renderProfiles(); }
+function goProfiles() {
+  ST.cur=null; ST.view=null;
+  show('profile-screen');
+  document.getElementById('home-menu').style.display='none';
+  document.getElementById('home-profile-section').style.display='';
+  document.getElementById('trainer-name-bar').textContent='Selecciona tu entrenador';
+  renderProfiles();
+}
+function goToTypes() {
+  show('main-screen');
+  renderMain();
+}
+function showTypeChart() {
+  // TODO: type effectiveness chart screen
+  alert('Próximamente: Tabla de eficacia de tipos');
+}
+function showMegaCandy() {
+  // TODO: mega candy guide screen
+  alert('Próximamente: Guía de Caramelos Mega');
+}
+function updateHomeMenu() {
+  // Count total raid pokemons across all profiles for this user
+  const p = gp(ST.cur); if(!p) return;
+  let raidCount = 0;
+  let dmaxCount = 0;
+  const album = p.album||{};
+  // Count all entries in album
+  Object.keys(album).forEach(id => {
+    if(album[id]===true) {
+      raidCount++;
+      // Check if dynamax
+      const pk = PD.find(x=>x.id===id);
+      const custom = p.custom&&p.custom[id];
+      const tags = pk?pk.tags:(custom?(custom.tags||[]):[]);
+      if(tags.includes('dynamax')) dmaxCount++;
+    }
+  });
+  const raidMax = 102; const dmaxMax = 51;
+  document.getElementById('hm-raid-count').textContent = raidCount;
+  document.getElementById('hm-dmax-count').textContent = dmaxCount;
+  document.getElementById('hm-raid-bar').style.width = Math.min(100,Math.round(raidCount/raidMax*100))+'%';
+  document.getElementById('hm-dmax-bar').style.width = Math.min(100,Math.round(dmaxCount/dmaxMax*100))+'%';
+}
 function goBack() { ST.expanded=null; show('main-screen'); renderMain(); }
 
 // ── ALBUM ─────────────────────────────────────────────────────────────────────
@@ -1185,7 +1267,7 @@ function renderProfiles() {
   el.innerHTML=ST.profiles.map((p,i)=>{
     const ini=p.name.substring(0,2).toUpperCase();
     const cnt=Object.values(p.pk||{}).filter(d=>d&&d.owned).length;
-    return `<div class="profile-row"><div class="avatar">${ini}</div><div class="profile-info" onclick="selProfileIdx(${i})"><div class="profile-name">${p.name}</div><div class="profile-stat">${cnt} pokémon registrados</div></div><div class="profile-actions"><button class="view-btn" onclick="viewProfileIdx(${i})">Ver</button><button class="del-btn" onclick="delProfileIdx(${i},event)">🗑</button></div></div>`;
+    return `<div class="profile-row"><div class="avatar">${ini}</div><div class="profile-info" onclick="selProfileIdx(${i})"><div class="profile-name">${p.name}</div><div class="profile-stat">${cnt} pokémon registrados</div></div><div class="profile-actions"><button class="view-btn" onclick="viewProfileIdx(${i})">Ver</button></div></div>`;
   }).join('');
 }
 
