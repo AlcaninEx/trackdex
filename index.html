@@ -537,6 +537,7 @@ const SP='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokem
 const si=n=>SP+n+'.png';
 
 const TYPES=[
+  {name:'Normal',color:'#909090',bg:'#F0F0F0',key:'normal',icon:'<img src="data:image/webp;base64,UklGRswCAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSE0BAAABgFtr29PmA+VW6kxL6xzYgVJMwQr/YQKpNJMoz8Gh1F86KVU5fo5/eL1ARDBw20hRsnvMMDNvIJ3ViyBOh/nLdvuSD9M48KpkZe1WdOSWFW7HHXFbs+CylS3PrPG8zNpXhhT9ZMKGThK/YIAb9lds7KofulrKTXlkC4+yWdbQEHO2dC4a6mkxYWsnQjXpRgsGOG+6f08USoYow8Jv/P4Rw7Hv/yZZM8hV8vtrmjDMySUR1VoMtFUjus2QZLdUFUskS1H1umck564XjBnqOIi3WLZxymCfh2iGOZr8Fc3LFs12Bwc/g98Ef6AUzDnFf4eBRH/n+P8I/5/SHTgOoONMuwaPY/A4+V9xuICL80VwHolcfJ5SWRcLbB4kKke2eTYq4/O43oKfTC3qhKJ5HbIyq0Ps6pyu3KqWbGVX3NbIyqoXxOkof9luXw3rKAIAVlA4IFgBAADwCACdASowADAAPpFEm0qlo6Iho4sAsBIJZwDKQAwFmGY0qib9sJfjtBVKr7zXsrc0Mmuan+Vd5/FKJqg9ExN7Yt5+39xH8lF0GT0IFCu8AAD+9NPFtZz3HN2qMwBRN0ulyr7U6r47NIWhw8ENRm5iwQrnwj00XDCGGurlaiF3dJt0+AYcFh+DrY+gY5nuuJOWLEtrZwM9LZqy2O4lz1nKNfnVR8yHDuCiDxl2Ch8izohuV2cn+yPcjTAb6dREqlfYvh9xAL3as5Azm14LLCgUJCWh5dwlrlHCJqI77EIQLH7XYvKGeNHPjRLoAD21hWPIVgvZL+z5TV8Z8LWHA5pDixaLdy+K1P/89OtcyYSgRlL7zO7PPoBGGhOnvKdM6D7IBmUySLYliMwmBJ8eJD0Z0jFA4TLMo6+54dlv5dmaQXcri6DjuAd0YKKGwIYmHXVuahn8dAAAAA==" style="width:18px;height:18px;object-fit:contain;display:block">'},
   {name:'Fuego',color:'#E07020',bg:'#FDE8D5',key:'fire',icon:'<img src="data:image/webp;base64,UklGRvICAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSE0BAAABgFtr29PmA+VW6kxL6xzYgVJMwQr/YQKpNJMoz8Gh1F86KVU5fo5/eL1ARDBw20hRsnvMMDNvIJ3ViyBOh/nLdvuSD9M48KpkZe1WdOSWFW7HHXFbs+CylS3PrPG8zNpXhhT9ZMKGThK/YIAb9lds7KofulrKTXlkC4+yWdbQEHO2dC4a6mkxYWsnQjXpRgsGOG+6f08USoYow8Jv/P4Rw7Hv/yZZM8hV8vtrmjDMySUR1VoMtFUjus2QZLdUFUskS1H1umck564XjBnqOIi3WLZxymCfh2iGOZr8Fc3LFs12Bwc/g98Ef6AUzDnFf4eBRH/n+P8I/5/SHTgOoONMuwaPY/A4+V9xuICL80VwHolcfJ5SWRcLbB4kKke2eTYq4/O43oKfTC3qhKJ5HbIyq0Ps6pyu3KqWbGVX3NbIyqoXxOkof9luXw3rKAIAVlA4IH4BAAAwCwCdASowADAAPpE6mEiloyIhLjQMyLASCWxmqUYZQIvpLp7p+KvOMcnmZfoFIA2wHmA86r0gebp1Q3oAdLMCHm8lSD5U2n32+z/bTOq+jhxL+fbuPXZs7XdUC0lxqzhEAAD+8Glamtw1zeUpZYydIwQaKl3OwoG8pym+9fYnxm8yMaRUK0pp14hnjzdSNmlrkH+ACKSxlQHe4c4SrSWTqhqneYZdKfzEmcfH8DVrzpKob71VXr9LOlJKgXE4dtIHteO8UAKgKUo8hfNQhDFMpTxBsKlRyv3VAFVTHKY6RNP1Uxor9qPk1jKpiZZmQRnMwzvWC57j/zeXvCJ7VN07f1m7XM3ylguuABXJBfJjIocOndt6Mh13KzHs5JvzjAJJupm5ccg5/8zH5xacYdiLwMFpYKw+yhuw8b9udE1fia7Abgoin6Lhy/lKcOxROqYMv7Ruu+hYDUHT913tY80rtpm+1SJT3HmDFXYqctLTc9iGFonv5T+X88VQAAAA" style="width:18px;height:18px;object-fit:contain;display:block">'},
   {name:'Agua',color:'#4070D0',bg:'#D8E4FD',key:'water',icon:'<img src="data:image/webp;base64,UklGRhgDAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSEgBAAABgFtr29PmV4ZW6kxL6xzwDJQwBSv8hwmg/SdRnoNDyV86KVVEpc+R8HqBiGDgtpGiZPeYYWbewKpULgxHLMKXPH8JF8IxNIU1Ur3l4yinEnM55rdqAy69ID5Thec48K9q0tXdFdV05erdGrTNWUK1TWZmu5K+JY/UwKO0+hWM+JYauuWj8mm+osaueNlk294RwJ3V/nsiUxJEaXZ/o8+OGI4z/TduSiAT9/fXtCKYq0vGmOoRUE9l7DZAEtwyhcdIEq5okzOS80QzIoIaGU6OJXcEgRULNIsQTfiK5jVHk+PBz+A3wR9IgDkL/HeI/87x/xH4P425Ao8D6Djjq/A4Bo+T/xWHO8A4D84jdhufp8ocovMgY327aZ61+/g8Xm2nYZ0ArEOSwL9qVudMZF62JJcTfqeyRiqa4Yhl+JLnr+FCOM/VdRQDVlA4IKoBAABQCgCdASowADAAPpE4l0iloyIhMdM8ALASCWwAqScTA6+78n/AfAA2xJugyn+ClVSSzzAS+M6IoUO7sbEQ1/Z8vW3M4o3f3YS6nqmaBy535pQpxEY/5x/OPzrgAP7qdiSD4fy5/85gCkHrQSTsSKBH14iUL/BvDqZ98r/ZsBtdKqdyr7qx139fApCwWtJd5aXZg8sns2SGJq7ZTNzfFBHWq2b8a6aNCaLpirRCD5HMYCTiMsX4bf55FB28uYLEkFaSWcFB3LP85Go+Ol812HC1RrRL30VEikXCRIHBtTxX+nxltAiJZvKzxiFSVF1dUWYXdC7VdoDOrSoPu+zsjFLVDHPOHgd17N9f1pCa8JhTwhxDza9e8DLheAB+zEfQQHOjdTQAA59neGSZEmCjIwWZ4o0Z/Bl7B8im3fJSDJrdhHydm4i0M0BIAHKLcnUbzxzLG517ZKRLdoVrgBgbU/QfZ3CnwcLjkV3oUiTQzMUMpyQJ8eiInXkcfTPHyvySx0zYUizUK5WpNYrKvkoalyMRb5yL+my+jjbheRJDkD5Rcv+0uoIUCs9+pAA=" style="width:18px;height:18px;object-fit:contain;display:block">'},
   {name:'Planta',color:'#409820',bg:'#DCEFD5',key:'grass',icon:'<img src="data:image/webp;base64,UklGRiADAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSE0BAAABgFtr29PmA+VW6kxL6xzYgVJMwQr/YQKpNJMoz8Gh1F86KVU5fo5/eL1ARDBw20hRsnvMMDNvIJ3ViyBOh/nLdvuSD9M48KpkZe1WdOSWFW7HHXFbs+CylS3PrPG8zNpXhhT9ZMKGThK/YIAb9lds7KofulrKTXlkC4+yWdbQEHO2dC4a6mkxYWsnQjXpRgsGOG+6f08USoYow8Jv/P4Rw7Hv/yZZM8hV8vtrmjDMySUR1VoMtFUjus2QZLdUFUskS1H1umck564XjBnqOIi3WLZxymCfh2iGOZr8Fc3LFs12Bwc/g98Ef6AUzDnFf4eBRH/n+P8I/5/SHTgOoONMuwaPY/A4+V9xuICL80VwHolcfJ5SWRcLbB4kKke2eTYq4/O43oKfTC3qhKJ5HbIyq0Ps6pyu3KqWbGVX3NbIyqoXxOkof9luXw3rKAIAVlA4IKwBAACwCgCdASowADAAPpE6mkiloyKhLjQLMLASCWwAnTK9hoegeZFZH8BuqlrNuTdxSgdngdjRfP3Xmz7J8h7+NiX1k9Sjww+TGQc+atirn4D/OP1DdgqjhYM9LteLBpAIAP7qerQotOCgG2CFun0IWI2sgDgSGsgNmOBHP5ubi0oVhfjhIgkDPFtezrV/dKP5ps1Sf+qSAOjq5RmYjnCpdLJ1KBgpjmDrSEzyHFfty7GOz3t+fNNTsLFDr4SFdv5sb5DjpmHWf1XG1JOP4InrhIuRtPoaN2qz0bX8UHvOV9keY2w2asMLa5GV0BoHKk/7N82cAxxseKTW53Bz52kpeim3AMIaMDiWP0muHC9aA38upikHJxSlmug3u4Hc0APeQc/QI3RjXUX+oHpdb5wvOSq6Cij0JnHqOFhHTZJE6UsHICts8UhVgt0mCsWpNFeTLS4s0l6McBlsNw1SO6uowUCUpiFQBrffU6uBxgmRZ0MQ6XwzQ5E8Z/pwinsvhtL2/hvac+/sUyCqq9tfd599SvXRWDxphBGrHnju/XwQ6u95zu8l+ViGsbq2RfwAAA==" style="width:18px;height:18px;object-fit:contain;display:block">'},
@@ -1131,9 +1132,101 @@ function backToHome() {
   document.getElementById('trainer-name-bar').textContent='👋 '+ST.cur;
   updateHomeMenu();
 }
-function showTypeChart() {
-  // TODO: type effectiveness chart screen
-  alert('Próximamente: Tabla de eficacia de tipos');
+const TYPE_EFF={
+  normal:   {rock:0.625,ghost:0.390625,steel:0.625},
+  fire:     {fire:0.625,water:0.625,grass:1.6,ice:1.6,bug:1.6,rock:0.625,dragon:0.625,steel:1.6},
+  water:    {fire:1.6,water:0.625,grass:0.625,ground:1.6,rock:1.6,dragon:0.625},
+  electric: {water:1.6,electric:0.625,grass:0.625,ground:0.390625,flying:1.6,dragon:0.625},
+  grass:    {fire:0.625,water:1.6,grass:0.625,poison:0.625,ground:1.6,flying:0.625,bug:0.625,rock:1.6,dragon:0.625,steel:0.625},
+  ice:      {fire:0.625,water:0.625,grass:1.6,ice:0.625,ground:1.6,flying:1.6,dragon:1.6,steel:0.625},
+  fighting: {normal:1.6,ice:1.6,poison:0.625,flying:0.625,psychic:0.625,bug:0.625,rock:1.6,ghost:0.390625,dark:1.6,steel:1.6,fairy:0.625},
+  poison:   {grass:1.6,poison:0.625,ground:0.625,rock:0.625,ghost:0.625,steel:0.390625,fairy:1.6},
+  ground:   {fire:1.6,electric:1.6,grass:0.625,poison:1.6,flying:0.390625,bug:0.625,rock:1.6,steel:1.6},
+  flying:   {electric:0.625,grass:1.6,fighting:1.6,bug:1.6,rock:0.625,steel:0.625},
+  psychic:  {fighting:1.6,poison:1.6,psychic:0.625,dark:0.390625,steel:0.625},
+  bug:      {fire:0.625,grass:1.6,fighting:0.625,poison:0.625,flying:0.625,psychic:1.6,ghost:0.625,dark:1.6,steel:0.625,fairy:0.625},
+  rock:     {fire:1.6,ice:1.6,fighting:0.625,ground:0.625,flying:1.6,bug:1.6,steel:0.625},
+  ghost:    {normal:0.390625,psychic:1.6,ghost:1.6,dark:0.625},
+  dragon:   {dragon:1.6,steel:0.625,fairy:0.390625},
+  dark:     {fighting:0.625,psychic:1.6,ghost:1.6,dark:0.625,fairy:0.625},
+  steel:    {fire:0.625,water:0.625,electric:0.625,ice:1.6,rock:1.6,steel:0.625,fairy:1.6},
+  fairy:    {fire:0.625,fighting:1.6,poison:0.625,dragon:1.6,dark:1.6,steel:0.625}
+};
+function getEff(atk,def){return(TYPE_EFF[atk]&&TYPE_EFF[atk][def])||1;}
+const TC_SELECTED=[];
+
+function renderTypeGrid(){
+  const grid=document.getElementById('tc-type-grid');if(!grid)return;
+  grid.innerHTML=TYPES.map(t=>{
+    const isSel=TC_SELECTED.includes(t.key);
+    return '<button class="tc-type-btn'+(isSel?' selected':'')+'" onclick="tcToggleType(\''+t.key+'\')" style="background:'+(isSel?t.color+'22':'#fff')+'">'
+      +'<span class="type-icon">'+t.icon+'</span>'
+      +'<span style="color:'+(isSel?t.color:'#333')+'">'+t.name+'</span></button>';
+  }).join('');
+}
+
+function tcToggleType(key){
+  const idx=TC_SELECTED.indexOf(key);
+  if(idx>=0)TC_SELECTED.splice(idx,1);
+  else{if(TC_SELECTED.length>=2)TC_SELECTED.shift();TC_SELECTED.push(key);}
+  renderTypeGrid();renderTypeChart();
+}
+
+function placeBalls(types){
+  const order=[1,4,7,10,2,5,8,11,0,3,6,9];
+  const cells=Array(12).fill(null);
+  types.slice(0,12).forEach((t,i)=>{cells[order[i]]=t;});
+  return cells;
+}
+
+function renderBalls(id,types){
+  const el=document.getElementById(id);if(!el)return;
+  if(!types.length){el.innerHTML='';return;}
+  const cells=placeBalls(types);
+  el.innerHTML=cells.map(t=>{
+    if(!t)return '<div></div>';
+    const tm=TM[t];
+    return '<div class="tc-ball" style="background:'+(tm?tm.color+'33':'#eee')+'">'+(tm?'<span class="type-icon">'+tm.icon+'</span>':'')+'</div>';
+  }).join('');
+}
+
+function renderTypeChart(){
+  const ALL=TYPES.map(t=>t.key);
+  if(!TC_SELECTED.length){
+    ['tc-atk-resisted','tc-atk-neutral','tc-atk-super','tc-def-immune','tc-def-resisted','tc-def-super','tc-def-double']
+      .forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='';});
+    return;
+  }
+  const atkResisted=[],atkNeutral=[],atkSuper=[];
+  ALL.forEach(defType=>{
+    const eff=TC_SELECTED.reduce((acc,atk)=>acc*getEff(atk,defType),1);
+    if(eff>=1.55)atkSuper.push(defType);
+    else if(eff<=0.64)atkResisted.push(defType);
+    else atkNeutral.push(defType);
+  });
+  renderBalls('tc-atk-resisted',atkResisted);
+  renderBalls('tc-atk-neutral',atkNeutral);
+  renderBalls('tc-atk-super',atkSuper);
+  const defImmune=[],defResisted=[],defSuper=[],defDouble=[];
+  ALL.forEach(atkType=>{
+    let m=1;
+    TC_SELECTED.forEach(defT=>{m*=getEff(atkType,defT);});
+    if(m<=0.4)defImmune.push(atkType);
+    else if(m<=0.64)defResisted.push(atkType);
+    else if(m>=2.4)defDouble.push(atkType);
+    else if(m>=1.55)defSuper.push(atkType);
+  });
+  renderBalls('tc-def-immune',defImmune);
+  renderBalls('tc-def-resisted',defResisted);
+  renderBalls('tc-def-super',defSuper);
+  renderBalls('tc-def-double',defDouble);
+}
+
+function showTypeChart(){
+  TC_SELECTED.length=0;
+  show('typechart-screen');
+  renderTypeGrid();
+  renderTypeChart();
 }
 function showMegaCandy() {
   alert('Próximamente: Guía de Caramelos Mega');
