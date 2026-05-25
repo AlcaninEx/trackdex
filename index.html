@@ -98,6 +98,14 @@ body.dark .add-btn{background:#333!important;color:#eee!important}
 .tab.active{color:#CC0000!important;border-bottom-color:#CC0000!important}
 /* ALBUM */
 .album-wrap{padding:12px;background:#f0f0f0;min-height:100vh}
+
+.tc-type-btn{display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;border:2px solid transparent;cursor:pointer;font-size:12px;font-weight:700;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1);transition:all .15s}
+.tc-type-btn.selected{border-color:#CC0000;box-shadow:0 0 0 3px rgba(204,0,0,.2)}
+.tc-type-btn img{width:20px;height:20px;object-fit:contain}
+.tc-ball-col{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;min-height:20px}
+.tc-ball{width:22px;height:22px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#f0f0f0}
+.tc-ball img{width:18px;height:18px;object-fit:contain}
+
 .home-btn-big{width:100%;background:#CC0000;color:#fff;border:none;border-radius:14px;padding:18px 16px;cursor:pointer;text-align:center;margin-top:10px;box-shadow:0 4px 12px rgba(204,0,0,.3);transition:transform .1s}
 .home-btn-big:active{transform:scale(.98)}
 .home-btn-small{background:#fff;color:#333;border:2px solid #e0e0e0;border-radius:12px;padding:14px 10px;cursor:pointer;font-size:13px;font-weight:700;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.08);transition:transform .1s,border-color .1s}
@@ -321,6 +329,43 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 </div>
 
 </div>
+
+<!-- TYPE CHART SCREEN -->
+<div id="typechart-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="show('profile-screen');document.getElementById('home-menu').style.display='block'">←</button>
+    <h1>Eficacia de Tipos</h1>
+  </div>
+  <div style="padding:12px;background:#f0f0f0;min-height:100vh">
+
+    <!-- TYPE SELECTOR -->
+    <p style="font-size:12px;color:#666;text-align:center;margin-bottom:8px">Selecciona 1 o 2 tipos (toca para seleccionar/deseleccionar)</p>
+    <div id="tc-type-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:16px"></div>
+
+    <!-- ATTACKING SECTION -->
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-weight:800;font-size:15px;text-align:center;margin-bottom:12px;text-decoration:underline">⚔️ Atacando</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+        <div><p style="font-size:11px;font-weight:700;color:#888;text-align:center;margin-bottom:6px">x0.625</p><div id="tc-atk-resisted" class="tc-ball-col"></div></div>
+        <div><p style="font-size:12px;font-weight:800;color:#555;text-align:center;margin-bottom:6px">x1</p><div id="tc-atk-neutral" class="tc-ball-col"></div></div>
+        <div><p style="font-size:11px;font-weight:700;color:#e53935;text-align:center;margin-bottom:6px">x1.6</p><div id="tc-atk-super" class="tc-ball-col"></div></div>
+      </div>
+    </div>
+
+    <!-- DEFENDING SECTION -->
+    <div style="background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-weight:800;font-size:15px;text-align:center;margin-bottom:12px;text-decoration:underline">🛡️ Defendiendo</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px">
+        <div><p style="font-size:10px;font-weight:700;color:#43a047;text-align:center;margin-bottom:6px">x0.390</p><div id="tc-def-immune" class="tc-ball-col"></div></div>
+        <div><p style="font-size:10px;font-weight:700;color:#66bb6a;text-align:center;margin-bottom:6px">x0.625</p><div id="tc-def-resisted" class="tc-ball-col"></div></div>
+        <div><p style="font-size:10px;font-weight:700;color:#ef5350;text-align:center;margin-bottom:6px">x1.6</p><div id="tc-def-super" class="tc-ball-col"></div></div>
+        <div><p style="font-size:10px;font-weight:700;color:#b71c1c;text-align:center;margin-bottom:6px">x2.56</p><div id="tc-def-double" class="tc-ball-col"></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- MODAL INFO -->
 <div id="modal-info" class="modal-overlay" style="display:none" onclick="closeInfo(event)">
   <div class="modal-box" style="max-width:390px">
