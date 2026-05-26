@@ -102,7 +102,7 @@ body.dark .add-btn{background:#333!important;color:#eee!important}
 .tc-type-btn{display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:10px;border:2px solid transparent;cursor:pointer;font-size:12px;font-weight:700;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1);transition:all .15s}
 .tc-type-btn.selected{border-color:#CC0000;box-shadow:0 0 0 3px rgba(204,0,0,.2)}
 .tc-type-btn img{width:20px;height:20px;object-fit:contain}
-.tc-ball-col{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;min-height:20px}
+.tc-ball-col{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;min-height:120px;align-content:start}
 .tc-ball{width:22px;height:22px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#f0f0f0}
 .tc-ball img{width:18px;height:18px;object-fit:contain}
 
@@ -256,7 +256,7 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
       </button>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
         <button class="home-btn-small" onclick="showMegaCandy()">
-          🍬 Guía Caramelos Mega
+          🍬 Guía Megaenergía
         </button>
         <button class="home-btn-small" onclick="showLegacyGuide()">
           ⭐ Guía Pokémon Legacy
@@ -339,7 +339,7 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
   <div style="padding:12px;background:#f0f0f0;min-height:100vh">
 
     <!-- ATTACKING SECTION -->
-    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,.08);min-height:200px">
       <p style="font-weight:800;font-size:15px;text-align:center;margin-bottom:12px;text-decoration:underline">⚔️ Atacando</p>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
         <div><p style="font-size:11px;font-weight:700;color:#888;text-align:center;margin-bottom:6px">x0.625</p><div id="tc-atk-resisted" class="tc-ball-col"></div></div>
@@ -353,7 +353,7 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
     <div id="tc-type-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:16px"></div>
 
     <!-- DEFENDING SECTION -->
-    <div style="background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+    <div style="background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,.08);min-height:220px">
       <p style="font-weight:800;font-size:15px;text-align:center;margin-bottom:12px;text-decoration:underline">🛡️ Defendiendo</p>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px">
         <div><p style="font-size:10px;font-weight:700;color:#43a047;text-align:center;margin-bottom:6px">x0.390</p><div id="tc-def-immune" class="tc-ball-col"></div></div>
@@ -372,7 +372,7 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 <div id="megaguide-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="show('profile-screen');document.getElementById('home-menu').style.display='block'">←</button>
-    <h1>🍬 Guía Caramelos Mega</h1>
+    <h1>🍬 Guía Megaenergía</h1>
   </div>
   <div style="padding:12px;background:#f0f0f0;min-height:100vh">
 
@@ -918,8 +918,7 @@ const SP='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokem
 const si=n=>SP+n+'.png';
 
 const TYPES=[
-  {name:'Normal',color:'#909090',bg:'#F0F0F0',key:'normal',icon:'<img src="data:image/webp;base64,UklGRswCAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSE0BAAABgFtr29PmA+VW6kxL6xzYgVJMwQr/YQKpNJMoz8Gh1F86KVU5fo5/eL1ARDBw20hRsnvMMDNvIJ3ViyBOh/nLdvuSD9M48KpkZe1WdOSWFW7HHXFbs+CylS3PrPG8zNpXhhT9ZMKGThK/YIAb9lds7KofulrKTXlkC4+yWdbQEHO2dC4a6mkxYWsnQjXpRgsGOG+6f08USoYow8Jv/P4Rw7Hv/yZZM8hV8vtrmjDMySUR1VoMtFUjus2QZLdUFUskS1H1umck564XjBnqOIi3WLZxymCfh2iGOZr8Fc3LFs12Bwc/g98Ef6AUzDnFf4eBRH/n+P8I/5/SHTgOoONMuwaPY/A4+V9xuICL80VwHolcfJ5SWRcLbB4kKke2eTYq4/O43oKfTC3qhKJ5HbIyq0Ps6pyu3KqWbGVX3NbIyqoXxOkof9luXw3rKAIAVlA4IFgBAADwCACdASowADAAPpFEm0qlo6Iho4sAsBIJZwDKQAwFmGY0qib9sJfjtBVKr7zXsrc0Mmuan+Vd5/FKJqg9ExN7Yt5+39xH8lF0GT0IFCu8AAD+9NPFtZz3HN2qMwBRN0ulyr7U6r47NIWhw8ENRm5iwQrnwj00XDCGGurlaiF3dJt0+AYcFh+DrY+gY5nuuJOWLEtrZwM9LZqy2O4lz1nKNfnVR8yHDuCiDxl2Ch8izohuV2cn+yPcjTAb6dREqlfYvh9xAL3as5Azm14LLCgUJCWh5dwlrlHCJqI77EIQLH7XYvKGeNHPjRLoAD21hWPIVgvZL+z5TV8Z8LWHA5pDixaLdy+K1P/89OtcyYSgRlL7zO7PPoBGGhOnvKdM6D7IBmUySLYliMwmBJ8eJD0Z0jFA4TLMo6+54dlv5dmaQXcri6DjuAd0YKKGwIYmHXVuahn8dAAAAA==" style="width:18px;height:18px;object-fit:contain;display:block">'},
-  {name:'Fuego',color:'#E07020',bg:'#FDE8D5',key:'fire',icon:'<img src="data:image/webp;base64,UklGRvICAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSE0BAAABgFtr29PmA+VW6kxL6xzYgVJMwQr/YQKpNJMoz8Gh1F86KVU5fo5/eL1ARDBw20hRsnvMMDNvIJ3ViyBOh/nLdvuSD9M48KpkZe1WdOSWFW7HHXFbs+CylS3PrPG8zNpXhhT9ZMKGThK/YIAb9lds7KofulrKTXlkC4+yWdbQEHO2dC4a6mkxYWsnQjXpRgsGOG+6f08USoYow8Jv/P4Rw7Hv/yZZM8hV8vtrmjDMySUR1VoMtFUjus2QZLdUFUskS1H1umck564XjBnqOIi3WLZxymCfh2iGOZr8Fc3LFs12Bwc/g98Ef6AUzDnFf4eBRH/n+P8I/5/SHTgOoONMuwaPY/A4+V9xuICL80VwHolcfJ5SWRcLbB4kKke2eTYq4/O43oKfTC3qhKJ5HbIyq0Ps6pyu3KqWbGVX3NbIyqoXxOkof9luXw3rKAIAVlA4IH4BAAAwCwCdASowADAAPpE6mEiloyIhLjQMyLASCWxmqUYZQIvpLp7p+KvOMcnmZfoFIA2wHmA86r0gebp1Q3oAdLMCHm8lSD5U2n32+z/bTOq+jhxL+fbuPXZs7XdUC0lxqzhEAAD+8Glamtw1zeUpZYydIwQaKl3OwoG8pym+9fYnxm8yMaRUK0pp14hnjzdSNmlrkH+ACKSxlQHe4c4SrSWTqhqneYZdKfzEmcfH8DVrzpKob71VXr9LOlJKgXE4dtIHteO8UAKgKUo8hfNQhDFMpTxBsKlRyv3VAFVTHKY6RNP1Uxor9qPk1jKpiZZmQRnMwzvWC57j/zeXvCJ7VN07f1m7XM3ylguuABXJBfJjIocOndt6Mh13KzHs5JvzjAJJupm5ccg5/8zH5xacYdiLwMFpYKw+yhuw8b9udE1fia7Abgoin6Lhy/lKcOxROqYMv7Ruu+hYDUHT913tY80rtpm+1SJT3HmDFXYqctLTc9iGFonv5T+X88VQAAAA" style="width:18px;height:18px;object-fit:contain;display:block">'},
+    {name:'Fuego',color:'#E07020',bg:'#FDE8D5',key:'fire',icon:'<img src="data:image/webp;base64,UklGRvICAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSE0BAAABgFtr29PmA+VW6kxL6xzYgVJMwQr/YQKpNJMoz8Gh1F86KVU5fo5/eL1ARDBw20hRsnvMMDNvIJ3ViyBOh/nLdvuSD9M48KpkZe1WdOSWFW7HHXFbs+CylS3PrPG8zNpXhhT9ZMKGThK/YIAb9lds7KofulrKTXlkC4+yWdbQEHO2dC4a6mkxYWsnQjXpRgsGOG+6f08USoYow8Jv/P4Rw7Hv/yZZM8hV8vtrmjDMySUR1VoMtFUjus2QZLdUFUskS1H1umck564XjBnqOIi3WLZxymCfh2iGOZr8Fc3LFs12Bwc/g98Ef6AUzDnFf4eBRH/n+P8I/5/SHTgOoONMuwaPY/A4+V9xuICL80VwHolcfJ5SWRcLbB4kKke2eTYq4/O43oKfTC3qhKJ5HbIyq0Ps6pyu3KqWbGVX3NbIyqoXxOkof9luXw3rKAIAVlA4IH4BAAAwCwCdASowADAAPpE6mEiloyIhLjQMyLASCWxmqUYZQIvpLp7p+KvOMcnmZfoFIA2wHmA86r0gebp1Q3oAdLMCHm8lSD5U2n32+z/bTOq+jhxL+fbuPXZs7XdUC0lxqzhEAAD+8Glamtw1zeUpZYydIwQaKl3OwoG8pym+9fYnxm8yMaRUK0pp14hnjzdSNmlrkH+ACKSxlQHe4c4SrSWTqhqneYZdKfzEmcfH8DVrzpKob71VXr9LOlJKgXE4dtIHteO8UAKgKUo8hfNQhDFMpTxBsKlRyv3VAFVTHKY6RNP1Uxor9qPk1jKpiZZmQRnMwzvWC57j/zeXvCJ7VN07f1m7XM3ylguuABXJBfJjIocOndt6Mh13KzHs5JvzjAJJupm5ccg5/8zH5xacYdiLwMFpYKw+yhuw8b9udE1fia7Abgoin6Lhy/lKcOxROqYMv7Ruu+hYDUHT913tY80rtpm+1SJT3HmDFXYqctLTc9iGFonv5T+X88VQAAAA" style="width:18px;height:18px;object-fit:contain;display:block">'},
   {name:'Agua',color:'#4070D0',bg:'#D8E4FD',key:'water',icon:'<img src="data:image/webp;base64,UklGRhgDAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSEgBAAABgFtr29PmV4ZW6kxL6xzwDJQwBSv8hwmg/SdRnoNDyV86KVVEpc+R8HqBiGDgtpGiZPeYYWbewKpULgxHLMKXPH8JF8IxNIU1Ur3l4yinEnM55rdqAy69ID5Thec48K9q0tXdFdV05erdGrTNWUK1TWZmu5K+JY/UwKO0+hWM+JYauuWj8mm+osaueNlk294RwJ3V/nsiUxJEaXZ/o8+OGI4z/TduSiAT9/fXtCKYq0vGmOoRUE9l7DZAEtwyhcdIEq5okzOS80QzIoIaGU6OJXcEgRULNIsQTfiK5jVHk+PBz+A3wR9IgDkL/HeI/87x/xH4P425Ao8D6Djjq/A4Bo+T/xWHO8A4D84jdhufp8ocovMgY327aZ61+/g8Xm2nYZ0ArEOSwL9qVudMZF62JJcTfqeyRiqa4Yhl+JLnr+FCOM/VdRQDVlA4IKoBAABQCgCdASowADAAPpE4l0iloyIhMdM8ALASCWwAqScTA6+78n/AfAA2xJugyn+ClVSSzzAS+M6IoUO7sbEQ1/Z8vW3M4o3f3YS6nqmaBy535pQpxEY/5x/OPzrgAP7qdiSD4fy5/85gCkHrQSTsSKBH14iUL/BvDqZ98r/ZsBtdKqdyr7qx139fApCwWtJd5aXZg8sns2SGJq7ZTNzfFBHWq2b8a6aNCaLpirRCD5HMYCTiMsX4bf55FB28uYLEkFaSWcFB3LP85Go+Ol812HC1RrRL30VEikXCRIHBtTxX+nxltAiJZvKzxiFSVF1dUWYXdC7VdoDOrSoPu+zsjFLVDHPOHgd17N9f1pCa8JhTwhxDza9e8DLheAB+zEfQQHOjdTQAA59neGSZEmCjIwWZ4o0Z/Bl7B8im3fJSDJrdhHydm4i0M0BIAHKLcnUbzxzLG517ZKRLdoVrgBgbU/QfZ3CnwcLjkV3oUiTQzMUMpyQJ8eiInXkcfTPHyvySx0zYUizUK5WpNYrKvkoalyMRb5yL+my+jjbheRJDkD5Rcv+0uoIUCs9+pAA=" style="width:18px;height:18px;object-fit:contain;display:block">'},
   {name:'Planta',color:'#409820',bg:'#DCEFD5',key:'grass',icon:'<img src="data:image/webp;base64,UklGRiADAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSE0BAAABgFtr29PmA+VW6kxL6xzYgVJMwQr/YQKpNJMoz8Gh1F86KVU5fo5/eL1ARDBw20hRsnvMMDNvIJ3ViyBOh/nLdvuSD9M48KpkZe1WdOSWFW7HHXFbs+CylS3PrPG8zNpXhhT9ZMKGThK/YIAb9lds7KofulrKTXlkC4+yWdbQEHO2dC4a6mkxYWsnQjXpRgsGOG+6f08USoYow8Jv/P4Rw7Hv/yZZM8hV8vtrmjDMySUR1VoMtFUjus2QZLdUFUskS1H1umck564XjBnqOIi3WLZxymCfh2iGOZr8Fc3LFs12Bwc/g98Ef6AUzDnFf4eBRH/n+P8I/5/SHTgOoONMuwaPY/A4+V9xuICL80VwHolcfJ5SWRcLbB4kKke2eTYq4/O43oKfTC3qhKJ5HbIyq0Ps6pyu3KqWbGVX3NbIyqoXxOkof9luXw3rKAIAVlA4IKwBAACwCgCdASowADAAPpE6mkiloyKhLjQLMLASCWwAnTK9hoegeZFZH8BuqlrNuTdxSgdngdjRfP3Xmz7J8h7+NiX1k9Sjww+TGQc+atirn4D/OP1DdgqjhYM9LteLBpAIAP7qerQotOCgG2CFun0IWI2sgDgSGsgNmOBHP5ubi0oVhfjhIgkDPFtezrV/dKP5ps1Sf+qSAOjq5RmYjnCpdLJ1KBgpjmDrSEzyHFfty7GOz3t+fNNTsLFDr4SFdv5sb5DjpmHWf1XG1JOP4InrhIuRtPoaN2qz0bX8UHvOV9keY2w2asMLa5GV0BoHKk/7N82cAxxseKTW53Bz52kpeim3AMIaMDiWP0muHC9aA38upikHJxSlmug3u4Hc0APeQc/QI3RjXUX+oHpdb5wvOSq6Cij0JnHqOFhHTZJE6UsHICts8UhVgt0mCsWpNFeTLS4s0l6McBlsNw1SO6uowUCUpiFQBrffU6uBxgmRZ0MQ6XwzQ5E8Z/pwinsvhtL2/hvac+/sUyCqq9tfd599SvXRWDxphBGrHnju/XwQ6u95zu8l+ViGsbq2RfwAAA==" style="width:18px;height:18px;object-fit:contain;display:block">'},
   {name:'Eléctrico',color:'#B08000',bg:'#FDF5C0',key:'electric',icon:'<img src="data:image/webp;base64,UklGRqwCAABXRUJQVlA4WAoAAAAQAAAALwAALwAAQUxQSE0BAAABgFtr29PmA+VW6kxL6xzYgVJMwQr/YQKpNJMoz8Gh1F86KVU5fo5/eL1ARDBw20hRsnvMMDNvIJ3ViyBOh/nLdvuSD9M48KpkZe1WdOSWFW7HHXFbs+CylS3PrPG8zNpXhhT9ZMKGThK/YIAb9lds7KofulrKTXlkC4+yWdbQEHO2dC4a6mkxYWsnQjXpRgsGOG+6f08USoYow8Jv/P4Rw7Hv/yZZM8hV8vtrmjDMySUR1VoMtFUjus2QZLdUFUskS1H1umck564XjBnqOIi3WLZxymCfh2iGOZr8Fc3LFs12Bwc/g98Ef6AUzDnFf4eBRH/n+P8I/5/SHTgOoONMuwaPY/A4+V9xuICL80VwHolcfJ5SWRcLbB4kKke2eTYq4/O43oKfTC3qhKJ5HbIyq0Ps6pyu3KqWbGVX3NbIyqoXxOkof9luXw3rKAIAVlA4IDgBAACwCQCdASowADAAPo02mEelIqKhKrquqKARiWwArDL/+1/GxIDbm+YDdAP7v1QG82fsoAs2oPdq6pO9J9gyMt8Ya4cL2b5v1qR9JlNmSjojBXUXanVMwAD+9whx3h93oFN8M/5NA2Rysp47BMq01kl+j6cfwXIbIycTH4+kwU/QLe0gkQh3Vf5Tb6Rt+sAHQPNJ6+799Pu06oBvg5UOyZiv4r877M6lei38j+aaL19kooZ2uc8gzyK+voq6oiZbMYGWo2f/m1j18Q3lZEECMB07gRJKSx/yoSG1cGLb+M+AwkVShtljS3iFMY7yIyjVBCcZEyC6iK/Sy7DwHde/5H1sp+DpcGuB/D8BvAcWsUJMGHiDoOR12Kfa1jEA7T6D0XtECShyL1xqvfmSfL+yPmBLQBnDpn0AAAA=" style="width:18px;height:18px;object-fit:contain;display:block">'},
@@ -1470,7 +1469,7 @@ function albumPks(n,type) {
   }
   return [...pdPks,...customPks].sort((a,b)=>b.dps-a.dps);
 }
-function countType(n,type) { const pks=albumPks(n,type); return {o:pks.length, t:Math.max(pks.length,1)}; }
+function countType(n,type) { const pks=albumPks(n,type); return {o:pks.length, t:6}; }
 
 // ── PROFILE ──────────────────────────────────────────────────────────────────
 function addProfile() {
@@ -1650,7 +1649,7 @@ function addFromRanking(id) {
   if(!p.custom)p.custom={};
   // Count current entries for this type
   const typeCount=countAlbumForType(p, type);
-  if(typeCount>=6){alert('Ya tienes 6 Pokémon de este tipo en tu equipo');return;}
+  if(typeCount>=6){alert('Ya tienes 6 Pokémon de este tipo. Elimina uno primero.');return;}
   // Generate unique id for this copy (allow multiple copies)
   let newId=id;
   let n=1;
@@ -1675,11 +1674,9 @@ function removeRankEntry(id, type) {
   ST.expanded=null; save(); renderAlbum(); renderRanking(); renderMain();
 }
 function countAlbumForType(p, type) {
-  if(!p||p.album===undefined||p.album===null)return 0;
-  // Count PD entries explicitly in album for this type
+  if(!p||!p.album)return 0;
   const pdCount=PD.filter(x=>p.album[x.id]===true&&x.type===type).length;
-  // Count custom entries for this type
-  const customCount=p.custom?Object.entries(p.custom).filter(([id,d])=>d.type===type&&p.album&&p.album[id]===true).length:0;
+  const customCount=p.custom?Object.entries(p.custom).filter(([id,d])=>d.type===type&&p.album[id]===true).length:0;
   return pdCount+customCount;
 }
 function addToAlbum(pkId) {
@@ -1860,10 +1857,16 @@ function renderAlbum() {
 }
 
 function renderAlbumDmax() {
-  const t=TM[ST.type]; const rows=DMAX[ST.type]||[];
+  const t=TM[ST.type]; const isV=!!ST.view; const rows=DMAX[ST.type]||[];
   const el=document.getElementById('album-list-dmax');
   if(!rows.length){el.innerHTML='<p style="text-align:center;padding:20px;color:#aaa">Sin datos Dynamax.</p>';return;}
-  const slots=rows.slice(0,3); const maxD=slots[0].dps;
+  // Only show entries user has explicitly added
+  const p2=gp(ST.view||ST.cur);
+  const userDmaxIds=p2&&p2.album?Object.keys(p2.album).filter(id=>p2.album[id]===true&&id.startsWith(ST.type+'-dmax-')):[];
+  const slots=rows.filter(r=>{
+    const did=ST.type+'-dmax-'+r.n.toLowerCase().replace(/[^a-z0-9]/g,'-');
+    return userDmaxIds.some(id=>id===did||id.startsWith(did+'-'));
+  }); const maxD=slots[0].dps;
   const isG=r=>r.charge.startsWith('G-Max')||['Drum Solo','Vine Lash','Cannonade','Hydrosnipe','Foam Burst','Fireball','Wildfire','Stun Shock','Befuddle','Terror','Snooze','Resonance','Chi Strike','Behemoth'].some(x=>r.charge.includes(x));
   el.innerHTML=slots.map(r=>`<div class="pk-card" style="background:${t.color}"><div class="pk-top"><div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">${r.n.replace(/^[GD]-/,'')}</div><div class="tags-row">${isG(r)?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>'}</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>${r.dps.toFixed(1)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${Math.round(r.dps/maxD*100)}%"></div></div></div></div></div><div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div></div>`).join('')
   +Array(Math.max(0,3-slots.length)).fill('<div class="empty-slot"><div class="empty-slot-icon">⚡</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Equipo de 3 para Dynamax</div></div>').join('');
@@ -1876,7 +1879,17 @@ function renderDmaxRanking() {
   const maxD=rows[0].dps;
   document.getElementById('rank-note-dmax').textContent=`Top ${rows.length} Dynamax · pokemongohub.net`;
   const isG=r=>r.charge.startsWith('G-Max')||['Drum Solo','Vine Lash','Cannonade','Hydrosnipe','Foam Burst','Fireball','Wildfire','Stun Shock','Befuddle','Terror','Snooze','Resonance','Chi Strike','Behemoth'].some(x=>r.charge.includes(x));
-  el.innerHTML=rows.map((r,i)=>`<div class="rank-row" style="background:#fff"><span class="rank-num">#${i+1}</span><img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1"><div class="rank-info"><div class="rank-name" style="color:#222">${r.n.replace(/^[GD]-/,'')}${isG(r)?'<span style="font-size:9px;background:#7b1fa2;color:#fff;padding:1px 5px;border-radius:6px;margin-left:4px">GMAX</span>':'<span style="font-size:9px;background:#1565c0;color:#fff;padding:1px 5px;border-radius:6px;margin-left:4px">DMAX</span>'}</div><div class="rank-move" style="color:#888">${r.fast} / ${r.charge}</div><div class="dps-minibar"><div class="dps-minifill" style="width:${Math.round(r.dps/maxD*100)}%;background:${t.color}"></div></div></div><div class="rank-dps" style="color:#222">${r.dps.toFixed(1)}</div></div>`).join('');
+  const isV2=!!ST.view;
+  el.innerHTML=rows.map((r,i)=>{
+    const dname=r.n.replace(/^[GD]-/,'');
+    const badge=isG(r)?'<span style="font-size:9px;background:#7b1fa2;color:#fff;padding:1px 5px;border-radius:6px;margin-left:4px">GMAX</span>':'<span style="font-size:9px;background:#1565c0;color:#fff;padding:1px 5px;border-radius:6px;margin-left:4px">DMAX</span>';
+    const bw=Math.round(r.dps/maxD*100);
+    const did=ST.type+'-dmax-'+r.n.toLowerCase().replace(/[^a-z0-9]/g,'-');
+    if(!window._rankCache)window._rankCache={};
+    window._rankCache[did]={n:dname,dps:r.dps,img:r.img,fast:r.fast,charge:r.charge,type:ST.type};
+    const addBtn=!isV2?'<button class="rank-add-btn" onclick="event.stopPropagation();addFromRanking(\''+did+'\')" title="Añadir a Mis Pokémon">+</button>':'';
+    return '<div class="rank-row" style="background:#fff"><span class="rank-num">#'+i+'</span><img class="rank-img" src="'+si(r.img)+'" onerror="this.style.opacity=.1"><div class="rank-info"><div class="rank-name" style="color:#222">'+dname+badge+'</div><div class="rank-move" style="color:#888">'+r.fast+' / '+r.charge+'</div><div class="dps-minibar"><div class="dps-minifill" style="width:'+bw+'%;background:'+t.color+'"></div></div></div><div class="rank-dps" style="color:#222">'+r.dps.toFixed(1)+'</div>'+addBtn+'</div>';
+  }).join('');
 }
 
 function renderRanking() {
