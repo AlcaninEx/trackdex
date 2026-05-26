@@ -1674,10 +1674,23 @@ function removeRankEntry(id, type) {
   ST.expanded=null; save(); renderAlbum(); renderRanking(); renderMain();
 }
 function countAlbumForType(p, type) {
-  if(!p||!p.album)return 0;
-  const pdCount=PD.filter(x=>p.album[x.id]===true&&x.type===type).length;
-  const customCount=p.custom?Object.entries(p.custom).filter(([id,d])=>d.type===type&&p.album[id]===true).length:0;
-  return pdCount+customCount;
+  if(!p || !p.album) return 0;
+  let count = 0;
+  for (const id in p.album) {
+    if (p.album[id] !== true) continue;
+
+    // Determinamos el tipo del Pokémon por su ID
+    let pkType = null;
+    if (p.custom && p.custom[id]) {
+      pkType = p.custom[id].type;
+    } else {
+      const pd = PD.find(x => x.id === id);
+      if (pd) pkType = pd.type;
+    }
+
+    if (pkType === type) count++;
+  }
+  return count;
 }
 function addToAlbum(pkId) {
   if(!ST.cur)return;
