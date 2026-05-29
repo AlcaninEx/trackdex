@@ -210,15 +210,9 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 .guia-icon{font-size:22px;flex-shrink:0;width:32px;text-align:center;margin-top:2px}
 .guia-text strong{display:block;font-size:14px;font-weight:700;margin-bottom:3px;color:#222!important}
 .guia-text p{font-size:12px;color:#555!important;line-height:1.5}
-
-#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#323232;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;max-width:280px;text-align:center;line-height:1.4;box-shadow:0 4px 16px rgba(0,0,0,.35)}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-#toast.toast-warn{background:#CC0000}
-#toast.toast-ok{background:#2e7d32}
 </style>
 </head>
 <body>
-<div id="toast"></div>
 <div id="app">
 
 
@@ -1468,7 +1462,7 @@ function albumPks(n,type) {
         customPks.push({
           id, name:d.n, type:d.type, img:d.img||( pdRef?pdRef.img:''),
           dps:d.dps, fast:d.fast, charge:d.charge,
-          tags:pdRef?pdRef.tags:[], evo:pdRef?pdRef.evo:null, isCustom:true
+          tags:pdRef?pdRef.tags:(d.tags||inferTags(d.n,d.fast&&d.fast.endsWith('*'),d.charge&&d.charge.endsWith('*'),[])), evo:pdRef?pdRef.evo:null, isCustom:true
         });
       }
     });
@@ -1480,7 +1474,7 @@ function countType(n,type) { const pks=albumPks(n,type); return {o:pks.length, t
 // ── PROFILE ──────────────────────────────────────────────────────────────────
 function addProfile() {
   const inp=document.getElementById('new-name'); const n=inp.value.trim();
-  if(!n)return; if(ST.profiles.find(p=>p.name===n)){showToast('Ya existe ese perfil 👤');return;}
+  if(!n)return; if(ST.profiles.find(p=>p.name===n)){alert('Ya existe');return;}
   goc(n); inp.value='';
   fbSave(n, {pk:{}, album:null, custom:null});
   save(); renderProfiles();
@@ -1496,7 +1490,7 @@ function selProfileIdx(i) {
   document.getElementById('trainer-name-bar').textContent='👋 '+p.name;
   updateHomeMenu();
 }
-function viewProfileIdx(i) { const p=ST.profiles[i]; if(!p)return; if(!ST.cur){showToast('Primero selecciona tu perfil 👤');return;} ST.view=p.name;show('main-screen');renderMain(); }
+function viewProfileIdx(i) { const p=ST.profiles[i]; if(!p)return; if(!ST.cur){alert('Primero selecciona tu perfil');return;} ST.view=p.name;show('main-screen');renderMain(); }
 function delProfileIdx(i,e) { const p=ST.profiles[i]; if(p)delProfile(p.name,e); }
 function goProfiles() {
   ST.cur=null; ST.view=null;
@@ -1618,7 +1612,7 @@ function showMegaCandy() {
   show('megaguide-screen');
 }
 function showLegacyGuide() {
-  showToast('Guía Legacy próximamente ⭐');
+  alert('Próximamente: Guía de Pokémon Legacy');
 }
 function updateHomeMenu() {
   // Count total raid pokemons across all profiles for this user
@@ -1646,36 +1640,6 @@ function updateHomeMenu() {
 function goBack() { ST.expanded=null; show('main-screen'); renderMain(); }
 
 // ── ALBUM ─────────────────────────────────────────────────────────────────────
-
-let _toastTimer=null;
-function showToast(msg, type='warn') {
-  const el=document.getElementById('toast');
-  if(!el)return;
-  el.textContent=msg;
-  el.className='show toast-'+type;
-  if(_toastTimer)clearTimeout(_toastTimer);
-  _toastTimer=setTimeout(()=>{el.className='';},3200);
-}
-
-function hasMegaInTeam(p, type) {
-  if(!p||!p.album)return false;
-  for(const id in p.album){
-    if(p.album[id]!==true)continue;
-    let tags=[];
-    if(p.custom&&p.custom[id]){
-      const d=p.custom[id];
-      const pdRef=d.pdRef?PD.find(x=>x.id===d.pdRef):null;
-      tags=pdRef?pdRef.tags:(d.tags||[]);
-      if((d.type||type)!==type)continue;
-    } else {
-      const pd=PD.find(x=>x.id===id);
-      if(!pd||pd.type!==type)continue;
-      tags=pd.tags||[];
-    }
-    if(tags.includes('mega'))return true;
-  }
-  return false;
-}
 function addFromRanking(id) {
   if(!ST.cur)return;
   const data=(window._rankCache&&window._rankCache[id])||{};
@@ -1685,11 +1649,7 @@ function addFromRanking(id) {
   if(!p.custom)p.custom={};
   // Count current entries for this type
   const typeCount=countAlbumForType(p, type);
-  if(typeCount>=6){showToast('Ya tienes 6 Pokémon en este tipo\nElimina uno primero ⚔️');return;}
-  // Mega check
-  const _pdE=PD.find(x=>x.id===id);
-  const _isMega=(_pdE&&_pdE.tags&&_pdE.tags.includes('mega'))||(data.n&&(data.n.toLowerCase().startsWith('mega ')||data.n.toLowerCase().startsWith('primal ')));
-  if(_isMega&&hasMegaInTeam(p,type)){showToast('Solo un Mega por equipo\nSubstituye el actual primero 🔴');return;}
+  if(typeCount>=6){alert('Ya tienes 6 Pokémon de este tipo. Elimina uno primero.');return;}
   // Generate unique id for this copy (allow multiple copies)
   let newId=id;
   let n=1;
@@ -1699,9 +1659,12 @@ function addFromRanking(id) {
   const pdEntry=PD.find(x=>x.id===id);
   if(pdEntry){
     // Always store in custom with pdRef so evo/tags are always available
-    p.custom[newId]={n:pdEntry.name,dps:pdEntry.dps,img:pdEntry.img,fast:pdEntry.fast,charge:pdEntry.charge,type:pdEntry.type,pdRef:id};
+    p.custom[newId]={n:pdEntry.name,dps:pdEntry.dps,img:pdEntry.img,fast:pdEntry.fast,charge:pdEntry.charge,type:pdEntry.type,pdRef:id,tags:inferTags(pdEntry.name,pdEntry.fast.endsWith('*'),pdEntry.charge.endsWith('*'),pdEntry.tags||[])};
   } else if(data.n){
-    p.custom[newId]={n:data.n,dps:data.dps||0,img:data.img||'',fast:data.fast||'',charge:data.charge||'',type:type};
+    const _ft=data.fastL&&data.fast?data.fast+'*':data.fast||'';
+    const _ct=data.chargeL&&data.charge?data.charge+'*':data.charge||'';
+    const _tags3=inferTags(data.n,data.fastL,data.chargeL,data.tags||[]);
+    p.custom[newId]={n:data.n,dps:data.dps||0,img:data.img||'',fast:_ft,charge:_ct,type:type,tags:_tags3};
   }
   save(); renderAlbum(); renderMain();
 }
@@ -1740,9 +1703,7 @@ function addToAlbum(pkId) {
   if(p.album===undefined||p.album===null) p.album=Object.assign({},defaultAlbum());
   // Count how many are currently in album for this type
   const currentCount=countAlbumForType(p, pk.type);
-  if(currentCount>=6){showToast('Ya tienes 6 Pokémon en este tipo\nElimina uno primero ⚔️');return;}
-  // Mega check
-  if(pk.tags&&pk.tags.includes('mega')&&hasMegaInTeam(p,pk.type)){showToast('Solo un Mega por equipo\nSubstituye el actual primero 🔴');return;}
+  if(currentCount>=6){alert('Máximo 6 por tipo');return;}
   p.album[pkId]=true; save(); renderAlbum(); renderRanking(); renderMain();
 }
 function removeFromAlbum(pkId) {
@@ -1894,7 +1855,7 @@ function renderAlbum() {
     const realDps=baseDps*(bs2[0]+ia)/(bs2[0]+15);
     const dd=realDps; const bw=Math.round((realDps/maxD)*100);
     const isOpen=ST.expanded===pk.id; const isShadow=pk.tags.includes('shadow');
-    const tH=pk.tags.map(tg=>tg==='legacy'?'<span class="tag tl">⭐ Legacy</span>':tg==='mission'?'<span class="tag tm">🎯 Misión</span>':tg==='shadow'?'<span class="tag ts">👤 Shadow</span>':tg==='mega'?'<span class="tag tme">🔴 Mega</span>':tg==='dynamax'?'<span class="tag tdx">⚡ Dynamax</span>':'').join('');
+    const tH=renderBadges(pk.tags||[]);
     const fd=pk.fast.replace('*',''); const cd=pk.charge.replace('*','');
     const fl=pk.fast.endsWith('*'); const cl=pk.charge.endsWith('*');
     const mvH=`<div class="mv-box"><div class="mv-row"><span class="mv-lbl">Rápido</span><span class="mv-name">${fd}${fl?'<span class="leg-star">⭐</span>':''}</span></div><div class="mv-row"><span class="mv-lbl">Cargado</span><span class="mv-name">${cd}${cl?'<span class="leg-star">⭐</span>':''}</span></div></div>`;
@@ -1947,6 +1908,27 @@ function renderDmaxRanking() {
   }).join('');
 }
 
+
+function inferTags(name, fastL, chargeL, pdTags) {
+  const tags = new Set(pdTags || []);
+  const nl = (name||'').toLowerCase();
+  if (nl.includes('(shadow)') || nl.startsWith('shadow ')) tags.add('shadow');
+  if (nl.startsWith('mega ') || nl.startsWith('primal ')) tags.add('mega');
+  if (fastL || chargeL) tags.add('legacy');
+  const baseName = nl.replace('(shadow)','').replace(/^mega /,'').replace(/^primal /,'').trim();
+  if (DMAX_NAMES.has(baseName) || DMAX_NAMES.has(nl)) tags.add('dynamax');
+  return [...tags];
+}
+function renderBadges(tags, typeColor) {
+  return (tags||[]).map(tg => {
+    if (tg === 'shadow')  return '<span class="badge" style="background:#6a1b9a;color:#fff">Shadow</span>';
+    if (tg === 'mega')    return '<span class="badge" style="background:#CC0000;color:#fff">Mega</span>';
+    if (tg === 'legacy')  return '<span class="badge" style="background:#e65100;color:#fff">Legacy ⭐</span>';
+    if (tg === 'dynamax') return '<span class="badge" style="background:#1565c0;color:#fff">DMAX</span>';
+    if (tg === 'mission') return '<span class="badge" style="background:#2e7d32;color:#fff">Misión</span>';
+    return '';
+  }).join('');
+}
 function renderRanking() {
   const profile=ST.view||ST.cur; const isV=!!ST.view; const t=TM[ST.type];
   const rawRank=RANKINGS[ST.type]||[]; const allPks=PD.filter(p=>p.type===ST.type);
@@ -1986,9 +1968,11 @@ function renderRanking() {
     // Store entry data for addFromRanking lookup
     if(!window._rankCache)window._rankCache={};
     const rid=r.aid||(ST.type+'-ext-'+r.n.toLowerCase().replace(/[^a-z0-9]/g,'-'));
-    window._rankCache[rid]={n:r.n,dps:r.dps,img:r.img,fast:r.fast||'',charge:r.charge||'',type:ST.type};
+    const _pdE2=PD.find(x=>x.id===rid);
+    const _tags2=inferTags(r.n, r.fastL, r.chargeL, _pdE2?_pdE2.tags:[]);
+    window._rankCache[rid]={n:r.n,dps:r.dps,img:r.img,fast:r.fast||'',fastL:r.fastL||false,charge:r.charge||'',chargeL:r.chargeL||false,type:ST.type,tags:_tags2};
     const addBtn=!isV?'<button class="rank-add-btn" onclick="event.stopPropagation();addFromRanking(\''+rid+'\')" title="Añadir a Mis Pokémon">+</button>':'';
-    return `<div class="rank-row${isA?' ours':''}" style="background:${rowBg};--tc:${t.color}"><span class="rank-num">#${i+1}</span><img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1"><div class="rank-info"><div class="rank-name" style="color:${nameCol}">${r.n.replace(' (Shadow)','')}${r.n.includes('(Shadow)')?'<span class="badge" style="background:#6a1b9a;color:#fff">Shadow</span>':''}${(()=>{if(r.n.includes('(Shadow)'))return'';const bn=r.n.trim().toLowerCase();return DMAX_NAMES.has(bn)?'<span class="badge" style="background:#1565c0;color:#fff">DMAX</span>':'';})()}${isO?`<span class="badge" style="background:${t.color}">TUYO</span>`:''}</div><div class="rank-move">${ft} / ${ct}</div><div class="dps-minibar"><div class="dps-minifill" style="width:${bw}%;background:${t.color}"></div></div></div><div class="rank-dps" style="color:${nameCol}">${r.dps.toFixed(2)}</div>${addBtn}</div>`;
+    return `<div class="rank-row${isA?' ours':''}" style="background:${rowBg};--tc:${t.color}"><span class="rank-num">#${i+1}</span><img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1"><div class="rank-info"><div class="rank-name" style="color:${nameCol}">${r.n.replace(' (Shadow)','')}${(()=>{const _pdE=PD.find(x=>x.id===rid);const _rt=inferTags(r.n,r.fastL,r.chargeL,_pdE?_pdE.tags:[]);return renderBadges(_rt)+(isO?`<span class="badge" style="background:${t.color}">TUYO</span>`:'');})()}</div><div class="rank-move">${ft} / ${ct}</div><div class="dps-minibar"><div class="dps-minifill" style="width:${bw}%;background:${t.color}"></div></div></div><div class="rank-dps" style="color:${nameCol}">${r.dps.toFixed(2)}</div>${addBtn}</div>`;
   }).join('');
 }
 
