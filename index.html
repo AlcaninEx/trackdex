@@ -210,9 +210,15 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 .guia-icon{font-size:22px;flex-shrink:0;width:32px;text-align:center;margin-top:2px}
 .guia-text strong{display:block;font-size:14px;font-weight:700;margin-bottom:3px;color:#222!important}
 .guia-text p{font-size:12px;color:#555!important;line-height:1.5}
+
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#323232;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;max-width:280px;text-align:center;line-height:1.4;box-shadow:0 4px 16px rgba(0,0,0,.35)}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.toast-warn{background:#CC0000}
+#toast.toast-ok{background:#2e7d32}
 </style>
 </head>
 <body>
+<div id="toast"></div>
 <div id="app">
 
 
@@ -1213,69 +1219,7 @@ const DMAX={
   fairy:[{n:'D-Hatterene',dps:272.38,fast:'Charm',charge:'Max Starfall',img:'858'},{n:'D-Gardevoir',dps:272.38,fast:'Charm',charge:'Max Starfall',img:'282'},{n:'D-Sylveon',dps:235.77,fast:'Charm',charge:'Max Starfall',img:'700'},{n:'D-Gallade',dps:227.15,fast:'Charm',charge:'Max Starfall',img:'475'},{n:'D-Latias',dps:219.08,fast:'Charm',charge:'Max Starfall',img:'380'},{n:'D-Tsareena',dps:213.69,fast:'Charm',charge:'Max Starfall',img:'763'}],
 };
 
-const DMAX_NAMES=new Set([
-  // Kanto
-  "bulbasaur","ivysaur","venusaur",
-  "charmander","charmeleon","charizard",
-  "squirtle","wartortle","blastoise",
-  "caterpie","metapod","butterfree",
-  "pikachu","raichu",
-  "growlithe","arcanine",
-  "abra","kadabra","alakazam",
-  "machop","machoke","machamp",
-  "krabby","kingler",
-  "gastly","haunter","gengar",
-  "chansey","blissey",
-  "omanyte","omastar",
-  "kabuto","kabutops",
-  "articuno","zapdos","moltres",
-  // Johto
-  "raikou","entei","suicune",
-  "espeon",
-  "sableye",
-  "shuckle",
-  "wailmer","wailord",
-  // Hoenn
-  "omanyte","omastar",
-  "ralts","kirlia","gardevoir","gallade",
-  "duraludon",  // evoluciona a Archaludon pero Duraludon también
-  "latias","latios",
-  // Sinnoh
-  "combee","vespiquen",
-  "rookidee","corvisquire","corviknight",
-  // Unova
-  "pidove","tranquill","unfezant",
-  "trubbish","garbodor",
-  "darumaka","darmanitan",
-  "drilbur","excadrill",
-  "machop","machoke","machamp",
-  "passimian",
-  "toxtricity",
-  // Kalos
-  "inkay","malamar",
-  "roggenrola","boldore","gigalith",
-  // Alola
-  "bounsweet","steenee","tsareena",
-  "drampa",
-  "spheal","sealeo","walrein",
-  // Galar
-  "grookey","thwackey","rillaboom",
-  "scorbunny","raboot","cinderace",
-  "sobble","drizzile","inteleon",
-  "wooloo","dubwool",
-  "skwovet","greedent",
-  "falinks",
-  "hatenna","hattrem","hatterene",
-  "kubfu","urshifu",
-  // Beldum line (Hoenn)
-  "beldum","metang","metagross",
-  // Cryogonal
-  "cryogonal",
-  // Chansey/Blissey ya arriba
-  // Abra line ya arriba
-  // Pikachu/Raichu ya arriba
-  // Growlithe/Arcanine ya arriba
-]);;
+const DMAX_NAMES=new Set(["alakazam", "arcanine", "articuno", "blastoise", "boldore", "butterfree", "chandelure", "charizard", "cinderace", "corviknight", "crowned zacian", "crowned zamazenta", "cryogonal", "darmanitan", "drampa", "drilbur", "duraludon", "espeon", "eternatus", "excadrill", "flareon", "gallade", "garbodor", "garchomp", "gardevoir", "gastly", "gengar", "gigalith", "glaceon", "grimmsnarl", "hatterene", "haunter", "hitmonlee", "ho-oh", "inteleon", "jolteon", "kabutops", "kingler", "lapras", "latias", "latios", "leafeon", "machamp", "magnezone", "malamar", "mamoswine", "mega blastoise", "mega charizard y", "mega garchomp", "mega gardevoir", "mega gengar", "mega gyarados", "mega metagross", "mega salamence", "mega sceptile", "mega swampert", "mega tyranitar", "mega venusaur", "metagross", "metang", "moltres", "omastar", "passimian", "raikou", "regice", "regirock", "rillaboom", "sableye", "suicune", "swoobat", "sylveon", "toxtricity", "toxtricity amp", "toxtricity lk", "tsareena", "tyranitar", "unfezant", "venusaur", "wailord", "walrein", "zapdos"]);
 const BASE_STATS={
   'f-mega-lucario-l':[236,144,172],
   'f-mega-lucario':[236,144,172],
@@ -1536,7 +1480,7 @@ function countType(n,type) { const pks=albumPks(n,type); return {o:pks.length, t
 // ── PROFILE ──────────────────────────────────────────────────────────────────
 function addProfile() {
   const inp=document.getElementById('new-name'); const n=inp.value.trim();
-  if(!n)return; if(ST.profiles.find(p=>p.name===n)){alert('Ya existe');return;}
+  if(!n)return; if(ST.profiles.find(p=>p.name===n)){showToast('Ya existe ese perfil 👤');return;}
   goc(n); inp.value='';
   fbSave(n, {pk:{}, album:null, custom:null});
   save(); renderProfiles();
@@ -1552,7 +1496,7 @@ function selProfileIdx(i) {
   document.getElementById('trainer-name-bar').textContent='👋 '+p.name;
   updateHomeMenu();
 }
-function viewProfileIdx(i) { const p=ST.profiles[i]; if(!p)return; if(!ST.cur){alert('Primero selecciona tu perfil');return;} ST.view=p.name;show('main-screen');renderMain(); }
+function viewProfileIdx(i) { const p=ST.profiles[i]; if(!p)return; if(!ST.cur){showToast('Primero selecciona tu perfil 👤');return;} ST.view=p.name;show('main-screen');renderMain(); }
 function delProfileIdx(i,e) { const p=ST.profiles[i]; if(p)delProfile(p.name,e); }
 function goProfiles() {
   ST.cur=null; ST.view=null;
@@ -1674,7 +1618,7 @@ function showMegaCandy() {
   show('megaguide-screen');
 }
 function showLegacyGuide() {
-  alert('Próximamente: Guía de Pokémon Legacy');
+  showToast('Guía Legacy próximamente ⭐');
 }
 function updateHomeMenu() {
   // Count total raid pokemons across all profiles for this user
@@ -1702,6 +1646,36 @@ function updateHomeMenu() {
 function goBack() { ST.expanded=null; show('main-screen'); renderMain(); }
 
 // ── ALBUM ─────────────────────────────────────────────────────────────────────
+
+let _toastTimer=null;
+function showToast(msg, type='warn') {
+  const el=document.getElementById('toast');
+  if(!el)return;
+  el.textContent=msg;
+  el.className='show toast-'+type;
+  if(_toastTimer)clearTimeout(_toastTimer);
+  _toastTimer=setTimeout(()=>{el.className='';},3200);
+}
+
+function hasMegaInTeam(p, type) {
+  if(!p||!p.album)return false;
+  for(const id in p.album){
+    if(p.album[id]!==true)continue;
+    let tags=[];
+    if(p.custom&&p.custom[id]){
+      const d=p.custom[id];
+      const pdRef=d.pdRef?PD.find(x=>x.id===d.pdRef):null;
+      tags=pdRef?pdRef.tags:(d.tags||[]);
+      if((d.type||type)!==type)continue;
+    } else {
+      const pd=PD.find(x=>x.id===id);
+      if(!pd||pd.type!==type)continue;
+      tags=pd.tags||[];
+    }
+    if(tags.includes('mega'))return true;
+  }
+  return false;
+}
 function addFromRanking(id) {
   if(!ST.cur)return;
   const data=(window._rankCache&&window._rankCache[id])||{};
@@ -1711,7 +1685,11 @@ function addFromRanking(id) {
   if(!p.custom)p.custom={};
   // Count current entries for this type
   const typeCount=countAlbumForType(p, type);
-  if(typeCount>=6){alert('Ya tienes 6 Pokémon de este tipo. Elimina uno primero.');return;}
+  if(typeCount>=6){showToast('Ya tienes 6 Pokémon en este tipo\nElimina uno primero ⚔️');return;}
+  // Mega check
+  const _pdE=PD.find(x=>x.id===id);
+  const _isMega=(_pdE&&_pdE.tags&&_pdE.tags.includes('mega'))||(data.n&&(data.n.toLowerCase().startsWith('mega ')||data.n.toLowerCase().startsWith('primal ')));
+  if(_isMega&&hasMegaInTeam(p,type)){showToast('Solo un Mega por equipo\nSubstituye el actual primero 🔴');return;}
   // Generate unique id for this copy (allow multiple copies)
   let newId=id;
   let n=1;
@@ -1762,7 +1740,9 @@ function addToAlbum(pkId) {
   if(p.album===undefined||p.album===null) p.album=Object.assign({},defaultAlbum());
   // Count how many are currently in album for this type
   const currentCount=countAlbumForType(p, pk.type);
-  if(currentCount>=6){alert('Máximo 6 por tipo');return;}
+  if(currentCount>=6){showToast('Ya tienes 6 Pokémon en este tipo\nElimina uno primero ⚔️');return;}
+  // Mega check
+  if(pk.tags&&pk.tags.includes('mega')&&hasMegaInTeam(p,pk.type)){showToast('Solo un Mega por equipo\nSubstituye el actual primero 🔴');return;}
   p.album[pkId]=true; save(); renderAlbum(); renderRanking(); renderMain();
 }
 function removeFromAlbum(pkId) {
@@ -1931,47 +1911,6 @@ function renderAlbum() {
   }).join('')+empty;
 }
 
-
-// Mapa img final → img primera evolución para Dynamax
-const DMAX_EVO={
-  '815':'813','812':'810','818':'816', // Cinderace←Scorbunny, Rillaboom←Grookey, Inteleon←Sobble
-  '94':'92','376':'374','3':'1','6':'4','9':'7', // Gengar←Gastly, Metagross←Beldum, Venusaur←Bulbasaur, Charizard←Charmander, Blastoise←Squirtle
-  '68':'66','99':'98', // Machamp←Machop, Kingler←Krabby
-  '849':'848', // Toxtricity←Toxel (848)
-  '530':'529', // Excadrill←Drilbur
-  '555':'554', // Darmanitan←Darumaka
-  '521':'519', // Unfezant←Pidove
-  '569':'568', // Garbodor←Trubbish
-  '242':'113', // Blissey←Chansey
-  '141':'140','139':'138', // Kabutops←Kabuto, Omastar←Omanyte
-  '832':'831','820':'819', // Dubwool←Wooloo, Greedent←Skwovet
-  '870':'870', // Falinks no tiene preevo
-  '858':'856', // Hatterene←Hatenna
-  '894':'891', // Urshifu←Kubfu
-  '823':'821', // Corviknight←Rookidee
-  '825':'824', // Dottler←Rolycoly (no aplica, pero por si acaso)
-  '282':'280', // Gardevoir←Ralts
-  '475':'280', // Gallade←Ralts
-  '687':'686', // Malamar←Inkay
-  '765':'761', // Tsareena←Bounsweet
-  '526':'524', // Gigalith←Roggenrola
-  '880':'878', // Coalossal←Rolycoly  (no usados)
-  '763':'761', // Tsareena←Bounsweet (ya)
-  '884':'882', // Duraludon←Dreepy... no, Duraludon←Duraludon (no preevo en GO)
-  '131':'131', // Lapras no preevo
-  '615':'615', // Cryogonal no preevo
-  '243':'243','244':'244','245':'245', // Raikou/Entei/Suicune sin preevo
-  '144':'144','145':'145','146':'146', // Legendarios sin preevo
-  '380':'380','381':'381', // Latias/Latios sin preevo
-  '302':'302', // Sableye sin preevo
-  '213':'213', // Shuckle sin preevo
-  '322':'322', // Numel... no incluido
-  '12':'10', // Butterfree←Caterpie
-  '25':'25',  // Pikachu←Pichu (no, en GO Pikachu es base)
-  '26':'25',  // Raichu←Pikachu
-  '59':'58',  // Arcanine←Growlithe
-  '65':'63',  // Alakazam←Abra
-};
 function renderAlbumDmax() {
   const t=TM[ST.type]; const isV=!!ST.view; const rows=DMAX[ST.type]||[];
   const el=document.getElementById('album-list-dmax');
@@ -1984,7 +1923,7 @@ function renderAlbumDmax() {
     return userDmaxIds.some(id=>id===did||id.startsWith(did+'-'));
   }); const maxD=slots[0].dps;
   const isG=r=>r.charge.startsWith('G-Max')||['Drum Solo','Vine Lash','Cannonade','Hydrosnipe','Foam Burst','Fireball','Wildfire','Stun Shock','Befuddle','Terror','Snooze','Resonance','Chi Strike','Behemoth'].some(x=>r.charge.includes(x));
-  el.innerHTML=slots.map(r=>{const evoId=DMAX_EVO[r.img]||null;const evoDisp=evoId&&evoId!==r.img?`<img class="evo-sm" src="${si(evoId)}" onerror="this.style.opacity=.1"><span class="evo-arr">▶</span>`:'';return`<div class="pk-card" style="background:${t.color}"><div class="pk-top"><div style="display:flex;align-items:center;gap:2px;flex-shrink:0">${evoDisp}<div class="final-wrap"><img class="final-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">${r.n.replace(/^[GD]-/,'')}</div><div class="tags-row">${isG(r)?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>'}</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>${r.dps.toFixed(1)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${Math.round(r.dps/maxD*100)}%"></div></div></div></div></div><div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div></div>`}).join('')
+  el.innerHTML=slots.map(r=>`<div class="pk-card" style="background:${t.color}"><div class="pk-top"><div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">${r.n.replace(/^[GD]-/,'')}</div><div class="tags-row">${isG(r)?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>'}</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>${r.dps.toFixed(1)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${Math.round(r.dps/maxD*100)}%"></div></div></div></div></div><div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div></div>`).join('')
   +Array(Math.max(0,3-slots.length)).fill('<div class="empty-slot"><div class="empty-slot-icon">⚡</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Equipo de 3 para Dynamax</div></div>').join('');
 }
 
