@@ -210,6 +210,12 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 .guia-icon{font-size:22px;flex-shrink:0;width:32px;text-align:center;margin-top:2px}
 .guia-text strong{display:block;font-size:14px;font-weight:700;margin-bottom:3px;color:#222!important}
 .guia-text p{font-size:12px;color:#555!important;line-height:1.5}
+
+#type-nav-strip{display:flex;overflow-x:auto;gap:5px;padding:6px 10px;background:#fff;border-bottom:1px solid #e0e0e0;position:sticky;top:0;z-index:10;scrollbar-width:none}
+#type-nav-strip::-webkit-scrollbar{display:none}
+.tn-btn{flex-shrink:0;border:none;border-radius:20px;padding:4px 11px;font-size:11px;font-weight:700;cursor:pointer;color:#fff;opacity:.6;transition:opacity .15s,transform .1s}
+.tn-btn.active{opacity:1;transform:scale(1.08)}
+body.dark #type-nav-strip{background:#1e1e1e;border-color:#333}
 </style>
 </head>
 <body>
@@ -304,6 +310,7 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
     <button class="tab active" id="tab-a" onclick="switchTab('album')">Mis Pokémon</button>
     <button class="tab" id="tab-r" onclick="switchTab('ranking')">Ranking DPS</button>
   </div>
+  <div id="type-nav-strip"></div>
   <div id="view-badge-wrap" class="view-badge-bar" style="display:none">👁 Solo lectura — <span id="view-name"></span></div>
   <div id="album-panel">
   <div class="album-subtabs">
@@ -1213,7 +1220,52 @@ const DMAX={
   fairy:[{n:'D-Hatterene',dps:272.38,fast:'Charm',charge:'Max Starfall',img:'858'},{n:'D-Gardevoir',dps:272.38,fast:'Charm',charge:'Max Starfall',img:'282'},{n:'D-Sylveon',dps:235.77,fast:'Charm',charge:'Max Starfall',img:'700'},{n:'D-Gallade',dps:227.15,fast:'Charm',charge:'Max Starfall',img:'475'},{n:'D-Latias',dps:219.08,fast:'Charm',charge:'Max Starfall',img:'380'},{n:'D-Tsareena',dps:213.69,fast:'Charm',charge:'Max Starfall',img:'763'}],
 };
 
-const DMAX_NAMES=new Set(["alakazam", "arcanine", "articuno", "blastoise", "boldore", "butterfree", "chandelure", "charizard", "cinderace", "corviknight", "crowned zacian", "crowned zamazenta", "cryogonal", "darmanitan", "drampa", "drilbur", "duraludon", "espeon", "eternatus", "excadrill", "flareon", "gallade", "garbodor", "garchomp", "gardevoir", "gastly", "gengar", "gigalith", "glaceon", "grimmsnarl", "hatterene", "haunter", "hitmonlee", "ho-oh", "inteleon", "jolteon", "kabutops", "kingler", "lapras", "latias", "latios", "leafeon", "machamp", "magnezone", "malamar", "mamoswine", "mega blastoise", "mega charizard y", "mega garchomp", "mega gardevoir", "mega gengar", "mega gyarados", "mega metagross", "mega salamence", "mega sceptile", "mega swampert", "mega tyranitar", "mega venusaur", "metagross", "metang", "moltres", "omastar", "passimian", "raikou", "regice", "regirock", "rillaboom", "sableye", "suicune", "swoobat", "sylveon", "toxtricity", "toxtricity amp", "toxtricity lk", "tsareena", "tyranitar", "unfezant", "venusaur", "wailord", "walrein", "zapdos"]);
+const DMAX_NAMES=new Set([
+  "bulbasaur","ivysaur","venusaur",
+  "charmander","charmeleon","charizard",
+  "squirtle","wartortle","blastoise",
+  "caterpie","metapod","butterfree",
+  "pikachu","raichu",
+  "growlithe","arcanine",
+  "abra","kadabra","alakazam",
+  "machop","machoke","machamp",
+  "krabby","kingler",
+  "gastly","haunter","gengar",
+  "chansey","blissey",
+  "omanyte","omastar",
+  "kabuto","kabutops",
+  "articuno","zapdos","moltres",
+  "raikou","entei","suicune",
+  "espeon",
+  "sableye","shuckle",
+  "wailmer","wailord",
+  "ralts","kirlia","gardevoir","gallade",
+  "beldum","metang","metagross",
+  "cryogonal",
+  "pidove","tranquill","unfezant",
+  "trubbish","garbodor",
+  "darumaka","darmanitan",
+  "drilbur","excadrill",
+  "passimian",
+  "toxtricity",
+  "inkay","malamar",
+  "roggenrola","boldore","gigalith",
+  "bounsweet","steenee","tsareena",
+  "drampa",
+  "spheal","sealeo","walrein",
+  "grookey","thwackey","rillaboom",
+  "scorbunny","raboot","cinderace",
+  "sobble","drizzile","inteleon",
+  "wooloo","dubwool",
+  "skwovet","greedent",
+  "falinks",
+  "hatenna","hattrem","hatterene",
+  "kubfu","urshifu",
+  "rookidee","corvisquire","corviknight",
+  "duraludon",
+  "combee","vespiquen",
+  "latias","latios"
+]);
 const BASE_STATS={
   'f-mega-lucario-l':[236,144,172],
   'f-mega-lucario':[236,144,172],
@@ -1663,8 +1715,8 @@ function addFromRanking(id) {
   } else if(data.n){
     const _ft=data.fastL&&data.fast?data.fast+'*':data.fast||'';
     const _ct=data.chargeL&&data.charge?data.charge+'*':data.charge||'';
-    const _tags3=inferTags(data.n,data.fastL,data.chargeL,data.tags||[]);
-    p.custom[newId]={n:data.n,dps:data.dps||0,img:data.img||'',fast:_ft,charge:_ct,type:type,tags:_tags3};
+    const _tt=inferTags(data.n,data.fastL,data.chargeL,data.tags||[]);
+    p.custom[newId]={n:data.n,dps:data.dps||0,img:data.img||'',fast:_ft,charge:_ct,type:type,tags:_tt};
   }
   save(); renderAlbum(); renderMain();
 }
@@ -1778,7 +1830,7 @@ function switchAlbumTab(tab) {
   if(tab==='dmax')renderAlbumDmax();
 }
 function switchRankTab(tab) {
-  ST.rankTab=tab;
+  ST.rankTab=tab; renderTypeNav();
   document.getElementById('rtab-raid').className='tab'+(tab==='raid'?' active':'');
   document.getElementById('rtab-dmax').className='tab'+(tab==='dmax'?' active':'');
   document.getElementById('rpanel-raid').style.display=tab==='raid'?'':'none';
@@ -1797,7 +1849,7 @@ function openType(k) {
   document.getElementById('rpanel-raid').style.display=''; document.getElementById('rpanel-dmax').style.display='none';
   const vb=document.getElementById('view-badge-wrap');
   if(ST.view){vb.style.display='flex';document.getElementById('view-name').textContent=ST.view;} else vb.style.display='none';
-  renderAlbum(); renderRanking(); show('detail-screen');
+  renderAlbum(); renderRanking(); show('detail-screen'); renderTypeNav();
 }
 function toggleDark() {
   const d=document.body.classList.toggle('dark'); localStorage.setItem('darkMode',d?'1':'0');
@@ -1827,12 +1879,11 @@ function renderMain() {
   document.getElementById('uname').textContent=ST.view?ST.cur+' → '+ST.view:ST.cur;
   const v=ST.view||ST.cur;
   document.getElementById('types-grid').innerHTML=TYPES.map(t=>{
-    const pks=albumPks(v,t.key); const tot=Math.max(pks.length,1);
-    const {o}=countType(v,t.key); const pct=Math.round(o/tot*100);
-    const dxPks=pks.filter(p=>p.tags.includes('dynamax'));
+    const {o}=countType(v,t.key); const pct=Math.round(o/6*100);
+    const dxPks=albumPks(v,t.key).filter(p=>p.tags&&p.tags.includes('dynamax'));
     const dxOwned=dxPks.length;
-    const dxTot=Math.min(dxPks.length,3)||3; const dxPct=Math.round(dxOwned/dxTot*100);
-    return `<div class="type-card" onclick="openType('${t.key}')" style="background:${t.color}"><div class="type-card-top" style="padding:10px 12px 4px"><span class="type-badge" style="background:${t.bg};color:#333;border-color:${t.color}"><span class="type-icon">${t.icon}</span>${t.name}</span></div><div class="type-card-bars"><div class="bar-row"><span class="bar-lbl">⚔️</span><div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:rgba(255,255,255,.9)"></div></div><span class="prog-count">${o}/6</span></div><div class="bar-row"><span class="bar-lbl">⚡</span><div class="dx-bar"><div class="dx-fill" style="width:${dxPct}%"></div></div><span class="dx-count">${dxOwned}/${dxTot}</span></div></div></div>`;
+    const dxPct=Math.round(Math.min(dxOwned,3)/3*100);
+    return `<div class="type-card" onclick="openType('${t.key}')" style="background:${t.color}"><div class="type-card-top" style="padding:10px 12px 4px"><span class="type-badge" style="background:${t.bg};color:#333;border-color:${t.color}"><span class="type-icon">${t.icon}</span>${t.name}</span></div><div class="type-card-bars"><div class="bar-row"><span class="bar-lbl">⚔️</span><div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:rgba(255,255,255,.9)"></div></div><span class="prog-count">${o}/6</span></div><div class="bar-row"><span class="bar-lbl">⚡</span><div class="dx-bar"><div class="dx-fill" style="width:${dxPct}%"></div></div><span class="dx-count">${dxOwned}/3</span></div></div></div>`;
   }).join('');
 }
 
@@ -1915,19 +1966,43 @@ function inferTags(name, fastL, chargeL, pdTags) {
   if (nl.includes('(shadow)') || nl.startsWith('shadow ')) tags.add('shadow');
   if (nl.startsWith('mega ') || nl.startsWith('primal ')) tags.add('mega');
   if (fastL || chargeL) tags.add('legacy');
-  const baseName = nl.replace('(shadow)','').replace(/^mega /,'').replace(/^primal /,'').trim();
-  if (DMAX_NAMES.has(baseName) || DMAX_NAMES.has(nl)) tags.add('dynamax');
+  const base = nl.replace('(shadow)','').replace(/^mega /,'').replace(/^primal /,'').trim();
+  if (DMAX_NAMES.has(base) || DMAX_NAMES.has(nl)) tags.add('dynamax');
   return [...tags];
 }
-function renderBadges(tags, typeColor) {
+function renderBadges(tags) {
   return (tags||[]).map(tg => {
-    if (tg === 'shadow')  return '<span class="badge" style="background:#6a1b9a;color:#fff">Shadow</span>';
-    if (tg === 'mega')    return '<span class="badge" style="background:#CC0000;color:#fff">Mega</span>';
-    if (tg === 'legacy')  return '<span class="badge" style="background:#e65100;color:#fff">Legacy ⭐</span>';
-    if (tg === 'dynamax') return '<span class="badge" style="background:#1565c0;color:#fff">DMAX</span>';
-    if (tg === 'mission') return '<span class="badge" style="background:#2e7d32;color:#fff">Misión</span>';
+    if (tg==='shadow')  return '<span class="badge" style="background:#6a1b9a;color:#fff">Shadow</span>';
+    if (tg==='mega')    return '<span class="badge" style="background:#CC0000;color:#fff">Mega</span>';
+    if (tg==='legacy')  return '<span class="badge" style="background:#e65100;color:#fff">Legacy ⭐</span>';
+    if (tg==='dynamax') return '<span class="badge" style="background:#1565c0;color:#fff">DMAX</span>';
+    if (tg==='mission') return '<span class="badge" style="background:#2e7d32;color:#fff">Misión</span>';
     return '';
   }).join('');
+}
+
+function renderTypeNav() {
+  const strip = document.getElementById('type-nav-strip');
+  if (!strip) return;
+  strip.innerHTML = TYPES.map(t =>
+    `<button class="tn-btn${ST.type===t.key?' active':''}" style="background:${t.color}"
+      onclick="navToType('${t.key}')">${t.name}</button>`
+  ).join('');
+  // Scroll active button into view
+  const active = strip.querySelector('.tn-btn.active');
+  if (active) active.scrollIntoView({block:'nearest',inline:'center',behavior:'instant'});
+}
+function navToType(key) {
+  ST.type = key;
+  ST.expanded = null;
+  // Update title
+  const t = TM[key];
+  if (t) document.getElementById('detail-title').textContent = t.name;
+  renderTypeNav();
+  renderAlbum();
+  renderRanking();
+  renderAlbumDmax();
+  renderMain();
 }
 function renderRanking() {
   const profile=ST.view||ST.cur; const isV=!!ST.view; const t=TM[ST.type];
@@ -1968,11 +2043,11 @@ function renderRanking() {
     // Store entry data for addFromRanking lookup
     if(!window._rankCache)window._rankCache={};
     const rid=r.aid||(ST.type+'-ext-'+r.n.toLowerCase().replace(/[^a-z0-9]/g,'-'));
-    const _pdE2=PD.find(x=>x.id===rid);
-    const _tags2=inferTags(r.n, r.fastL, r.chargeL, _pdE2?_pdE2.tags:[]);
-    window._rankCache[rid]={n:r.n,dps:r.dps,img:r.img,fast:r.fast||'',fastL:r.fastL||false,charge:r.charge||'',chargeL:r.chargeL||false,type:ST.type,tags:_tags2};
+    const _pe3=PD.find(x=>x.id===rid);
+    const _rt3=inferTags(r.n,r.fastL,r.chargeL,_pe3?_pe3.tags:[]);
+    window._rankCache[rid]={n:r.n,dps:r.dps,img:r.img,fast:r.fast||'',fastL:r.fastL||false,charge:r.charge||'',chargeL:r.chargeL||false,type:ST.type,tags:_rt3};
     const addBtn=!isV?'<button class="rank-add-btn" onclick="event.stopPropagation();addFromRanking(\''+rid+'\')" title="Añadir a Mis Pokémon">+</button>':'';
-    return `<div class="rank-row${isA?' ours':''}" style="background:${rowBg};--tc:${t.color}"><span class="rank-num">#${i+1}</span><img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1"><div class="rank-info"><div class="rank-name" style="color:${nameCol}">${r.n.replace(' (Shadow)','')}${(()=>{const _pdE=PD.find(x=>x.id===rid);const _rt=inferTags(r.n,r.fastL,r.chargeL,_pdE?_pdE.tags:[]);return renderBadges(_rt)+(isO?`<span class="badge" style="background:${t.color}">TUYO</span>`:'');})()}</div><div class="rank-move">${ft} / ${ct}</div><div class="dps-minibar"><div class="dps-minifill" style="width:${bw}%;background:${t.color}"></div></div></div><div class="rank-dps" style="color:${nameCol}">${r.dps.toFixed(2)}</div>${addBtn}</div>`;
+    return `<div class="rank-row${isA?' ours':''}" style="background:${rowBg};--tc:${t.color}"><span class="rank-num">#${i+1}</span><img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1"><div class="rank-info"><div class="rank-name" style="color:${nameCol}">${r.n.replace(' (Shadow)','')}${(()=>{const _pe=PD.find(x=>x.id===rid);const _rt=inferTags(r.n,r.fastL,r.chargeL,_pe?_pe.tags:[]);return renderBadges(_rt)+(isO?`<span class="badge" style="background:${t.color}">TUYO</span>`:'');})()}</div><div class="rank-move">${ft} / ${ct}</div><div class="dps-minibar"><div class="dps-minifill" style="width:${bw}%;background:${t.color}"></div></div></div><div class="rank-dps" style="color:${nameCol}">${r.dps.toFixed(2)}</div>${addBtn}</div>`;
   }).join('');
 }
 
