@@ -211,15 +211,15 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 .guia-text strong{display:block;font-size:14px;font-weight:700;margin-bottom:3px;color:#222!important}
 .guia-text p{font-size:12px;color:#555!important;line-height:1.5}
 
-#type-nav-strip{display:flex;flex-wrap:wrap;gap:5px;padding:7px 10px 6px;background:#fff;border-bottom:2px solid #e0e0e0;position:sticky;top:0;z-index:20}
-.tn-btn{flex:0 0 auto;border:none;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;color:#fff;opacity:.55;transition:opacity .15s,transform .12s,box-shadow .12s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
-.tn-btn.active{opacity:1;transform:scale(1.08);box-shadow:0 2px 6px rgba(0,0,0,.3)}
-body.dark #type-nav-strip{background:#1e1e1e;border-color:#333}
-
 #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#323232;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;max-width:280px;text-align:center;line-height:1.4;box-shadow:0 4px 16px rgba(0,0,0,.35)}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #toast.toast-warn{background:#CC0000}
 #toast.toast-ok{background:#2e7d32}
+
+#type-nav-strip{display:flex;flex-wrap:wrap;gap:5px;padding:7px 10px 6px;background:#fff;border-bottom:2px solid #e0e0e0;position:sticky;top:0;z-index:20}
+.tn-btn{flex:0 0 auto;border:none;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;color:#fff;opacity:.55;transition:opacity .15s,transform .12s,box-shadow .12s;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.tn-btn.active{opacity:1;transform:scale(1.08);box-shadow:0 2px 6px rgba(0,0,0,.3)}
+body.dark #type-nav-strip{background:#1e1e1e;border-color:#333}
 </style>
 </head>
 <body>
@@ -353,10 +353,10 @@ body.dark #type-nav-strip{background:#1e1e1e;border-color:#333}
     <!-- ATTACKING SECTION -->
     <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,.08);min-height:200px">
       <p style="font-weight:800;font-size:15px;text-align:center;margin-bottom:12px;text-decoration:underline">⚔️ Atacando</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
-        <div><p style="font-size:11px;font-weight:700;color:#888;text-align:center;margin-bottom:6px">x0.625</p><div id="tc-atk-resisted" class="tc-ball-col"></div></div>
-        <div><p style="font-size:12px;font-weight:800;color:#555;text-align:center;margin-bottom:6px">x1</p><div id="tc-atk-neutral" class="tc-ball-col"></div></div>
-        <div><p style="font-size:11px;font-weight:700;color:#e53935;text-align:center;margin-bottom:6px">x1.6</p><div id="tc-atk-super" class="tc-ball-col"></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><p style="font-size:11px;font-weight:700;color:#888;text-align:center;margin-bottom:6px">x0.625 (poco eficaz)</p><div id="tc-atk-resisted" class="tc-ball-col"></div></div>
+        <div id="tc-atk-neutral" style="display:none"></div>
+        <div><p style="font-size:11px;font-weight:700;color:#e53935;text-align:center;margin-bottom:6px">x1.6 (super eficaz)</p><div id="tc-atk-super" class="tc-ball-col"></div></div>
       </div>
     </div>
 
@@ -368,7 +368,7 @@ body.dark #type-nav-strip{background:#1e1e1e;border-color:#333}
     <div style="background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,.08);min-height:220px">
       <p style="font-weight:800;font-size:15px;text-align:center;margin-bottom:12px;text-decoration:underline">🛡️ Defendiendo</p>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px">
-        <div><p style="font-size:10px;font-weight:700;color:#43a047;text-align:center;margin-bottom:6px">x0.390</p><div id="tc-def-immune" class="tc-ball-col"></div></div>
+        <div><p style="font-size:10px;font-weight:700;color:#43a047;text-align:center;margin-bottom:6px">x0.390 (doble resist.)</p><div id="tc-def-immune" class="tc-ball-col"></div></div>
         <div><p style="font-size:10px;font-weight:700;color:#66bb6a;text-align:center;margin-bottom:6px">x0.625</p><div id="tc-def-resisted" class="tc-ball-col"></div></div>
         <div><p style="font-size:10px;font-weight:700;color:#ef5350;text-align:center;margin-bottom:6px">x1.6</p><div id="tc-def-super" class="tc-ball-col"></div></div>
         <div><p style="font-size:10px;font-weight:700;color:#b71c1c;text-align:center;margin-bottom:6px">x2.56</p><div id="tc-def-double" class="tc-ball-col"></div></div>
@@ -1012,14 +1012,14 @@ const RANKINGS={
     {n:'Magnezone',dps:21.40,fast:'Chispa',fastL:false,charge:'Voltio Cruel',chargeL:false,img:'462',aid:'el-magnezone'}
   ],
   ice:[
-    {n:'Kyurem (Blanco)',dps:35.16,fast:'Colmillo Hielo',fastL:false,charge:'Llama Gélida',chargeL:false,img:'10017'},
-    {n:'Kyurem (Negro)',dps:33.80,fast:'Garra Umbría',fastL:false,charge:'Rayo Gélido',chargeL:false,img:'10018'},
+    {n:'Kyurem (Blanco)',dps:35.16,fast:'Colmillo Hielo',fastL:false,charge:'Llama Gélida',chargeL:false,img:'10016'},
+    {n:'Kyurem (Negro)',dps:33.80,fast:'Garra Umbría',fastL:false,charge:'Rayo Gélido',chargeL:false,img:'10017'},
     {n:'Mamoswine (Shadow)',dps:28.67,fast:'Nieve Polvo',fastL:false,charge:'Alud',chargeL:false,img:'473',aid:'ic-shd-mamosw'},
     {n:'Weavile (Shadow)',dps:27.40,fast:'Carámbano',fastL:false,charge:'Alud',chargeL:false,img:'461',aid:'ic-shd-weavile'},
     {n:'Glaceon (Shadow)',dps:25.10,fast:'Vaho Gélido',fastL:false,charge:'Alud',chargeL:false,img:'471'},
     {n:'Baxcalibur',dps:24.90,fast:'Colmillo Hielo',fastL:false,charge:'Alud',chargeL:false,img:'998',aid:'ic-baxcalibur'},
     {n:'Articuno (Shadow)',dps:23.90,fast:'Vaho Gélido',fastL:false,charge:'Alud',chargeL:false,img:'144'},
-    {n:'Darmanitan Galar',dps:23.80,fast:'Colmillo Hielo',fastL:false,charge:'Alud',chargeL:false,img:'10254',aid:'ic-darman-galar'},
+    {n:'Darmanitan Galar',dps:23.80,fast:'Colmillo Hielo',fastL:false,charge:'Alud',chargeL:false,img:'555',aid:'ic-darman-galar'},
     {n:'Mamoswine',dps:22.50,fast:'Nieve Polvo',fastL:false,charge:'Alud',chargeL:false,img:'473',aid:'ic-mamoswine'},
     {n:'Mega Abomasnow',dps:21.90,fast:'Nieve Polvo',fastL:false,charge:'Bola Clima',chargeL:false,img:'460',aid:'ic-mega-aboma'},
     {n:'Glaceon',dps:21.20,fast:'Vaho Gélido',fastL:false,charge:'Alud',chargeL:false,img:'471'},
@@ -1085,7 +1085,7 @@ const RANKINGS={
   ],
   psychic:[
     {n:'Mewtwo (Shadow)',dps:36.10,fast:'Psicocorte',fastL:false,charge:'Bola Sombra',chargeL:false,img:'150'},
-    {n:'Mega Mewtwo Y',dps:32.50,fast:'Psicocorte',fastL:false,charge:'Psíquico',chargeL:false,img:'10046'},
+    {n:'Mega Mewtwo Y',dps:32.50,fast:'Psicocorte',fastL:false,charge:'Psíquico',chargeL:false,img:'10044'},
     {n:'Mega Alakazam',dps:28.90,fast:'Psicocorte',fastL:true,charge:'Psíquico',chargeL:true,img:'10037',aid:'ps-mega-alak-l'},
     {n:'Hoopa (Libre)',dps:27.40,fast:'Confusión',fastL:false,charge:'Psico Impulso',chargeL:false,img:'720'},
     {n:'Mega Gallade',dps:26.80,fast:'Confusión',fastL:false,charge:'Psíquico',chargeL:false,img:'10068',aid:'ps-mega-gallade'},
@@ -1128,14 +1128,13 @@ const RANKINGS={
   ghost:[
     {n:'Mega Gengar',dps:32.65,fast:'Lametón',fastL:true,charge:'Bola Sombra',chargeL:false,img:'10038',aid:'gh-mega-geng-l'},
     {n:'Necrozma Alas',dps:30.73,fast:'Garra Umbría',fastL:false,charge:'Rayo Lunar',chargeL:false,img:'10155'},
-    {n:'Mega Gengar',dps:28.90,fast:'Garra Umbría',fastL:false,charge:'Bola Sombra',chargeL:false,img:'10038',aid:'gh-mega-geng'},
     {n:'Darkrai (Shadow)',dps:28.86,fast:'Embargo',fastL:false,charge:'Bola Sombra',chargeL:false,img:'491'},
     {n:'Mega Banette',dps:27.85,fast:'Garra Umbría',fastL:false,charge:'Bola Sombra',chargeL:false,img:'10056',aid:'gh-mega-bane'},
     {n:'Chandelure (Shadow)',dps:27.69,fast:'Maleficio',fastL:false,charge:'Bola Sombra',chargeL:false,img:'609',aid:'gh-shd-chand'},
     {n:'Mewtwo (Shadow)',dps:26.41,fast:'Psicocorte',fastL:false,charge:'Bola Sombra',chargeL:false,img:'150'},
     {n:'Lunala',dps:25.66,fast:'Garra Umbría',fastL:false,charge:'Bola Sombra',chargeL:false,img:'792'},
     {n:'Mega Alakazam',dps:25.07,fast:'Psicocorte',fastL:false,charge:'Bola Sombra',chargeL:false,img:'10037'},
-    {n:'Kyurem Negro',dps:24.74,fast:'Garra Umbría',fastL:false,charge:'Rayo Gélido',chargeL:false,img:'10018'},
+    {n:'Kyurem Negro',dps:24.74,fast:'Garra Umbría',fastL:false,charge:'Rayo Gélido',chargeL:false,img:'10017'},
     {n:'Dragapult',dps:20.72,fast:'Impresionar',fastL:false,charge:'Bola Sombra',chargeL:false,img:'887',aid:'gh-dragapult'},
     {n:'Giratina Origen',dps:19.80,fast:'Garra Umbría',fastL:false,charge:'Bola Sombra',chargeL:false,img:'487'},
     {n:'Chandelure',dps:19.40,fast:'Maleficio',fastL:false,charge:'Bola Sombra',chargeL:false,img:'609',aid:'gh-chandelure'},
@@ -1149,7 +1148,7 @@ const RANKINGS={
     {n:'Garchomp (Shadow)',dps:27.61,fast:'Cola Dragón',fastL:false,charge:'Enfado',chargeL:false,img:'445',aid:'dr-shd-garc'},
     {n:'Eternatus',dps:27.40,fast:'Cola Dragón',fastL:false,charge:'Cañón Dinamax',chargeL:false,img:'890'},
     {n:'Mega Salamence',dps:26.80,fast:'Cola Dragón',fastL:false,charge:'Enfado',chargeL:false,img:'10089',aid:'dr-mega-salamen'},
-    {n:'Kyurem Blanco',dps:25.80,fast:'Colmillo Hielo',fastL:false,charge:'Enfado',chargeL:false,img:'10017'},
+    {n:'Kyurem Blanco',dps:25.80,fast:'Colmillo Hielo',fastL:false,charge:'Enfado',chargeL:false,img:'10016'},
     {n:'Rayquaza',dps:25.10,fast:'Cola Dragón',fastL:false,charge:'Enfado',chargeL:false,img:'384'},
     {n:'Latios',dps:23.40,fast:'Cola Dragón',fastL:false,charge:'Cometa Draco',chargeL:false,img:'381'},
     {n:'Palkia',dps:22.90,fast:'Cola Dragón',fastL:false,charge:'Enfado',chargeL:false,img:'484'},
@@ -1177,7 +1176,7 @@ const RANKINGS={
   steel:[
     {n:'Zacian Corona',dps:34.10,fast:'Garra Metal',fastL:false,charge:'Hoja Espada',chargeL:false,img:'888'},
     {n:'Zamazenta Corona',dps:32.80,fast:'Garra Metal',fastL:false,charge:'Escudo Feroz',chargeL:false,img:'889'},
-    {n:'Dusk Mane Necrozma',dps:31.20,fast:'Garra Metal',fastL:false,charge:'Puño Sombra',chargeL:false,img:'10154'},
+    {n:'Dusk Mane Necrozma',dps:31.20,fast:'Garra Metal',fastL:false,charge:'Puño Sombra',chargeL:false,img:'800'},
     {n:'Mega Metagross',dps:28.90,fast:'Puño Bala',fastL:false,charge:'Puño Meteoro',chargeL:true,img:'10076',aid:'st-mega-meta-l'},
     {n:'Metagross (Shadow)',dps:27.40,fast:'Puño Bala',fastL:false,charge:'Puño Meteoro',chargeL:true,img:'376',aid:'st-shd-meta-l'},
     {n:'Mega Lucario',dps:26.80,fast:'Contraataque',fastL:false,charge:'Esfera Aural',chargeL:false,img:'10059',aid:'st-mega-lucar'},
@@ -1226,44 +1225,29 @@ const DMAX={
 };
 
 const DMAX_NAMES=new Set([
-  "bulbasaur","ivysaur","venusaur",
-  "charmander","charmeleon","charizard",
-  "squirtle","wartortle","blastoise",
-  "caterpie","metapod","butterfree",
-  "pikachu","raichu",
-  "growlithe","arcanine",
-  "abra","kadabra","alakazam",
-  "machop","machoke","machamp",
-  "krabby","kingler",
-  "gastly","haunter","gengar",
-  "chansey","blissey",
-  "omanyte","omastar",
-  "kabuto","kabutops",
-  "articuno","zapdos","moltres",
-  "raikou","entei","suicune",
-  "espeon","sableye","shuckle",
-  "wailmer","wailord",
-  "ralts","kirlia","gardevoir","gallade",
-  "beldum","metang","metagross",
-  "cryogonal",
+  "bulbasaur","ivysaur","venusaur","charmander","charmeleon","charizard",
+  "squirtle","wartortle","blastoise","caterpie","metapod","butterfree",
+  "meowth","growlithe","arcanine","abra","kadabra","alakazam",
+  "machop","machoke","machamp","gastly","haunter","gengar",
+  "krabby","kingler","hitmonlee","hitmonchan","chansey","lapras",
+  "eevee","vaporeon","jolteon","flareon","omanyte","omastar",
+  "kabuto","kabutops","snorlax","articuno","zapdos","moltres",
+  "espeon","umbreon","shuckle","hitmontop","blissey",
+  "raikou","entei","suicune","lugia","ho-oh",
+  "ralts","kirlia","gardevoir","sableye","wailmer","wailord",
+  "spheal","sealeo","walrein","beldum","metang","metagross",
+  "regirock","regice","registeel","latias","latios",
+  "leafeon","glaceon","gallade",
   "pidove","tranquill","unfezant",
-  "trubbish","garbodor",
-  "darumaka","darmanitan",
-  "drilbur","excadrill",
-  "passimian","toxtricity",
-  "inkay","malamar",
-  "roggenrola","boldore","gigalith",
-  "bounsweet","steenee","tsareena",
-  "drampa","spheal","sealeo","walrein",
-  "grookey","thwackey","rillaboom",
-  "scorbunny","raboot","cinderace",
-  "sobble","drizzile","inteleon",
-  "wooloo","dubwool","skwovet","greedent",
-  "falinks","hatenna","hattrem","hatterene",
-  "kubfu","urshifu",
-  "rookidee","corvisquire","corviknight",
-  "duraludon","combee","vespiquen",
-  "latias","latios"
+  "roggenrola","boldore","gigalith","woobat","swoobat",
+  "drilbur","excadrill","darumaka","darmanitan",
+  "trubbish","garbodor","cryogonal","inkay","malamar",
+  "sylveon","bounsweet","steenee","tsareena","passimian","drampa",
+  "grookey","thwackey","rillaboom","scorbunny","raboot","cinderace",
+  "sobble","drizzile","inteleon","skwovet","greedent",
+  "rookidee","corvisquire","corviknight","wooloo","dubwool",
+  "toxtricity","hatenna","hattrem","hatterene",
+  "grimmsnarl","falinks","duraludon"
 ]);
 const BASE_STATS={
   'f-mega-lucario-l':[236,144,172],
@@ -1588,7 +1572,9 @@ const TC_SELECTED=[];
 
 function renderTypeGrid(){
   const grid=document.getElementById('tc-type-grid');if(!grid)return;
-  grid.innerHTML=TYPES.map(t=>{
+  const NORMAL_TC={key:'normal',name:'Normal',color:'#A8A878',icon:'⬜'};
+  const ALL_TC=[NORMAL_TC,...TYPES];
+  grid.innerHTML=ALL_TC.map(t=>{
     const isSel=TC_SELECTED.includes(t.key);
     return '<button class="tc-type-btn'+(isSel?' selected':'')+'" onclick="tcToggleType(\''+t.key+'\')" style="background:'+(isSel?t.color+'22':'#fff')+'">'
       +'<span class="type-icon">'+t.icon+'</span>'
@@ -1622,7 +1608,7 @@ function renderBalls(id,types){
 }
 
 function renderTypeChart(){
-  const ALL=TYPES.map(t=>t.key);
+  const ALL=['normal',...TYPES.map(t=>t.key)];
   if(!TC_SELECTED.length){
     ['tc-atk-resisted','tc-atk-neutral','tc-atk-super','tc-def-immune','tc-def-resisted','tc-def-super','tc-def-double']
       .forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='';});
@@ -1636,7 +1622,7 @@ function renderTypeChart(){
     else atkNeutral.push(defType);
   });
   renderBalls('tc-atk-resisted',atkResisted);
-  renderBalls('tc-atk-neutral',atkNeutral);
+  // x1 not shown // renderBalls('tc-atk-neutral',atkNeutral);
   renderBalls('tc-atk-super',atkSuper);
   const defImmune=[],defResisted=[],defSuper=[],defDouble=[];
   ALL.forEach(atkType=>{
@@ -1694,10 +1680,8 @@ function goBack() { ST.expanded=null; show('main-screen'); renderMain(); }
 
 let _toastTimer=null;
 function showToast(msg,type='warn'){
-  const el=document.getElementById('toast');
-  if(!el)return;
-  el.textContent=msg;
-  el.className='show toast-'+type;
+  const el=document.getElementById('toast');if(!el)return;
+  el.textContent=msg;el.className='show toast-'+type;
   if(_toastTimer)clearTimeout(_toastTimer);
   _toastTimer=setTimeout(()=>{el.className='';},3200);
 }
@@ -1707,13 +1691,11 @@ function hasMegaInTeam(p,type){
     if(p.album[id]!==true)continue;
     let tags=[];
     if(p.custom&&p.custom[id]){
-      const d=p.custom[id];
-      if((d.type||type)!==type)continue;
+      const d=p.custom[id];if((d.type||type)!==type)continue;
       const pdRef=d.pdRef?PD.find(x=>x.id===d.pdRef):null;
       tags=pdRef?pdRef.tags:(d.tags||inferTags(d.n,false,false,[]));
     } else {
-      const pd=PD.find(x=>x.id===id);
-      if(!pd||pd.type!==type)continue;
+      const pd=PD.find(x=>x.id===id);if(!pd||pd.type!==type)continue;
       tags=pd.tags||[];
     }
     if(tags.includes('mega'))return true;
@@ -1934,22 +1916,11 @@ function renderTypeNav() {
       onclick="navToType('${t.key}')">${t.name}</button>`
   ).join('');
 }
-
 function navToType(key) {
-  ST.type = key;
-  ST.expanded = null;
+  ST.type = key; ST.expanded = null;
   const t = TM[key];
-  if (t) {
-    document.getElementById('detail-title').textContent = t.name;
-    // Update header icon if present
-    const ico = document.getElementById('detail-icon');
-    if (ico) ico.textContent = t.icon;
-  }
-  renderTypeNav();
-  renderAlbum();
-  renderRanking();
-  renderAlbumDmax();
-  renderMain();
+  if (t) document.getElementById('detail-title').textContent = t.name;
+  renderTypeNav(); renderAlbum(); renderRanking(); renderAlbumDmax(); renderMain();
 }
 function renderAlbum() {
   const profile=ST.view||ST.cur; const isV=!!ST.view; const t=TM[ST.type];
@@ -2033,7 +2004,7 @@ function renderBadges(tags) {
     if (tg==='shadow')  return '<span class="badge" style="background:#6a1b9a;color:#fff">Shadow</span>';
     if (tg==='mega')    return '<span class="badge" style="background:#CC0000;color:#fff">Mega</span>';
     if (tg==='legacy')  return '<span class="badge" style="background:#e65100;color:#fff">Legacy ⭐</span>';
-    if (tg==='dynamax') return '<span class="badge" style="background:#1565c0;color:#fff">DMAX</span>';
+    if (tg==='dynamax') return '<span class="badge" style="background:#ad1457;color:#fff">DMAX</span>';
     if (tg==='mission') return '<span class="badge" style="background:#2e7d32;color:#fff">Misión</span>';
     return '';
   }).join('');
@@ -2077,8 +2048,7 @@ function renderRanking() {
     // Store entry data for addFromRanking lookup
     if(!window._rankCache)window._rankCache={};
     const rid=r.aid||(ST.type+'-ext-'+r.n.toLowerCase().replace(/[^a-z0-9]/g,'-'));
-    const _pe3=PD.find(x=>x.id===rid);
-    const _rt3=inferTags(r.n,r.fastL,r.chargeL,_pe3?_pe3.tags:[]);
+    const _pe3=PD.find(x=>x.id===rid);const _rt3=inferTags(r.n,r.fastL,r.chargeL,_pe3?_pe3.tags:[]);
     window._rankCache[rid]={n:r.n,dps:r.dps,img:r.img,fast:r.fast||'',fastL:r.fastL||false,charge:r.charge||'',chargeL:r.chargeL||false,type:ST.type,tags:_rt3};
     const addBtn=!isV?'<button class="rank-add-btn" onclick="event.stopPropagation();addFromRanking(\''+rid+'\')" title="Añadir a Mis Pokémon">+</button>':'';
     return `<div class="rank-row${isA?' ours':''}" style="background:${rowBg};--tc:${t.color}"><span class="rank-num">#${i+1}</span><img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1"><div class="rank-info"><div class="rank-name" style="color:${nameCol}">${r.n.replace(' (Shadow)','')}${(()=>{const _pe=PD.find(x=>x.id===rid);const _rt=inferTags(r.n,r.fastL,r.chargeL,_pe?_pe.tags:[]);return renderBadges(_rt)+(isO?`<span class="badge" style="background:${t.color}">TUYO</span>`:'');})()}</div><div class="rank-move">${ft} / ${ct}</div><div class="dps-minibar"><div class="dps-minifill" style="width:${bw}%;background:${t.color}"></div></div></div><div class="rank-dps" style="color:${nameCol}">${r.dps.toFixed(2)}</div>${addBtn}</div>`;
