@@ -31,7 +31,6 @@ body.dark .type-badge{color:#111!important}
 body.dark .pk-card{filter:brightness(.85)}
 body.dark 
 body.dark .rank-row{background:#1e1e1e!important}
-body.dark .rank-row.ours{filter:brightness(.82)}
 body.dark .rank-name{color:#ddd!important}
 body.dark .rank-move{color:#aaa!important}
 body.dark .rank-dps{color:#ccc!important}
@@ -189,7 +188,8 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 .rank-note{font-size:11px;color:#666!important;padding:8px 14px 4px;text-align:center;background:#f0f0f0!important}
 .rank-list{padding:4px 10px 20px}
 .rank-row{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:8px;margin-bottom:2px;background:#fff!important}
-.rank-row.ours{border-left:3px solid var(--tc)}
+.rank-row.ours{border-left:4px solid var(--tc);background:color-mix(in srgb,var(--tc) 12%,#fff)!important;box-shadow:0 0 0 1.5px color-mix(in srgb,var(--tc) 30%,transparent),0 2px 8px color-mix(in srgb,var(--tc) 20%,transparent)}
+body.dark .rank-row.ours{background:color-mix(in srgb,var(--tc) 18%,#1e1e1e)!important}
 .rank-num{font-size:12px;font-weight:700;color:#aaa!important;min-width:26px;text-align:right;flex-shrink:0}
 .rank-img{width:36px;height:36px;object-fit:contain;flex-shrink:0}
 .rank-info{flex:1;min-width:0}
@@ -251,6 +251,13 @@ body.dark #type-nav-strip{background:#1e1e1e;border-color:#333}
 
     <!-- MAIN MENU (hidden until profile selected) -->
     <div id="home-menu" style="display:none;padding:12px;display:none">
+
+      <!-- RANKINGS BUTTON -->
+      <button onclick="goToFireRanking()" style="width:100%;margin-top:10px;background:linear-gradient(135deg,#7B1FA2,#AB47BC);color:#fff;border:none;border-radius:14px;padding:14px 16px;cursor:pointer;text-align:center;box-shadow:0 4px 12px rgba(123,31,162,.35);transition:transform .1s;display:flex;align-items:center;justify-content:center;gap:10px;font-size:16px;font-weight:800" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''">
+        <span style="font-size:22px">&#x1F451;</span>
+        <span>Rankings DPS</span>
+        <span style="font-size:12px;font-weight:600;opacity:.85;background:rgba(255,255,255,.2);border-radius:20px;padding:2px 10px">Top 50 por tipo</span>
+      </button>
 
       <!-- BIG BUTTON: Equipos por Tipos -->
       <button class="home-btn-big" style="margin-top:10px" onclick="goToTypes()">
@@ -2148,6 +2155,19 @@ function goProfiles() {
 function goToTypes() {
   show('main-screen');
   renderMain();
+}
+function goToFireRanking() {
+  if(!ST.cur){showToast('Selecciona un entrenador primero');return;}
+  ST.type='fire'; ST.tab='ranking'; ST.rankTab='raid'; ST.albumTab='raid'; ST.expanded=null;
+  const t=TM['fire'];
+  if(t) document.getElementById('detail-title').textContent=t.name;
+  show('detail-screen');
+  document.getElementById('tab-a').className='tab';
+  document.getElementById('tab-r').className='tab active';
+  document.getElementById('album-panel').style.display='none';
+  document.getElementById('ranking-panel').style.display='block';
+  renderTypeNav();
+  renderRanking();
 }
 function backToHome() {
   show('profile-screen');
