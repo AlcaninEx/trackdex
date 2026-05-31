@@ -2633,8 +2633,10 @@ function renderRanking() {
     const alreadyIn=combined.some(r=>r.aid===pk.id||r.n.toLowerCase().replace(/^shadow /,'').replace(/^mega /,'').replace(/^primal /,'')===pkBase);
     if(!alreadyIn)combined.push({n:pk.name,dps:aidDps[pk.id],fast:pk.fast.replace('*',''),fastL:pk.fast.endsWith('*'),charge:pk.charge.replace('*',''),chargeL:pk.charge.endsWith('*'),img:pk.img,aid:pk.id});
   });
-  combined.sort((a,b)=>b.dps-a.dps);
-  const vis=combined.slice(0,50); const maxD=vis.length?vis[0].dps:1;
+  // Order fixed: RANKINGS defines the canonical order; extra pokémon appended at end sorted by DPS
+  const rankExtra=combined.slice(rawRank.length);rankExtra.sort((a,b)=>b.dps-a.dps);
+  const fixedCombined=[...rawRank.map(r=>combined.find(c=>(c.aid&&r.aid&&c.aid===r.aid)||c.n===r.n)||r),...rankExtra];
+  const vis=fixedCombined.slice(0,50); const maxD=vis.length?Math.max(...vis.map(v=>v.dps)):1;
   document.getElementById('rank-note').textContent=`Top ${vis.length} · Verde=en álbum · Dittobase 2026`;
   document.getElementById('rank-list').innerHTML=vis.map((r,i)=>{
     const isA=r.aid&&albumIds.has(r.aid); const isO=r.aid&&ownedIds.has(r.aid);
