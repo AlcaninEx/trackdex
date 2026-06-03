@@ -221,10 +221,41 @@ body.dark .rank-row.ours{background:color-mix(in srgb,var(--tc) 18%,#1e1e1e)!imp
 .tn-btn{flex:0 0 auto;border:none;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;color:#fff;opacity:.55;transition:opacity .15s,transform .12s}
 .tn-btn.active{opacity:1;transform:scale(1.08)}
 body.dark #type-nav-strip{background:#1e1e1e;border-color:#333}
+
+#modal-mega-warn{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+#modal-mega-warn.open{display:flex}
+.mega-warn-box{background:#fff;border-radius:16px;padding:22px 20px;max-width:320px;width:100%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.mega-warn-icon{font-size:36px;margin-bottom:10px}
+.mega-warn-title{font-size:16px;font-weight:800;color:#CC0000;margin-bottom:10px}
+.mega-warn-msg{font-size:13px;color:#444;line-height:1.5;margin-bottom:18px}
+.mega-warn-btn{background:#CC0000;color:#fff;border:none;border-radius:10px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;transition:opacity .2s}
+.mega-warn-btn:disabled{opacity:.4;cursor:not-allowed}
+body.dark .mega-warn-box{background:#1e1e1e;color:#eee}
+body.dark .mega-warn-msg{color:#bbb}
+
+/* OBJETIVO SCREEN */
+#objetivo-screen .app-header{background:#CC0000}
+.obj-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px}
+.obj-card{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.12);display:flex;flex-direction:column;align-items:center;padding:8px 4px 6px;position:relative;cursor:default}
+body.dark .obj-card{background:#1e1e1e}
+.obj-img{width:54px;height:54px;object-fit:contain}
+.obj-name{font-size:9px;font-weight:700;color:#444;text-align:center;margin-top:2px;line-height:1.2}
+body.dark .obj-name{color:#aaa}
+.obj-badge{position:absolute;top:-5px;right:-5px;background:#CC0000;color:#fff;font-size:10px;font-weight:800;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.obj-empty{text-align:center;padding:40px 20px;color:#aaa;font-size:14px}
 </style>
 </head>
 <body>
 <div id="toast"></div>
+<div id="modal-mega-warn">
+  <div class="mega-warn-box">
+    <div class="mega-warn-icon">⚠️</div>
+    <div class="mega-warn-title">¡Aviso!</div>
+    <div class="mega-warn-msg">Tu equipo no contiene un Pokémon Mega. Estos dan más poder a los demás Pokémon del mismo tipo en incursiones. Recuerda añadir uno.</div>
+    <button class="mega-warn-btn" id="mega-warn-ok" disabled onclick="closeMegaWarning()">Aceptar (<span id="mega-warn-timer">3</span>)</button>
+  </div>
+</div>
+
 <div id="app">
 
 
@@ -290,6 +321,9 @@ body.dark #type-nav-strip{background:#1e1e1e;border-color:#333}
         <button class="home-btn-small" onclick="openInfo()">
           ℹ️ Info
         </button>
+        <button class="home-btn-small" onclick="openObjetivo()" style="grid-column:1/-1;background:#fff3e0;border-color:#FF6F00;color:#E65100">
+          🎯 Pokémon Objetivo
+        </button>
       </div>
 
     </div>
@@ -340,11 +374,10 @@ body.dark #type-nav-strip{background:#1e1e1e;border-color:#333}
   </div>
   <div id="rpanel-raid">
     <div id="rank-mega-toggle"></div>
-    <p class="rank-note" id="rank-note"></p>
     <div class="rank-wrap"><div class="rank-list" id="rank-list"></div></div>
   </div>
   <div id="rpanel-dmax" style="display:none">
-    <p id="rank-note-dmax" style="font-size:11px;color:#888;text-align:center;padding:6px 12px 0">Top Dynamax · Max Move Damage · pokemongohub.net</p>
+
     <div class="rank-wrap"><div id="rank-list-dmax"></div></div>
   </div>
 </div>
@@ -2105,12 +2138,12 @@ function albumPks(n,type) {
   // PD entries in album
   // Get PD entries in album that are NOT overridden by custom
   const customIds=new Set(p&&p.custom?Object.keys(p.custom):[]);
-  const pdPks=PD.filter(pk=>pk.type===type&&a[pk.id]&&!customIds.has(pk.id));
+  const pdPks=PD.filter(pk=>pk.type===type&&a[pk.id]&&!customIds.has(pk.id)&&!pk.id.includes('-dmax-'));
   // Custom entries in album
   const customPks=[];
   if(p&&p.custom){
     Object.entries(p.custom).forEach(([id,d])=>{
-      if(d.type===type&&a[id]===true){
+      if(d.type===type&&a[id]===true&&!id.includes('-dmax-')&&!d.isDmax){
         // If this is a copy of a PD entry, use PD data for evo/tags
         const pdRef=d.pdRef?PD.find(x=>x.id===d.pdRef):null;
         customPks.push({
@@ -2338,7 +2371,7 @@ function addFromRanking(id) {
   while(p.album[newId]===true){newId=id+'-'+n;n++;}
   p.album[newId]=true;
   // Store data (use PD data if available, else rank cache)
-  const pdEntry=PD.find(x=>x.id===id);
+  const pdEntry=isDmaxEntry?null:PD.find(x=>x.id===id);
   if(pdEntry){
     // Always store in custom with pdRef so evo/tags are always available
     p.custom[newId]={n:pdEntry.name,dps:pdEntry.dps,img:pdEntry.img,fast:pdEntry.fast,charge:pdEntry.charge,type:pdEntry.type,pdRef:id,tags:inferTags(pdEntry.name,pdEntry.fast.endsWith('*'),pdEntry.charge.endsWith('*'),pdEntry.tags||[])};
@@ -2346,9 +2379,17 @@ function addFromRanking(id) {
     const _ft=data.fastL&&data.fast?data.fast+'*':data.fast||'';
     const _ct=data.chargeL&&data.charge?data.charge+'*':data.charge||'';
     const _tt=inferTags(data.n,data.fastL,data.chargeL,data.tags||[]);
-    p.custom[newId]={n:data.n,dps:data.dps||0,img:data.img||'',fast:_ft,charge:_ct,type:type,tags:_tt};
+    if(isDmaxEntry&&!_tt.includes('dynamax'))_tt.push('dynamax');
+    p.custom[newId]={n:data.n,dps:data.dps||0,img:data.img||'',fast:_ft,charge:_ct,type:type,tags:_tt,isDmax:isDmaxEntry};
   }
-  save(); renderAlbum(); renderMain();
+  save(); renderAlbum(); renderRanking(); renderMain();
+  // Aviso equipo completo sin Mega (solo incursiones, no dmax)
+  if(!isDmaxEntry) {
+    const newCount=countAlbumForType(p, type);
+    if(newCount===6 && !hasMegaInTeam(p,type)) {
+      showMegaWarning();
+    }
+  }
 }
 function removeRankEntry(id, type) {
   if(!ST.cur)return;
@@ -2453,9 +2494,12 @@ function switchTab(t) {
   document.getElementById('tab-r').className='tab'+(t==='ranking'?' active':'');
   document.getElementById('album-panel').style.display=t==='album'?'':'none';
   document.getElementById('ranking-panel').style.display=t==='ranking'?'':'none';
-  // If coming from Dynamax album tab, auto-open Dynamax ranking tab
   if(t==='ranking' && ST.albumTab==='dmax'){
     switchRankTab('dmax');
+  }
+  // Mis Pokémon: mantener subtab dmax si veníamos del ranking dmax
+  if(t==='album' && ST.rankTab==='dmax'){
+    switchAlbumTab('dmax');
   }
 }
 function switchAlbumTab(tab) {
@@ -2543,7 +2587,7 @@ function evoH(evo,img,shadow) {
 
 
 function renderTypeNav(){const strip=document.getElementById('type-nav-strip');if(!strip)return;strip.innerHTML=TYPES.map(t=>`<button class="tn-btn${ST.type===t.key?' active':''}" style="background:${t.color}" onclick="navToType('${t.key}')">${t.name}</button>`).join('');}
-function navToType(key){ST.type=key;ST.expanded=null;const t=TM[key];if(t)document.getElementById('detail-title').textContent=t.name;renderTypeNav();renderAlbum();renderRanking();renderAlbumDmax();if(ST.rankTab==='dmax')renderDmaxRanking();renderMain();}
+function navToType(key){ST.type=key;ST.expanded=null;const t=TM[key];if(t)document.getElementById('detail-title').innerHTML='<span style="display:inline-flex;align-items:center;gap:6px;color:#fff"><span style="width:20px;height:20px;display:inline-flex;align-items:center">'+t.icon+'</span>'+t.name+'</span>';renderTypeNav();renderAlbum();renderRanking();renderAlbumDmax();if(ST.rankTab==='dmax')renderDmaxRanking();renderMain();}
 function renderAlbum() {
   const profile=ST.view||ST.cur; const isV=!!ST.view; const t=TM[ST.type];
   const pks=albumPks(profile,ST.type); const maxD=Math.max(...pks.map(p=>p.dps),1);
@@ -2588,10 +2632,12 @@ function renderAlbumDmax() {
   const slots=rows.filter(r=>{
     const did=ST.type+'-dmax-'+r.n.toLowerCase().replace(/[^a-z0-9]/g,'-');
     return userDmaxIds.some(id=>id===did||id.startsWith(did+'-'));
-  }); const maxD=slots[0].dps;
+  });
+  const maxD=slots.length?slots[0].dps:1;
+  const emptyDmax=Array(Math.max(0,3-slots.length)).fill('<div class="empty-slot"><div class="empty-slot-icon">⚡</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Equipo de 3 para Dynamax</div></div>').join('');
+  if(!slots.length){el.innerHTML=emptyDmax;return;}
   const isG=r=>r.charge.startsWith('G-Max')||['Drum Solo','Vine Lash','Cannonade','Hydrosnipe','Foam Burst','Fireball','Wildfire','Stun Shock','Befuddle','Terror','Snooze','Resonance','Chi Strike','Behemoth'].some(x=>r.charge.includes(x));
-  el.innerHTML=slots.map(r=>`<div class="pk-card" style="background:${t.color}"><div class="pk-top"><div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">${r.n.replace(/^[GD]-/,'')}</div><div class="tags-row">${isG(r)?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>'}</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>${r.dps.toFixed(1)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${Math.round(r.dps/maxD*100)}%"></div></div></div></div></div><div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div></div>`).join('')
-  +Array(Math.max(0,3-slots.length)).fill('<div class="empty-slot"><div class="empty-slot-icon">⚡</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Equipo de 3 para Dynamax</div></div>').join('');
+  el.innerHTML=slots.map(r=>`<div class="pk-card" style="background:${t.color}"><div class="pk-top"><div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">${r.n.replace(/^[GD]-/,'')}</div><div class="tags-row">${isG(r)?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>'}</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>${r.dps.toFixed(1)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${Math.round(r.dps/maxD*100)}%"></div></div></div></div></div><div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div></div>`).join('')+emptyDmax;
 }
 
 function renderDmaxRanking() {
@@ -2599,7 +2645,7 @@ function renderDmaxRanking() {
   const el=document.getElementById('rank-list-dmax');
   if(!rows.length){el.innerHTML='<p style="text-align:center;padding:20px;color:#aaa">Sin datos Dynamax.</p>';return;}
   const maxD=rows[0].dps;
-  document.getElementById('rank-note-dmax').textContent=`Top ${rows.length} Dynamax · pokemongohub.net`;
+
   const isG=r=>r.charge.startsWith('G-Max')||['Drum Solo','Vine Lash','Cannonade','Hydrosnipe','Foam Burst','Fireball','Wildfire','Stun Shock','Befuddle','Terror','Snooze','Resonance','Chi Strike','Behemoth'].some(x=>r.charge.includes(x));
   const isV2=!!ST.view;
   el.innerHTML=rows.map((r,i)=>{
@@ -2711,7 +2757,7 @@ function renderRanking() {
       })
     : fixedCombined;
   const vis=filtered.slice(0,50); const maxD=vis.length?Math.max(...vis.map(v=>v.dps)):1;
-  document.getElementById('rank-note').textContent=`Top ${vis.length} · Verde=en álbum · Dittobase 2026`;
+
   document.getElementById('rank-list').innerHTML=vis.map((r,i)=>{
     const isA=r.aid&&albumIds.has(r.aid); const isO=r.aid&&ownedIds.has(r.aid);
     const bw=Math.round(r.dps/maxD*100);
@@ -2726,6 +2772,467 @@ function renderRanking() {
     const addBtn=!isV?'<button class="rank-add-btn" onclick="event.stopPropagation();addFromRanking(\''+rid+'\')" title="Añadir a Mis Pokémon">+</button>':'';
     return `<div class="rank-row${isA?' ours':''}" style="background:${rowBg};--tc:${t.color}"><span class="rank-num">#${i+1}</span><img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1"><div class="rank-info"><div class="rank-name" style="color:${nameCol}">${r.n.replace(' (Shadow)','')}${(()=>{const _pe=PD.find(x=>x.id===rid);const _rt=inferTags(r.n,r.fastL,r.chargeL,_pe?_pe.tags:[]);return renderBadges(_rt)+(isO?`<span class="badge" style="background:${t.color}">TUYO</span>`:'');})()}</div><div class="rank-move">${ft} / ${ct}</div><div class="dps-minibar"><div class="dps-minifill" style="width:${bw}%;background:${t.color}"></div></div></div><div class="rank-dps" style="color:${nameCol}">${r.dps.toFixed(2)}</div>${addBtn}</div>`;
   }).join('');
+}
+
+
+// ── MEGA WARNING MODAL ────────────────────────────────────────────────────────
+let _megaWarnTimer=null;
+function showMegaWarning(){
+  const modal=document.getElementById('modal-mega-warn');
+  const btn=document.getElementById('mega-warn-ok');
+  const timerEl=document.getElementById('mega-warn-timer');
+  if(!modal)return;
+  modal.classList.add('open');
+  btn.disabled=true;
+  btn.innerHTML='Aceptar (<span id="mega-warn-timer">3</span>)';
+  const timerEl2=document.getElementById('mega-warn-timer');
+  let secs=3;
+  if(_megaWarnTimer)clearInterval(_megaWarnTimer);
+  _megaWarnTimer=setInterval(()=>{
+    secs--;
+    const t2=document.getElementById('mega-warn-timer');
+    if(t2)t2.textContent=secs;
+    if(secs<=0){clearInterval(_megaWarnTimer);btn.disabled=false;btn.textContent='Aceptar';}
+  },1000);
+}
+function closeMegaWarning(){
+  const modal=document.getElementById('modal-mega-warn');
+  if(modal)modal.classList.remove('open');
+}
+
+// ── EVO MAP ─────────────────────────────────────────────────────────────────
+const EVO_MAP = {
+  'absol': {n:'Absol', id:'359'},
+  'accelgor': {n:'Shelmet', id:'616'},
+  'aerodactyl': {n:'Aerodactyl', id:'142'},
+  'aggron': {n:'Aron', id:'304'},
+  'alakazam': {n:'Abra', id:'63'},
+  'alolan exeggutor': {n:'Exeggcute', id:'102'},
+  'alolan golem': {n:'Geodude', id:'74'},
+  'alolan muk': {n:'Grimer', id:'88'},
+  'alolan ninetales': {n:'Vulpix', id:'37'},
+  'altaria': {n:'Swablu', id:'333'},
+  'ampharos': {n:'Mareep', id:'179'},
+  'annihilape': {n:'Mankey', id:'56'},
+  'arboliva': {n:'Smoliv', id:'928'},
+  'arcanine': {n:'Growlithe', id:'58'},
+  'arctibax': {n:'Frigibax', id:'996'},
+  'aromatisse': {n:'Spritzee', id:'683'},
+  'articuno': {n:'Articuno', id:'144'},
+  'avalugg': {n:'Bergmite', id:'712'},
+  'azelf': {n:'Azelf', id:'482'},
+  'banette': {n:'Shuppet', id:'353'},
+  'barbaracle': {n:'Binacle', id:'688'},
+  'baxcalibur': {n:'Frigibax', id:'996'},
+  'beartic': {n:'Cubchoo', id:'613'},
+  'beedrill': {n:'Weedle', id:'13'},
+  'beheeyem': {n:'Elgyem', id:'605'},
+  'bellibolt': {n:'Tadbulb', id:'959'},
+  'bisharp': {n:'Pawniard', id:'624'},
+  'blastoise': {n:'Squirtle', id:'7'},
+  'blaziken': {n:'Torchic', id:'255'},
+  'bombirdier': {n:'Bombirdier', id:'962'},
+  'braviary': {n:'Rufflet', id:'627'},
+  'breloom': {n:'Shroomish', id:'285'},
+  'buzzwole': {n:'Buzzwole', id:'794'},
+  'camerupt': {n:'Numel', id:'322'},
+  'carracosta': {n:'Tirtouga', id:'564'},
+  'celebi': {n:'Celebi', id:'251'},
+  'ceruledge': {n:'Charcadet', id:'935'},
+  'chandelure': {n:'Litwick', id:'607'},
+  'charizard': {n:'Charmander', id:'4'},
+  'chesnaught': {n:'Chespin', id:'650'},
+  'cinderace': {n:'Scorbunny', id:'816'},
+  'clawitzer': {n:'Clauncher', id:'692'},
+  'clefable': {n:'Cleffa', id:'173'},
+  'clodsire': {n:'Wooper', id:'194'},
+  'cloyster': {n:'Shellder', id:'90'},
+  'cobalion': {n:'Cobalion', id:'638'},
+  'cofagrigus': {n:'Yamask', id:'562'},
+  'conkeldurr': {n:'Timburr', id:'532'},
+  'corviknight': {n:'Rookidee', id:'821'},
+  'crabominable': {n:'Crabrawler', id:'739'},
+  'crawdaunt': {n:'Corphish', id:'341'},
+  'crustle': {n:'Dwebble', id:'557'},
+  'cryogonal': {n:'Cryogonal', id:'615'},
+  'cursola': {n:'Corsola', id:'222'},
+  'dachsbun': {n:'Fidough', id:'928'},
+  'darkrai': {n:'Darkrai', id:'491'},
+  'darmanitan standard': {n:'Darumaka', id:'554'},
+  'decidueye': {n:'Rowlet', id:'722'},
+  'deoxys': {n:'Deoxys', id:'386'},
+  'dhelmise': {n:'Dhelmise', id:'781'},
+  'dialga': {n:'Dialga', id:'483'},
+  'dialga origin': {n:'Dialga', id:'483'},
+  'diancie': {n:'Carbink', id:'703'},
+  'dodrio': {n:'Doduo', id:'84'},
+  'donphan': {n:'Phanpy', id:'231'},
+  'dragalge': {n:'Skrelp', id:'690'},
+  'dragapult': {n:'Dreepy', id:'885'},
+  'dragonite': {n:'Dratini', id:'147'},
+  'drapion': {n:'Skorupi', id:'451'},
+  'drifblim': {n:'Drifloon', id:'425'},
+  'duraludon': {n:'Duraludon', id:'884'},
+  'durant': {n:'Durant', id:'632'},
+  'dusknoir': {n:'Duskull', id:'355'},
+  'eelektross': {n:'Tynamo', id:'602'},
+  'electivire': {n:'Elekid', id:'239'},
+  'emboar': {n:'Tepig', id:'498'},
+  'empoleon': {n:'Piplup', id:'393'},
+  'enamorus incarnate': {n:'Enamorus', id:'905'},
+  'enamorus therian': {n:'Enamorus', id:'905'},
+  'entei': {n:'Entei', id:'244'},
+  'escavalier': {n:'Karrablast', id:'588'},
+  'espeon': {n:'Eevee', id:'133'},
+  'eternatus': {n:'Eternatus', id:'890'},
+  'excadrill': {n:'Drilbur', id:'529'},
+  'exeggutor': {n:'Exeggcute', id:'102'},
+  'feraligatr': {n:'Totodile', id:'158'},
+  'fidough': {n:'Fidough', id:'928'},
+  'flamigo': {n:'Flamigo', id:'973'},
+  'flareon': {n:'Eevee', id:'133'},
+  'florges red': {n:'Flabébé', id:'669'},
+  'flygon': {n:'Trapinch', id:'328'},
+  'froslass': {n:'Snorunt', id:'361'},
+  'frosmoth': {n:'Snom', id:'872'},
+  'galarian articuno': {n:'Galarian Articuno', id:'10169'},
+  'galarian darmanitan standard': {n:'Darumaka', id:'554'},
+  'galarian moltres': {n:'Galarian Moltres', id:'10171'},
+  'galarian rapidash': {n:'Ponyta', id:'77'},
+  'galarian slowbro': {n:'Slowpoke', id:'79'},
+  'galarian slowking': {n:'Slowpoke', id:'79'},
+  'galarian weezing': {n:'Koffing', id:'109'},
+  'galarian zapdos': {n:'Galarian Zapdos', id:'10170'},
+  'gallade': {n:'Ralts', id:'280'},
+  'galvantula': {n:'Joltik', id:'595'},
+  'garchomp': {n:'Gible', id:'443'},
+  'gardevoir': {n:'Ralts', id:'280'},
+  'garganacl': {n:'Nacli', id:'932'},
+  'gastrodon east sea': {n:'Shellos', id:'422'},
+  'gastrodon west sea': {n:'Shellos', id:'422'},
+  'genesect burn': {n:'Genesect', id:'649'},
+  'genesect chill': {n:'Genesect', id:'649'},
+  'genesect douse': {n:'Genesect', id:'649'},
+  'genesect normal': {n:'Genesect', id:'649'},
+  'genesect shock': {n:'Genesect', id:'649'},
+  'gengar': {n:'Gastly', id:'92'},
+  'gholdengo': {n:'Gimmighoul', id:'999'},
+  'gigalith': {n:'Roggenrola', id:'524'},
+  'giratina altered': {n:'Giratina', id:'487'},
+  'giratina origin': {n:'Giratina', id:'487'},
+  'glaceon': {n:'Eevee', id:'133'},
+  'glalie': {n:'Snorunt', id:'361'},
+  'glimmora': {n:'Glimmet', id:'969'},
+  'gogoat': {n:'Skiddo', id:'672'},
+  'golem': {n:'Geodude', id:'74'},
+  'golisopod': {n:'Wimpod', id:'767'},
+  'golurk': {n:'Golett', id:'622'},
+  'goodra': {n:'Goomy', id:'704'},
+  'gourgeist average size': {n:'Pumpkaboo', id:'710'},
+  'gourgeist large size': {n:'Pumpkaboo', id:'710'},
+  'gourgeist super size': {n:'Pumpkaboo', id:'710'},
+  'grafaiai': {n:'Grafaiai', id:'952'},
+  'granbull': {n:'Snubbull', id:'209'},
+  'greninja': {n:'Froakie', id:'656'},
+  'grimmsnarl': {n:'Impidimp', id:'859'},
+  'groudon': {n:'Groudon', id:'383'},
+  'guzzlord': {n:'Guzzlord', id:'799'},
+  'gyarados': {n:'Magikarp', id:'129'},
+  'hariyama': {n:'Makuhita', id:'296'},
+  'hatenna': {n:'Hatenna', id:'856'},
+  'hatterene': {n:'Hatenna', id:'856'},
+  'hawlucha': {n:'Hawlucha', id:'701'},
+  'haxorus': {n:'Axew', id:'610'},
+  'heliolisk': {n:'Helioptile', id:'694'},
+  'heracross': {n:'Heracross', id:'214'},
+  'hippowdon': {n:'Hippopotas', id:'449'},
+  'hisuian arcanine': {n:'Growlithe', id:'58'},
+  'hisuian avalugg': {n:'Bergmite', id:'712'},
+  'hisuian braviary': {n:'Rufflet', id:'627'},
+  'hisuian decidueye': {n:'Rowlet', id:'722'},
+  'hisuian qwilfish': {n:'Qwilfish', id:'211'},
+  'hisuian samurott': {n:'Oshawott', id:'501'},
+  'hisuian typhlosion': {n:'Cyndaquil', id:'155'},
+  'hisuian zoroark': {n:'Zorua', id:'570'},
+  'honchkrow': {n:'Murkrow', id:'198'},
+  'hoopa confined': {n:'Hoopa', id:'720'},
+  'hoopa unbound': {n:'Hoopa', id:'720'},
+  'houndoom': {n:'Houndour', id:'228'},
+  'houndstone': {n:'Greavard', id:'971'},
+  'hydrapple': {n:'Applin', id:'840'},
+  'hydreigon': {n:'Deino', id:'633'},
+  'incineroar': {n:'Litten', id:'725'},
+  'infernape': {n:'Chimchar', id:'390'},
+  'inteleon': {n:'Sobble', id:'816'},
+  'jellicent': {n:'Frillish', id:'592'},
+  'jirachi': {n:'Jirachi', id:'385'},
+  'jolteon': {n:'Eevee', id:'133'},
+  'jumpluff': {n:'Hoppip', id:'187'},
+  'jynx': {n:'Smoochum', id:'238'},
+  'kabutops': {n:'Kabuto', id:'140'},
+  'kartana': {n:'Kartana', id:'798'},
+  'keldeo ordinary': {n:'Keldeo', id:'647'},
+  'keldeo resolute': {n:'Keldeo', id:'647'},
+  'kilowattrel': {n:'Wattrel', id:'963'},
+  'kingambit': {n:'Pawniard', id:'624'},
+  'kingler': {n:'Krabby', id:'98'},
+  'klawf': {n:'Klawf', id:'950'},
+  'kleavor': {n:'Scyther', id:'123'},
+  'kommo-o': {n:'Jangmo-o', id:'782'},
+  'krookodile': {n:'Sandile', id:'551'},
+  'kyogre': {n:'Kyogre', id:'382'},
+  'kyurem black': {n:'Kyurem', id:'646'},
+  'kyurem normal': {n:'Kyurem', id:'646'},
+  'kyurem white': {n:'Kyurem', id:'646'},
+  'landorus incarnate': {n:'Landorus', id:'645'},
+  'landorus therian': {n:'Landorus', id:'645'},
+  'lapras': {n:'Lapras', id:'131'},
+  'latias': {n:'Latias', id:'380'},
+  'latios': {n:'Latios', id:'381'},
+  'leafeon': {n:'Eevee', id:'133'},
+  'leavanny': {n:'Sewaddle', id:'540'},
+  'liepard': {n:'Purrloin', id:'509'},
+  'lokix': {n:'Nymble', id:'971'},
+  'lucario': {n:'Riolu', id:'447'},
+  'lunala': {n:'Cosmog', id:'789'},
+  'lunatone': {n:'Lunatone', id:'337'},
+  'luxray': {n:'Shinx', id:'403'},
+  'lycanroc dusk': {n:'Rockruff', id:'744'},
+  'lycanroc midday': {n:'Rockruff', id:'744'},
+  'lycanroc midnight': {n:'Rockruff', id:'744'},
+  'machamp': {n:'Machop', id:'66'},
+  'magmortar': {n:'Magby', id:'240'},
+  'magneton': {n:'Magnemite', id:'81'},
+  'magnezone': {n:'Magnemite', id:'81'},
+  'mamoswine': {n:'Swinub', id:'220'},
+  'manectric': {n:'Electrike', id:'309'},
+  'marshadow': {n:'Marshadow', id:'802'},
+  'mawile': {n:'Mawile', id:'303'},
+  'medicham': {n:'Meditite', id:'307'},
+  'meganium': {n:'Chikorita', id:'152'},
+  'melmetal': {n:'Meltan', id:'808'},
+  'meowscarada': {n:'Sprigatito', id:'906'},
+  'metagross': {n:'Beldum', id:'374'},
+  'mew': {n:'Mew', id:'151'},
+  'mewtwo': {n:'Mewtwo', id:'150'},
+  'mienshao': {n:'Mienfoo', id:'619'},
+  'milotic': {n:'Feebas', id:'349'},
+  'mismagius': {n:'Misdreavus', id:'200'},
+  'moltres': {n:'Moltres', id:'146'},
+  'mr. rime': {n:'Mr. Mime', id:'122'},
+  'mudsdale': {n:'Mudbray', id:'749'},
+  'muk': {n:'Grimer', id:'88'},
+  'naganadel': {n:'Poipole', id:'803'},
+  'necrozma': {n:'Necrozma', id:'800'},
+  'necrozma dawn wings': {n:'Necrozma', id:'800'},
+  'necrozma dusk mane': {n:'Necrozma', id:'800'},
+  'nidoking': {n:'Nidoran', id:'32'},
+  'nidoqueen': {n:'Nidoran', id:'29'},
+  'nihilego': {n:'Nihilego', id:'793'},
+  'ninjask': {n:'Nincada', id:'290'},
+  'noivern': {n:'Noibat', id:'714'},
+  'omastar': {n:'Omanyte', id:'138'},
+  'overqwil': {n:'Qwilfish', id:'211'},
+  'palkia': {n:'Palkia', id:'484'},
+  'palkia origin': {n:'Palkia', id:'484'},
+  'palossand': {n:'Sandygast', id:'770'},
+  'pangoro': {n:'Pancham', id:'674'},
+  'passimian': {n:'Passimian', id:'766'},
+  'pawmot': {n:'Pawmi', id:'921'},
+  'pheromosa': {n:'Pheromosa', id:'795'},
+  'piloswine': {n:'Swinub', id:'220'},
+  'pinsir': {n:'Pinsir', id:'127'},
+  'politoed': {n:'Poliwag', id:'60'},
+  'poliwrath': {n:'Poliwag', id:'60'},
+  'polteageist antique': {n:'Sinistea', id:'854'},
+  'polteageist phony': {n:'Sinistea', id:'854'},
+  'porygon z': {n:'Porygon', id:'137'},
+  'primal groudon': {n:'Groudon', id:'383'},
+  'primal kyogre': {n:'Kyogre', id:'382'},
+  'primarina': {n:'Popplio', id:'728'},
+  'probopass': {n:'Nosepass', id:'299'},
+  'quaquaval': {n:'Quaxly', id:'914'},
+  'raikou': {n:'Raikou', id:'243'},
+  'rampardos': {n:'Cranidos', id:'408'},
+  'rayquaza': {n:'Rayquaza', id:'384'},
+  'regidrago': {n:'Regidrago', id:'895'},
+  'regieleki': {n:'Regieleki', id:'894'},
+  'regice': {n:'Regice', id:'378'},
+  'regigigas': {n:'Regigigas', id:'486'},
+  'regirock': {n:'Regirock', id:'377'},
+  'registeel': {n:'Registeel', id:'379'},
+  'reshiram': {n:'Reshiram', id:'643'},
+  'reuniclus': {n:'Solosis', id:'577'},
+  'revavroom': {n:'Varoom', id:'1004'},
+  'rhyperior': {n:'Rhyhorn', id:'111'},
+  'ribombee': {n:'Cutiefly', id:'742'},
+  'rillaboom': {n:'Grookey', id:'810'},
+  'roserade': {n:'Budew', id:'406'},
+  'runerigus': {n:'Yamask', id:'562'},
+  'salamence': {n:'Bagon', id:'371'},
+  'salazzle': {n:'Salandit', id:'757'},
+  'samurott': {n:'Oshawott', id:'501'},
+  'sandaconda': {n:'Silicobra', id:'843'},
+  'sceptile': {n:'Treecko', id:'252'},
+  'scizor': {n:'Scyther', id:'123'},
+  'scolipede': {n:'Venipede', id:'543'},
+  'seismitoad': {n:'Tympole', id:'535'},
+  'serperior': {n:'Snivy', id:'495'},
+  'shaymin': {n:'Shaymin', id:'492'},
+  'shaymin sky': {n:'Shaymin', id:'492'},
+  'shiftry': {n:'Seedot', id:'273'},
+  'simisage': {n:'Pansage', id:'511'},
+  'sinistcha': {n:'Poltchageist', id:'1012'},
+  'sinistcha masterpiece': {n:'Poltchageist', id:'1012'},
+  'sirfetchd': {n:'Farfetchd', id:'83'},
+  'skarmory': {n:'Skarmory', id:'227'},
+  'skeledirge': {n:'Fuecoco', id:'909'},
+  'skuntank': {n:'Stunky', id:'434'},
+  'slowbro': {n:'Slowpoke', id:'79'},
+  'slowking': {n:'Slowpoke', id:'79'},
+  'slurpuff': {n:'Swirlix', id:'685'},
+  'solgaleo': {n:'Cosmog', id:'789'},
+  'solrock': {n:'Solrock', id:'338'},
+  'stakataka': {n:'Stakataka', id:'805'},
+  'staraptor': {n:'Starly', id:'396'},
+  'starmie': {n:'Staryu', id:'120'},
+  'steelix': {n:'Onix', id:'95'},
+  'stonjourner': {n:'Stonjourner', id:'874'},
+  'swampert': {n:'Mudkip', id:'258'},
+  'swanna': {n:'Ducklett', id:'580'},
+  'sylveon': {n:'Eevee', id:'133'},
+  'talonflame': {n:'Fletchling', id:'661'},
+  'tangrowth': {n:'Tangela', id:'114'},
+  'tapu bulu': {n:'Tapu Bulu', id:'787'},
+  'tapu fini': {n:'Tapu Fini', id:'788'},
+  'tapu koko': {n:'Tapu Koko', id:'785'},
+  'tapu lele': {n:'Tapu Lele', id:'786'},
+  'tatsugiri curly': {n:'Tatsugiri', id:'1008'},
+  'tatsugiri droopy': {n:'Tatsugiri', id:'1008'},
+  'tatsugiri stretchy': {n:'Tatsugiri', id:'1008'},
+  'tentacruel': {n:'Tentacool', id:'72'},
+  'terrakion': {n:'Terrakion', id:'639'},
+  'thundurus incarnate': {n:'Thundurus', id:'642'},
+  'thundurus therian': {n:'Thundurus', id:'642'},
+  'tinkatink': {n:'Tinkatink', id:'957'},
+  'tinkaton': {n:'Tinkatink', id:'957'},
+  'tinkatuff': {n:'Tinkatink', id:'957'},
+  'togekiss': {n:'Togepi', id:'175'},
+  'togetic': {n:'Togepi', id:'175'},
+  'tornadus incarnate': {n:'Tornadus', id:'641'},
+  'tornadus therian': {n:'Tornadus', id:'641'},
+  'torterra': {n:'Turtwig', id:'387'},
+  'toucannon': {n:'Pikipek', id:'731'},
+  'toxicroak': {n:'Croagunk', id:'453'},
+  'toxtricity amped': {n:'Toxel', id:'848'},
+  'toxtricity low key': {n:'Toxel', id:'848'},
+  'trevenant': {n:'Phantump', id:'708'},
+  'tsareena': {n:'Bounsweet', id:'761'},
+  'typhlosion': {n:'Cyndaquil', id:'155'},
+  'tyranitar': {n:'Larvitar', id:'246'},
+  'tyrantrum': {n:'Tyrunt', id:'696'},
+  'unfezant': {n:'Pidove', id:'519'},
+  'urshifu rapid strike': {n:'Kubfu', id:'891'},
+  'urshifu single strike': {n:'Kubfu', id:'891'},
+  'vanilluxe': {n:'Vanillite', id:'582'},
+  'vaporeon': {n:'Eevee', id:'133'},
+  'venomoth': {n:'Venonat', id:'48'},
+  'venusaur': {n:'Bulbasaur', id:'1'},
+  'victini': {n:'Victini', id:'494'},
+  'victreebel': {n:'Bellsprout', id:'69'},
+  'vikavolt': {n:'Grubbin', id:'736'},
+  'vileplume': {n:'Oddish', id:'43'},
+  'virizion': {n:'Virizion', id:'640'},
+  'volcanion': {n:'Volcanion', id:'721'},
+  'volcarona': {n:'Larvesta', id:'636'},
+  'walrein': {n:'Spheal', id:'363'},
+  'weavile': {n:'Sneasel', id:'215'},
+  'whimsicott': {n:'Cottonee', id:'546'},
+  'wigglytuff': {n:'Igglybuff', id:'174'},
+  'xerneas': {n:'Xerneas', id:'716'},
+  'xurkitree': {n:'Xurkitree', id:'796'},
+  'yanmega': {n:'Yanma', id:'193'},
+  'yveltal': {n:'Yveltal', id:'717'},
+  'zacian (hero of many battles)': {n:'Zacian', id:'888'},
+  'zacian crowned sword': {n:'Zacian', id:'888'},
+  'zamazenta (hero of many battles)': {n:'Zamazenta', id:'889'},
+  'zamazenta crowned shield': {n:'Zamazenta', id:'889'},
+  'zapdos': {n:'Zapdos', id:'145'},
+  'zarude': {n:'Zarude', id:'893'},
+  'zebstrika': {n:'Blitzle', id:'522'},
+  'zekrom': {n:'Zekrom', id:'644'},
+  'zoroark': {n:'Zorua', id:'570'},
+  'zygarde complete': {n:'Zygarde', id:'718'},
+  'zygarde fifty percent': {n:'Zygarde', id:'718'},
+};
+
+function getEvoKey(rawName) {
+  // Strip Shadow/Mega/Primal/D-/G- prefixes and get canonical key
+  let n = rawName.toLowerCase()
+    .replace(/^shadow /, '')
+    .replace(/^mega /, 'mega ')  // keep mega prefix for lookup
+    .replace(/^primal /, 'primal ')
+    .replace(/\(shadow\)/g, '').trim();
+  // Try with mega prefix first, then without
+  if (EVO_MAP[n]) return EVO_MAP[n];
+  n = n.replace(/^mega /, '').replace(/^primal /, '').trim();
+  return EVO_MAP[n] || null;
+}
+
+function buildObjetivoData(profileName) {
+  const p = gp(profileName);
+  if (!p || !p.album) return [];
+  const counts = {}; // evoId -> {n, id, count}
+  // Iterate all album entries (non-dmax)
+  for (const id in p.album) {
+    if (p.album[id] !== true) continue;
+    if (id.includes('-dmax-')) continue;
+    // Get name
+    let pkName = '';
+    if (p.custom && p.custom[id]) {
+      pkName = p.custom[id].n || '';
+    } else {
+      const pd = PD.find(x => x.id === id);
+      if (pd) pkName = pd.name || '';
+    }
+    if (!pkName) continue;
+    const evo = getEvoKey(pkName);
+    if (!evo) continue;
+    const key = evo.id;
+    if (!counts[key]) counts[key] = {n: evo.n, id: evo.id, count: 0};
+    counts[key].count++;
+  }
+  // Sort by count desc, then name
+  return Object.values(counts).sort((a,b) => b.count - a.count || a.n.localeCompare(b.n));
+}
+
+function openObjetivo() {
+  if (!ST.cur) { showToast('Selecciona un entrenador primero'); return; }
+  const data = buildObjetivoData(ST.cur);
+  document.getElementById('obj-trainer-bar').innerHTML =
+    '<b>' + ST.cur + '</b> · ' + data.length + ' Pokémon iniciales distintos · ordenados por necesidad';
+  const grid = document.getElementById('obj-grid');
+  if (!data.length) {
+    grid.innerHTML = '<div class="obj-empty">No tienes Pokémon en ningún equipo deseado aún.</div>';
+  } else {
+    grid.innerHTML = data.map(d => {
+      const imgUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + d.id + '.png';
+      const badge = d.count > 1 ? '<div class="obj-badge">x' + d.count + '</div>' : '';
+      return '<div class="obj-card">' + badge +
+        '<img class="obj-img" src="' + imgUrl + '" onerror="this.src=\'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png\'" alt="' + d.n + '">' +
+        '<div class="obj-name">' + d.n + '</div>' +
+        '</div>';
+    }).join('');
+  }
+  show('objetivo-screen');
+}
+
+function closeObjetivo() {
+  show('profile-screen');
+  document.getElementById('home-menu').style.display = 'block';
+  document.getElementById('home-profile-section').style.display = 'none';
+  document.getElementById('trainer-name-bar').textContent = '👋 ' + ST.cur;
+  updateHomeMenu();
 }
 
 // ── BOOT ──────────────────────────────────────────────────────────────────────
@@ -2767,6 +3274,16 @@ if('serviceWorker' in navigator){
     console.warn('Boot error, using localStorage:', e);
   }
 })();
+
+<!-- OBJETIVO SCREEN -->
+<div id="objetivo-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="closeObjetivo()">←</button>
+    <h1>🎯 Pokémon Objetivo</h1>
+  </div>
+  <div id="obj-trainer-bar" style="padding:8px 14px;background:#fff;border-bottom:1px solid #e0e0e0;font-size:13px;color:#555;font-weight:600"></div>
+  <div class="obj-grid" id="obj-grid"></div>
+</div>
 </script>
 </body>
 </html>
