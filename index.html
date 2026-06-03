@@ -3193,18 +3193,24 @@ function getEvoKey(rawName) {
 function buildObjetivoData(profileName) {
   const p = gp(profileName);
   if (!p || !p.album) return [];
-  const counts = {}; // evoId -> {n, id, count}
-  // Iterate all album entries (non-dmax)
+  const counts = {};
   for (const id in p.album) {
     if (p.album[id] !== true) continue;
     if (id.includes('-dmax-')) continue;
-    // Get name
+    // Get name: try custom first, then PD, then parse from id
     let pkName = '';
-    if (p.custom && p.custom[id]) {
-      pkName = p.custom[id].n || '';
+    if (p.custom && p.custom[id] && p.custom[id].n) {
+      pkName = p.custom[id].n;
     } else {
       const pd = PD.find(x => x.id === id);
-      if (pd) pkName = pd.name || '';
+      if (pd) {
+        pkName = pd.name;
+      } else {
+        // Parse name from id: "fire-ext-shadow-charizard" -> "shadow charizard"
+        // Format is always: TYPE-ext-NAME (where NAME uses hyphens)
+        const m = id.match(/^[a-z]+-ext-(.+?)(?:-\d+)?$/);
+        if (m) pkName = m[1].replace(/-/g, ' ');
+      }
     }
     if (!pkName) continue;
     const evo = getEvoKey(pkName);
@@ -3213,7 +3219,6 @@ function buildObjetivoData(profileName) {
     if (!counts[key]) counts[key] = {n: evo.n, id: evo.id, count: 0};
     counts[key].count++;
   }
-  // Sort by count desc, then name
   return Object.values(counts).sort((a,b) => b.count - a.count || a.n.localeCompare(b.n));
 }
 
