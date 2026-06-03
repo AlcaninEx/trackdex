@@ -2401,8 +2401,13 @@ function removeFromAlbum(pkId) {
 function togOwned(id,v) {
   const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={}; p.pk[id].owned=v; save();
   const card=document.getElementById('c-'+id);
-  if(card){card.className='pk-card'+(v?'':' not-owned');const s=card.querySelector('.status-dot');if(s){s.textContent=v?'✓':'?';s.className='status-dot '+(v?'owned':'missing');}}
-  renderMain(); renderRanking();
+  if(card){card.className='pk-card'+(v?'':' not-owned');}
+  // Update album header counter inline
+  const pks=albumPks(ST.cur,ST.type);
+  const ownedNow=pks.filter(pk=>p.pk[pk.id]&&p.pk[pk.id].owned).length;
+  const hdr=document.getElementById('album-owned-count');
+  if(hdr)hdr.textContent=ownedNow+'/6';
+  renderMain(); renderRanking(); renderProfiles();
 }
 function togLeg(id,v) { const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={}; p.pk[id].legacy=v; save(); }
 function updIV(id,s,v) {
@@ -2497,21 +2502,24 @@ function closeInfo(e){if(e.target.id==='modal-info')document.getElementById('mod
 // ── RENDER ────────────────────────────────────────────────────────────────────
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.style.display='none');document.getElementById(id).style.display='block';}
 
-function countCompletedTeams(p) {
-  const total = TYPES.length;
-  let completed = 0;
-  TYPES.forEach(t => {
-    if (countAlbumForType(p, t.key) >= 6) completed++;
-  });
-  return { completed, total };
+function countOwnedDesired(p) {
+  if(!p || !p.album || !p.pk) return { owned: 0, total: 0 };
+  let owned = 0, total = 0;
+  for (const id in p.album) {
+    if (p.album[id] !== true) continue;
+    if (id.includes('-dmax-')) continue;
+    total++;
+    if (p.pk[id] && p.pk[id].owned) owned++;
+  }
+  return { owned, total };
 }
 function renderProfiles() {
   const el=document.getElementById('profiles-list');
   if(!ST.profiles.length){el.innerHTML='<p style="color:#aaa;text-align:center;padding:20px">Añade tu primer entrenador abajo</p>';return;}
   el.innerHTML=ST.profiles.map((p,i)=>{
     const ini=p.name.substring(0,2).toUpperCase();
-    const {completed, total}=countCompletedTeams(p);
-    return `<div class="profile-row"><div class="avatar">${ini}</div><div class="profile-info" onclick="selProfileIdx(${i})"><div class="profile-name">${p.name}</div><div class="profile-stat">${completed}/${total} Equipos Completados</div></div><div class="profile-actions"><button class="view-btn" onclick="viewProfileIdx(${i})">Ver</button></div></div>`;
+    const {owned, total}=countOwnedDesired(p);
+    return `<div class="profile-row"><div class="avatar">${ini}</div><div class="profile-info" onclick="selProfileIdx(${i})"><div class="profile-name">${p.name}</div><div class="profile-stat">${owned}/${total} Pokémon deseados obtenidos</div></div><div class="profile-actions"><button class="view-btn" onclick="viewProfileIdx(${i})">Ver</button></div></div>`;
   }).join('');
 }
 
@@ -2539,8 +2547,12 @@ function navToType(key){ST.type=key;ST.expanded=null;const t=TM[key];if(t)docume
 function renderAlbum() {
   const profile=ST.view||ST.cur; const isV=!!ST.view; const t=TM[ST.type];
   const pks=albumPks(profile,ST.type); const maxD=Math.max(...pks.map(p=>p.dps),1);
+  // Team header
+  const pp0=gp(profile);
+  const ownedCount=pks.filter(pk=>pp0&&pp0.pk[pk.id]&&pp0.pk[pk.id].owned).length;
+  const teamHeader=`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 14px 6px;background:rgba(0,0,0,.18);border-bottom:1px solid rgba(255,255,255,.15)"><span style="font-size:12px;font-weight:700;color:#fff">Equipo deseado</span><span style="font-size:12px;font-weight:700;color:#fff">En propiedad <span id="album-owned-count">${ownedCount}/6</span></span></div>`;
   const empty=Array(Math.max(0,6-pks.length)).fill('<div class="empty-slot"><div class="empty-slot-icon">❓</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Necesitas equipo de 6 para incursiones</div></div>').join('');
-  document.getElementById('album-list').innerHTML=pks.map(pk=>{
+  document.getElementById('album-list').innerHTML=teamHeader+pks.map(pk=>{
     const pp=gp(profile); const pd=(pp&&pp.pk[pk.id])||{};
     const isO=pd.owned||false; const lg=pd.legacy||false;
     const ia=pd.ivAtk||0,id2=pd.ivDef||0,ih=pd.ivHp||0;
@@ -2553,12 +2565,12 @@ function renderAlbum() {
     const fd=pk.fast.replace('*',''); const cd=pk.charge.replace('*','');
     const fl=pk.fast.endsWith('*'); const cl=pk.charge.endsWith('*');
     const mvH=`<div class="mv-box"><div class="mv-row"><span class="mv-lbl">Rápido</span><span class="mv-name">${fd}${fl?'<span class="leg-star">⭐</span>':''}</span></div><div class="mv-row"><span class="mv-lbl">Cargado</span><span class="mv-name">${cd}${cl?'<span class="leg-star">⭐</span>':''}</span></div></div>`;
-    // Calculate IV percentages using base stats
-    const bs=BASE_STATS[pk.id]||[200,150,180]; // fallback if not in table
+    const bs=BASE_STATS[pk.id]||[200,150,180];
     const pctA=Math.round((bs[0]+ia)/(bs[0]+15)*100);
     const pctD=Math.round((bs[1]+id2)/(bs[1]+15)*100);
     const pctH=Math.round((bs[2]+ih)/(bs[2]+15)*100);
-    const editF=`<div class="fr" style="margin-top:4px"><div class="fl">DPS con tus IVs</div><p style="font-size:18px;font-weight:700;color:#222"><span id="dps-real-${pk.id}">${dd.toFixed(2)}</span> <span style="font-size:12px;color:#888;font-weight:400">/ Max ${baseDps.toFixed(2)}</span></p></div><div class="fr"><div class="fl">IVs</div><div class="iv-grid"><div class="iv-col"><div class="iv-lbl">Ataque</div><div class="iv-val" id="ia-${pk.id}">${ia}<span style="font-size:10px;color:#888;font-weight:400"> (${pctA}%)</span></div><input type="range" min="0" max="15" value="${ia}" oninput="updIV('${pk.id}','a',this.value)"></div><div class="iv-col"><div class="iv-lbl">Defensa</div><div class="iv-val" id="id-${pk.id}">${id2}<span style="font-size:10px;color:#888;font-weight:400"> (${pctD}%)</span></div><input type="range" min="0" max="15" value="${id2}" oninput="updIV('${pk.id}','d',this.value)"></div><div class="iv-col"><div class="iv-lbl">Vida</div><div class="iv-val" id="ih-${pk.id}">${ih}<span style="font-size:10px;color:#888;font-weight:400"> (${pctH}%)</span></div><input type="range" min="0" max="15" value="${ih}" oninput="updIV('${pk.id}','h',this.value)"></div></div></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
+    const ownedToggle=!isV?`<div class="tr" style="margin-bottom:10px;padding:8px 12px;background:${isO?'#e8f5e9':'#f5f5f5'};border-radius:8px;border:1.5px solid ${isO?'#43a047':'#ddd'}"><span style="font-size:13px;font-weight:700;color:${isO?'#2e7d32':'#555'}">${isO?'✅ Obtenido':'¿Lo tienes?'}</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${isO?'checked':''} onchange="togOwned('${pk.id}',this.checked)"><span class="sl"></span></label></div>`:'';
+    const editF=`${ownedToggle}<div class="fr" style="margin-top:4px"><div class="fl">DPS con tus IVs</div><p style="font-size:18px;font-weight:700;color:#222"><span id="dps-real-${pk.id}">${dd.toFixed(2)}</span> <span style="font-size:12px;color:#888;font-weight:400">/ Max ${baseDps.toFixed(2)}</span></p></div><div class="fr"><div class="fl">IVs</div><div class="iv-grid"><div class="iv-col"><div class="iv-lbl">Ataque</div><div class="iv-val" id="ia-${pk.id}">${ia}<span style="font-size:10px;color:#888;font-weight:400"> (${pctA}%)</span></div><input type="range" min="0" max="15" value="${ia}" oninput="updIV('${pk.id}','a',this.value)"></div><div class="iv-col"><div class="iv-lbl">Defensa</div><div class="iv-val" id="id-${pk.id}">${id2}<span style="font-size:10px;color:#888;font-weight:400"> (${pctD}%)</span></div><input type="range" min="0" max="15" value="${id2}" oninput="updIV('${pk.id}','d',this.value)"></div><div class="iv-col"><div class="iv-lbl">Vida</div><div class="iv-val" id="ih-${pk.id}">${ih}<span style="font-size:10px;color:#888;font-weight:400"> (${pctH}%)</span></div><input type="range" min="0" max="15" value="${ih}" oninput="updIV('${pk.id}','h',this.value)"></div></div></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
     const viewF=`<div class="fr"><div class="fl">DPS con sus IVs</div><p style="font-size:18px;font-weight:700;color:#222"><span id="dps-real-${pk.id}">${dd.toFixed(2)}</span> <span style="font-size:12px;color:#888;font-weight:400">/ Max ${baseDps.toFixed(2)}</span></p></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
     const removeBtn=!isV?(pk.isCustom?`<button class="album-remove" onclick="event.stopPropagation();removeRankEntry('${pk.id}','${ST.type}')">✕</button>`:`<button class="album-remove" onclick="event.stopPropagation();removeFromAlbum('${pk.id}')">✕</button>`):'';
     const evoDisplay=pk.isCustom?`<div class="final-wrap"><img class="final-img" src="${si(pk.img)}" onerror="this.style.opacity=.1"></div>`:evoH(pk.evo,pk.img,isShadow);
