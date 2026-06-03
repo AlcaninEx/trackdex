@@ -234,7 +234,7 @@ body.dark .mega-warn-box{background:#1e1e1e;color:#eee}
 body.dark .mega-warn-msg{color:#bbb}
 
 /* OBJETIVO SCREEN */
-#objetivo-screen .app-header{background:#CC0000}
+#objetivo-screen{background:#f0f0f0;min-height:100vh}#objetivo-screen .app-header{background:#CC0000}
 .obj-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px}
 .obj-card{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.12);display:flex;flex-direction:column;align-items:center;padding:8px 4px 6px;position:relative;cursor:default}
 body.dark .obj-card{background:#1e1e1e}
@@ -3220,30 +3220,37 @@ function buildObjetivoData(profileName) {
 function openObjetivo() {
   if (!ST.cur) { showToast('Selecciona un entrenador primero'); return; }
   const data = buildObjetivoData(ST.cur);
-  document.getElementById('obj-trainer-bar').innerHTML =
-    '<b>' + ST.cur + '</b> · ' + data.length + ' Pokémon iniciales distintos · ordenados por necesidad';
+  const bar = document.getElementById('obj-trainer-bar');
   const grid = document.getElementById('obj-grid');
+  bar.innerHTML = '👤 <b>' + ST.cur + '</b> &nbsp;·&nbsp; ' + data.length + ' Pokémon iniciales &nbsp;·&nbsp; ordenados por prioridad';
   if (!data.length) {
-    grid.innerHTML = '<div class="obj-empty">No tienes Pokémon en ningún equipo deseado aún.</div>';
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:#aaa;font-size:14px">No tienes Pokémon en ningún equipo deseado aún.<br><br>Añade Pokémon a tus equipos primero.</div>';
   } else {
     grid.innerHTML = data.map(d => {
       const imgUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + d.id + '.png';
       const badge = d.count > 1 ? '<div class="obj-badge">x' + d.count + '</div>' : '';
       return '<div class="obj-card">' + badge +
-        '<img class="obj-img" src="' + imgUrl + '" onerror="this.src=\'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png\'" alt="' + d.n + '">' +
+        '<img class="obj-img" src="' + imgUrl + '" alt="' + d.n + '" onerror="this.style.opacity=.2">' +
         '<div class="obj-name">' + d.n + '</div>' +
         '</div>';
     }).join('');
   }
-  show('objetivo-screen');
+  // Show screen and scroll to top
+  document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+  const scr = document.getElementById('objetivo-screen');
+  scr.style.display = 'block';
+  document.getElementById('home-menu').style.display = 'none';
+  window.scrollTo(0, 0);
 }
 
 function closeObjetivo() {
-  show('profile-screen');
+  document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+  document.getElementById('profile-screen').style.display = 'block';
   document.getElementById('home-menu').style.display = 'block';
   document.getElementById('home-profile-section').style.display = 'none';
   document.getElementById('trainer-name-bar').textContent = '👋 ' + ST.cur;
   updateHomeMenu();
+  window.scrollTo(0, 0);
 }
 
 // ── BOOT ──────────────────────────────────────────────────────────────────────
