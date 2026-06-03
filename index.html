@@ -123,18 +123,18 @@ body.dark .empty-slot{border-color:#444;background:#1e1e1e}
 body.dark .empty-slot-txt{color:#666}
 body.dark .album-subtab{background:#1e1e1e;color:#666;border-color:#333}
 body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
-.pk-card{border-radius:12px;overflow:hidden;margin-bottom:10px}
+.pk-card{border-radius:14px;overflow:hidden;margin-bottom:10px;box-shadow:0 3px 10px rgba(0,0,0,.18)}
 
-.pk-top{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer}
-.evo-chain{display:flex;align-items:center;gap:2px;flex-shrink:0}
-.evo-sm{width:28px;height:28px;object-fit:contain}
+.pk-top{display:flex;align-items:stretch;gap:0;padding:0;cursor:pointer}
+.evo-chain{display:flex;align-items:center;gap:2px;flex-shrink:0;height:64px;padding:0 6px 0 8px;background:rgba(0,0,0,.15);border-right:1.5px solid rgba(255,255,255,.25)}
+.evo-sm{width:30px;height:30px;object-fit:contain;opacity:.75}
 .evo-arr{font-size:9px;color:rgba(255,255,255,.5)}
-.final-wrap{position:relative;width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.final-img{width:44px;height:44px;object-fit:contain}
-.pk-info{flex:1;min-width:0}
-.pk-name{font-size:13px;font-weight:700;color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.4)}
-.tags-row{display:flex;gap:3px;flex-wrap:wrap;margin-top:3px}
-.tag{font-size:10px;padding:1px 6px;border-radius:8px;font-weight:700}
+.final-wrap{position:relative;width:64px;height:64px;border-radius:0;background:rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;border-right:1.5px solid rgba(255,255,255,.25)}
+.final-img{width:52px;height:52px;object-fit:contain}
+.pk-info{flex:1;min-width:0;padding:8px 10px 8px 10px}
+.pk-name{font-size:13.5px;font-weight:800;color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.35);letter-spacing:.01em}
+.tags-row{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.tag{font-size:9.5px;padding:2px 7px;border-radius:20px;font-weight:800;border:1.5px solid rgba(255,255,255,.6);background:rgba(255,255,255,.12);color:#fff!important;letter-spacing:.03em}
 .tl{background:rgba(255,255,255,.93)!important;color:#c65000!important}
 .tm{background:rgba(255,255,255,.93)!important;color:#3949ab!important}
 .ts{background:rgba(255,255,255,.93)!important;color:#6a1b9a!important}
@@ -142,13 +142,13 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 .tdx{background:rgba(255,255,255,.93)!important;color:#1a237e!important}
 .rank-add-btn{flex-shrink:0;width:28px;height:28px;border-radius:50%;border:none;background:#43a047;color:#fff;font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:transform .1s,background .1s}
 .rank-add-btn:active{transform:scale(.88);background:#2e7d32}
-.album-remove{background:none;border:none;cursor:pointer;font-size:16px;padding:2px 6px;color:rgba(255,255,255,.7);flex-shrink:0;line-height:1}
+.album-remove{background:none;border:none;cursor:pointer;font-size:16px;padding:8px 10px;color:rgba(255,255,255,.6);flex-shrink:0;line-height:1;align-self:center}
 .album-remove:hover{color:#fff}
 .album-count{font-size:11px;color:rgba(255,255,255,.8);text-align:center;padding:4px 0 8px;font-weight:600}
-.dps-wrap{margin-top:4px}
+.dps-wrap{margin-top:5px}
 .dps-lbl{font-size:10px;color:rgba(255,255,255,.9)!important;display:flex;justify-content:space-between;margin-bottom:2px}
-.dps-bar{height:4px;border-radius:2px;background:rgba(255,255,255,.2);overflow:hidden}
-.dps-fill{height:100%;border-radius:2px;background:rgba(255,255,255,.85)}
+.dps-bar{height:5px;border-radius:3px;background:rgba(255,255,255,.2);overflow:hidden}
+.dps-fill{height:100%;border-radius:3px;background:rgba(255,255,255,.9)}
 .status-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
 .status-dot.owned{background:#fff!important;color:#2e7d32!important}
 .status-dot.missing{background:rgba(0,0,0,.2);color:rgba(255,255,255,.7)!important}
@@ -156,6 +156,7 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 .type-icon svg{width:16px;height:16px}
 
 .final-wrap{position:relative}
+.evo-chain .final-wrap{background:none;border-right:none;width:36px;height:36px}
 .shadow-badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;object-fit:contain;z-index:2;filter:drop-shadow(0 0 2px rgba(0,0,0,.6))}
 .pk-body{border-top:1px solid rgba(255,255,255,.25);padding:12px 14px;display:none;background:#fff!important}
 .pk-body.open{display:block}
@@ -198,7 +199,7 @@ body.dark .rank-row.ours{background:color-mix(in srgb,var(--tc) 18%,#1e1e1e)!imp
 .dps-minibar{height:3px;border-radius:2px;background:#eee;overflow:hidden;margin-top:3px}
 .dps-minifill{height:100%;border-radius:2px}
 .rank-dps{font-size:13px;font-weight:700;flex-shrink:0;white-space:nowrap}
-.badge{font-size:9px;border-radius:6px;padding:1px 5px;margin-left:4px;color:#fff!important;font-weight:700;vertical-align:middle}
+.badge{font-size:9px;border-radius:20px;padding:2px 6px;margin-left:3px;color:#fff!important;font-weight:800;vertical-align:middle;border:1.5px solid rgba(255,255,255,.55);background:rgba(255,255,255,.1)}
 .view-badge-bar{margin:8px 12px;padding:8px 12px;background:#fff8e1!important;border-radius:8px;font-size:12px;color:#795548!important;border:1px solid #ffe082;display:flex;align-items:center;gap:6px}
 /* MODAL */
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
@@ -338,6 +339,7 @@ body.dark #type-nav-strip{background:#1e1e1e;border-color:#333}
     <button id="rtab-dmax" class="tab" onclick="switchRankTab('dmax')" style="flex:1;font-size:12px;padding:8px">⚡ Dynamax</button>
   </div>
   <div id="rpanel-raid">
+    <div id="rank-mega-toggle"></div>
     <p class="rank-note" id="rank-note"></p>
     <div class="rank-wrap"><div class="rank-list" id="rank-list"></div></div>
   </div>
@@ -1437,7 +1439,7 @@ const RANKINGS={
     {n:'Mega Gardevoir',dps:29.04,fast:'Confusión',fastL:false,charge:'Psíquico',chargeL:false,img:'10051'},
     {n:'Mega Metagross',dps:26.06,fast:'Cabezazo Zen',fastL:false,charge:'Psíquico',chargeL:false,img:'10076'},
     {n:'Shadow Latios',dps:27.66,fast:'Cabezazo Zen',fastL:false,charge:'Psíquico',chargeL:false,img:'381'},
-    {n:'Hoopa Unbound',dps:27.55,fast:'Confusión',fastL:false,charge:'Psíquico',chargeL:false,img:'720'},
+    {n:'Hoopa Unbound',dps:27.55,fast:'Confusión',fastL:false,charge:'Psíquico',chargeL:false,img:'10061'},
     {n:'Mega Latias',dps:25.16,fast:'Cabezazo Zen',fastL:false,charge:'Psíquico',chargeL:false,img:'10062'},
     {n:'Shadow Metagross',dps:26.74,fast:'Cabezazo Zen',fastL:false,charge:'Psíquico',chargeL:false,img:'376'},
     {n:'Lunala',dps:24.36,fast:'Confusión',fastL:false,charge:'Psíquico',chargeL:false,img:'792'},
@@ -2318,10 +2320,16 @@ function addFromRanking(id) {
   const p=goc(ST.cur);
   if(!p.album)p.album={};
   if(!p.custom)p.custom={};
-  // Count current entries for this type
+  // Count current entries for this type (dmax and raid are separate slots)
   const _pdE2=PD.find(x=>x.id===id);
-  const typeCount=countAlbumForType(p, type);
-  if(typeCount>=6){showToast('Ya tienes 6 Pokémon en este tipo\nElimina uno primero ⚔️');return;}
+  const isDmaxEntry=id.includes('-dmax-');
+  if(isDmaxEntry){
+    const dmaxCount=Object.keys(p.album).filter(k=>p.album[k]===true&&k.startsWith(type+'-dmax-')).length;
+    if(dmaxCount>=3){showToast('Ya tienes 3 Pokémon Dynamax en este tipo\nElimina uno primero ⚡');return;}
+  } else {
+    const typeCount=countAlbumForType(p, type);
+    if(typeCount>=6){showToast('Ya tienes 6 Pokémon en este tipo\nElimina uno primero ⚔️');return;}
+  }
   const _isMega2=(_pdE2&&_pdE2.tags&&_pdE2.tags.includes('mega'))||(data.n&&(data.n.toLowerCase().startsWith('mega ')||data.n.toLowerCase().startsWith('primal ')));
   if(_isMega2&&hasMegaInTeam(p,type)){showToast('Solo un Mega por equipo\nSustituye el actual primero 🔴');return;}
   // Generate unique id for this copy (allow multiple copies)
@@ -2355,6 +2363,7 @@ function countAlbumForType(p, type) {
   let count = 0;
   for (const id in p.album) {
     if (p.album[id] !== true) continue;
+    if (id.includes('-dmax-')) continue; // Dynamax slots are separate (max 3)
 
     // Determinamos el tipo del Pokémon por su ID
     let pkType = null;
@@ -2488,13 +2497,21 @@ function closeInfo(e){if(e.target.id==='modal-info')document.getElementById('mod
 // ── RENDER ────────────────────────────────────────────────────────────────────
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.style.display='none');document.getElementById(id).style.display='block';}
 
+function countCompletedTeams(p) {
+  const total = TYPES.length;
+  let completed = 0;
+  TYPES.forEach(t => {
+    if (countAlbumForType(p, t.key) >= 6) completed++;
+  });
+  return { completed, total };
+}
 function renderProfiles() {
   const el=document.getElementById('profiles-list');
   if(!ST.profiles.length){el.innerHTML='<p style="color:#aaa;text-align:center;padding:20px">Añade tu primer entrenador abajo</p>';return;}
   el.innerHTML=ST.profiles.map((p,i)=>{
     const ini=p.name.substring(0,2).toUpperCase();
-    const cnt=Object.values(p.pk||{}).filter(d=>d&&d.owned).length;
-    return `<div class="profile-row"><div class="avatar">${ini}</div><div class="profile-info" onclick="selProfileIdx(${i})"><div class="profile-name">${p.name}</div><div class="profile-stat">${cnt} pokémon registrados</div></div><div class="profile-actions"><button class="view-btn" onclick="viewProfileIdx(${i})">Ver</button></div></div>`;
+    const {completed, total}=countCompletedTeams(p);
+    return `<div class="profile-row"><div class="avatar">${ini}</div><div class="profile-info" onclick="selProfileIdx(${i})"><div class="profile-name">${p.name}</div><div class="profile-stat">${completed}/${total} Equipos Completados</div></div><div class="profile-actions"><button class="view-btn" onclick="viewProfileIdx(${i})">Ver</button></div></div>`;
   }).join('');
 }
 
@@ -2518,7 +2535,7 @@ function evoH(evo,img,shadow) {
 
 
 function renderTypeNav(){const strip=document.getElementById('type-nav-strip');if(!strip)return;strip.innerHTML=TYPES.map(t=>`<button class="tn-btn${ST.type===t.key?' active':''}" style="background:${t.color}" onclick="navToType('${t.key}')">${t.name}</button>`).join('');}
-function navToType(key){ST.type=key;ST.expanded=null;const t=TM[key];if(t)document.getElementById('detail-title').textContent=t.name;renderTypeNav();renderAlbum();renderRanking();renderAlbumDmax();renderMain();}
+function navToType(key){ST.type=key;ST.expanded=null;const t=TM[key];if(t)document.getElementById('detail-title').textContent=t.name;renderTypeNav();renderAlbum();renderRanking();renderAlbumDmax();if(ST.rankTab==='dmax')renderDmaxRanking();renderMain();}
 function renderAlbum() {
   const profile=ST.view||ST.cur; const isV=!!ST.view; const t=TM[ST.type];
   const pks=albumPks(profile,ST.type); const maxD=Math.max(...pks.map(p=>p.dps),1);
@@ -2610,6 +2627,7 @@ function inferTags(name,fastL,chargeL,pdTags){
                .replace(/ [xyz]$/, '').replace(/ \(.*\)$/, '').trim();
   if(DMAX_NAMES.has(base))tags.add('dynamax');
   else{for(const w of base.split(' ')){if(DMAX_NAMES.has(w)){tags.add('dynamax');break;}}}
+  if(tags.has('shadow'))tags.delete('dynamax');
   return[...tags];
 }
 function renderBadges(tags){
@@ -2622,6 +2640,13 @@ function renderBadges(tags){
     return'';
   }).join('');
 }
+// ── MEGA FILTER STATE (per type) ────────────────────────────────────────────
+if(!window._megaFilter) window._megaFilter = {};
+function toggleMegaFilter(type) {
+  window._megaFilter[type] = !window._megaFilter[type];
+  renderRanking();
+}
+
 function renderRanking() {
   const profile=ST.view||ST.cur; const isV=!!ST.view; const t=TM[ST.type];
   const rawRank=RANKINGS[ST.type]||[]; const allPks=PD.filter(p=>p.type===ST.type);
@@ -2639,9 +2664,9 @@ function renderRanking() {
       // Never customized: show defaults but count as 0 so user can interact
       return 0;
     }
-    // Count explicit entries for this type
-    const pdC=PD.filter(x=>pp2.album[x.id]===true&&x.type===ST.type).length;
-    const custC=pp2.custom?Object.values(pp2.custom).filter(d=>d.type===ST.type&&pp2.album&&pp2.album[Object.keys(pp2.custom).find(k=>pp2.custom[k]===d)]===true).length:0;
+    // Count explicit entries for this type (excluding dmax slots which have their own limit of 3)
+    const pdC=PD.filter(x=>pp2.album[x.id]===true&&x.type===ST.type&&!x.id.includes('-dmax-')).length;
+    const custC=pp2.custom?Object.values(pp2.custom).filter(d=>{const k=Object.keys(pp2.custom).find(kk=>pp2.custom[kk]===d);return d.type===ST.type&&pp2.album&&pp2.album[k]===true&&!k.includes('-dmax-');}).length:0;
     return pdC+custC;
   })();
   const ownedIds=new Set(); const pp=gp(profile);
@@ -2656,7 +2681,24 @@ function renderRanking() {
   // Order fixed: RANKINGS defines the canonical order; extra pokémon appended at end sorted by DPS
   const rankExtra=combined.slice(rawRank.length);rankExtra.sort((a,b)=>b.dps-a.dps);
   const fixedCombined=[...rawRank.map(r=>combined.find(c=>(c.aid&&r.aid&&c.aid===r.aid)||c.n===r.n)||r),...rankExtra];
-  const vis=fixedCombined.slice(0,50); const maxD=vis.length?Math.max(...vis.map(v=>v.dps)):1;
+  // ── MEGA TOGGLE ──────────────────────────────────────────────────────────
+  const pp4=gp(profile);
+  const hasMegaTeam=hasMegaInTeam(pp4,ST.type);
+  const megaFilterOn=!!window._megaFilter[ST.type];
+  // Render toggle header
+  const toggleId='mega-toggle-'+ST.type;
+  const toggleHtml=hasMegaTeam?`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 14px 4px;background:#fff8e1;border-bottom:1px solid #ffe082"><span style="font-size:11px;color:#795548;font-weight:600">🔴 Tienes un Mega — ocultar Megas del ranking</span><label class="sw" style="flex-shrink:0"><input type="checkbox" ${megaFilterOn?'checked':''} onchange="toggleMegaFilter('${ST.type}')"><span class="sl"></span></label></div>`:'';
+  document.getElementById('rank-mega-toggle').innerHTML=toggleHtml;
+  // Apply filter
+  const filtered=megaFilterOn&&hasMegaTeam
+    ? fixedCombined.filter(r=>{
+        const rid2=r.aid||(ST.type+'-ext-'+r.n.toLowerCase().replace(/[^a-z0-9]/g,'-'));
+        const _pe=PD.find(x=>x.id===rid2);
+        const tags=inferTags(r.n,r.fastL,r.chargeL,_pe?_pe.tags:[]);
+        return !tags.includes('mega');
+      })
+    : fixedCombined;
+  const vis=filtered.slice(0,50); const maxD=vis.length?Math.max(...vis.map(v=>v.dps)):1;
   document.getElementById('rank-note').textContent=`Top ${vis.length} · Verde=en álbum · Dittobase 2026`;
   document.getElementById('rank-list').innerHTML=vis.map((r,i)=>{
     const isA=r.aid&&albumIds.has(r.aid); const isO=r.aid&&ownedIds.has(r.aid);
