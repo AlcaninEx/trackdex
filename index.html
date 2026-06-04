@@ -886,7 +886,7 @@ body.dark .obj-name{color:#aaa}
   <div style="padding:10px 14px 6px;background:#fffde7;border-bottom:1px solid #ffe082;font-size:11px;color:#5d4037;line-height:1.7">
     <b>🍬 Caramelos para subir al máximo:</b><br>
     Normal / Mega: ~250 + 296XL &nbsp;·&nbsp; Purificado: ~220 + 268XL<br>
-    Oscuro: ~298 + 360XL &nbsp;·&nbsp; +Habilidades Dynamax Lv3: ~350 + 120XL
+    Oscuro: ~298 + 360XL &nbsp;·&nbsp; ⚡Dynamax: ~600 + 416XL (base + habilidades)
   </div>
   <button onclick="copyObjetivoFilter()" style="display:block;width:100%;padding:13px;background:#1565c0;color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.3px">📋 Copiar tu filtro para Pokémon GO</button>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch"><div class="obj-grid" id="obj-grid"></div></div>
@@ -2660,20 +2660,37 @@ function renderAlbumDmax() {
   const t=TM[ST.type]; const isV=!!ST.view; const rows=DMAX[ST.type]||[];
   const el=document.getElementById('album-list-dmax');
   if(!rows.length){el.innerHTML='<p style="text-align:center;padding:20px;color:#aaa">Sin datos Dynamax.</p>';return;}
-  // Only show entries user has explicitly added
   const p2=gp(ST.view||ST.cur);
   const userDmaxIds=p2&&p2.album?Object.keys(p2.album).filter(id=>p2.album[id]===true&&id.startsWith(ST.type+'-dmax-')):[];
-  const slots=rows.filter(r=>{
-    const did=ST.type+'-dmax-'+r.n.toLowerCase().replace(/[^a-z0-9]/g,'-');
-    return userDmaxIds.some(id=>id===did||id.startsWith(did+'-'));
+  // Build slots: one entry per album id (supports duplicates of same pokemon)
+  const slots=[];
+  userDmaxIds.forEach(albumId=>{
+    // Find matching DMAX row by comparing base id
+    const r=rows.find(r=>{
+      const did=ST.type+'-dmax-'+r.n.toLowerCase().replace(/[^a-z0-9]/g,'-');
+      return albumId===did||albumId.startsWith(did+'-');
+    });
+    if(r) slots.push({r, albumId});
   });
-  const maxD=slots.length?slots[0].dps:1;
+  const maxD=slots.length?Math.max(...slots.map(s=>s.r.dps)):1;
   const dmaxMax=6;
   const emptyDmax=Array(Math.max(0,dmaxMax-slots.length)).fill('<div class="empty-slot"><div class="empty-slot-icon">⚡</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Máx recomendado: 3</div></div>').join('');
   const dmaxWarn=slots.length>3?'<div style="padding:6px 14px;background:#fff3e0;border-bottom:1px solid #ffe082;font-size:11px;color:#e65100;font-weight:600">⚠️ El equipo óptimo Dynamax es de 3. Tienes '+slots.length+'.</div>':'';
   if(!slots.length){el.innerHTML=emptyDmax;return;}
   const isG=r=>r.charge.startsWith('G-Max')||['Drum Solo','Vine Lash','Cannonade','Hydrosnipe','Foam Burst','Fireball','Wildfire','Stun Shock','Befuddle','Terror','Snooze','Resonance','Chi Strike','Behemoth'].some(x=>r.charge.includes(x));
-  el.innerHTML=dmaxWarn+slots.map(r=>`<div class="pk-card" style="background:${t.color}"><div class="pk-top"><div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">${r.n.replace(/^[GD]-/,'')}</div><div class="tags-row">${isG(r)?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>'}</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>${r.dps.toFixed(1)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${Math.round(r.dps/maxD*100)}%"></div></div></div></div></div><div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div></div>`).join('')+emptyDmax;
+  const removeBtn=!isV?`<button class="album-remove" onclick="event.stopPropagation();removeDmaxEntry('{AID}')">✕</button>`:'';
+  el.innerHTML=dmaxWarn+slots.map(({r,albumId})=>{
+    const rb=!isV?`<button class="album-remove" onclick="event.stopPropagation();removeDmaxEntry('${albumId}')">✕</button>`:'';
+    return `<div class="pk-card" style="background:${t.color}"><div class="pk-top"><div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">${r.n.replace(/^[GD]-/,'')}</div><div class="tags-row">${isG(r)?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>'}</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>${r.dps.toFixed(1)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${Math.round(r.r.dps/maxD*100)}%"></div></div></div></div>${rb}</div><div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div></div>`;
+  }).join('')+emptyDmax;
+}
+function removeDmaxEntry(albumId) {
+  if(!ST.cur)return;
+  const p=goc(ST.cur);
+  if(!p.album)return;
+  delete p.album[albumId];
+  if(p.custom) delete p.custom[albumId];
+  save(); renderAlbumDmax(); renderMain();
 }
 
 function renderDmaxRanking() {
@@ -3509,36 +3526,90 @@ function isPurifiedEntry(id, p) {
   if (pd && pd.tags && pd.tags.includes('purified')) return true;
   return false;
 }
+function getPkName(id, p) {
+  if (p.custom && p.custom[id] && p.custom[id].n) return p.custom[id].n;
+  const pd = PD.find(x => x.id === id);
+  if (pd) return pd.name;
+  const m = id.match(/^[a-z]+-ext-(.+?)(?:-\d+)?$/);
+  if (m) return m[1].replace(/-/g, ' ');
+  const m2 = id.match(/^[a-z]+-dmax-(.+?)(?:-\d+)?$/);
+  if (m2) return m2[1].replace(/-/g, ' ');
+  return '';
+}
+function hasDmaxTag(id, p) {
+  // Check if a raid entry has the dmax tag (meaning it CAN be used as Dynamax)
+  if (p.custom && p.custom[id] && p.custom[id].tags) return p.custom[id].tags.includes('dynamax');
+  const pd = PD.find(x => x.id === id);
+  if (pd && pd.tags) return pd.tags.includes('dynamax');
+  // Also check name from id: some custom entries parsed from id won't have tags
+  // Fall back to checking PD by base name match
+  return false;
+}
 function buildObjetivoData(profileName) {
   const p = gp(profileName);
   if (!p || !p.album) return [];
-  const counts = {};
+
+  // Step 1: Collect all raid entries (non-dmax) grouped by evo key
+  // Track which ones have dmax tag (can share slot with dynamax entries)
+  const byEvo = {}; // evoKey -> {raidDmax: [], raidNormal: [], raidShadow: [], raidPurified: [], dmaxEntries: []}
+
   for (const id in p.album) {
     if (p.album[id] !== true) continue;
-    if (id.includes('-dmax-')) continue;
-    let pkName = '';
-    if (p.custom && p.custom[id] && p.custom[id].n) {
-      pkName = p.custom[id].n;
-    } else {
-      const pd = PD.find(x => x.id === id);
-      if (pd) {
-        pkName = pd.name;
-      } else {
-        const m = id.match(/^[a-z]+-ext-(.+?)(?:-\d+)?$/);
-        if (m) pkName = m[1].replace(/-/g, ' ');
-      }
-    }
+    const isDmaxSlot = id.includes('-dmax-');
+    const pkName = getPkName(id, p);
     if (!pkName) continue;
     const evo = getEvoKey(pkName);
     if (!evo) continue;
     const key = evo.id;
-    if (!counts[key]) counts[key] = {n: evo.n, id: evo.id, count: 0, normal: 0, shadow: 0, purified: 0};
-    counts[key].count++;
-    if (isPurifiedEntry(id, p)) counts[key].purified++;
-    else if (isShadowEntry(id, p)) counts[key].shadow++;
-    else counts[key].normal++;
+    if (!byEvo[key]) byEvo[key] = {n: evo.n, id: evo.id, raidDmax: [], raidShadow: [], raidPurified: [], raidNormal: [], dmaxEntries: []};
+
+    if (isDmaxSlot) {
+      byEvo[key].dmaxEntries.push(id);
+    } else if (isPurifiedEntry(id, p)) {
+      byEvo[key].raidPurified.push(id);
+    } else if (isShadowEntry(id, p)) {
+      byEvo[key].raidShadow.push(id);
+    } else if (hasDmaxTag(id, p)) {
+      byEvo[key].raidDmax.push(id); // normal raid entry that also has dmax capability
+    } else {
+      byEvo[key].raidNormal.push(id);
+    }
   }
-  return Object.values(counts).sort((a,b) => b.count - a.count || a.n.localeCompare(b.n));
+
+  // Step 2: For each evo, calculate unique pokemon to power up
+  // Dynamax slots consume raidDmax slots first (shared pokemon), then create new ones
+  const results = [];
+  for (const key in byEvo) {
+    const e = byEvo[key];
+    const dmaxCount = e.dmaxEntries.length;
+
+    // How many dmax entries are "shared" with existing raid-dmax entries?
+    const sharedDmax = Math.min(dmaxCount, e.raidDmax.length);
+    // How many dmax entries need a NEW pokemon to power up?
+    const newDmax = Math.max(0, dmaxCount - e.raidDmax.length);
+
+    // Unique pokemon to power up:
+    // - All raid entries (normal + shadow + purified + raidDmax)
+    // - Plus new dmax-only pokemon (not already in raid team)
+    const normal   = e.raidNormal.length + e.raidDmax.length + newDmax;
+    const shadow   = e.raidShadow.length;
+    const purified = e.raidPurified.length;
+    const dmaxSkills = dmaxCount; // habilidades extra: one per dynamax slot regardless
+
+    const count = normal + shadow + purified;
+    if (count === 0 && dmaxSkills === 0) continue;
+
+    results.push({
+      n: e.n, id: key,
+      count,           // total unique pokemon to power up
+      normal, shadow, purified,
+      dmaxSkills,      // number of dynamax skill upgrades needed
+      sharedDmax,      // informational: how many dmax share with raid team
+      newDmax          // informational: how many dmax are new pokemon
+    });
+  }
+
+  return results.sort((a,b) => (b.count + b.dmaxSkills) - (a.count + a.dmaxSkills) || a.n.localeCompare(b.n));
 }
 
 function openObjetivo() {
@@ -3599,18 +3670,41 @@ function _copyFallback(text) {
 function openObjPopup(idx) {
   const d = window._objData && window._objData[idx];
   if (!d) return;
-  const CANDY = {normal: {c:250, xl:296}, shadow: {c:298, xl:360}, purified: {c:220, xl:268}};
-  const totalC = d.normal * CANDY.normal.c + d.shadow * CANDY.shadow.c + d.purified * CANDY.purified.c;
-  const totalXL = d.normal * CANDY.normal.xl + d.shadow * CANDY.shadow.xl + d.purified * CANDY.purified.xl;
+  // Costs per pokemon type to power up to max
+  const CANDY = {
+    normal:   {c:250, xl:296},
+    shadow:   {c:298, xl:360},
+    purified: {c:220, xl:268},
+    dmaxSkill:{c:350, xl:120}  // extra for dynamax skills only
+  };
+  const raidC  = d.normal*CANDY.normal.c + d.shadow*CANDY.shadow.c + d.purified*CANDY.purified.c;
+  const raidXL = d.normal*CANDY.normal.xl + d.shadow*CANDY.shadow.xl + d.purified*CANDY.purified.xl;
+  const skillC  = d.dmaxSkills * CANDY.dmaxSkill.c;
+  const skillXL = d.dmaxSkills * CANDY.dmaxSkill.xl;
+  const totalC  = raidC + skillC;
+  const totalXL = raidXL + skillXL;
+
   const imgUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + d.id + '.png';
   document.getElementById('obj-popup-img').src = imgUrl;
   document.getElementById('obj-popup-name').textContent = d.n;
-  document.getElementById('obj-popup-count').textContent = d.count + ' Pokémon en tus equipos deseados';
+
+  const totalUnique = d.count;
+  const dmaxInfo = d.dmaxSkills > 0 ? ' · ' + d.dmaxSkills + ' en Dynamax' : '';
+  document.getElementById('obj-popup-count').textContent = totalUnique + ' Pokémon únicos a subir' + dmaxInfo;
+
   let breakdown = '';
-  if (d.normal)    breakdown += '<span style="color:#1565c0">⬛ Normal/Mega: ' + d.normal + ' × 250c + 296XL = <b>' + (d.normal*250) + 'c + ' + (d.normal*296) + 'XL</b></span><br>';
-  if (d.shadow)    breakdown += '<span style="color:#6a1b9a">🟣 Oscuro: ' + d.shadow + ' × 298c + 360XL = <b>' + (d.shadow*298) + 'c + ' + (d.shadow*360) + 'XL</b></span><br>';
-  if (d.purified)  breakdown += '<span style="color:#2e7d32">⬜ Purificado: ' + d.purified + ' × 220c + 268XL = <b>' + (d.purified*220) + 'c + ' + (d.purified*268) + 'XL</b></span><br>';
-  document.getElementById('obj-popup-breakdown').innerHTML = breakdown || '<span style="color:#aaa">Sin datos de tipo</span>';
+  if (d.normal > 0) {
+    const shared = d.sharedDmax > 0 ? ' <span style="font-size:10px;color:#888">(' + d.sharedDmax + ' también en Dynamax)</span>' : '';
+    breakdown += '<span style="color:#1565c0">⬛ Normal/Mega: ' + d.normal + ' × 250c+296XL = <b>' + (d.normal*250) + 'c+' + (d.normal*296) + 'XL</b>' + shared + '</span><br>';
+  }
+  if (d.shadow > 0)
+    breakdown += '<span style="color:#6a1b9a">🟣 Oscuro: ' + d.shadow + ' × 298c+360XL = <b>' + (d.shadow*298) + 'c+' + (d.shadow*360) + 'XL</b></span><br>';
+  if (d.purified > 0)
+    breakdown += '<span style="color:#2e7d32">⬜ Purificado: ' + d.purified + ' × 220c+268XL = <b>' + (d.purified*220) + 'c+' + (d.purified*268) + 'XL</b></span><br>';
+  if (d.dmaxSkills > 0)
+    breakdown += '<span style="color:#0277bd">⚡ Habilidades Dynamax: ' + d.dmaxSkills + ' × 350c+120XL = <b>' + skillC + 'c+' + skillXL + 'XL</b></span><br>';
+
+  document.getElementById('obj-popup-breakdown').innerHTML = breakdown || '<span style="color:#aaa">Sin datos</span>';
   document.getElementById('obj-popup-total').textContent = '🍬 Total: ~' + totalC + ' caramelos + ' + totalXL + ' XL';
   const popup = document.getElementById('obj-popup');
   popup.style.display = 'flex';
