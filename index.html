@@ -2438,9 +2438,7 @@ function countAlbumForType(p, type) {
   let count = 0;
   for (const id in p.album) {
     if (p.album[id] !== true) continue;
-    // dmax entries are included — they also need candy for their base pokemon // Dynamax slots are separate (max 3)
-
-    // Determinamos el tipo del Pokémon por su ID
+    if (id.includes('-dmax-')) continue; // dmax slots are counted separately
     let pkType = null;
     if (p.custom && p.custom[id]) {
       pkType = p.custom[id].type;
@@ -2448,7 +2446,6 @@ function countAlbumForType(p, type) {
       const pd = PD.find(x => x.id === id);
       if (pd) pkType = pd.type;
     }
-
     if (pkType === type) count++;
   }
   return count;
@@ -3609,7 +3606,7 @@ function buildObjetivoData(profileName) {
     });
   }
 
-  return results.sort((a,b) => (b.count + b.dmaxSkills) - (a.count + a.dmaxSkills) || a.n.localeCompare(b.n));
+  return results.sort((a,b) => (b.normal + b.shadow + b.purified + b.dmaxSkills) - (a.normal + a.shadow + a.purified + a.dmaxSkills) || a.n.localeCompare(b.n));
 }
 
 function openObjetivo() {
@@ -3688,7 +3685,7 @@ function openObjPopup(idx) {
   document.getElementById('obj-popup-img').src = imgUrl;
   document.getElementById('obj-popup-name').textContent = d.n;
 
-  const totalUnique = d.count;
+  const totalUnique = d.normal + d.shadow + d.purified;
   const dmaxInfo = d.dmaxSkills > 0 ? ' · ' + d.dmaxSkills + ' en Dynamax' : '';
   document.getElementById('obj-popup-count').textContent = totalUnique + ' Pokémon únicos a subir' + dmaxInfo;
 
