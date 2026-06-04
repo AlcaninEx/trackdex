@@ -888,6 +888,7 @@ body.dark .obj-name{color:#aaa}
     Normal / Mega: ~250 + 296XL &nbsp;·&nbsp; Purificado: ~220 + 268XL<br>
     Oscuro: ~298 + 360XL &nbsp;·&nbsp; +Habilidades Dynamax Lv3: ~350 + 120XL
   </div>
+  <button onclick="copyObjetivoFilter()" style="display:block;width:100%;padding:13px;background:#1565c0;color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.3px">📋 Copiar tu filtro para Pokémon GO</button>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch"><div class="obj-grid" id="obj-grid"></div></div>
   <!-- POPUP POKEMON OBJETIVO -->
   <div id="obj-popup" onclick="closeObjPopup()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.65);z-index:400;align-items:center;justify-content:center">
@@ -2390,7 +2391,8 @@ function addFromRanking(id) {
   const isDmaxEntry=id.includes('-dmax-');
   if(isDmaxEntry){
     const dmaxCount=Object.keys(p.album).filter(k=>p.album[k]===true&&k.startsWith(type+'-dmax-')).length;
-    if(dmaxCount>=3){showToast('Ya tienes 3 Pokémon Dynamax en este tipo\nElimina uno primero ⚡');return;}
+    if(dmaxCount>=6){showToast('Ya tienes 6 Pokémon Dynamax en este tipo\nElimina uno primero ⚡');return;}
+    if(dmaxCount===3){showToast('⚠️ El equipo óptimo Dynamax es de 3 Pokémon');}// warn at 3 but allow up to 6
   } else {
     const typeCount=countAlbumForType(p, type);
     if(typeCount>=6){showToast('Ya tienes 6 Pokémon en este tipo\nElimina uno primero ⚔️');return;}
@@ -2436,7 +2438,7 @@ function countAlbumForType(p, type) {
   let count = 0;
   for (const id in p.album) {
     if (p.album[id] !== true) continue;
-    if (id.includes('-dmax-')) continue; // Dynamax slots are separate (max 3)
+    // dmax entries are included — they also need candy for their base pokemon // Dynamax slots are separate (max 3)
 
     // Determinamos el tipo del Pokémon por su ID
     let pkType = null;
@@ -2666,10 +2668,12 @@ function renderAlbumDmax() {
     return userDmaxIds.some(id=>id===did||id.startsWith(did+'-'));
   });
   const maxD=slots.length?slots[0].dps:1;
-  const emptyDmax=Array(Math.max(0,3-slots.length)).fill('<div class="empty-slot"><div class="empty-slot-icon">⚡</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Equipo de 3 para Dynamax</div></div>').join('');
+  const dmaxMax=6;
+  const emptyDmax=Array(Math.max(0,dmaxMax-slots.length)).fill('<div class="empty-slot"><div class="empty-slot-icon">⚡</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Máx recomendado: 3</div></div>').join('');
+  const dmaxWarn=slots.length>3?'<div style="padding:6px 14px;background:#fff3e0;border-bottom:1px solid #ffe082;font-size:11px;color:#e65100;font-weight:600">⚠️ El equipo óptimo Dynamax es de 3. Tienes '+slots.length+'.</div>':'';
   if(!slots.length){el.innerHTML=emptyDmax;return;}
   const isG=r=>r.charge.startsWith('G-Max')||['Drum Solo','Vine Lash','Cannonade','Hydrosnipe','Foam Burst','Fireball','Wildfire','Stun Shock','Befuddle','Terror','Snooze','Resonance','Chi Strike','Behemoth'].some(x=>r.charge.includes(x));
-  el.innerHTML=slots.map(r=>`<div class="pk-card" style="background:${t.color}"><div class="pk-top"><div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">${r.n.replace(/^[GD]-/,'')}</div><div class="tags-row">${isG(r)?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>'}</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>${r.dps.toFixed(1)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${Math.round(r.dps/maxD*100)}%"></div></div></div></div></div><div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div></div>`).join('')+emptyDmax;
+  el.innerHTML=dmaxWarn+slots.map(r=>`<div class="pk-card" style="background:${t.color}"><div class="pk-top"><div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">${r.n.replace(/^[GD]-/,'')}</div><div class="tags-row">${isG(r)?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>'}</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>${r.dps.toFixed(1)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${Math.round(r.dps/maxD*100)}%"></div></div></div></div></div><div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div></div>`).join('')+emptyDmax;
 }
 
 function renderDmaxRanking() {
@@ -2833,6 +2837,286 @@ function closeMegaWarning(){
 }
 
 // ── EVO MAP ─────────────────────────────────────────────────────────────────
+const ENG_NAMES = {
+  '1':'bulbasaur',
+  '4':'charmander',
+  '7':'squirtle',
+  '13':'weedle',
+  '16':'pidgey',
+  '29':'nidoran',
+  '32':'nidoran',
+  '37':'vulpix',
+  '43':'oddish',
+  '48':'venonat',
+  '56':'mankey',
+  '58':'growlithe',
+  '60':'poliwag',
+  '63':'abra',
+  '66':'machop',
+  '69':'bellsprout',
+  '72':'tentacool',
+  '74':'geodude',
+  '77':'ponyta',
+  '79':'slowpoke',
+  '81':'magnemite',
+  '83':'farfetchd',
+  '84':'doduo',
+  '88':'grimer',
+  '90':'shellder',
+  '92':'gastly',
+  '95':'onix',
+  '98':'krabby',
+  '102':'exeggcute',
+  '109':'koffing',
+  '111':'rhyhorn',
+  '114':'tangela',
+  '120':'staryu',
+  '122':'mr-mime',
+  '123':'scyther',
+  '127':'pinsir',
+  '129':'magikarp',
+  '131':'lapras',
+  '133':'eevee',
+  '137':'porygon',
+  '138':'omanyte',
+  '140':'kabuto',
+  '142':'aerodactyl',
+  '144':'articuno',
+  '145':'zapdos',
+  '146':'moltres',
+  '147':'dratini',
+  '150':'mewtwo',
+  '151':'mew',
+  '152':'chikorita',
+  '155':'cyndaquil',
+  '158':'totodile',
+  '173':'cleffa',
+  '174':'igglybuff',
+  '175':'togepi',
+  '179':'mareep',
+  '187':'hoppip',
+  '193':'yanma',
+  '194':'wooper',
+  '198':'murkrow',
+  '200':'misdreavus',
+  '209':'snubbull',
+  '211':'qwilfish',
+  '214':'heracross',
+  '215':'sneasel',
+  '220':'swinub',
+  '222':'corsola',
+  '228':'houndour',
+  '231':'phanpy',
+  '238':'smoochum',
+  '239':'elekid',
+  '240':'magby',
+  '243':'raikou',
+  '244':'entei',
+  '246':'larvitar',
+  '249':'lugia',
+  '250':'ho-oh',
+  '251':'celebi',
+  '252':'treecko',
+  '255':'torchic',
+  '258':'mudkip',
+  '273':'seedot',
+  '280':'ralts',
+  '285':'shroomish',
+  '290':'nincada',
+  '296':'makuhita',
+  '299':'nosepass',
+  '303':'mawile',
+  '304':'aron',
+  '307':'meditite',
+  '309':'electrike',
+  '322':'numel',
+  '328':'trapinch',
+  '333':'swablu',
+  '337':'lunatone',
+  '338':'solrock',
+  '341':'corphish',
+  '349':'feebas',
+  '353':'shuppet',
+  '355':'duskull',
+  '359':'absol',
+  '361':'snorunt',
+  '363':'spheal',
+  '371':'bagon',
+  '374':'beldum',
+  '377':'regirock',
+  '378':'regice',
+  '379':'registeel',
+  '380':'latias',
+  '381':'latios',
+  '382':'kyogre',
+  '383':'groudon',
+  '384':'rayquaza',
+  '385':'jirachi',
+  '386':'deoxys',
+  '390':'chimchar',
+  '393':'piplup',
+  '396':'starly',
+  '403':'shinx',
+  '406':'budew',
+  '408':'cranidos',
+  '422':'shellos',
+  '427':'buneary',
+  '443':'gible',
+  '447':'riolu',
+  '449':'hippopotas',
+  '451':'skorupi',
+  '453':'croagunk',
+  '462':'magnezone',
+  '482':'azelf',
+  '483':'dialga',
+  '484':'palkia',
+  '486':'regigigas',
+  '487':'giratina',
+  '491':'darkrai',
+  '492':'shaymin',
+  '494':'victini',
+  '495':'snivy',
+  '498':'tepig',
+  '501':'oshawott',
+  '509':'purrloin',
+  '511':'pansage',
+  '519':'pidove',
+  '522':'blitzle',
+  '524':'roggenrola',
+  '529':'drilbur',
+  '532':'timburr',
+  '535':'tympole',
+  '540':'sewaddle',
+  '543':'venipede',
+  '546':'cottonee',
+  '551':'sandile',
+  '554':'darumaka',
+  '557':'dwebble',
+  '562':'yamask',
+  '564':'tirtouga',
+  '570':'zorua',
+  '577':'solosis',
+  '580':'ducklett',
+  '582':'vanillite',
+  '588':'karrablast',
+  '592':'frillish',
+  '595':'joltik',
+  '607':'litwick',
+  '610':'axew',
+  '613':'cubchoo',
+  '615':'cryogonal',
+  '616':'shelmet',
+  '619':'mienfoo',
+  '622':'golett',
+  '624':'pawniard',
+  '627':'rufflet',
+  '633':'deino',
+  '636':'larvesta',
+  '638':'cobalion',
+  '639':'terrakion',
+  '640':'virizion',
+  '641':'tornadus',
+  '642':'thundurus',
+  '643':'reshiram',
+  '644':'zekrom',
+  '645':'landorus',
+  '646':'kyurem',
+  '647':'keldeo',
+  '649':'genesect',
+  '650':'chespin',
+  '656':'froakie',
+  '661':'fletchling',
+  '669':'flabebe',
+  '672':'skiddo',
+  '674':'pancham',
+  '683':'spritzee',
+  '685':'swirlix',
+  '688':'binacle',
+  '690':'skrelp',
+  '692':'clauncher',
+  '694':'helioptile',
+  '696':'tyrunt',
+  '703':'carbink',
+  '704':'goomy',
+  '708':'phantump',
+  '710':'pumpkaboo',
+  '712':'bergmite',
+  '714':'noibat',
+  '718':'zygarde',
+  '720':'hoopa',
+  '721':'volcanion',
+  '722':'rowlet',
+  '725':'litten',
+  '728':'popplio',
+  '731':'pikipek',
+  '736':'grubbin',
+  '739':'crabrawler',
+  '742':'cutiefly',
+  '744':'rockruff',
+  '749':'mudbray',
+  '757':'salandit',
+  '761':'bounsweet',
+  '767':'wimpod',
+  '770':'sandygast',
+  '781':'dhelmise',
+  '782':'jangmo-o',
+  '785':'tapu-koko',
+  '786':'tapu-lele',
+  '787':'tapu-bulu',
+  '788':'tapu-fini',
+  '789':'cosmog',
+  '793':'nihilego',
+  '794':'buzzwole',
+  '795':'pheromosa',
+  '796':'xurkitree',
+  '798':'kartana',
+  '799':'guzzlord',
+  '800':'necrozma',
+  '803':'poipole',
+  '805':'stakataka',
+  '808':'meltan',
+  '810':'grookey',
+  '816':'scorbunny',
+  '821':'rookidee',
+  '840':'applin',
+  '843':'silicobra',
+  '848':'toxel',
+  '854':'sinistea',
+  '856':'hatenna',
+  '859':'impidimp',
+  '885':'dreepy',
+  '888':'zacian',
+  '889':'zamazenta',
+  '890':'eternatus',
+  '891':'kubfu',
+  '893':'zarude',
+  '894':'regieleki',
+  '895':'regidrago',
+  '905':'enamorus',
+  '906':'sprigatito',
+  '909':'fuecoco',
+  '914':'quaxly',
+  '921':'pawmi',
+  '928':'smoliv',
+  '932':'nacli',
+  '935':'charcadet',
+  '957':'tinkatink',
+  '959':'tadbulb',
+  '962':'bombirdier',
+  '963':'wattrel',
+  '969':'glimmet',
+  '971':'nymble',
+  '973':'flamigo',
+  '996':'frigibax',
+  '999':'gimmighoul',
+  '1004':'varoom',
+  '1008':'tatsugiri',
+  '1012':'poltchageist',
+  '10169':'articuno',
+  '10170':'zapdos',
+  '10171':'moltres',
+};
+
 const EVO_MAP = {
   'absol': {n:'Absol', id:'359'},
   'accelgor': {n:'Shelmet', id:'616'},
@@ -3285,6 +3569,33 @@ function openObjetivo() {
 }
 
 
+
+function copyObjetivoFilter() {
+  const data = window._objData;
+  if (!data || !data.length) { showToast('No hay Pokémon objetivo aún'); return; }
+  const filter = data
+    .map(d => {
+      const eng = ENG_NAMES[d.id];
+      return eng ? '+' + eng : null;
+    })
+    .filter(Boolean)
+    .join(',');
+  if (!filter) { showToast('No se pudo generar el filtro'); return; }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(filter).then(() => showToast('✅ Filtro copiado'))
+      .catch(() => { _copyFallback(filter); });
+  } else {
+    _copyFallback(filter);
+  }
+}
+function _copyFallback(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try { document.execCommand('copy'); showToast('✅ Filtro copiado'); }
+  catch(e) { showToast('Error al copiar'); }
+  document.body.removeChild(ta);
+}
 function openObjPopup(idx) {
   const d = window._objData && window._objData[idx];
   if (!d) return;
