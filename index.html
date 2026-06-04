@@ -883,7 +883,27 @@ body.dark .obj-name{color:#aaa}
     <h1>🎯 Pokémon Objetivo</h1>
   </div>
   <div id="obj-trainer-bar" style="padding:8px 14px;background:#fff;border-bottom:1px solid #e0e0e0;font-size:13px;color:#555;font-weight:600"></div>
+  <div style="padding:10px 14px 6px;background:#fffde7;border-bottom:1px solid #ffe082;font-size:11px;color:#5d4037;line-height:1.7">
+    <b>🍬 Caramelos para subir al máximo:</b><br>
+    Normal / Mega: ~250 + 296XL &nbsp;·&nbsp; Purificado: ~220 + 268XL<br>
+    Oscuro: ~298 + 360XL &nbsp;·&nbsp; +Habilidades Dynamax Lv3: ~350 + 120XL
+  </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch"><div class="obj-grid" id="obj-grid"></div></div>
+  <!-- POPUP POKEMON OBJETIVO -->
+  <div id="obj-popup" onclick="closeObjPopup()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.65);z-index:400;align-items:center;justify-content:center">
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:20px;padding:24px 20px;max-width:280px;width:90%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.35)">
+      <img id="obj-popup-img" src="" style="width:110px;height:110px;object-fit:contain;cursor:pointer" onclick="closeObjPopup()">
+      <div id="obj-popup-name" style="font-size:18px;font-weight:800;color:#222;margin:8px 0 4px"></div>
+      <div id="obj-popup-count" style="font-size:13px;color:#888;margin-bottom:12px"></div>
+      <div style="background:#f5f5f5;border-radius:12px;padding:12px 14px;text-align:left;font-size:12px;line-height:1.9">
+        <div id="obj-popup-breakdown"></div>
+        <div style="border-top:1px solid #e0e0e0;margin-top:8px;padding-top:8px">
+          <b style="color:#CC0000;font-size:13px" id="obj-popup-total"></b>
+        </div>
+      </div>
+      <button onclick="closeObjPopup()" style="margin-top:14px;background:#CC0000;color:#fff;border:none;border-radius:10px;padding:10px 28px;font-size:14px;font-weight:700;cursor:pointer">Cerrar</button>
+    </div>
+  </div>
 </div>
 
 
@@ -3191,6 +3211,20 @@ function getEvoKey(rawName) {
   return EVO_MAP[n] || null;
 }
 
+function isShadowEntry(id, p) {
+  // Check if this album entry is a shadow pokemon
+  if (id.includes('shadow')) return true;
+  if (p.custom && p.custom[id] && p.custom[id].tags && p.custom[id].tags.includes('shadow')) return true;
+  const pd = PD.find(x => x.id === id);
+  if (pd && pd.tags && pd.tags.includes('shadow')) return true;
+  return false;
+}
+function isPurifiedEntry(id, p) {
+  if (p.custom && p.custom[id] && p.custom[id].tags && p.custom[id].tags.includes('purified')) return true;
+  const pd = PD.find(x => x.id === id);
+  if (pd && pd.tags && pd.tags.includes('purified')) return true;
+  return false;
+}
 function buildObjetivoData(profileName) {
   const p = gp(profileName);
   if (!p || !p.album) return [];
@@ -3198,7 +3232,6 @@ function buildObjetivoData(profileName) {
   for (const id in p.album) {
     if (p.album[id] !== true) continue;
     if (id.includes('-dmax-')) continue;
-    // Get name: try custom first, then PD, then parse from id
     let pkName = '';
     if (p.custom && p.custom[id] && p.custom[id].n) {
       pkName = p.custom[id].n;
@@ -3207,8 +3240,6 @@ function buildObjetivoData(profileName) {
       if (pd) {
         pkName = pd.name;
       } else {
-        // Parse name from id: "fire-ext-shadow-charizard" -> "shadow charizard"
-        // Format is always: TYPE-ext-NAME (where NAME uses hyphens)
         const m = id.match(/^[a-z]+-ext-(.+?)(?:-\d+)?$/);
         if (m) pkName = m[1].replace(/-/g, ' ');
       }
@@ -3217,8 +3248,11 @@ function buildObjetivoData(profileName) {
     const evo = getEvoKey(pkName);
     if (!evo) continue;
     const key = evo.id;
-    if (!counts[key]) counts[key] = {n: evo.n, id: evo.id, count: 0};
+    if (!counts[key]) counts[key] = {n: evo.n, id: evo.id, count: 0, normal: 0, shadow: 0, purified: 0};
     counts[key].count++;
+    if (isPurifiedEntry(id, p)) counts[key].purified++;
+    else if (isShadowEntry(id, p)) counts[key].shadow++;
+    else counts[key].normal++;
   }
   return Object.values(counts).sort((a,b) => b.count - a.count || a.n.localeCompare(b.n));
 }
@@ -3232,14 +3266,15 @@ function openObjetivo() {
   if (!data.length) {
     grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:#aaa;font-size:14px">No tienes Pokémon en ningún equipo deseado aún.<br><br>Añade Pokémon a tus equipos primero.</div>';
   } else {
-    grid.innerHTML = data.map(d => {
+    grid.innerHTML = data.map((d,i) => {
       const imgUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + d.id + '.png';
       const badge = d.count > 1 ? '<div class="obj-badge">x' + d.count + '</div>' : '';
-      return '<div class="obj-card">' + badge +
+      return '<div class="obj-card" onclick="openObjPopup(' + i + ')" style="cursor:pointer">' + badge +
         '<img class="obj-img" src="' + imgUrl + '" alt="' + d.n + '" onerror="this.style.opacity=.2">' +
         '<div class="obj-name">' + d.n + '</div>' +
         '</div>';
     }).join('');
+    window._objData = data;
   }
   // Show screen and scroll to top
   document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
@@ -3249,6 +3284,30 @@ function openObjetivo() {
   window.scrollTo(0, 0);
 }
 
+
+function openObjPopup(idx) {
+  const d = window._objData && window._objData[idx];
+  if (!d) return;
+  const CANDY = {normal: {c:250, xl:296}, shadow: {c:298, xl:360}, purified: {c:220, xl:268}};
+  const totalC = d.normal * CANDY.normal.c + d.shadow * CANDY.shadow.c + d.purified * CANDY.purified.c;
+  const totalXL = d.normal * CANDY.normal.xl + d.shadow * CANDY.shadow.xl + d.purified * CANDY.purified.xl;
+  const imgUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + d.id + '.png';
+  document.getElementById('obj-popup-img').src = imgUrl;
+  document.getElementById('obj-popup-name').textContent = d.n;
+  document.getElementById('obj-popup-count').textContent = d.count + ' Pokémon en tus equipos deseados';
+  let breakdown = '';
+  if (d.normal)    breakdown += '<span style="color:#1565c0">⬛ Normal/Mega: ' + d.normal + ' × 250c + 296XL = <b>' + (d.normal*250) + 'c + ' + (d.normal*296) + 'XL</b></span><br>';
+  if (d.shadow)    breakdown += '<span style="color:#6a1b9a">🟣 Oscuro: ' + d.shadow + ' × 298c + 360XL = <b>' + (d.shadow*298) + 'c + ' + (d.shadow*360) + 'XL</b></span><br>';
+  if (d.purified)  breakdown += '<span style="color:#2e7d32">⬜ Purificado: ' + d.purified + ' × 220c + 268XL = <b>' + (d.purified*220) + 'c + ' + (d.purified*268) + 'XL</b></span><br>';
+  document.getElementById('obj-popup-breakdown').innerHTML = breakdown || '<span style="color:#aaa">Sin datos de tipo</span>';
+  document.getElementById('obj-popup-total').textContent = '🍬 Total: ~' + totalC + ' caramelos + ' + totalXL + ' XL';
+  const popup = document.getElementById('obj-popup');
+  popup.style.display = 'flex';
+}
+function closeObjPopup() {
+  const popup = document.getElementById('obj-popup');
+  if (popup) popup.style.display = 'none';
+}
 function closeObjetivo() {
   document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
   document.getElementById('profile-screen').style.display = 'block';
