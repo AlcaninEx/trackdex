@@ -243,6 +243,28 @@ body.dark .obj-card{background:#1e1e1e}
 body.dark .obj-name{color:#aaa}
 .obj-badge{position:absolute;top:-5px;right:-5px;background:#CC0000;color:#fff;font-size:10px;font-weight:800;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px;box-shadow:0 1px 4px rgba(0,0,0,.3)}
 .obj-empty{text-align:center;padding:40px 20px;color:#aaa;font-size:14px}
+
+/* DIARIAS SCREEN */
+#diarias-screen{background:#f5f5f5;min-height:100vh}
+#diarias-screen .app-header{background:#2e7d32}
+.diarias-section{margin:12px;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.diarias-section-header{padding:12px 16px;font-size:14px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px}
+.diarias-section-header.casa{background:#1565c0}
+.diarias-section-header.calle{background:#e65100}
+.diarias-item{background:#fff;border-bottom:1px solid #f0f0f0;padding:12px 14px}
+body.dark .diarias-item{background:#1e1e1e;border-color:#333}
+.diarias-item:last-child{border-bottom:none}
+.diarias-item-title{font-size:13px;font-weight:700;color:#222;margin-bottom:3px;display:flex;align-items:flex-start;gap:6px}
+body.dark .diarias-item-title{color:#eee}
+.diarias-item-title .diff{font-size:10px;font-weight:600;border-radius:6px;padding:1px 6px;white-space:nowrap;margin-top:1px}
+.diff-easy{background:#e8f5e9;color:#2e7d32}
+.diff-medium{background:#fff3e0;color:#e65100}
+.diff-hard{background:#fce4ec;color:#c62828}
+.diarias-item-body{font-size:11px;color:#666;line-height:1.6;padding-left:2px}
+body.dark .diarias-item-body{color:#aaa}
+.diarias-item-body ul{margin:4px 0 0 12px;padding:0}
+.diarias-item-body li{margin-bottom:2px}
+.diarias-tip{background:#fff8e1;border-left:3px solid #ffc107;padding:4px 8px;border-radius:0 6px 6px 0;margin-top:4px;font-size:11px;color:#5d4037}
 </style>
 </head>
 <body>
@@ -323,6 +345,9 @@ body.dark .obj-name{color:#aaa}
         </button>
         <button class="home-btn-small" onclick="openObjetivo()" style="grid-column:1/-1;background:#fff3e0;border-color:#FF6F00;color:#E65100">
           🎯 Pokémon Objetivo
+        </button>
+        <button class="home-btn-small" onclick="openDiarias()" style="grid-column:1/-1;background:#e8f5e9;border-color:#2e7d32;color:#1b5e20">
+          📋 Diarias
         </button>
       </div>
 
@@ -875,6 +900,152 @@ body.dark .obj-name{color:#aaa}
 
     </div>
   
+<!-- DIARIAS SCREEN -->
+<div id="diarias-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="closeDiarias()">←</button>
+    <h1>📋 Tareas Diarias</h1>
+  </div>
+  <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:20px">
+
+    <!-- DESDE CASA -->
+    <div class="diarias-section">
+      <div class="diarias-section-header casa">🏠 Desde Casa</div>
+
+      <div class="diarias-item">
+        <div class="diarias-item-title">⭐ Captura diaria / Girar PokéParada <span class="diff diff-easy">Fácil · 1 min</span></div>
+        <div class="diarias-item-body">Activa la racha de polvos estelares. Solo necesitas capturar 1 Pokémon o girar 1 PokéParada al día.</div>
+      </div>
+
+      <div class="diarias-item">
+        <div class="diarias-item-title">🎁 Abrir regalos <span class="diff diff-easy">Fácil · 4 min</span></div>
+        <div class="diarias-item-body">
+          20 diarios, 40+ en eventos — dan polvos estelares extra.
+          <ul>
+            <li>Salta la animación haciendo clicks rápidos.</li>
+            <li>Activa <b>"Abrir regalos con mochila llena"</b> para obtener solo polvos sin llenar el inventario.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="diarias-item">
+        <div class="diarias-item-title">🎈 Globo del Team GO Rocket <span class="diff diff-easy">Fácil · 3 min</span></div>
+        <div class="diarias-item-body">Aparece a las <b>00:00 · 06:00 · 12:00 · 18:00</b>. Lucha contra ellos para conseguir Pokémon oscuros.</div>
+      </div>
+
+      <div class="diarias-item">
+        <div class="diarias-item-title">🛍️ Pack diario gratuito <span class="diff diff-easy">Fácil · 1 min</span></div>
+        <div class="diarias-item-body">
+          Normalmente basura, pero puede contener pases de incursión premium, MTs, ataques cargados...
+          <div class="diarias-tip">💡 Si por la mañana es basura, <b>no lo reclames</b>. Vuelve a mirar a las 18:00+, puede cambiar. Si por la noche sigue siendo basura, reclámalos para que salga uno nuevo al día siguiente.</div>
+        </div>
+      </div>
+
+      <div class="diarias-item">
+        <div class="diarias-item-title">🤝 Corazones con tu compañero <span class="diff diff-easy">Fácil · 2 min</span></div>
+        <div class="diarias-item-body">
+          Sube un nivel extra por encima del máximo (50+1), haciéndolo más fuerte en raids.
+          <div class="diarias-tip">💡 Puedes cambiar de compañero hasta <b>20 veces al día</b>. Haz compañeros a tus mejores atacantes de raids.</div>
+        </div>
+      </div>
+
+      <div class="diarias-item">
+        <div class="diarias-item-title">⚔️ Combates PvP <span class="diff diff-hard">Difícil · 40 min</span></div>
+        <div class="diarias-item-body">
+          Mayor fuente de polvos estelares, caramelos raros y MTs de ataques cargados y rápidos.
+          <ul>
+            <li>Solo puedes hacer <b>5 rondas de 5 combates</b> al día.</li>
+            <li>En <b>Rango 20</b> se añaden los legendarios en rotación actual a la pool de recompensas.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="diarias-item">
+        <div class="diarias-item-title">🔄 Intercambios diarios <span class="diff diff-medium">Media · 60 min</span></div>
+        <div class="diarias-item-body">
+          Hasta 100 intercambios diarios con otra persona.
+          <ul>
+            <li>Obtienes caramelos extra del Pokémon enviado — mejor que recapturarlo.</li>
+            <li>Suele dar <b>1 caramelo XL garantizado</b> + caramelos normales.</li>
+            <li>Gana hasta <b>100 XL + 300 caramelos normales</b> al día.</li>
+            <li>Probabilidad de intercambios <b>Lucky</b> (IVs garantizados altos).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="diarias-item">
+        <div class="diarias-item-title">📱 Organiza tus Pokémon</div>
+        <div class="diarias-item-body">
+          Esta app te ayuda: en <b>Pokémon Objetivo</b> tienes el filtro de los que necesitas para pegar directamente en Pokémon GO.
+        </div>
+      </div>
+    </div>
+
+    <!-- AL SALIR -->
+    <div class="diarias-section">
+      <div class="diarias-section-header calle">🚶 Al Salir a Caminar</div>
+
+      <div class="diarias-item">
+        <div class="diarias-item-title">🏟️ Pase de incursión diario gratuito</div>
+        <div class="diarias-item-body">Gástalo y consigue el nuevo en cualquier gimnasio. ¡No te quedes sin él!</div>
+      </div>
+
+      <div class="diarias-item">
+        <div class="diarias-item-title">🌀 Incienso diario gratuito</div>
+        <div class="diarias-item-body">Úsalo para conseguir las <b>aves legendarias de Galar</b>: Articuno, Zapdos y Moltres de Galar.</div>
+      </div>
+
+      <div class="diarias-item">
+        <div class="diarias-item-title">🗺️ Misión de PokéParada diaria</div>
+        <div class="diarias-item-body">
+          Completa una misión al día. Cada <b>7 días</b> recibes un encuentro con un Pokémon raro o legendario garantizado.
+          <div class="diarias-tip">💡 Ten siempre una <b>misión de mapeo sin completar</b> encima (ocupa el 4º hueco y no cuenta) — fuerza a las demás PokéParadas a mostrar su misión oculta.</div>
+        </div>
+      </div>
+
+      <div class="diarias-item">
+        <div class="diarias-item-title">🏅 Reclama gimnasios</div>
+        <div class="diarias-item-body">Defiende gimnasios para acumular <b>PokéMonedas</b> gratis (máx 50 al día).</div>
+      </div>
+
+      <div class="diarias-item">
+        <div class="diarias-item-title">🥚 Pon huevos a incubar</div>
+        <div class="diarias-item-body">Aprovecha el camino para incubar huevos. Prioriza los de 12km (huevos rojos) por sus recompensas.</div>
+      </div>
+
+      <div class="diarias-item">
+        <div class="diarias-item-title">🚀 Lucha contra el Team Rocket</div>
+        <div class="diarias-item-body">Los líderes y el jefe dan los <b>mejores Pokémon oscuros del juego</b>. Prioriza siempre a Sierra, Arlo, Cliff y Giovanni.</div>
+      </div>
+
+      <div class="diarias-item">
+        <div class="diarias-item-title">🛤️ Haz rutas</div>
+        <div class="diarias-item-body">
+          Dan células de Zygarde, corazón extra con tu compañero y caramelos raros.
+          <div class="diarias-tip">💡 El <b>día 7 de racha</b> de rutas da recompensas masivas: MTs, grandes cantidades de polvo estelar y más.</div>
+        </div>
+      </div>
+
+      <div class="diarias-item">
+        <div class="diarias-item-title">✨ Misiones de megaenergía en PokéParadas</div>
+        <div class="diarias-item-body">
+          Son las misiones más valiosas. Busca activamente las que den megaenergía de Pokémon.
+          <div class="diarias-tip">💡 <b>No cojas una PokéParada nueva sin tener hueco</b> para misiones, podrías perder una de megaenergía.</div>
+        </div>
+      </div>
+
+      <div class="diarias-item">
+        <div class="diarias-item-title">👥 Misiones de grupo <span class="diff diff-medium">Media · 10 min</span></div>
+        <div class="diarias-item-body">
+          Si sales con alguien, podéis formar grupos para conseguir misiones de grupo extra con posibilidad de megaenergía de ciertos Pokémon.
+          <div class="diarias-tip">💡 Podéis rehacer el grupo hasta conseguir una misión de megaenergía. De media tarda unos 10 min.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
 <!-- OBJETIVO SCREEN -->
 <div id="objetivo-screen" class="screen">
@@ -3494,19 +3665,340 @@ const EVO_MAP = {
   'zoroark': {n:'Zorua', id:'570'},
   'zygarde complete': {n:'Zygarde', id:'718'},
   'zygarde fifty percent': {n:'Zygarde', id:'718'},
+  // Base forms (map to themselves)
+  'abra': {n:'Abra', id:'63'},
+  'applin': {n:'Applin', id:'840'},
+  'aron': {n:'Aron', id:'304'},
+  'axew': {n:'Axew', id:'610'},
+  'bagon': {n:'Bagon', id:'371'},
+  'beldum': {n:'Beldum', id:'374'},
+  'bellsprout': {n:'Bellsprout', id:'69'},
+  'bergmite': {n:'Bergmite', id:'712'},
+  'binacle': {n:'Binacle', id:'688'},
+  'blitzle': {n:'Blitzle', id:'522'},
+  'bounsweet': {n:'Bounsweet', id:'761'},
+  'budew': {n:'Budew', id:'406'},
+  'bulbasaur': {n:'Bulbasaur', id:'1'},
+  'carbink': {n:'Carbink', id:'703'},
+  'charcadet': {n:'Charcadet', id:'935'},
+  'charmander': {n:'Charmander', id:'4'},
+  'chespin': {n:'Chespin', id:'650'},
+  'chikorita': {n:'Chikorita', id:'152'},
+  'chimchar': {n:'Chimchar', id:'390'},
+  'clauncher': {n:'Clauncher', id:'692'},
+  'cleffa': {n:'Cleffa', id:'173'},
+  'corphish': {n:'Corphish', id:'341'},
+  'corsola': {n:'Corsola', id:'222'},
+  'cosmog': {n:'Cosmog', id:'789'},
+  'cottonee': {n:'Cottonee', id:'546'},
+  'crabrawler': {n:'Crabrawler', id:'739'},
+  'cranidos': {n:'Cranidos', id:'408'},
+  'croagunk': {n:'Croagunk', id:'453'},
+  'cubchoo': {n:'Cubchoo', id:'613'},
+  'cutiefly': {n:'Cutiefly', id:'742'},
+  'cyndaquil': {n:'Cyndaquil', id:'155'},
+  'darumaka': {n:'Darumaka', id:'554'},
+  'deino': {n:'Deino', id:'633'},
+  'doduo': {n:'Doduo', id:'84'},
+  'dratini': {n:'Dratini', id:'147'},
+  'dreepy': {n:'Dreepy', id:'885'},
+  'drifloon': {n:'Drifloon', id:'425'},
+  'drilbur': {n:'Drilbur', id:'529'},
+  'ducklett': {n:'Ducklett', id:'580'},
+  'duskull': {n:'Duskull', id:'355'},
+  'dwebble': {n:'Dwebble', id:'557'},
+  'eevee': {n:'Eevee', id:'133'},
+  'electrike': {n:'Electrike', id:'309'},
+  'elekid': {n:'Elekid', id:'239'},
+  'elgyem': {n:'Elgyem', id:'605'},
+  'exeggcute': {n:'Exeggcute', id:'102'},
+  'farfetchd': {n:'Farfetchd', id:'83'},
+  'feebas': {n:'Feebas', id:'349'},
+  'fletchling': {n:'Fletchling', id:'661'},
+  'frigibax': {n:'Frigibax', id:'996'},
+  'frillish': {n:'Frillish', id:'592'},
+  'froakie': {n:'Froakie', id:'656'},
+  'fuecoco': {n:'Fuecoco', id:'909'},
+  'geodude': {n:'Geodude', id:'74'},
+  'gible': {n:'Gible', id:'443'},
+  'gimmighoul': {n:'Gimmighoul', id:'999'},
+  'glimmet': {n:'Glimmet', id:'969'},
+  'golett': {n:'Golett', id:'622'},
+  'goomy': {n:'Goomy', id:'704'},
+  'greavard': {n:'Greavard', id:'971'},
+  'grimer': {n:'Grimer', id:'88'},
+  'grookey': {n:'Grookey', id:'810'},
+  'growlithe': {n:'Growlithe', id:'58'},
+  'grubbin': {n:'Grubbin', id:'736'},
+  'helioptile': {n:'Helioptile', id:'694'},
+  'hippopotas': {n:'Hippopotas', id:'449'},
+  'hoppip': {n:'Hoppip', id:'187'},
+  'houndour': {n:'Houndour', id:'228'},
+  'igglybuff': {n:'Igglybuff', id:'174'},
+  'impidimp': {n:'Impidimp', id:'859'},
+  'jangmo-o': {n:'Jangmo-o', id:'782'},
+  'joltik': {n:'Joltik', id:'595'},
+  'kabuto': {n:'Kabuto', id:'140'},
+  'karrablast': {n:'Karrablast', id:'588'},
+  'keldeo': {n:'Keldeo', id:'647'},
+  'koffing': {n:'Koffing', id:'109'},
+  'krabby': {n:'Krabby', id:'98'},
+  'kubfu': {n:'Kubfu', id:'891'},
+  'kyurem': {n:'Kyurem', id:'646'},
+  'landorus': {n:'Landorus', id:'645'},
+  'larvesta': {n:'Larvesta', id:'636'},
+  'larvitar': {n:'Larvitar', id:'246'},
+  'litten': {n:'Litten', id:'725'},
+  'litwick': {n:'Litwick', id:'607'},
+  'machop': {n:'Machop', id:'66'},
+  'magby': {n:'Magby', id:'240'},
+  'magikarp': {n:'Magikarp', id:'129'},
+  'magnemite': {n:'Magnemite', id:'81'},
+  'makuhita': {n:'Makuhita', id:'296'},
+  'mankey': {n:'Mankey', id:'56'},
+  'mareep': {n:'Mareep', id:'179'},
+  'meditite': {n:'Meditite', id:'307'},
+  'meltan': {n:'Meltan', id:'808'},
+  'mienfoo': {n:'Mienfoo', id:'619'},
+  'misdreavus': {n:'Misdreavus', id:'200'},
+  'mudbray': {n:'Mudbray', id:'749'},
+  'mudkip': {n:'Mudkip', id:'258'},
+  'murkrow': {n:'Murkrow', id:'198'},
+  'nacli': {n:'Nacli', id:'932'},
+  'nidoran': {n:'Nidoran', id:'29'},
+  'nincada': {n:'Nincada', id:'290'},
+  'noibat': {n:'Noibat', id:'714'},
+  'nosepass': {n:'Nosepass', id:'299'},
+  'numel': {n:'Numel', id:'322'},
+  'nymble': {n:'Nymble', id:'971'},
+  'oddish': {n:'Oddish', id:'43'},
+  'omanyte': {n:'Omanyte', id:'138'},
+  'onix': {n:'Onix', id:'95'},
+  'oshawott': {n:'Oshawott', id:'501'},
+  'pancham': {n:'Pancham', id:'674'},
+  'pansage': {n:'Pansage', id:'511'},
+  'pawmi': {n:'Pawmi', id:'921'},
+  'pawniard': {n:'Pawniard', id:'624'},
+  'phanpy': {n:'Phanpy', id:'231'},
+  'phantump': {n:'Phantump', id:'708'},
+  'pidove': {n:'Pidove', id:'519'},
+  'pikipek': {n:'Pikipek', id:'731'},
+  'piplup': {n:'Piplup', id:'393'},
+  'poipole': {n:'Poipole', id:'803'},
+  'poliwag': {n:'Poliwag', id:'60'},
+  'poltchageist': {n:'Poltchageist', id:'1012'},
+  'ponyta': {n:'Ponyta', id:'77'},
+  'popplio': {n:'Popplio', id:'728'},
+  'porygon': {n:'Porygon', id:'137'},
+  'pumpkaboo': {n:'Pumpkaboo', id:'710'},
+  'purrloin': {n:'Purrloin', id:'509'},
+  'quaxly': {n:'Quaxly', id:'914'},
+  'qwilfish': {n:'Qwilfish', id:'211'},
+  'ralts': {n:'Ralts', id:'280'},
+  'rhyhorn': {n:'Rhyhorn', id:'111'},
+  'riolu': {n:'Riolu', id:'447'},
+  'rockruff': {n:'Rockruff', id:'744'},
+  'roggenrola': {n:'Roggenrola', id:'524'},
+  'rookidee': {n:'Rookidee', id:'821'},
+  'rowlet': {n:'Rowlet', id:'722'},
+  'rufflet': {n:'Rufflet', id:'627'},
+  'salandit': {n:'Salandit', id:'757'},
+  'sandile': {n:'Sandile', id:'551'},
+  'sandygast': {n:'Sandygast', id:'770'},
+  'scorbunny': {n:'Scorbunny', id:'816'},
+  'scyther': {n:'Scyther', id:'123'},
+  'seedot': {n:'Seedot', id:'273'},
+  'sewaddle': {n:'Sewaddle', id:'540'},
+  'shellder': {n:'Shellder', id:'90'},
+  'shellos': {n:'Shellos', id:'422'},
+  'shelmet': {n:'Shelmet', id:'616'},
+  'shinx': {n:'Shinx', id:'403'},
+  'shroomish': {n:'Shroomish', id:'285'},
+  'shuppet': {n:'Shuppet', id:'353'},
+  'silicobra': {n:'Silicobra', id:'843'},
+  'sinistea': {n:'Sinistea', id:'854'},
+  'skiddo': {n:'Skiddo', id:'672'},
+  'skorupi': {n:'Skorupi', id:'451'},
+  'skrelp': {n:'Skrelp', id:'690'},
+  'slowpoke': {n:'Slowpoke', id:'79'},
+  'smoliv': {n:'Smoliv', id:'928'},
+  'smoochum': {n:'Smoochum', id:'238'},
+  'sneasel': {n:'Sneasel', id:'215'},
+  'snivy': {n:'Snivy', id:'495'},
+  'snom': {n:'Snom', id:'872'},
+  'snorunt': {n:'Snorunt', id:'361'},
+  'snubbull': {n:'Snubbull', id:'209'},
+  'sobble': {n:'Sobble', id:'816'},
+  'solosis': {n:'Solosis', id:'577'},
+  'spheal': {n:'Spheal', id:'363'},
+  'sprigatito': {n:'Sprigatito', id:'906'},
+  'spritzee': {n:'Spritzee', id:'683'},
+  'squirtle': {n:'Squirtle', id:'7'},
+  'starly': {n:'Starly', id:'396'},
+  'staryu': {n:'Staryu', id:'120'},
+  'stunky': {n:'Stunky', id:'434'},
+  'swablu': {n:'Swablu', id:'333'},
+  'swinub': {n:'Swinub', id:'220'},
+  'swirlix': {n:'Swirlix', id:'685'},
+  'tadbulb': {n:'Tadbulb', id:'959'},
+  'tangela': {n:'Tangela', id:'114'},
+  'tatsugiri': {n:'Tatsugiri', id:'1008'},
+  'tentacool': {n:'Tentacool', id:'72'},
+  'tepig': {n:'Tepig', id:'498'},
+  'thundurus': {n:'Thundurus', id:'642'},
+  'timburr': {n:'Timburr', id:'532'},
+  'tirtouga': {n:'Tirtouga', id:'564'},
+  'togepi': {n:'Togepi', id:'175'},
+  'torchic': {n:'Torchic', id:'255'},
+  'tornadus': {n:'Tornadus', id:'641'},
+  'totodile': {n:'Totodile', id:'158'},
+  'toxel': {n:'Toxel', id:'848'},
+  'trapinch': {n:'Trapinch', id:'328'},
+  'treecko': {n:'Treecko', id:'252'},
+  'turtwig': {n:'Turtwig', id:'387'},
+  'tympole': {n:'Tympole', id:'535'},
+  'tynamo': {n:'Tynamo', id:'602'},
+  'tyrunt': {n:'Tyrunt', id:'696'},
+  'vanillite': {n:'Vanillite', id:'582'},
+  'varoom': {n:'Varoom', id:'1004'},
+  'venipede': {n:'Venipede', id:'543'},
+  'venonat': {n:'Venonat', id:'48'},
+  'vulpix': {n:'Vulpix', id:'37'},
+  'wattrel': {n:'Wattrel', id:'963'},
+  'weedle': {n:'Weedle', id:'13'},
+  'wimpod': {n:'Wimpod', id:'767'},
+  'wooper': {n:'Wooper', id:'194'},
+  'yamask': {n:'Yamask', id:'562'},
+  'yanma': {n:'Yanma', id:'193'},
+  'zorua': {n:'Zorua', id:'570'},
+  'zygarde': {n:'Zygarde', id:'718'},
+  // Final forms that map to their base
+  'butterfree': {n:'Caterpie', id:'10'},
+  'metapod': {n:'Caterpie', id:'10'},
+  'haunter': {n:'Gastly', id:'92'},
+  'boldore': {n:'Roggenrola', id:'524'},
+  'metang': {n:'Beldum', id:'374'},
+  'toxtricity': {n:'Toxel', id:'848'},
+  'toxtricity amp': {n:'Toxel', id:'848'},
+  'toxtricity lk': {n:'Toxel', id:'848'},
+  'malamar': {n:'Inkay', id:'686'},
+  'drampa': {n:'Drampa', id:'780'},
+  'garbodor': {n:'Trubbish', id:'568'},
+  'swoobat': {n:'Woobat', id:'527'},
+  'hitmonlee': {n:'Tyrogue', id:'236'},
+  'wailord': {n:'Wailmer', id:'320'},
+  'drilbur': {n:'Drilbur', id:'529'},
+  'sableye': {n:'Sableye', id:'302'},
+  'suicune': {n:'Suicune', id:'245'},
+  'caterpie': {n:'Caterpie', id:'10'},
+
+};
+// Extra EVO_MAP lookups for Dynamax forms
+const EVO_MAP_EXTRA = {
+  // Extra entries for Dynamax base forms and missing pokemon
+  'abra':'63','aerodactyl':'142','abomasnow':'459',
+  'appletun':'840','araquanid':'746','arcanine':'58',
+  'beartic':'613','beedrill':'13',
+  'caterpie':'10','cherrim':'420','clawitzer':'692',
+  'crabominable':'739','crustle':'557',
+  'darmanitan':'554','darmanitan standard':'554',
+  'decidueye':'722','dhelmise':'781','drifblim':'425',
+  'duraludon':'884','durant':'632','dusknoir':'355',
+  'electivire':'239','emolga':'587','espeon':'133',
+  'exeggutor':'102','flareon':'133','florges':'671',
+  'frosmoth':'872','froslass':'361',
+  'galvantula':'595','gengar':'92','gigalith':'524',
+  'glaceon':'133','golisopod':'767','goodra':'704',
+  'gourgeist':'710','greedent':'820','grimsnarl':'859',
+  'gyarados':'129','hatterene':'856','heracross':'214',
+  'hippowdon':'449','houndoom':'228','inteleon':'816',
+  'jolteon':'133','jumpluff':'187','kingler':'98',
+  'kleavor':'123','lapras':'131','leavanny':'540',
+  'ludicolo':'270','luxray':'403','machamp':'66',
+  'magnezone':'81','mamoswine':'220','manectric':'309',
+  'metagross':'374','milotic':'349','mismagius':'200',
+  'muk':'88','noivern':'714','ninjask':'290',
+  'obstagoon':'263','orbeetle':'826','pangoro':'674',
+  'pincurchin':'836','politoed':'60','poliwrath':'60',
+  'porygon z':'137','primeape':'56',
+  'ribombee':'742','rillaboom':'810','roserade':'406',
+  'runerigus':'562','salazzle':'757','sandaconda':'843',
+  'scizor':'123','scolipede':'543','seismitoad':'535',
+  'sigilyph':'561','sirfetchd':'83','skuntank':'434',
+  'slurpuff':'685','steelix':'95','stoutland':'506',
+  'sudowoodo':'185','swampert':'258','swanna':'580',
+  'sylveon':'133','tangrowth':'114','talonflame':'661',
+  'tentacruel':'72','trevenant':'708','tsareena':'761',
+  'umbreon':'133','vaporeon':'133','venomoth':'48',
+  'venusaur':'1','vikavolt':'736','vileplume':'43',
+  'vivillon':'664','volcarona':'636',
+  'wigglytuff':'174','yanmega':'193','zebstrika':'522',
+  'butterfree':'10','metapod':'10',
+  'kakuna':'13','beedrill':'13',
+  'pidgeot':'16','pidgeotto':'16',
+  'raticate':'19',
+  'fearow':'21',
+  'arbok':'23',
+  'raichu':'25',
+  'sandslash':'27',
+  'clefable':'35','clefairy':'35',
+  'ninetales':'37',
+  'wigglytuff':'39','jigglypuff':'39',
+  'vileplume':'43','gloom':'43',
+  'parasect':'46',
+  'venomoth':'48',
+  'dugtrio':'50',
+  'persian':'52',
+  'golduck':'54',
+  'primeape':'56',
+  'arcanine':'58',
+  'poliwrath':'60','politoed':'60',
+  'alakazam':'63',
+  'machamp':'66',
+  'victreebel':'69',
+  'tentacruel':'72',
+  'golem':'74',
+  'rapidash':'77',
+  'slowbro':'79','slowking':'79',
+  'magneton':'81','magnezone':'81',
+  'dodrio':'84',
+  'dewgong':'86',
+  'muk':'88',
+  'cloyster':'90',
+  'haunter':'92','gengar':'92',
+  'hypno':'96',
+  'kingler':'98',
+  'electrode':'100',
+  'exeggutor':'102',
+  'marowak':'104',
+  'hitmonchan':'107','hitmonlee':'107','hitmontop':'107',
+  'weezing':'109',
+  'rhydon':'111','rhyperior':'111',
+  'tangrowth':'114',
+  'electabuzz':'125','electivire':'125',
+  'magmar':'126','magmortar':'126',
+  'pinsir':'127',
+  'gyarados':'129',
+  'lapras':'131',
+  'vaporeon':'133','jolteon':'133','flareon':'133','espeon':'133','umbreon':'133','leafeon':'133','glaceon':'133','sylveon':'133',
+  'omastar':'138',
+  'kabutops':'140',
+  'snorlax':'143',
 };
 
 function getEvoKey(rawName) {
-  // Strip Shadow/Mega/Primal/D-/G- prefixes and get canonical key
   let n = rawName.toLowerCase()
-    .replace(/^shadow /, '')
-    .replace(/^mega /, 'mega ')  // keep mega prefix for lookup
-    .replace(/^primal /, 'primal ')
-    .replace(/\(shadow\)/g, '').trim();
-  // Try with mega prefix first, then without
+    .replace(/\(shadow\)/g, '').replace(/^shadow /, '')
+    .replace(/^mega /, 'mega ').replace(/^primal /, 'primal ')
+    .replace(/^g-/, '').replace(/^d-/, '')  // strip G-Max / D-Max prefixes
+    .replace(/^g /, '').replace(/^d /, '')  // also strip if space-separated
+    .trim();
   if (EVO_MAP[n]) return EVO_MAP[n];
   n = n.replace(/^mega /, '').replace(/^primal /, '').trim();
-  return EVO_MAP[n] || null;
+  if (EVO_MAP[n]) return EVO_MAP[n];
+  // For Dynamax/Gigantamax forms not in main EVO_MAP, use DMAX data to find evo
+  if (EVO_MAP_EXTRA[n]) return {n: n.charAt(0).toUpperCase()+n.slice(1), id: EVO_MAP_EXTRA[n]};
+  return null;
 }
 
 function isShadowEntry(id, p) {
@@ -3609,6 +4101,22 @@ function buildObjetivoData(profileName) {
   return results.sort((a,b) => (b.normal + b.shadow + b.purified + b.dmaxSkills) - (a.normal + a.shadow + a.purified + a.dmaxSkills) || a.n.localeCompare(b.n));
 }
 
+
+function openDiarias() {
+  document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+  document.getElementById('diarias-screen').style.display = 'block';
+  document.getElementById('home-menu').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+function closeDiarias() {
+  document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+  document.getElementById('profile-screen').style.display = 'block';
+  document.getElementById('home-menu').style.display = 'block';
+  document.getElementById('home-profile-section').style.display = 'none';
+  document.getElementById('trainer-name-bar').textContent = '👋 ' + ST.cur;
+  updateHomeMenu();
+  window.scrollTo(0, 0);
+}
 function openObjetivo() {
   if (!ST.cur) { showToast('Selecciona un entrenador primero'); return; }
   const data = buildObjetivoData(ST.cur);
