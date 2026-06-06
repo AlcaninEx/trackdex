@@ -299,6 +299,21 @@ body.dark .nov-version-num{color:#b39ddb}
 .nov-item{font-size:12px;color:#444;line-height:1.6;padding:3px 0;display:flex;gap:6px;align-items:flex-start}
 body.dark .nov-item{color:#bbb}
 .nov-item-current{border:2px solid #5e35b1}
+
+/* LEGACY SCREEN */
+#legacy-screen{background:#f5f5f5;min-height:100vh}
+#legacy-screen .app-header{background:#00838f}
+.lg-card{background:#fff;border-radius:12px;margin:12px 14px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+body.dark .lg-card{background:#1e1e1e}
+.lg-title{font-size:14px;font-weight:800;margin-bottom:8px;color:#00838f}
+.lg-text{font-size:12px;color:#555;line-height:1.7}
+body.dark .lg-text{color:#bbb}
+.lg-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f3f3f3}
+.lg-row:last-child{border-bottom:none}
+.lg-row-info{flex:1;font-size:11.5px;line-height:1.4}
+.lg-month{font-size:10px;font-weight:800;color:#00838f;text-transform:uppercase}
+.lg-attack{font-size:11px;color:#666;font-style:italic}
+.lg-warn{background:#fff3e0;border-left:3px solid #ff9800;border-radius:0 8px 8px 0;padding:10px 12px;font-size:11.5px;color:#5d4037;line-height:1.6;margin-top:8px}
 </style>
 </head>
 <body>
@@ -383,8 +398,11 @@ body.dark .nov-item{color:#bbb}
         <button class="home-btn-small" onclick="openDiarias()" style="grid-column:1/-1;background:#e8f5e9;border-color:#2e7d32;color:#1b5e20">
           📋 Diarias
         </button>
+        <button class="home-btn-small" onclick="openLegacy()" style="grid-column:1/-1;background:#e0f2f1;border-color:#00838f;color:#00695c">
+          ⭐ Ataques Legacy
+        </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v80
+          🆕 Novedades · v81
         </button>
       </div>
 
@@ -920,6 +938,44 @@ body.dark .nov-item{color:#bbb}
 </div>
 
 
+<!-- LEGACY SCREEN -->
+<div id="legacy-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="closeLegacy()">←</button>
+    <h1>⭐ Ataques Legacy</h1>
+  </div>
+  <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
+
+    <div class="lg-card">
+      <div class="lg-title">¿Cómo se obtienen?</div>
+      <div class="lg-text">
+        Hay dos formas principales:<br><br>
+        <b>🎉 En eventos (gratis):</b> evolucionando al Pokémon base hasta su última etapa, o capturándolo en incursiones/salvaje durante las horas del evento.<br><br>
+        <b>💳 En cualquier momento (de pago):</b> usando una <b>MT Élite</b> (rápida o cargada). Son objetos raros que se consiguen al final de las temporadas PvP (Rango 19+) o en packs de la tienda.
+      </div>
+    </div>
+
+    <div class="lg-card">
+      <div class="lg-title">📅 Legacy de este año (Ene-May 2026)</div>
+      <div id="lg-thisyear"></div>
+    </div>
+
+    <div class="lg-card">
+      <div class="lg-title">🔜 Confirmados y próximos (Verano 2026)</div>
+      <div id="lg-upcoming"></div>
+    </div>
+
+    <div class="lg-card">
+      <div class="lg-title">⚠️ Regla de oro del día del evento</div>
+      <div class="lg-text">Para que el juego te dé el ataque Legacy al evolucionar (sin gastar MT Élite):</div>
+      <div class="lg-warn"><b>⏰ Ventana horaria:</b> evoluciona durante las 3 h del evento y hasta 4-5 h después. Un minuto tarde = ataque normal.</div>
+      <div class="lg-warn"><b>📡 Cuidado con el GPS:</b> si pierde la señal justo al evolucionar, el servidor no sabrá que estás en el evento y te dará ataque común.</div>
+      <div class="lg-warn"><b>🚫 Sin Frustración:</b> si es un Pokémon Oscuro, no puede tener Frustración o bloqueará el Legacy. Quítasela antes en un evento del Team GO Rocket.</div>
+    </div>
+
+  </div>
+</div>
+
 <!-- NOVEDADES SCREEN -->
 <div id="novedades-screen" class="screen">
   <div class="app-header">
@@ -927,10 +983,18 @@ body.dark .nov-item{color:#bbb}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v80</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v81</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v80 · actual</span><span class="nov-version-tag">Megas visuales</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v81 · actual</span><span class="nov-version-tag">Ataques Legacy</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>⭐</span><span>Nueva pantalla "Ataques Legacy": cómo se obtienen, calendario de Días de la Comunidad de 2026 y reglas del día del evento.</span></div>
+        <div class="nov-item"><span>🔢</span><span>Megaincursiones del mes ahora muestran el orden (número) de aparición: ves cuáles han pasado y cuáles llegan.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v80</span><span class="nov-version-tag">Megas visuales</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🥊</span><span>Megaincursiones muestra las 4 Megas del mes: la activa en color, las próximas en gris.</span></div>
         <div class="nov-item"><span>🖼️</span><span>Las misiones de megaenergía en Poképaradas ahora muestran las bolas con los sprites de cada Mega.</span></div>
@@ -2627,11 +2691,12 @@ function renderMegaGrids() {
     raidsGrid.innerHTML = html;
   } else {
     // NORMAL: muestra las 4 del mes. La(s) activa(s) en color, el resto en gris.
-    const monthMegas = MEGA_LIST.filter(m => raids.includes(m.id));
+    const monthMegas = raids.map(id => MEGA_LIST.find(m => m.id === id)).filter(Boolean);
     if (!monthMegas.length) { raidsGrid.innerHTML = '<p style="font-size:11px;color:#aaa;text-align:center;width:100%">Sin Megas marcadas este mes</p>'; return; }
-    raidsGrid.innerHTML = monthMegas.map(m => {
+    raidsGrid.innerHTML = monthMegas.map((m,i) => {
       const act = activeNow.includes(m.id);
-      return `<div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+      return `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;position:relative">
+        <div style="position:absolute;top:-4px;left:-4px;background:#5e35b1;color:#fff;font-size:9px;font-weight:800;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:2">${i+1}</div>
         <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid ${act?'#CC0000':'#ddd'};${act?'':'opacity:.4;filter:grayscale(.7)'}">
           <img src="${megaArt(m.id)}" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
         </div>
@@ -2686,9 +2751,71 @@ async function showMegaCandy() {
   if (cfg) _megaRotation = {raids: cfg.raids||[], activeNow: cfg.activeNow||[], rotation: cfg.rotation||[], missions: cfg.missions||[]};
   renderMegaGrids();
 }
-function showLegacyGuide() {
-  showToast('Guía Legacy próximamente ⭐');
+
+// ── GUÍA LEGACY ────────────────────────────────────────────────────────────
+const LEGACY_SPRITES = {
+  'Rillaboom':'812','Grookey':'810','Ninetales':'38','Ninetales Alola':'10100',
+  'Cinderace':'815','Scorbunny':'813','Tinkaton':'959','Tinkatink':'957',
+  'Oinkologne':'916','Lechonk':'915','Frigibax':'996','Baxcalibur':'998',
+  'Arctibax':'997','Mewtwo':'150','Nickit':'827','Yamper':'835',
+  'Fidough':'926','Tadbulb':'938',
+};
+function legacyBall(name, size) {
+  const id = LEGACY_SPRITES[name];
+  const s = size || 40;
+  const img = id ? 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+id+'.png' : '';
+  return `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:1px;margin:2px">
+    <div style="width:${s}px;height:${s}px;border-radius:50%;background:#e0f2f1;display:flex;align-items:center;justify-content:center;border:2px solid #4db6ac">
+      <img src="${img}" style="width:${s-8}px;height:${s-8}px;object-fit:contain" onerror="this.style.opacity=.1">
+    </div>
+    <div style="font-size:8px;font-weight:700;color:#00695c;text-align:center;max-width:${s+14}px;line-height:1.1">${name}</div>
+  </div>`;
 }
+function openLegacy() {
+  // Render dynamic ball rows
+  const tbl = document.getElementById('lg-thisyear');
+  if (tbl) {
+    const rows = [
+      {mes:'Enero', evt:'Día Comunidad', pkm:['Grookey','Rillaboom'], atk:'Planta Feroz (Frenzy Plant)'},
+      {mes:'Febrero', evt:'Día Comunidad', pkm:['Ninetales','Ninetales Alola'], atk:'Bola Energía / Meteorobola'},
+      {mes:'Marzo', evt:'Día Comunidad', pkm:['Scorbunny','Cinderace'], atk:'Anillo Ígneo (Blast Burn)'},
+      {mes:'Abril', evt:'Día Comunidad', pkm:['Tinkatink','Tinkaton'], atk:'Martillo Gigante (Gigaton Hammer)'},
+      {mes:'Mayo', evt:'Día Comunidad', pkm:['Lechonk','Oinkologne'], atk:'Bofetón Lodo (Mud Slap)'},
+    ];
+    tbl.innerHTML = rows.map(r => `<div class="lg-row">
+      <div style="display:flex;gap:2px;flex-shrink:0">${r.pkm.map(n=>legacyBall(n,40)).join('')}</div>
+      <div class="lg-row-info"><div class="lg-month">${r.mes}</div><div style="font-weight:700;color:#333">${r.pkm[r.pkm.length-1]}</div><div class="lg-attack">${r.atk}</div></div>
+    </div>`).join('');
+  }
+  const up = document.getElementById('lg-upcoming');
+  if (up) {
+    const rows = [
+      {fecha:'Sáb 20 jun 2026', pkm:['Frigibax','Baxcalibur'], atk:'Asalto Glaive (Glaive Rush)', extra:'14:00-17:00 · evolucionar hasta 21:00-22:00'},
+      {fecha:'11-12 jul 2026', pkm:['Mewtwo'], atk:'GO Fest: Mega-Mewtwo X e Y · Onda Mental + Contraataque', extra:'Se obtiene al capturar, no evolucionando'},
+      {fecha:'Sáb 4 jul 2026', pkm:[], atk:'Día Comunidad de Julio — por anunciar', extra:''},
+      {fecha:'Dom 16 ago 2026', pkm:['Nickit','Yamper','Fidough','Tadbulb'], atk:'Día Comunidad de Agosto — ganador de la votación', extra:'Saldrá uno de estos 4'},
+    ];
+    up.innerHTML = rows.map(r => `<div class="lg-row">
+      ${r.pkm.length?`<div style="display:flex;gap:2px;flex-shrink:0;flex-wrap:wrap;max-width:130px">${r.pkm.map(n=>legacyBall(n,38)).join('')}</div>`:'<div style="width:44px;flex-shrink:0;text-align:center;font-size:20px">❓</div>'}
+      <div class="lg-row-info"><div class="lg-month">${r.fecha}</div><div class="lg-attack">${r.atk}</div>${r.extra?`<div style="font-size:10px;color:#999;margin-top:2px">${r.extra}</div>`:''}</div>
+    </div>`).join('');
+  }
+  document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+  document.getElementById('legacy-screen').style.display = 'block';
+  document.getElementById('home-menu').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+function closeLegacy() {
+  document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+  document.getElementById('profile-screen').style.display = 'block';
+  document.getElementById('home-menu').style.display = 'block';
+  document.getElementById('home-profile-section').style.display = 'none';
+  document.getElementById('trainer-name-bar').textContent = '👋 ' + ST.cur;
+  updateHomeMenu();
+  window.scrollTo(0, 0);
+}
+
+function showLegacyGuide() { openLegacy(); }
 function updateHomeMenu() {
   // Count total raid pokemons across all profiles for this user
   const p = gp(ST.cur); if(!p) return;
