@@ -506,7 +506,7 @@ body.dark .nov-item{color:#bbb}
     <!-- MEGA RAIDS SECTION (dinámico) -->
     <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
       <p style="font-size:14px;font-weight:800;margin-bottom:4px">🥊 Megaincursiones actuales</p>
-      <p style="font-size:11px;color:#888;margin-bottom:10px" id="mega-raids-subtitle">Megas disponibles ahora mismo en incursiones</p>
+      <p style="font-size:11px;color:#888;margin-bottom:10px" id="mega-raids-subtitle">🔴 La marcada en rojo está activa ahora · las demás rotan a lo largo del mes</p>
       <div id="mega-raids-grid" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"></div>
     </div>
 
@@ -2050,7 +2050,7 @@ const DMAX={
   rock:[{n:'D-Gigalith',dps:260.54,fast:'Smack Down',charge:'Max Rockfall',img:'526'},{n:'D-Omastar',dps:240.08,fast:'Rock Throw',charge:'Max Rockfall',img:'139'},{n:'D-Regirock',dps:209.92,fast:'Rock Throw',charge:'Max Rockfall',img:'377'},{n:'D-Boldore',dps:204.54,fast:'Smack Down',charge:'Max Rockfall',img:'525'},{n:'D-Wailord',dps:171.51,fast:'Rollout',charge:'Max Rockfall',img:'321'},{n:'D-Blastoise',dps:167.92,fast:'Rollout',charge:'Max Rockfall',img:'9'}],
   ghost:[{n:'G-Gengar',dps:383.15,fast:'Shadow Claw',charge:'G-Max Terror',img:'10038'},{n:'D-Gengar',dps:298.23,fast:'Shadow Claw',charge:'Max Phantasm',img:'94'},{n:'D-Haunter',dps:257.31,fast:'Shadow Claw',charge:'Max Phantasm',img:'93'},{n:'D-Metagross',dps:245.1,fast:'Shadow Claw',charge:'Max Phantasm',img:'376'},{n:'D-Gastly',dps:217.46,fast:'Lick',charge:'Max Phantasm',img:'92'},{n:'D-Sableye',dps:169.0,fast:'Shadow Claw',charge:'Max Phantasm',img:'302'}],
   dragon:[{n:'Eternatus',dps:406.69,fast:'Dragon Tail',charge:'Dynamax Cannon',img:'890'},{n:'D-Latios',dps:305.77,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'381'},{n:'D-Duraludon',dps:274.54,fast:'Dragon Tail',charge:'Max Wyrmwind',img:'884'},{n:'D-Drampa',dps:265.92,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'780'},{n:'D-Latias',dps:262.69,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'380'},{n:'D-Charizard',dps:214.59,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'6'}],
-  dark:[{n:'G-Grimmsnarl',dps:336.08,fast:'Sucker Punch',charge:'G-Max Snooze',img:'799'},{n:'D-Gengar',dps:248.69,fast:'Sucker Punch',charge:'Max Darkness',img:'94'},{n:'D-Arcanine',dps:218.18,fast:'Snarl',charge:'Max Darkness',img:'59'},{n:'D-Gastly',dps:181.38,fast:'Sucker Punch',charge:'Max Darkness',img:'92'},{n:'D-Suicune',dps:176.0,fast:'Snarl',charge:'Max Darkness',img:'245'},{n:'D-Sableye',dps:169.0,fast:'Feint Attack',charge:'Max Darkness',img:'302'}],
+  dark:[{n:'G-Grimmsnarl',dps:336.08,fast:'Sucker Punch',charge:'G-Max Snooze',img:'861'},{n:'D-Gengar',dps:248.69,fast:'Sucker Punch',charge:'Max Darkness',img:'94'},{n:'D-Arcanine',dps:218.18,fast:'Snarl',charge:'Max Darkness',img:'59'},{n:'D-Gastly',dps:181.38,fast:'Sucker Punch',charge:'Max Darkness',img:'92'},{n:'D-Suicune',dps:176.0,fast:'Snarl',charge:'Max Darkness',img:'245'},{n:'D-Sableye',dps:169.0,fast:'Feint Attack',charge:'Max Darkness',img:'302'}],
   steel:[{n:'Crowned Zacian',dps:374.69,fast:'Metal Claw',charge:'Behemoth Blade',img:'888'},{n:'D-Metagross',dps:293.92,fast:'Bullet Punch',charge:'Max Steelspike',img:'376'},{n:'D-Excadrill',dps:291.77,fast:'Metal Claw',charge:'Max Steelspike',img:'530'},{n:'Crowned Zamazenta',dps:286.38,fast:'Metal Claw',charge:'Behemoth Bash',img:'889'},{n:'D-Duraludon',dps:274.54,fast:'Metal Claw',charge:'Max Steelspike',img:'884'},{n:'D-Kingler',dps:229.85,fast:'Metal Claw',charge:'Max Steelspike',img:'99'}],
   fairy:[{n:'D-Hatterene',dps:272.38,fast:'Charm',charge:'Max Starfall',img:'858'},{n:'D-Gardevoir',dps:272.38,fast:'Charm',charge:'Max Starfall',img:'282'},{n:'D-Sylveon',dps:235.77,fast:'Charm',charge:'Max Starfall',img:'700'},{n:'D-Gallade',dps:227.15,fast:'Charm',charge:'Max Starfall',img:'475'},{n:'D-Latias',dps:219.08,fast:'Charm',charge:'Max Starfall',img:'380'},{n:'D-Tsareena',dps:213.69,fast:'Charm',charge:'Max Starfall',img:'763'}],
 };
@@ -2484,20 +2484,21 @@ const MEGA_LIST = [
   {id:'10051', name:'Gardevoir'}, {id:'10052', name:'Mawile'}, {id:'10053', name:'Aggron'},
   {id:'10054', name:'Medicham'}, {id:'10055', name:'Manectric'}, {id:'10056', name:'Banette'},
   {id:'10057', name:'Absol'}, {id:'10058', name:'Garchomp'}, {id:'10059', name:'Lucario'},
-  {id:'10060', name:'Abomasnow'}, {id:'10062', name:'Beedrill'}, {id:'10063', name:'Pidgeot'},
-  {id:'10064', name:'Slowbro'}, {id:'10065', name:'Steelix'}, {id:'10066', name:'Sceptile'},
-  {id:'10067', name:'Altaria'}, {id:'10068', name:'Salamence'}, {id:'10069', name:'Lopunny'},
-  {id:'10070', name:'Lopunny'}, {id:'10071', name:'Galladade'}, {id:'10072', name:'Audino'},
-  {id:'10073', name:'Diancie'}, {id:'10074', name:'Glalie'}, {id:'10075', name:'Metagross'},
-  {id:'10076', name:'Sharpedo'}, {id:'10077', name:'Camerupt'}, {id:'10079', name:'Sableye'},
-  {id:'10087', name:'Camerupt'}, {id:'10090', name:'Rayquaza'},
+  {id:'10060', name:'Abomasnow'}, {id:'10062', name:'Latias'}, {id:'10063', name:'Latios'},
+  {id:'10064', name:'Swampert'}, {id:'10065', name:'Sceptile'}, {id:'10066', name:'Sableye'},
+  {id:'10067', name:'Altaria'}, {id:'10068', name:'Gallade'}, {id:'10069', name:'Audino'},
+  {id:'10070', name:'Sharpedo'}, {id:'10071', name:'Slowbro'}, {id:'10072', name:'Steelix'},
+  {id:'10073', name:'Pidgeot'}, {id:'10074', name:'Glalie'}, {id:'10075', name:'Diancie'},
+  {id:'10076', name:'Metagross'}, {id:'10077', name:'Primal Kyogre'}, {id:'10079', name:'Rayquaza'},
+  {id:'10087', name:'Camerupt'}, {id:'10088', name:'Lopunny'}, {id:'10089', name:'Salamence'},
+  {id:'10090', name:'Beedrill'},
 ];
 
 let _megaDevMode = false;
 let _megaRotation = {
-  raids: ['10072'],        // Mega Audino (3-9 junio 2026)
-  rotation: ['10072','10069','10046','10063'], // Audino, Lopunny, Scizor, Pidgeot (rotación junio)
-  missions: ['Mega-Blaziken — misión de campo en Poképaradas']
+  raids: ['10069'],        // Mega Audino activo (3-9 junio 2026)
+  rotation: ['10069','10088','10046','10073'], // Audino, Lopunny, Scizor, Pidgeot (rotación junio)
+  missions: ['Mega-Blaziken — misión de campo en Poképaradas (junio 2026)']
 }; // valores por defecto; se sobrescriben con la config compartida de Firebase si existe
 
 async function fbLoadMegaConfig() {
