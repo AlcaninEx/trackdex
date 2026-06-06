@@ -284,6 +284,21 @@ body.dark .filtro-add-input{background:#1e1e1e;color:#eee;border-color:#444}
 .filtro-add-btn{padding:10px 18px;background:#43a047;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer}
 .filtro-info-btn{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.25);color:#fff;border:none;font-size:15px;font-weight:700;cursor:pointer}
 .filtro-copy-btn{display:block;width:calc(100% - 28px);margin:20px 14px;padding:16px;background:#1565c0;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(21,101,192,.35)}
+
+/* NOVEDADES SCREEN */
+#novedades-screen{background:#f5f5f5;min-height:100vh}
+#novedades-screen .app-header{background:#5e35b1}
+.nov-version{background:#fff;border-radius:12px;margin:12px 14px;box-shadow:0 2px 6px rgba(0,0,0,.08);overflow:hidden}
+body.dark .nov-version{background:#1e1e1e}
+.nov-version-head{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;background:#ede7f6}
+body.dark .nov-version-head{background:#2a1f3d}
+.nov-version-num{font-size:15px;font-weight:800;color:#4527a0}
+body.dark .nov-version-num{color:#b39ddb}
+.nov-version-tag{font-size:10px;font-weight:600;color:#888}
+.nov-list{padding:10px 14px}
+.nov-item{font-size:12px;color:#444;line-height:1.6;padding:3px 0;display:flex;gap:6px;align-items:flex-start}
+body.dark .nov-item{color:#bbb}
+.nov-item-current{border:2px solid #5e35b1}
 </style>
 </head>
 <body>
@@ -368,6 +383,9 @@ body.dark .filtro-add-input{background:#1e1e1e;color:#eee;border-color:#444}
         <button class="home-btn-small" onclick="openDiarias()" style="grid-column:1/-1;background:#e8f5e9;border-color:#2e7d32;color:#1b5e20">
           📋 Diarias
         </button>
+        <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
+          🆕 Novedades · v76
+        </button>
       </div>
 
     </div>
@@ -377,6 +395,7 @@ body.dark .filtro-add-input{background:#1e1e1e;color:#eee;border-color:#444}
 <!-- MAIN -->
 <div id="main-screen" class="screen">
   <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#CC0000" stroke="white" stroke-width="1.5"/><rect x="2" y="10.5" width="20" height="3" fill="white"/><circle cx="12" cy="12" r="3.5" fill="white" stroke="#CC0000" stroke-width="1.5"/></svg>
     <h1>PokeBestBCN</h1>
   </div>
@@ -384,7 +403,7 @@ body.dark .filtro-add-input{background:#1e1e1e;color:#eee;border-color:#444}
     <div class="user-bar-txt">Entrenador: <b id="uname"></b></div>
     <div class="user-bar-right">
       <button class="guia-btn" id="dark-btn" onclick="toggleDark()" title="Modo oscuro">🌙</button>
-      <button class="cambiar-btn" onclick="backToHome()">🏠 Inicio</button>
+      
     </div>
   </div>
   <div class="types-grid" id="types-grid"></div>
@@ -475,245 +494,27 @@ body.dark .filtro-add-input{background:#1e1e1e;color:#eee;border-color:#444}
   <div style="padding:12px;background:#f0f0f0;min-height:100vh">
 
     <!-- MEGA RAIDS SECTION -->
-    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
-      <p style="font-size:14px;font-weight:800;margin-bottom:4px">🥊 Megaincursiones — Mayo 2026</p>
-      <p style="font-size:11px;color:#888;margin-bottom:10px">El círculo en rojo está activo ahora mismo (26 mayo)</p>
-      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10054.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Medicham</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10087.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Camerupt</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10067.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Altaria</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10074.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Glalie</div>
-          
-        </div></div>
+    <!-- DEV MODE TOGGLE (solo visible para desarrollador) -->
+    <div id="mega-dev-bar" style="display:none;background:#263238;border-radius:12px;padding:12px 14px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:13px;font-weight:800;color:#fff">🛠️ Modo Desarrollador</span>
+        <label class="sw"><input type="checkbox" id="mega-dev-toggle" onchange="toggleMegaDevMode(this.checked)"><span class="sl"></span></label>
+      </div>
+      <p style="font-size:10px;color:#90a4ae;margin-top:6px">Activa para marcar qué Megas están en rotación. Los cambios se guardan para todos los jugadores.</p>
     </div>
 
-    <!-- POKEPARADAS / ROTACION GENERAL -->
+    <!-- MEGA RAIDS SECTION (dinámico) -->
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px">🥊 Megaincursiones actuales</p>
+      <p style="font-size:11px;color:#888;margin-bottom:10px" id="mega-raids-subtitle">Megas disponibles ahora mismo en incursiones</p>
+      <div id="mega-raids-grid" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"></div>
+    </div>
+
+    <!-- ROTACIÓN GENERAL SECTION (dinámico) -->
     <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
       <p style="font-size:14px;font-weight:800;margin-bottom:4px">🏙️ Rotación General (Poképaradas)</p>
-      <p style="font-size:11px;color:#888;margin-bottom:10px">Estos Megas rotan en misiones de campo y Megaincursiones a lo largo del año</p>
-      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10033.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Venusaur</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10034.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Charizard X</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10035.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Charizard Y</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10036.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Blastoise</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10073.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Pidgeot</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10037.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Alakazam</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10038.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Gengar</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10044.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Kangaskhan</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10040.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Pinsir</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10042.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Aerodactyl</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10045.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Ampharos</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10046.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Scizor</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10047.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Heracross</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10048.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Houndoom</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10049.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Tyranitar</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10065.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Sceptile</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10050.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Blaziken</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10064.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Swampert</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10051.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Gardevoir</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10068.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Gallade</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10053.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Aggron</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10055.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Manectric</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10070.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Sharpedo</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10057.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Absol</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10089.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Salamence</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10076.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Metagross</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10062.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Latias</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10063.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Latios</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10088.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Lopunny</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10058.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Garchomp</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10059.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Lucario</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10069.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Audino</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/71.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Victreebel</div>
-          
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/falinks.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Falinks</div>
-          
-        </div></div>
+      <p style="font-size:11px;color:#888;margin-bottom:10px">Megas disponibles en misiones de campo y rotación general</p>
+      <div id="mega-rotation-grid" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"></div>
     </div>
 
     <!-- MISIONES DE GRUPO -->
@@ -839,6 +640,60 @@ body.dark .filtro-add-input{background:#1e1e1e;color:#eee;border-color:#444}
         <p style="font-size:11px">🌿 10 tipo Planta → <b>Venusaur o Sceptile</b></p>
         <p style="font-size:11px">💧 10 tipo Agua → <b>Blastoise o Swampert</b></p>
         <p style="font-size:11px">⭕ 10 tipo Normal → <b>Pidgeot</b></p>
+      </div>
+    </div>
+
+    <!-- MISIONES FIJAS EN POKEPARADAS -->
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:14px;font-weight:800;margin-bottom:8px">📍 Misiones fijas en Poképaradas</p>
+      <p style="font-size:11px;color:#666;line-height:1.7">Estas misiones de megaenergía suelen estar disponibles de forma fija al girar Poképaradas. Busca siempre hueco libre de misiones antes de girar una nueva.</p>
+      <div id="mega-missions-list" style="margin-top:8px"></div>
+    </div>
+
+    <!-- INFO MEGAEVOLUCIONES TABLA -->
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:14px;font-weight:800;margin-bottom:10px">ℹ️ Información sobre MegaEvoluciones</p>
+      <p style="font-size:12px;font-weight:700;color:#444;margin-bottom:8px">Requisitos y tiempos de espera por nivel</p>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:10.5px">
+          <thead>
+            <tr style="background:#f5f5f5">
+              <th style="padding:6px 5px;text-align:left;border:1px solid #e0e0e0;font-weight:800">Nivel</th>
+              <th style="padding:6px 5px;text-align:center;border:1px solid #e0e0e0;font-weight:800">Mega-Evos necesarias</th>
+              <th style="padding:6px 5px;text-align:center;border:1px solid #e0e0e0;font-weight:800">Espera para GRATIS</th>
+              <th style="padding:6px 5px;text-align:left;border:1px solid #e0e0e0;font-weight:800">Descuento si lo haces antes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700">Base</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">1</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">7 días</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0">Coste base reducido (ej. 40 de energía)</td>
+            </tr>
+            <tr style="background:#fafafa">
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700">Alto</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">7</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">5 días</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0">50% de descuento sobre el nivel base</td>
+            </tr>
+            <tr>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700">Máximo</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">30</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">3 días</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0">75% de descuento sobre el nivel base</td>
+            </tr>
+            <tr style="background:#fff8e1">
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700">Super Max</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">Especial*</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">24 h</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0">Descuento casi total</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="background:#fff3e0;border-left:3px solid #ff9800;border-radius:0 8px 8px 0;padding:10px 12px;margin-top:12px;font-size:11px;color:#5d4037;line-height:1.6">
+        <b>⚠️ Cómo llegar a Super Max:</b> Para desbloquear este cuarto nivel, primero debes tener al Pokémon en Nivel Máximo (nivel 3). Después, ya no te servirá seguir megaevolucionándolo día a día; tendrás que gastar un pago único de <b>5.000 de Megaenergía</b> directamente para potenciarlo a Super Max. Para acumular esa cantidad, la mejor opción es farmear las incursiones <b>Super Mega Raids</b>.
       </div>
     </div>
 
@@ -1065,6 +920,56 @@ body.dark .filtro-add-input{background:#1e1e1e;color:#eee;border-color:#444}
   </div>
 </div>
 
+
+<!-- NOVEDADES SCREEN -->
+<div id="novedades-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="closeNovedades()">←</button>
+    <h1>🆕 Novedades</h1>
+  </div>
+  <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v76</b></p>
+
+    <div class="nov-version nov-item-current">
+      <div class="nov-version-head"><span class="nov-version-num">v76 · actual</span><span class="nov-version-tag">Guía Megaenergía</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🛠️</span><span>Modo Desarrollador en Guía Megaenergía: marca qué Megas están en incursiones/rotación y se actualiza para todos los jugadores.</span></div>
+        <div class="nov-item"><span>📊</span><span>Nueva tabla informativa con los niveles de Megaevolución, costes y tiempos de espera.</span></div>
+        <div class="nov-item"><span>📍</span><span>Sección de misiones fijas de megaenergía en Poképaradas.</span></div>
+        <div class="nov-item"><span>🆕</span><span>Añadida esta pantalla de Novedades.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v75</span><span class="nov-version-tag">Navegación y equipos</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>📊</span><span>Las barras de progreso por tipo ahora se rellenan solo con los Pokémon marcados como "Lo tengo".</span></div>
+        <div class="nov-item"><span>⬅️</span><span>Botones de retroceso unificados: misma flecha en la misma posición en todas las pantallas.</span></div>
+        <div class="nov-item"><span>⚡</span><span>Cartas Dynamax comprimidas por defecto (se despliegan al pulsar, como las de incursión).</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v74</span><span class="nov-version-tag">Filtro avanzado</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🛠️</span><span>Nueva pantalla "Crea tu filtro" con recuadro editable y botones para quitar etiquetas, favoritos, oscuros, dinamax y tamaños.</span></div>
+        <div class="nov-item"><span>➕</span><span>Opción de añadir Pokémon manualmente al filtro.</span></div>
+        <div class="nov-item"><span>⭐</span><span>Función "Lo tengo al máximo": resta copias del contador de caramelos y mueve los completados al final.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v73</span><span class="nov-version-tag">Pokémon Objetivo</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🎯</span><span>Pantalla "Pokémon Objetivo": muestra las pre-evoluciones a capturar, ordenadas por prioridad de caramelos.</span></div>
+        <div class="nov-item"><span>🍬</span><span>Cálculo de caramelos por copia (normal, oscuro, purificado y Dynamax con habilidades).</span></div>
+        <div class="nov-item"><span>📋</span><span>Generación de filtro para Pokémon GO listo para copiar.</span></div>
+        <div class="nov-item"><span>🔧</span><span>Sistema interno unificado (POKEDEX) para evitar errores en los nombres del filtro.</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <!-- CREA TU FILTRO SCREEN -->
 <div id="filtro-screen" class="screen">
@@ -2408,7 +2313,11 @@ function albumPks(n,type) {
   }
   return [...pdPks,...customPks].sort((a,b)=>b.dps-a.dps);
 }
-function countType(n,type) { const pks=albumPks(n,type); return {o:pks.length, t:6}; }
+function countType(n,type) {
+  const p=gp(n); const pks=albumPks(n,type);
+  const owned=pks.filter(pk=>p&&p.pk&&p.pk[pk.id]&&p.pk[pk.id].owned).length;
+  return {o:owned, t:6};
+}
 
 // ── PROFILE ──────────────────────────────────────────────────────────────────
 function addProfile() {
@@ -2562,8 +2471,139 @@ function showTypeChart(){
   renderTypeGrid();
   renderTypeChart();
 }
-function showMegaCandy() {
+
+// ── GUÍA MEGAENERGÍA: rotación dinámica + modo desarrollador ─────────────────
+// Lista de Megas conocidas (id de artwork PokeAPI + nombre ES). Ampliable.
+const MEGA_LIST = [
+  {id:'10033', name:'Venusaur'}, {id:'10034', name:'Charizard X'}, {id:'10035', name:'Charizard Y'},
+  {id:'10036', name:'Blastoise'}, {id:'10037', name:'Alakazam'}, {id:'10038', name:'Gengar'},
+  {id:'10039', name:'Kangaskhan'}, {id:'10040', name:'Pinsir'}, {id:'10041', name:'Gyarados'},
+  {id:'10042', name:'Aerodactyl'}, {id:'10043', name:'Mewtwo X'}, {id:'10044', name:'Mewtwo Y'},
+  {id:'10045', name:'Ampharos'}, {id:'10046', name:'Scizor'}, {id:'10047', name:'Heracross'},
+  {id:'10048', name:'Houndoom'}, {id:'10049', name:'Tyranitar'}, {id:'10050', name:'Blaziken'},
+  {id:'10051', name:'Gardevoir'}, {id:'10052', name:'Mawile'}, {id:'10053', name:'Aggron'},
+  {id:'10054', name:'Medicham'}, {id:'10055', name:'Manectric'}, {id:'10056', name:'Banette'},
+  {id:'10057', name:'Absol'}, {id:'10058', name:'Garchomp'}, {id:'10059', name:'Lucario'},
+  {id:'10060', name:'Abomasnow'}, {id:'10062', name:'Beedrill'}, {id:'10063', name:'Pidgeot'},
+  {id:'10064', name:'Slowbro'}, {id:'10065', name:'Steelix'}, {id:'10066', name:'Sceptile'},
+  {id:'10067', name:'Altaria'}, {id:'10068', name:'Salamence'}, {id:'10069', name:'Lopunny'},
+  {id:'10070', name:'Lopunny'}, {id:'10071', name:'Galladade'}, {id:'10072', name:'Audino'},
+  {id:'10073', name:'Diancie'}, {id:'10074', name:'Glalie'}, {id:'10075', name:'Metagross'},
+  {id:'10076', name:'Sharpedo'}, {id:'10077', name:'Camerupt'}, {id:'10079', name:'Sableye'},
+  {id:'10087', name:'Camerupt'}, {id:'10090', name:'Rayquaza'},
+];
+
+let _megaDevMode = false;
+let _megaRotation = {
+  raids: ['10072'],        // Mega Audino (3-9 junio 2026)
+  rotation: ['10072','10069','10046','10063'], // Audino, Lopunny, Scizor, Pidgeot (rotación junio)
+  missions: ['Mega-Blaziken — misión de campo en Poképaradas']
+}; // valores por defecto; se sobrescriben con la config compartida de Firebase si existe
+
+async function fbLoadMegaConfig() {
+  try {
+    const doc = await db.collection('config').doc('megaRotation').get();
+    if (doc.exists) return doc.data();
+  } catch(e) { console.warn('Mega config load error:', e.code); }
+  return null;
+}
+async function fbSaveMegaConfig() {
+  try {
+    await db.collection('config').doc('megaRotation').set(_megaRotation);
+  } catch(e) { console.warn('Mega config save error:', e.code); showToast('Error al guardar'); }
+}
+
+function megaArt(id) {
+  return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/' + id + '.png';
+}
+
+function renderMegaGrids() {
+  // Megaincursiones grid
+  const raidsGrid = document.getElementById('mega-raids-grid');
+  const rotGrid = document.getElementById('mega-rotation-grid');
+  if (!raidsGrid || !rotGrid) return;
+
+  function buildGrid(activeIds, container) {
+    if (_megaDevMode) {
+      // En modo dev mostramos TODAS las megas, las activas resaltadas, clicables
+      container.innerHTML = MEGA_LIST.map(m => {
+        const on = activeIds.includes(m.id);
+        return `<div onclick="toggleMegaActive('${container.id}','${m.id}')" style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer">
+          <div style="width:48px;height:48px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid ${on?'#CC0000':'#ddd'};${on?'':'opacity:.35;filter:grayscale(.7)'}">
+            <img src="${megaArt(m.id)}" style="width:40px;height:40px;object-fit:contain" onerror="this.style.opacity=.1">
+          </div>
+          <div style="font-size:8px;font-weight:700;text-align:center;color:${on?'#333':'#aaa'};max-width:54px;line-height:1.1">${m.name}</div>
+        </div>`;
+      }).join('');
+    } else {
+      // Modo normal: solo las activas
+      const actives = MEGA_LIST.filter(m => activeIds.includes(m.id));
+      if (!actives.length) { container.innerHTML = '<p style="font-size:11px;color:#aaa;text-align:center;width:100%">Ninguna marcada actualmente</p>'; return; }
+      container.innerHTML = actives.map(m => `<div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000">
+            <img src="${megaArt(m.id)}" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
+          </div>
+          <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">${m.name}</div>
+          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
+        </div>`).join('');
+    }
+  }
+  buildGrid(_megaRotation.raids || [], raidsGrid);
+  buildGrid(_megaRotation.rotation || [], rotGrid);
+
+  // Misiones
+  const missList = document.getElementById('mega-missions-list');
+  if (missList) {
+    const miss = _megaRotation.missions || [];
+    let html = miss.map(t => `<p style="font-size:11px;color:#444;padding:4px 0;border-bottom:1px solid #f0f0f0">⚡ ${t}</p>`).join('');
+    if (_megaDevMode) {
+      html += `<div style="display:flex;gap:6px;margin-top:8px"><input id="mega-miss-input" type="text" placeholder="Nueva misión..." style="flex:1;padding:7px;border:1.5px solid #ddd;border-radius:8px;font-size:12px"><button onclick="addMegaMission()" style="padding:7px 14px;background:#43a047;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer">+</button></div>`;
+      if (miss.length) html = miss.map((t,idx) => `<p style="font-size:11px;color:#444;padding:4px 0;border-bottom:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center">⚡ ${t} <button onclick="removeMegaMission(${idx})" style="background:#fce4ec;color:#c62828;border:none;border-radius:6px;padding:2px 8px;font-size:11px;cursor:pointer">✕</button></p>`).join('') + `<div style="display:flex;gap:6px;margin-top:8px"><input id="mega-miss-input" type="text" placeholder="Nueva misión..." style="flex:1;padding:7px;border:1.5px solid #ddd;border-radius:8px;font-size:12px"><button onclick="addMegaMission()" style="padding:7px 14px;background:#43a047;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer">+</button></div>`;
+    } else if (!miss.length) {
+      html = '<p style="font-size:11px;color:#aaa;padding:6px 0">Sin misiones marcadas actualmente</p>';
+    }
+    missList.innerHTML = html;
+  }
+}
+
+function toggleMegaActive(gridId, megaId) {
+  if (!_megaDevMode) return;
+  const key = gridId === 'mega-raids-grid' ? 'raids' : 'rotation';
+  if (!_megaRotation[key]) _megaRotation[key] = [];
+  const idx = _megaRotation[key].indexOf(megaId);
+  if (idx >= 0) _megaRotation[key].splice(idx, 1);
+  else _megaRotation[key].push(megaId);
+  fbSaveMegaConfig();
+  renderMegaGrids();
+}
+function addMegaMission() {
+  const inp = document.getElementById('mega-miss-input');
+  const t = (inp.value || '').trim();
+  if (!t) return;
+  if (!_megaRotation.missions) _megaRotation.missions = [];
+  _megaRotation.missions.push(t);
+  fbSaveMegaConfig();
+  renderMegaGrids();
+}
+function removeMegaMission(idx) {
+  _megaRotation.missions.splice(idx, 1);
+  fbSaveMegaConfig();
+  renderMegaGrids();
+}
+function toggleMegaDevMode(on) {
+  _megaDevMode = on;
+  renderMegaGrids();
+}
+
+async function showMegaCandy() {
   show('megaguide-screen');
+  // Mostrar barra dev solo si el perfil actual es desarrollador
+  const devBar = document.getElementById('mega-dev-bar');
+  if (devBar) devBar.style.display = (ST.cur === 'Alejandro') ? 'block' : 'none';
+  // Cargar config compartida desde Firebase
+  const cfg = await fbLoadMegaConfig();
+  if (cfg) _megaRotation = {raids: cfg.raids||[], rotation: cfg.rotation||[], missions: cfg.missions||[]};
+  renderMegaGrids();
 }
 function showLegacyGuide() {
   showToast('Guía Legacy próximamente ⭐');
@@ -2749,7 +2789,7 @@ function updIV(id,s,v) {
   save();
 }
 function updDPS(id,v) { const n=parseFloat(v); const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={}; p.pk[id].dps=isNaN(n)?undefined:n; save(); }
-function togCard(id) { ST.expanded=ST.expanded===id?null:id; renderAlbum(); }
+function togCard(id) { ST.expanded=ST.expanded===id?null:id; if(ST.albumTab==='dmax') renderAlbumDmax(); else renderAlbum(); }
 
 // ── TABS ──────────────────────────────────────────────────────────────────────
 function switchTab(t) {
@@ -2836,8 +2876,8 @@ function renderMain() {
   const v=ST.view||ST.cur;
   document.getElementById('types-grid').innerHTML=TYPES.map(t=>{
     const {o}=countType(v,t.key); const pct=Math.round(o/6*100);
-    const dxPks=albumPks(v,t.key).filter(p=>p.tags&&p.tags.includes('dynamax'));
-    const dxOwned=dxPks.length;
+    const pObj=gp(v);
+    const dxOwned=pObj&&pObj.album?Object.keys(pObj.album).filter(id=>pObj.album[id]===true&&id.startsWith(t.key+'-dmax-')&&pObj.pk&&pObj.pk[id]&&pObj.pk[id].owned).length:0;
     const dxPct=Math.round(Math.min(dxOwned,3)/3*100);
     return `<div class="type-card" onclick="openType('${t.key}')" style="background:${t.color}"><div class="type-card-top" style="padding:10px 12px 4px"><span class="type-badge" style="background:${t.bg};color:#333;border-color:${t.color}"><span class="type-icon">${t.icon}</span>${t.name}</span></div><div class="type-card-bars"><div class="bar-row"><span class="bar-lbl">⚔️</span><div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:rgba(255,255,255,.9)"></div></div><span class="prog-count">${o}/6</span></div><div class="bar-row"><span class="bar-lbl">⚡</span><div class="dx-bar"><div class="dx-fill" style="width:${dxPct}%"></div></div><span class="dx-count">${dxOwned}/3</span></div></div></div>`;
   }).join('');
@@ -2919,7 +2959,9 @@ function renderAlbumDmax() {
       <div class="tr" style="margin-bottom:6px;padding:6px 10px;background:${dIsO?'#e8f5e9':'#f5f5f5'};border-radius:8px;border:1.5px solid ${dIsO?'#43a047':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${dIsO?'#2e7d32':'#555'}">${dIsO?'✅ Obtenido':'¿Lo tienes?'}</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${dIsO?'checked':''} onchange="togOwned('${albumId}',this.checked)"><span class="sl"></span></label></div>
       <div class="tr" style="padding:6px 10px;background:${dIsMax?'#fff8e1':'#f5f5f5'};border-radius:8px;border:1.5px solid ${dIsMax?'#ffb300':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${dIsMax?'#e65100':'#555'}">${dIsMax?'⭐ Al máximo':'¿Lo tengo al máximo?'}</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${dIsMax?'checked':''} onchange="togMaxed('${albumId}',this.checked)"><span class="sl"></span></label></div>
     </div>`:'';
-    return `<div class="pk-card" style="background:${t.color}"><div class="pk-top"><div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">${r.n.replace(/^[GD]-/,'')}</div><div class="tags-row">${isG(r)?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>'}</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>${r.dps.toFixed(1)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${Math.round(r.dps/maxD*100)}%"></div></div></div></div>${rb}</div><div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div>${dToggles}</div>`;
+    const dIsOpen=ST.expanded===albumId;
+    const dInner=!isV?`<div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div>${dToggles}`:`<div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div>`;
+    return `<div class="pk-card" id="c-${albumId}" style="background:${t.color}"><div class="pk-top" onclick="togCard('${albumId}')"><div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">${r.n.replace(/^[GD]-/,'')}</div><div class="tags-row">${isG(r)?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>'}</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>${r.dps.toFixed(1)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${Math.round(r.dps/maxD*100)}%"></div></div></div></div>${rb}</div><div class="pk-body${dIsOpen?' open':''}">${dInner}</div></div>`;
   }).join('')+emptyDmax;
 }
 function removeDmaxEntry(albumId) {
@@ -4238,6 +4280,23 @@ function buildObjetivoData(profileName) {
   });
 }
 
+
+
+function openNovedades() {
+  document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+  document.getElementById('novedades-screen').style.display = 'block';
+  document.getElementById('home-menu').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+function closeNovedades() {
+  document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+  document.getElementById('profile-screen').style.display = 'block';
+  document.getElementById('home-menu').style.display = 'block';
+  document.getElementById('home-profile-section').style.display = 'none';
+  document.getElementById('trainer-name-bar').textContent = '👋 ' + ST.cur;
+  updateHomeMenu();
+  window.scrollTo(0, 0);
+}
 
 function openDiarias() {
   document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
