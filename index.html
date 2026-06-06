@@ -384,7 +384,7 @@ body.dark .nov-item{color:#bbb}
           📋 Diarias
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v76
+          🆕 Novedades · v79
         </button>
       </div>
 
@@ -506,15 +506,31 @@ body.dark .nov-item{color:#bbb}
     <!-- MEGA RAIDS SECTION (dinámico) -->
     <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
       <p style="font-size:14px;font-weight:800;margin-bottom:4px">🥊 Megaincursiones actuales</p>
-      <p style="font-size:11px;color:#888;margin-bottom:10px" id="mega-raids-subtitle">🔴 La marcada en rojo está activa ahora · las demás rotan a lo largo del mes</p>
+      <p style="font-size:11px;color:#888;margin-bottom:10px" id="mega-raids-subtitle">Las Megas en incursión este mes. La activa ahora aparece destacada.</p>
       <div id="mega-raids-grid" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"></div>
     </div>
 
     <!-- ROTACIÓN GENERAL SECTION (dinámico) -->
     <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
-      <p style="font-size:14px;font-weight:800;margin-bottom:4px">🏙️ Rotación General (Poképaradas)</p>
-      <p style="font-size:11px;color:#888;margin-bottom:10px">Megas disponibles en misiones de campo y rotación general</p>
-      <div id="mega-rotation-grid" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"></div>
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px">🏙️ Megaenergía en Poképaradas</p>
+      <p style="font-size:11px;color:#888;margin-bottom:12px">Misiones fijas que dan megaenergía. Busca siempre hueco libre antes de girar una nueva Poképarada.</p>
+
+      <p style="font-size:12px;font-weight:800;color:#2e7d32;margin-bottom:6px">🎯 Por capturar Pokémon (10 de Megaenergía)</p>
+      <p style="font-size:10.5px;color:#999;margin-bottom:6px;line-height:1.5">La recompensa puede alternar entre las dos opciones que comparten tipo.</p>
+      <div style="font-size:11.5px;color:#444;line-height:1.8">
+        <p>🔥 Captura 10 tipo <b>Fuego</b> → 10 de <b>Charizard</b> o <b>Blaziken</b></p>
+        <p>💧 Captura 10 tipo <b>Agua</b> → 10 de <b>Blastoise</b> o <b>Swampert</b></p>
+        <p>🌿 Captura 10 tipo <b>Planta</b> → 10 de <b>Venusaur</b> o <b>Sceptile</b></p>
+        <p>⭕ Captura 10 tipo <b>Normal</b> → 10 de <b>Pidgeot</b></p>
+      </div>
+
+      <p style="font-size:12px;font-weight:800;color:#1565c0;margin:14px 0 6px">💪 Por dar más poder / Power-Up (10-20 de Megaenergía)</p>
+      <p style="font-size:10.5px;color:#999;margin-bottom:6px;line-height:1.5">Requieren gastar polvos y caramelos, pero cubren más tipos.</p>
+      <div style="font-size:11.5px;color:#444;line-height:1.8">
+        <p>⚡ Da poder <b>5 veces</b> → 10 de <b>Venusaur, Charizard, Blastoise, Beedrill, Pidgeot, Aggron o Manectric</b> (al azar)</p>
+        <p>⚡ Da poder <b>10 veces</b> → 20 de <b>Alakazam</b> o <b>Slowbro</b></p>
+        <p>⚡ Da poder <b>20 veces</b> → 20 de <b>Diancie</b> <span style="color:#e65100">(muy cotizada)</span></p>
+      </div>
     </div>
 
     <!-- MISIONES DE GRUPO -->
@@ -644,12 +660,6 @@ body.dark .nov-item{color:#bbb}
     </div>
 
     <!-- MISIONES FIJAS EN POKEPARADAS -->
-    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
-      <p style="font-size:14px;font-weight:800;margin-bottom:8px">📍 Misiones fijas en Poképaradas</p>
-      <p style="font-size:11px;color:#666;line-height:1.7">Estas misiones de megaenergía suelen estar disponibles de forma fija al girar Poképaradas. Busca siempre hueco libre de misiones antes de girar una nueva.</p>
-      <div id="mega-missions-list" style="margin-top:8px"></div>
-    </div>
-
     <!-- INFO MEGAEVOLUCIONES TABLA -->
     <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
       <p style="font-size:14px;font-weight:800;margin-bottom:10px">ℹ️ Información sobre MegaEvoluciones</p>
@@ -928,14 +938,29 @@ body.dark .nov-item{color:#bbb}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v76</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v79</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v76 · actual</span><span class="nov-version-tag">Guía Megaenergía</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v79 · actual</span><span class="nov-version-tag">Megaenergía y misiones</span></div>
       <div class="nov-list">
-        <div class="nov-item"><span>🛠️</span><span>Modo Desarrollador en Guía Megaenergía: marca qué Megas están en incursiones/rotación y se actualiza para todos los jugadores.</span></div>
-        <div class="nov-item"><span>📊</span><span>Nueva tabla informativa con los niveles de Megaevolución, costes y tiempos de espera.</span></div>
-        <div class="nov-item"><span>📍</span><span>Sección de misiones fijas de megaenergía en Poképaradas.</span></div>
+        <div class="nov-item"><span>🥊</span><span>Megaincursiones muestra ahora las 4 Megas del mes (Audino, Lopunny, Scizor, Pidgeot en junio).</span></div>
+        <div class="nov-item"><span>🏙️</span><span>Sección de Megaenergía en Poképaradas con las misiones fijas reales (capturas y power-ups y qué megaenergía dan).</span></div>
+        <div class="nov-item"><span>🖼️</span><span>Corregidos los sprites de todas las Megas (Audino, Lopunny, Pidgeot, Diancie, Metagross y muchos más estaban cruzados).</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v78</span><span class="nov-version-tag">Correcciones</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🖼️</span><span>Corrección de errores en imágenes de sprites.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v77</span><span class="nov-version-tag">Guía Megaenergía</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🛠️</span><span>Modo Desarrollador en Guía Megaenergía: marca qué Megas están en incursiones y se actualiza para todos los jugadores.</span></div>
+        <div class="nov-item"><span>📊</span><span>Tabla informativa con los niveles de Megaevolución, costes y tiempos de espera.</span></div>
         <div class="nov-item"><span>🆕</span><span>Añadida esta pantalla de Novedades.</span></div>
       </div>
     </div>
@@ -2496,9 +2521,9 @@ const MEGA_LIST = [
 
 let _megaDevMode = false;
 let _megaRotation = {
-  raids: ['10069'],        // Mega Audino activo (3-9 junio 2026)
-  rotation: ['10069','10088','10046','10073'], // Audino, Lopunny, Scizor, Pidgeot (rotación junio)
-  missions: ['Mega-Blaziken — misión de campo en Poképaradas (junio 2026)']
+  raids: ['10069','10088','10046','10073'], // Megaincursiones de junio 2026: Audino, Lopunny, Scizor, Pidgeot
+  rotation: [],
+  missions: []
 }; // valores por defecto; se sobrescriben con la config compartida de Firebase si existe
 
 async function fbLoadMegaConfig() {
@@ -2519,14 +2544,11 @@ function megaArt(id) {
 }
 
 function renderMegaGrids() {
-  // Megaincursiones grid
   const raidsGrid = document.getElementById('mega-raids-grid');
-  const rotGrid = document.getElementById('mega-rotation-grid');
-  if (!raidsGrid || !rotGrid) return;
+  if (!raidsGrid) return;
 
   function buildGrid(activeIds, container) {
     if (_megaDevMode) {
-      // En modo dev mostramos TODAS las megas, las activas resaltadas, clicables
       container.innerHTML = MEGA_LIST.map(m => {
         const on = activeIds.includes(m.id);
         return `<div onclick="toggleMegaActive('${container.id}','${m.id}')" style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer">
@@ -2537,7 +2559,6 @@ function renderMegaGrids() {
         </div>`;
       }).join('');
     } else {
-      // Modo normal: solo las activas
       const actives = MEGA_LIST.filter(m => activeIds.includes(m.id));
       if (!actives.length) { container.innerHTML = '<p style="font-size:11px;color:#aaa;text-align:center;width:100%">Ninguna marcada actualmente</p>'; return; }
       container.innerHTML = actives.map(m => `<div style="display:flex;flex-direction:column;align-items:center;gap:2px">
@@ -2550,47 +2571,19 @@ function renderMegaGrids() {
     }
   }
   buildGrid(_megaRotation.raids || [], raidsGrid);
-  buildGrid(_megaRotation.rotation || [], rotGrid);
-
-  // Misiones
-  const missList = document.getElementById('mega-missions-list');
-  if (missList) {
-    const miss = _megaRotation.missions || [];
-    let html = miss.map(t => `<p style="font-size:11px;color:#444;padding:4px 0;border-bottom:1px solid #f0f0f0">⚡ ${t}</p>`).join('');
-    if (_megaDevMode) {
-      html += `<div style="display:flex;gap:6px;margin-top:8px"><input id="mega-miss-input" type="text" placeholder="Nueva misión..." style="flex:1;padding:7px;border:1.5px solid #ddd;border-radius:8px;font-size:12px"><button onclick="addMegaMission()" style="padding:7px 14px;background:#43a047;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer">+</button></div>`;
-      if (miss.length) html = miss.map((t,idx) => `<p style="font-size:11px;color:#444;padding:4px 0;border-bottom:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center">⚡ ${t} <button onclick="removeMegaMission(${idx})" style="background:#fce4ec;color:#c62828;border:none;border-radius:6px;padding:2px 8px;font-size:11px;cursor:pointer">✕</button></p>`).join('') + `<div style="display:flex;gap:6px;margin-top:8px"><input id="mega-miss-input" type="text" placeholder="Nueva misión..." style="flex:1;padding:7px;border:1.5px solid #ddd;border-radius:8px;font-size:12px"><button onclick="addMegaMission()" style="padding:7px 14px;background:#43a047;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer">+</button></div>`;
-    } else if (!miss.length) {
-      html = '<p style="font-size:11px;color:#aaa;padding:6px 0">Sin misiones marcadas actualmente</p>';
-    }
-    missList.innerHTML = html;
-  }
 }
 
 function toggleMegaActive(gridId, megaId) {
   if (!_megaDevMode) return;
-  const key = gridId === 'mega-raids-grid' ? 'raids' : 'rotation';
-  if (!_megaRotation[key]) _megaRotation[key] = [];
-  const idx = _megaRotation[key].indexOf(megaId);
-  if (idx >= 0) _megaRotation[key].splice(idx, 1);
-  else _megaRotation[key].push(megaId);
+  if (!_megaRotation.raids) _megaRotation.raids = [];
+  const idx = _megaRotation.raids.indexOf(megaId);
+  if (idx >= 0) _megaRotation.raids.splice(idx, 1);
+  else _megaRotation.raids.push(megaId);
   fbSaveMegaConfig();
   renderMegaGrids();
 }
-function addMegaMission() {
-  const inp = document.getElementById('mega-miss-input');
-  const t = (inp.value || '').trim();
-  if (!t) return;
-  if (!_megaRotation.missions) _megaRotation.missions = [];
-  _megaRotation.missions.push(t);
-  fbSaveMegaConfig();
-  renderMegaGrids();
-}
-function removeMegaMission(idx) {
-  _megaRotation.missions.splice(idx, 1);
-  fbSaveMegaConfig();
-  renderMegaGrids();
-}
+
+
 function toggleMegaDevMode(on) {
   _megaDevMode = on;
   renderMegaGrids();
