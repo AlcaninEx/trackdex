@@ -384,7 +384,7 @@ body.dark .nov-item{color:#bbb}
           📋 Diarias
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v79
+          🆕 Novedades · v80
         </button>
       </div>
 
@@ -515,22 +515,11 @@ body.dark .nov-item{color:#bbb}
       <p style="font-size:14px;font-weight:800;margin-bottom:4px">🏙️ Megaenergía en Poképaradas</p>
       <p style="font-size:11px;color:#888;margin-bottom:12px">Misiones fijas que dan megaenergía. Busca siempre hueco libre antes de girar una nueva Poképarada.</p>
 
-      <p style="font-size:12px;font-weight:800;color:#2e7d32;margin-bottom:6px">🎯 Por capturar Pokémon (10 de Megaenergía)</p>
-      <p style="font-size:10.5px;color:#999;margin-bottom:6px;line-height:1.5">La recompensa puede alternar entre las dos opciones que comparten tipo.</p>
-      <div style="font-size:11.5px;color:#444;line-height:1.8">
-        <p>🔥 Captura 10 tipo <b>Fuego</b> → 10 de <b>Charizard</b> o <b>Blaziken</b></p>
-        <p>💧 Captura 10 tipo <b>Agua</b> → 10 de <b>Blastoise</b> o <b>Swampert</b></p>
-        <p>🌿 Captura 10 tipo <b>Planta</b> → 10 de <b>Venusaur</b> o <b>Sceptile</b></p>
-        <p>⭕ Captura 10 tipo <b>Normal</b> → 10 de <b>Pidgeot</b></p>
-      </div>
+      <p style="font-size:12px;font-weight:800;color:#2e7d32;margin-bottom:8px">🎯 Por capturar 10 de tipo (10 Megaenergía)</p>
+      <div id="mega-capture-missions"></div>
 
-      <p style="font-size:12px;font-weight:800;color:#1565c0;margin:14px 0 6px">💪 Por dar más poder / Power-Up (10-20 de Megaenergía)</p>
-      <p style="font-size:10.5px;color:#999;margin-bottom:6px;line-height:1.5">Requieren gastar polvos y caramelos, pero cubren más tipos.</p>
-      <div style="font-size:11.5px;color:#444;line-height:1.8">
-        <p>⚡ Da poder <b>5 veces</b> → 10 de <b>Venusaur, Charizard, Blastoise, Beedrill, Pidgeot, Aggron o Manectric</b> (al azar)</p>
-        <p>⚡ Da poder <b>10 veces</b> → 20 de <b>Alakazam</b> o <b>Slowbro</b></p>
-        <p>⚡ Da poder <b>20 veces</b> → 20 de <b>Diancie</b> <span style="color:#e65100">(muy cotizada)</span></p>
-      </div>
+      <p style="font-size:12px;font-weight:800;color:#1565c0;margin:16px 0 8px">💪 Por dar más poder / Power-Up</p>
+      <div id="mega-powerup-missions"></div>
     </div>
 
     <!-- MISIONES DE GRUPO -->
@@ -938,10 +927,19 @@ body.dark .nov-item{color:#bbb}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v79</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v80</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v79 · actual</span><span class="nov-version-tag">Megaenergía y misiones</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v80 · actual</span><span class="nov-version-tag">Megas visuales</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🥊</span><span>Megaincursiones muestra las 4 Megas del mes: la activa en color, las próximas en gris.</span></div>
+        <div class="nov-item"><span>🖼️</span><span>Las misiones de megaenergía en Poképaradas ahora muestran las bolas con los sprites de cada Mega.</span></div>
+        <div class="nov-item"><span>🛠️</span><span>Modo dev: clic para elegir las Megas del mes y clic para marcar cuál está activa ahora.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v79</span><span class="nov-version-tag">Megaenergía y misiones</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🥊</span><span>Megaincursiones muestra ahora las 4 Megas del mes (Audino, Lopunny, Scizor, Pidgeot en junio).</span></div>
         <div class="nov-item"><span>🏙️</span><span>Sección de Megaenergía en Poképaradas con las misiones fijas reales (capturas y power-ups y qué megaenergía dan).</span></div>
@@ -2521,7 +2519,8 @@ const MEGA_LIST = [
 
 let _megaDevMode = false;
 let _megaRotation = {
-  raids: ['10069','10088','10046','10073'], // Megaincursiones de junio 2026: Audino, Lopunny, Scizor, Pidgeot
+  raids: ['10069','10088','10046','10073'], // Megaincursiones del mes: Audino, Lopunny, Scizor, Pidgeot
+  activeNow: ['10069'],  // cuál(es) está(n) activa(s) ahora mismo (en color); el resto en gris
   rotation: [],
   missions: []
 }; // valores por defecto; se sobrescriben con la config compartida de Firebase si existe
@@ -2543,42 +2542,130 @@ function megaArt(id) {
   return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/' + id + '.png';
 }
 
+function megaIdByName(name) {
+  const m = MEGA_LIST.find(x => x.name.toLowerCase() === name.toLowerCase());
+  return m ? m.id : null;
+}
+function megaBall(name, size) {
+  const id = megaIdByName(name);
+  const s = size || 38;
+  const img = id ? megaArt(id) : '';
+  return `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:1px;margin:2px">
+    <div style="width:${s}px;height:${s}px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd">
+      <img src="${img}" style="width:${s-8}px;height:${s-8}px;object-fit:contain" onerror="this.style.opacity=.1">
+    </div>
+    <div style="font-size:8px;font-weight:700;color:#666;text-align:center;max-width:${s+12}px;line-height:1.1">${name}</div>
+  </div>`;
+}
+function renderMegaMissions() {
+  const cap = document.getElementById('mega-capture-missions');
+  const pw = document.getElementById('mega-powerup-missions');
+  if (cap) {
+    const rows = [
+      {emoji:'🔥', tipo:'Fuego', megas:['Charizard X','Blaziken']},
+      {emoji:'💧', tipo:'Agua', megas:['Blastoise','Swampert']},
+      {emoji:'🌿', tipo:'Planta', megas:['Venusaur','Sceptile']},
+      {emoji:'⭕', tipo:'Normal', megas:['Pidgeot']},
+    ];
+    cap.innerHTML = rows.map(r => `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f3f3f3">
+      <span style="font-size:13px;font-weight:700;color:#444;min-width:62px">${r.emoji} ${r.tipo}</span>
+      <div style="display:flex;flex-wrap:wrap;gap:2px">${r.megas.map(n=>megaBall(n,38)).join('')}</div>
+    </div>`).join('');
+  }
+  if (pw) {
+    const rows = [
+      {label:'Da poder 5 veces', sub:'10 Megaenergía (al azar)', megas:['Venusaur','Charizard X','Blastoise','Beedrill','Pidgeot','Aggron','Manectric']},
+      {label:'Da poder 10 veces', sub:'20 Megaenergía', megas:['Alakazam','Slowbro']},
+      {label:'Da poder 20 veces', sub:'20 Megaenergía · muy cotizada', megas:['Diancie']},
+    ];
+    pw.innerHTML = rows.map(r => `<div style="padding:8px 0;border-bottom:1px solid #f3f3f3">
+      <div style="font-size:12px;font-weight:700;color:#444">⚡ ${r.label} <span style="font-size:10px;color:#999;font-weight:400">— ${r.sub}</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:2px;margin-top:4px">${r.megas.map(n=>megaBall(n,36)).join('')}</div>
+    </div>`).join('');
+  }
+}
+
+
 function renderMegaGrids() {
   const raidsGrid = document.getElementById('mega-raids-grid');
   if (!raidsGrid) return;
+  const raids = _megaRotation.raids || [];
+  const activeNow = _megaRotation.activeNow || [];
 
-  function buildGrid(activeIds, container) {
-    if (_megaDevMode) {
-      container.innerHTML = MEGA_LIST.map(m => {
-        const on = activeIds.includes(m.id);
-        return `<div onclick="toggleMegaActive('${container.id}','${m.id}')" style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer">
-          <div style="width:48px;height:48px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid ${on?'#CC0000':'#ddd'};${on?'':'opacity:.35;filter:grayscale(.7)'}">
-            <img src="${megaArt(m.id)}" style="width:40px;height:40px;object-fit:contain" onerror="this.style.opacity=.1">
+  if (_megaDevMode) {
+    // DEV: dos bloques. Bloque 1 = elegir las megas del mes (de toda la lista).
+    //      Bloque 2 = marcar cuál(es) está(n) activa(s) ahora.
+    let html = '<div style="width:100%"><p style="font-size:11px;font-weight:800;color:#5e35b1;margin-bottom:6px">1) Megas del mes (clic para añadir/quitar)</p>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:12px">';
+    html += MEGA_LIST.map(m => {
+      const on = raids.includes(m.id);
+      return `<div onclick="toggleMegaInMonth('${m.id}')" style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer">
+        <div style="width:44px;height:44px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid ${on?'#5e35b1':'#ddd'};${on?'':'opacity:.35;filter:grayscale(.7)'}">
+          <img src="${megaArt(m.id)}" style="width:36px;height:36px;object-fit:contain" onerror="this.style.opacity=.1">
+        </div>
+        <div style="font-size:8px;font-weight:700;text-align:center;color:${on?'#333':'#aaa'};max-width:50px;line-height:1.1">${m.name}</div>
+      </div>`;
+    }).join('');
+    html += '</div>';
+    // Bloque 2: marcar activa entre las elegidas
+    if (raids.length) {
+      html += '<p style="font-size:11px;font-weight:800;color:#CC0000;margin-bottom:6px">2) ¿Cuál está activa ahora? (clic para marcar)</p>';
+      html += '<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">';
+      html += raids.map(id => {
+        const m = MEGA_LIST.find(x => x.id === id); if (!m) return '';
+        const act = activeNow.includes(id);
+        return `<div onclick="toggleMegaActiveNow('${id}')" style="display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer">
+          <div style="width:50px;height:50px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid ${act?'#CC0000':'#bbb'};${act?'':'opacity:.4;filter:grayscale(.7)'}">
+            <img src="${megaArt(m.id)}" style="width:42px;height:42px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
-          <div style="font-size:8px;font-weight:700;text-align:center;color:${on?'#333':'#aaa'};max-width:54px;line-height:1.1">${m.name}</div>
+          <div style="font-size:8px;font-weight:700;text-align:center;color:${act?'#CC0000':'#999'};max-width:54px;line-height:1.1">${m.name}</div>
         </div>`;
       }).join('');
-    } else {
-      const actives = MEGA_LIST.filter(m => activeIds.includes(m.id));
-      if (!actives.length) { container.innerHTML = '<p style="font-size:11px;color:#aaa;text-align:center;width:100%">Ninguna marcada actualmente</p>'; return; }
-      container.innerHTML = actives.map(m => `<div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000">
-            <img src="${megaArt(m.id)}" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">${m.name}</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
-        </div>`).join('');
+      html += '</div>';
     }
+    html += '</div>';
+    raidsGrid.innerHTML = html;
+  } else {
+    // NORMAL: muestra las 4 del mes. La(s) activa(s) en color, el resto en gris.
+    const monthMegas = MEGA_LIST.filter(m => raids.includes(m.id));
+    if (!monthMegas.length) { raidsGrid.innerHTML = '<p style="font-size:11px;color:#aaa;text-align:center;width:100%">Sin Megas marcadas este mes</p>'; return; }
+    raidsGrid.innerHTML = monthMegas.map(m => {
+      const act = activeNow.includes(m.id);
+      return `<div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+        <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid ${act?'#CC0000':'#ddd'};${act?'':'opacity:.4;filter:grayscale(.7)'}">
+          <img src="${megaArt(m.id)}" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
+        </div>
+        <div style="font-size:9px;font-weight:700;text-align:center;color:${act?'#333':'#999'};max-width:60px;line-height:1.2">${m.name}</div>
+        ${act?'<div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>':''}
+      </div>`;
+    }).join('');
   }
-  buildGrid(_megaRotation.raids || [], raidsGrid);
+  renderMegaMissions();
 }
 
-function toggleMegaActive(gridId, megaId) {
+function toggleMegaInMonth(megaId) {
   if (!_megaDevMode) return;
   if (!_megaRotation.raids) _megaRotation.raids = [];
   const idx = _megaRotation.raids.indexOf(megaId);
-  if (idx >= 0) _megaRotation.raids.splice(idx, 1);
-  else _megaRotation.raids.push(megaId);
+  if (idx >= 0) {
+    _megaRotation.raids.splice(idx, 1);
+    // si se quita del mes, también se quita de activa
+    if (_megaRotation.activeNow) {
+      const ai = _megaRotation.activeNow.indexOf(megaId);
+      if (ai >= 0) _megaRotation.activeNow.splice(ai, 1);
+    }
+  } else {
+    _megaRotation.raids.push(megaId);
+  }
+  fbSaveMegaConfig();
+  renderMegaGrids();
+}
+function toggleMegaActiveNow(megaId) {
+  if (!_megaDevMode) return;
+  if (!_megaRotation.activeNow) _megaRotation.activeNow = [];
+  const idx = _megaRotation.activeNow.indexOf(megaId);
+  if (idx >= 0) _megaRotation.activeNow.splice(idx, 1);
+  else _megaRotation.activeNow.push(megaId);
   fbSaveMegaConfig();
   renderMegaGrids();
 }
@@ -2596,7 +2683,7 @@ async function showMegaCandy() {
   if (devBar) devBar.style.display = (ST.cur === 'Alejandro') ? 'block' : 'none';
   // Cargar config compartida desde Firebase
   const cfg = await fbLoadMegaConfig();
-  if (cfg) _megaRotation = {raids: cfg.raids||[], rotation: cfg.rotation||[], missions: cfg.missions||[]};
+  if (cfg) _megaRotation = {raids: cfg.raids||[], activeNow: cfg.activeNow||[], rotation: cfg.rotation||[], missions: cfg.missions||[]};
   renderMegaGrids();
 }
 function showLegacyGuide() {
