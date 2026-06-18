@@ -1074,24 +1074,34 @@ body.dark .lg-text{color:#bbb}
     <button class="filtro-info-btn" onclick="showToast('Ten en cuenta que si editas el filtro a mano puedes romperlo por error')">i</button>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <div class="filtro-label">Tu filtro (editable):</div>
-    <textarea id="filtro-text" class="filtro-textarea" oninput="onFiltroEdit()" spellcheck="false"></textarea>
 
-    <div class="filtro-toggles">
-      <button class="filtro-tog" data-suffix="&!#" onclick="toggleFiltroSuffix(this)">Quitar con etiquetas</button>
-      <button class="filtro-tog" data-suffix="&!favoritos" onclick="toggleFiltroSuffix(this)">Quitar favoritos</button>
-      <button class="filtro-tog" data-suffix="&!oscuro" onclick="toggleFiltroSuffix(this)">Quitar oscuros</button>
-      <button class="filtro-tog" data-suffix="&!dinamax" onclick="toggleFiltroSuffix(this)">Quitar dinamax</button>
-      <button class="filtro-tog" data-suffix="&!xxs&!xxl" onclick="toggleFiltroSuffix(this)" style="grid-column:1/-1">Quitar tamaños (XXS / XXL)</button>
+    <div class="filtro-label">Entrenador:</div>
+    <select id="filtro-trainer-select" class="filtro-add-input" style="width:calc(100% - 28px);margin:0 14px" onchange="onFiltroTrainerChange()"></select>
+
+    <p style="font-size:10.5px;color:#999;margin:10px 14px 0;line-height:1.5">⭐ <b>Viernes</b>: Pokémon que aún necesitan buena base (búscalos en intercambios de Viernes para Lucky/buenos IVs). 📅 <b>Resto de días</b>: ya tienen base, solo intercambia para caramelos.</p>
+
+    <!-- BLOQUE VIERNES -->
+    <div style="margin:16px 14px 0;padding:10px 12px;background:#e3f2fd;border-radius:10px 10px 0 0;border:1.5px solid #1565c0;border-bottom:none">
+      <span style="font-size:13px;font-weight:800;color:#0d47a1">⭐ Filtro Viernes (buscar buena base)</span>
     </div>
+    <textarea id="filtro-text-viernes" class="filtro-textarea" style="margin:0 14px;border-color:#1565c0;border-radius:0" oninput="onFiltroEdit('viernes')" spellcheck="false"></textarea>
+    <div class="filtro-toggles" id="filtro-toggles-viernes" data-cat="viernes"></div>
+    <button class="filtro-copy-btn" style="background:#1565c0;margin-top:8px" onclick="copyFiltroFinal('viernes')">📋 Copiar Filtro Viernes</button>
 
-    <div class="filtro-label">Añadir Pokémon:</div>
+    <!-- BLOQUE RESTO DE DÍAS -->
+    <div style="margin:22px 14px 0;padding:10px 12px;background:#eceff1;border-radius:10px 10px 0 0;border:1.5px solid #607d8b;border-bottom:none">
+      <span style="font-size:13px;font-weight:800;color:#37474f">📅 Filtro Resto de días (solo caramelos)</span>
+    </div>
+    <textarea id="filtro-text-resto" class="filtro-textarea" style="margin:0 14px;border-color:#607d8b;border-radius:0" oninput="onFiltroEdit('resto')" spellcheck="false"></textarea>
+    <div class="filtro-toggles" id="filtro-toggles-resto" data-cat="resto"></div>
+    <button class="filtro-copy-btn" style="background:#607d8b;margin-top:8px" onclick="copyFiltroFinal('resto')">📋 Copiar Filtro Resto de días</button>
+
+    <div class="filtro-label" style="margin-top:20px">Añadir Pokémon (al filtro Viernes):</div>
     <div class="filtro-add-row">
       <input id="filtro-add-input" class="filtro-add-input" type="text" placeholder="ej. pikachu" spellcheck="false">
       <button class="filtro-add-btn" onclick="addFiltroPokemon()">Añadir</button>
     </div>
 
-    <button class="filtro-copy-btn" onclick="copyFiltroFinal()">📋 Copiar Filtro</button>
   </div>
 </div>
 
@@ -1121,6 +1131,7 @@ body.dark .lg-text{color:#bbb}
           <b style="color:#CC0000;font-size:13px" id="obj-popup-total"></b>
         </div>
       </div>
+      <div id="obj-popup-tradecat"></div>
       <button onclick="closeObjPopup()" style="margin-top:14px;background:#CC0000;color:#fff;border:none;border-radius:10px;padding:10px 28px;font-size:14px;font-weight:700;cursor:pointer">Cerrar</button>
     </div>
   </div>
@@ -4454,8 +4465,9 @@ function buildObjetivoData(profileName) {
   const LEGENDARY_IDS = new Set(['10169', '10170', '10171', '144', '145', '146', '150', '151', '243', '244', '245', '249', '250', '251', '377', '378', '379', '380', '381', '382', '383', '384', '385', '386', '480', '481', '482', '483', '484', '486', '487', '489', '490', '491', '492', '493', '494', '638', '639', '640', '641', '642', '643', '644', '645', '646', '647', '648', '649', '716', '717', '718', '719', '720', '721', '785', '786', '787', '788', '789', '790', '791', '792', '793', '794', '795', '796', '797', '798', '799', '800', '801', '802', '803', '804', '805', '806', '807', '888', '889', '890', '891', '892', '893', '894', '895', '896', '897', '898', '905']);
 
   const isMaxed = (id) => !!(p.pk && p.pk[id] && p.pk[id].maxed);
+  const isOwned = (id) => !!(p.pk && p.pk[id] && p.pk[id].owned);
 
-  // Group album entries by evolution. Each entry tracks if it is maxed.
+  // Group album entries by evolution. Each entry tracks if it is maxed/owned.
   const byEvo = {};
   for (const id in p.album) {
     if (p.album[id] !== true) continue;
@@ -4471,13 +4483,15 @@ function buildObjetivoData(profileName) {
     bucket.totalCopies++;
     if (isMaxed(id)) bucket.maxedCopies++;
 
-    const entry = {id, maxed: isMaxed(id)};
+    const entry = {id, maxed: isMaxed(id), owned: isOwned(id)};
     if (isDmaxSlot) bucket.dmaxEntries.push(entry);
     else if (isPurifiedEntry(id, p)) bucket.raidPurified.push(entry);
     else if (isShadowEntry(id, p)) bucket.raidShadow.push(entry);
     else if (hasDmaxTag(id, p)) bucket.raidDmax.push(entry);
     else bucket.raidNormal.push(entry);
   }
+
+  const tradeAnyDay = (p.tradeAnyDay) || {};
 
   const results = [];
   for (const key in byEvo) {
@@ -4503,6 +4517,14 @@ function buildObjetivoData(profileName) {
     // "done" = all copies maxed (nothing pending and nothing to power up)
     const done = (pendingCount === 0 && dmaxSkills === 0);
 
+    // ── Categoría de trade: Viernes vs Resto de días ──────────────────────
+    // "Normal" para trade = raidNormal + raidDmax (Mega/Dynamax cuentan como normal, nunca shadow/purified)
+    // Necesita Viernes si queda AL MENOS una copia "normal" sin marcar owned todavía.
+    const normalTypeEntries = [...e.raidNormal, ...e.raidDmax];
+    const needsGoodBase = normalTypeEntries.some(x => !x.owned);
+    let tradeCategory = needsGoodBase ? 'viernes' : 'resto';
+    if (tradeAnyDay[key]) tradeCategory = 'resto'; // override manual del usuario
+
     results.push({
       n: e.n, id: key,
       count: pendingCount,
@@ -4510,7 +4532,9 @@ function buildObjetivoData(profileName) {
       dmaxSkills, sharedDmax, newDmax,
       done,
       totalCopies: e.totalCopies,
-      maxedCopies: e.maxedCopies
+      maxedCopies: e.maxedCopies,
+      tradeCategory,
+      forcedAnyDay: !!tradeAnyDay[key]
     });
   }
 
@@ -4557,13 +4581,22 @@ function closeDiarias() {
   window.scrollTo(0, 0);
 }
 
-// ── CREA TU FILTRO ─────────────────────────────────────────────────────────
-function buildBaseFilter() {
-  // Genera la lista base de +nombre desde los datos de objetivo (no done)
+// ── CREA TU FILTRO (con categorías Viernes / Resto de días) ──────────────────
+const FILTRO_SUFFIXES = [
+  {label:'Quitar con etiquetas', suffix:'&!#'},
+  {label:'Quitar favoritos', suffix:'&!favoritos'},
+  {label:'Quitar oscuros', suffix:'&!oscuro'},
+  {label:'Quitar dinamax', suffix:'&!dinamax'},
+  {label:'Quitar tamaños (XXS / XXL)', suffix:'&!xxs&!xxl', full:true},
+];
+let _filtroTrainer = null;
+let _filtroBaseByCat = {viernes:'', resto:''};
+
+function buildBaseFilterByCat(cat) {
   const data = window._objData;
   if (!data || !data.length) return '';
   return data
-    .filter(d => !d.done)
+    .filter(d => !d.done && d.tradeCategory === cat)
     .map(d => {
       const eng = (POKEDEX[d.id] && POKEDEX[d.id].en) || ENG_NAMES[d.id];
       return eng ? '+' + eng : null;
@@ -4571,50 +4604,47 @@ function buildBaseFilter() {
     .filter(Boolean)
     .join(',');
 }
-function getActiveSuffixes() {
+function getActiveSuffixesByCat(cat) {
   let s = '';
-  document.querySelectorAll('#filtro-screen .filtro-tog.on').forEach(btn => {
+  document.querySelectorAll('#filtro-toggles-' + cat + ' .filtro-tog.on').forEach(btn => {
     s += btn.getAttribute('data-suffix');
   });
   return s;
 }
-function rebuildFiltro() {
-  // Reconstruye el textarea = base (editada por usuario) + sufijos activos
-  const ta = document.getElementById('filtro-text');
-  // Separamos lo que el usuario tiene escrito de los sufijos: todo lo anterior al primer &! es la base
-  const base = (window._filtroBase !== undefined) ? window._filtroBase : buildBaseFilter();
-  ta.value = base + getActiveSuffixes();
+function rebuildFiltroCat(cat) {
+  const ta = document.getElementById('filtro-text-' + cat);
+  if (!ta) return;
+  const base = _filtroBaseByCat[cat] !== undefined ? _filtroBaseByCat[cat] : buildBaseFilterByCat(cat);
+  ta.value = base + getActiveSuffixesByCat(cat);
 }
-function onFiltroEdit() {
-  // El usuario editó a mano: guardamos su texto como base, quitando los sufijos activos del final
-  const ta = document.getElementById('filtro-text');
+function onFiltroEdit(cat) {
+  const ta = document.getElementById('filtro-text-' + cat);
+  if (!ta) return;
   let txt = ta.value;
-  const suffixes = getActiveSuffixes();
-  if (suffixes && txt.endsWith(suffixes)) {
-    txt = txt.slice(0, txt.length - suffixes.length);
-  }
-  window._filtroBase = txt;
+  const suffixes = getActiveSuffixesByCat(cat);
+  if (suffixes && txt.endsWith(suffixes)) txt = txt.slice(0, txt.length - suffixes.length);
+  _filtroBaseByCat[cat] = txt;
 }
 function toggleFiltroSuffix(btn) {
-  // Antes de togglear, capturamos la base actual desde el textarea
-  onFiltroEdit();
+  const cat = btn.closest('.filtro-toggles').getAttribute('data-cat');
+  onFiltroEdit(cat);
   btn.classList.toggle('on');
-  rebuildFiltro();
+  rebuildFiltroCat(cat);
 }
 function addFiltroPokemon() {
   const input = document.getElementById('filtro-add-input');
   const val = (input.value || '').trim().toLowerCase().replace(/\s+/g, '-');
   if (!val) { showToast('Escribe un Pokémon primero'); return; }
-  // Capturamos base actual, añadimos ,+texto, reconstruimos
-  onFiltroEdit();
-  const base = window._filtroBase || '';
-  window._filtroBase = base ? (base + ',+' + val) : ('+' + val);
+  // Se añade al filtro Viernes por defecto
+  onFiltroEdit('viernes');
+  const base = _filtroBaseByCat.viernes || '';
+  _filtroBaseByCat.viernes = base ? (base + ',+' + val) : ('+' + val);
   input.value = '';
-  rebuildFiltro();
+  rebuildFiltroCat('viernes');
 }
-function copyFiltroFinal() {
-  const ta = document.getElementById('filtro-text');
-  const text = ta.value;
+function copyFiltroFinal(cat) {
+  const ta = document.getElementById('filtro-text-' + cat);
+  const text = ta ? ta.value : '';
   if (!text) { showToast('El filtro está vacío'); return; }
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => showToast('Copiado al portapapeles'))
@@ -4623,20 +4653,48 @@ function copyFiltroFinal() {
     _copyFallback(text);
   }
 }
-function openFiltro() {
-  // Reset suffixes & base from current objetivo data
-  window._filtroBase = buildBaseFilter();
+function renderFiltroToggles() {
+  ['viernes','resto'].forEach(cat => {
+    const el = document.getElementById('filtro-toggles-' + cat);
+    if (!el) return;
+    el.innerHTML = FILTRO_SUFFIXES.map(s =>
+      `<button class="filtro-tog" data-suffix="${s.suffix}" onclick="toggleFiltroSuffix(this)"${s.full?' style="grid-column:1/-1"':''}>${s.label}</button>`
+    ).join('');
+  });
+}
+function populateFiltroTrainerSelect() {
+  const sel = document.getElementById('filtro-trainer-select');
+  if (!sel) return;
+  const names = (ST.profiles || []).map(p => p.name);
+  sel.innerHTML = names.map(n => `<option value="${n}"${n===_filtroTrainer?' selected':''}>${n===ST.cur ? n+' (tú)' : n}</option>`).join('');
+}
+function onFiltroTrainerChange() {
+  const sel = document.getElementById('filtro-trainer-select');
+  _filtroTrainer = sel.value;
+  loadFiltroForTrainer();
+}
+function loadFiltroForTrainer() {
+  const data = buildObjetivoData(_filtroTrainer);
+  window._objData = data;
+  _filtroBaseByCat = {viernes: buildBaseFilterByCat('viernes'), resto: buildBaseFilterByCat('resto')};
   document.querySelectorAll('#filtro-screen .filtro-tog').forEach(b => b.classList.remove('on'));
-  rebuildFiltro();
+  rebuildFiltroCat('viernes');
+  rebuildFiltroCat('resto');
+}
+function openFiltro() {
+  _filtroTrainer = ST.cur;
+  renderFiltroToggles();
+  populateFiltroTrainerSelect();
+  loadFiltroForTrainer();
   document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
   document.getElementById('filtro-screen').style.display = 'block';
   document.getElementById('home-menu').style.display = 'none';
   window.scrollTo(0, 0);
 }
 function closeFiltro() {
-  // Volver a la pantalla objetivo
   openObjetivo();
 }
+
 
 function openObjetivo() {
   if (!ST.cur) { showToast('Selecciona un entrenador primero'); return; }
@@ -4658,7 +4716,10 @@ function openObjetivo() {
           '</div>';
       }
       const badge = d.count > 1 ? '<div class="obj-badge">x' + d.count + '</div>' : '';
-      return '<div class="obj-card" onclick="openObjPopup(' + i + ')" style="cursor:pointer">' + badge +
+      const tcColor = d.tradeCategory === 'viernes' ? '#1565c0' : '#789';
+      const tcLabel = d.tradeCategory === 'viernes' ? '⭐ Viernes' : '📅 Resto';
+      const tcTag = '<div style="position:absolute;bottom:2px;left:2px;right:2px;font-size:7.5px;font-weight:700;color:#fff;background:'+tcColor+';border-radius:5px;padding:1px 2px;text-align:center">'+tcLabel+'</div>';
+      return '<div class="obj-card" onclick="openObjPopup(' + i + ')" style="cursor:pointer;position:relative;padding-bottom:14px">' + badge + tcTag +
         '<img class="obj-img" src="' + imgUrl + '" alt="' + d.n + '" onerror="this.style.opacity=.2">' +
         '<div class="obj-name">' + d.n + '</div>' +
         '</div>';
@@ -4752,8 +4813,30 @@ function openObjPopup(idx) {
 
   document.getElementById('obj-popup-breakdown').innerHTML = breakdown || '<span style="color:#aaa">Sin datos</span>';
   document.getElementById('obj-popup-total').textContent = '🍬 Total: ~' + totalC + ' caramelos + ' + totalXL + ' XL';
+
+  // Categoría de trade + toggle manual
+  const tcBox = document.getElementById('obj-popup-tradecat');
+  if (tcBox) {
+    const tcColor = d.tradeCategory === 'viernes' ? '#1565c0' : '#789';
+    const tcLabel = d.tradeCategory === 'viernes' ? '⭐ Viernes (busca buena base)' : '📅 Resto de días (ya tienes base)';
+    const btnLabel = d.forcedAnyDay ? '↩️ Quitar de "cualquier día"' : '📅 Pasar a "cualquier día"';
+    tcBox.innerHTML = '<div style="margin-top:10px;padding:8px 10px;background:#f5f5f5;border-radius:10px;font-size:11px">' +
+      '<div style="font-weight:700;color:' + tcColor + ';margin-bottom:6px">' + tcLabel + '</div>' +
+      '<button onclick="toggleTradeAnyDay(\'' + d.id + '\')" style="width:100%;padding:7px;background:#fff;border:1.5px solid ' + tcColor + ';color:' + tcColor + ';border-radius:8px;font-size:11px;font-weight:700;cursor:pointer">' + btnLabel + '</button>' +
+      '</div>';
+  }
+
   const popup = document.getElementById('obj-popup');
   popup.style.display = 'flex';
+}
+function toggleTradeAnyDay(evoId) {
+  const p = goc(ST.cur);
+  if (!p.tradeAnyDay) p.tradeAnyDay = {};
+  p.tradeAnyDay[evoId] = !p.tradeAnyDay[evoId];
+  save();
+  openObjetivo(); // re-renders the grid + window._objData
+  const idx = window._objData.findIndex(x => x.id === evoId);
+  if (idx >= 0) openObjPopup(idx);
 }
 function closeObjPopup() {
   const popup = document.getElementById('obj-popup');
