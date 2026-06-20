@@ -314,6 +314,35 @@ body.dark .lg-text{color:#bbb}
 .lg-month{font-size:10px;font-weight:800;color:#00838f;text-transform:uppercase}
 .lg-attack{font-size:11px;color:#666;font-style:italic}
 .lg-warn{background:#fff3e0;border-left:3px solid #ff9800;border-radius:0 8px 8px 0;padding:10px 12px;font-size:11.5px;color:#5d4037;line-height:1.6;margin-top:8px}
+
+.pk-ticks{display:flex;flex-direction:column;gap:2px;flex-shrink:0;margin:0 4px}
+.pk-tick{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.18);color:rgba(255,255,255,.35);font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.3);transition:all .15s}
+.pk-tick.on{background:#fff;color:#43a047;border-color:#fff}
+
+/* POKEPARADAS SCREEN */
+#pokeparadas-screen{background:#f5f5f5;min-height:100vh}
+#pokeparadas-screen .app-header{background:#c2185b}
+.pp-pinned-section{padding:10px 14px 0}
+.pp-pinned-title{font-size:12px;font-weight:800;color:#c2185b;margin-bottom:6px;display:flex;align-items:center;gap:4px}
+.pp-cat{margin:14px 14px 0}
+.pp-cat-title{font-size:13px;font-weight:800;color:#444;margin-bottom:6px;padding-left:2px}
+body.dark .pp-cat-title{color:#ddd}
+.pp-mission{background:#fff;border-radius:12px;padding:10px 12px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,.08);display:flex;align-items:center;gap:10px}
+body.dark .pp-mission{background:#1e1e1e}
+.pp-mission.pinned{border:1.5px solid #c2185b}
+.pp-mission-text{flex:1;font-size:12px;color:#333;line-height:1.4}
+body.dark .pp-mission-text{color:#ddd}
+.pp-mission-text b{color:#c2185b}
+.pp-spoiler-row{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
+.pp-spoiler-ball{width:34px;height:34px;border-radius:50%;background:#e0e0e0;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;border:2px solid #ccc;position:relative;overflow:hidden}
+.pp-spoiler-ball img{width:28px;height:28px;object-fit:contain;filter:blur(5px);transition:filter .25s}
+.pp-spoiler-ball.revealed img{filter:blur(0)}
+.pp-spoiler-ball.revealed{border-color:#c2185b;background:#fce4ec}
+.pp-spoiler-ball::after{content:'?';position:absolute;font-size:14px;font-weight:800;color:#999;transition:opacity .2s}
+.pp-spoiler-ball.revealed::after{opacity:0}
+.pp-pin-btn{flex-shrink:0;width:30px;height:30px;border-radius:50%;border:1.5px solid #ddd;background:#fff;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;color:#bbb}
+.pp-pin-btn.on{background:#c2185b;border-color:#c2185b;color:#fff}
+.pp-empty-pin{font-size:11px;color:#aaa;padding:6px 0 12px}
 </style>
 </head>
 <body>
@@ -401,8 +430,11 @@ body.dark .lg-text{color:#bbb}
         <button class="home-btn-small" onclick="openLegacy()" style="grid-column:1/-1;background:#e0f2f1;border-color:#00838f;color:#00695c">
           ⭐ Ataques Legacy
         </button>
+        <button class="home-btn-small" onclick="openPokeparadas()" style="grid-column:1/-1;background:#fce4ec;border-color:#c2185b;color:#880e4f">
+          🎁 Poképaradas!
+        </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v82
+          🆕 Novedades · v85
         </button>
       </div>
 
@@ -976,6 +1008,22 @@ body.dark .lg-text{color:#bbb}
   </div>
 </div>
 
+<!-- POKEPARADAS SCREEN -->
+<div id="pokeparadas-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="closePokeparadas()">←</button>
+    <h1>🎁 Poképaradas!</h1>
+  </div>
+  <p style="text-align:center;font-size:10.5px;color:#888;padding:10px 14px 0">Temporada: <b style="color:#c2185b">Memories in Motion</b> · toca un sprite para revelarlo · 📌 fija tus misiones favoritas arriba</p>
+  <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
+    <div class="pp-pinned-section" id="pp-pinned-section" style="display:none">
+      <div class="pp-pinned-title">📌 Fijadas</div>
+      <div id="pp-pinned-list"></div>
+    </div>
+    <div id="pp-categories"></div>
+  </div>
+</div>
+
 <!-- NOVEDADES SCREEN -->
 <div id="novedades-screen" class="screen">
   <div class="app-header">
@@ -983,10 +1031,18 @@ body.dark .lg-text{color:#bbb}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v82</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v85</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v82 · actual</span><span class="nov-version-tag">Rankings Dynamax</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v85 · actual</span><span class="nov-version-tag">Ticks y Poképaradas</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>✅</span><span>Doble tick visual en cada carta de "Mis Pokémon": se ilumina al marcar "Lo tengo" y el segundo al marcar "Al máximo".</span></div>
+        <div class="nov-item"><span>🎁</span><span>Nueva pantalla "Poképaradas!" con misiones de investigación de campo, sprites con spoiler (toca para revelar) y opción de fijar tus misiones favoritas arriba.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v82</span><span class="nov-version-tag">Rankings Dynamax</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>⚡</span><span>Rankings Dynamax actualizados con el top 10 de cada tipo según Dittobase (junio 2026). 161 entradas en 18 tipos.</span></div>
         <div class="nov-item"><span>🔢</span><span>Pokémon Objetivo y filtro de Pokémon GO ahora incluyen todos los nuevos Pokémon añadidos a Dynamax.</span></div>
@@ -1112,10 +1168,15 @@ body.dark .lg-text{color:#bbb}
     <h1>🎯 Pokémon Objetivo</h1>
   </div>
   <div id="obj-trainer-bar" style="padding:8px 14px;background:#fff;border-bottom:1px solid #e0e0e0;font-size:13px;color:#555;font-weight:600"></div>
-  <div style="padding:10px 14px 6px;background:#fffde7;border-bottom:1px solid #ffe082;font-size:11px;color:#5d4037;line-height:1.7">
-    <b>🍬 Caramelos para subir al máximo:</b><br>
-    Normal / Mega: ~250 + 296XL &nbsp;·&nbsp; Purificado: ~220 + 268XL<br>
-    Oscuro: ~298 + 360XL &nbsp;·&nbsp; ⚡Dynamax: ~600 + 416XL (base + habilidades)
+  <div style="background:#fffde7;border-bottom:1px solid #ffe082">
+    <div onclick="toggleObjInfo()" style="padding:8px 14px;font-size:11px;color:#5d4037;font-weight:700;display:flex;justify-content:space-between;align-items:center;cursor:pointer">
+      <span>🍬 Caramelos para subir al máximo</span>
+      <span id="obj-info-toggle-label" style="font-size:10px;color:#8d6e63">+Info ▾</span>
+    </div>
+    <div id="obj-info-detail" style="display:none;padding:0 14px 8px;font-size:11px;color:#5d4037;line-height:1.7">
+      Normal / Mega: ~250 + 296XL &nbsp;·&nbsp; Purificado: ~220 + 268XL<br>
+      Oscuro: ~298 + 360XL &nbsp;·&nbsp; ⚡Dynamax: ~600 + 416XL (base + habilidades)
+    </div>
   </div>
   <button onclick="openFiltro()" style="display:block;width:100%;padding:13px;background:#1565c0;color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.3px">🛠️ Crea tu filtro para Pokémon GO</button>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch"><div class="obj-grid" id="obj-grid"></div></div>
@@ -1131,6 +1192,7 @@ body.dark .lg-text{color:#bbb}
           <b style="color:#CC0000;font-size:13px" id="obj-popup-total"></b>
         </div>
       </div>
+      <div id="obj-popup-bars"></div>
       <div id="obj-popup-tradecat"></div>
       <button onclick="closeObjPopup()" style="margin-top:14px;background:#CC0000;color:#fff;border:none;border-radius:10px;padding:10px 28px;font-size:14px;font-weight:700;cursor:pointer">Cerrar</button>
     </div>
@@ -3152,7 +3214,10 @@ function renderAlbum() {
     const viewF=`<div class="fr"><div class="fl">DPS con sus IVs</div><p style="font-size:18px;font-weight:700;color:#222"><span id="dps-real-${pk.id}">${dd.toFixed(2)}</span> <span style="font-size:12px;color:#888;font-weight:400">/ Max ${baseDps.toFixed(2)}</span></p></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
     const removeBtn=!isV?(pk.isCustom?`<button class="album-remove" onclick="event.stopPropagation();removeRankEntry('${pk.id}','${ST.type}')">✕</button>`:`<button class="album-remove" onclick="event.stopPropagation();removeFromAlbum('${pk.id}')">✕</button>`):'';
     const evoDisplay=pk.isCustom?`<div class="final-wrap"><img class="final-img" src="${si(pk.img)}" onerror="this.style.opacity=.1"></div>`:evoH(pk.evo,pk.img,isShadow);
-    return `<div class="pk-card" id="c-${pk.id}" style="background:${t.color}"><div class="pk-top" onclick="togCard('${pk.id}')"><div style="display:flex;align-items:center;gap:2px;flex-shrink:0">${evoDisplay}</div><div class="pk-info"><div class="pk-name">${pk.name.replace(' (Shadow)','')}</div>${pk.tags.length?`<div class="tags-row">${tH}</div>`:''}<div class="dps-wrap"><div class="dps-lbl"><span>DPS <span id="dps-bar-${pk.id}">${dd.toFixed(2)}</span></span><span style="color:rgba(255,255,255,.6);font-size:9px">Max ${baseDps.toFixed(2)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${bw}%"></div></div></div></div>${removeBtn}</div><div class="pk-body${isOpen?' open':''}">${isV?viewF:editF}</div></div>`;
+    const _pkOwned=!!(pp0&&pp0.pk[pk.id]&&pp0.pk[pk.id].owned);
+    const _pkMaxed=!!(pp0&&pp0.pk[pk.id]&&pp0.pk[pk.id].maxed);
+    const tickHtml=`<div class="pk-ticks" title="${_pkMaxed?'Al máximo':_pkOwned?'Lo tienes':'Pendiente'}"><span class="pk-tick${_pkOwned?' on':''}">✓</span><span class="pk-tick${_pkMaxed?' on':''}">✓</span></div>`;
+    return `<div class="pk-card" id="c-${pk.id}" style="background:${t.color}"><div class="pk-top" onclick="togCard('${pk.id}')"><div style="display:flex;align-items:center;gap:2px;flex-shrink:0">${evoDisplay}</div><div class="pk-info"><div class="pk-name">${pk.name.replace(' (Shadow)','')}</div>${pk.tags.length?`<div class="tags-row">${tH}</div>`:''}<div class="dps-wrap"><div class="dps-lbl"><span>DPS <span id="dps-bar-${pk.id}">${dd.toFixed(2)}</span></span><span style="color:rgba(255,255,255,.6);font-size:9px">Max ${baseDps.toFixed(2)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${bw}%"></div></div></div></div>${tickHtml}${removeBtn}</div><div class="pk-body${isOpen?' open':''}">${isV?viewF:editF}</div></div>`;
   }).join('')+empty;
 }
 
@@ -3189,7 +3254,8 @@ function renderAlbumDmax() {
     </div>`:'';
     const dIsOpen=ST.expanded===albumId;
     const dInner=!isV?`<div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div>${dToggles}`:`<div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div>`;
-    return `<div class="pk-card" id="c-${albumId}" style="background:${t.color}"><div class="pk-top" onclick="togCard('${albumId}')"><div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">${r.n.replace(/^[GD]-/,'')}</div><div class="tags-row">${isG(r)?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>'}</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>${r.dps.toFixed(1)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${Math.round(r.dps/maxD*100)}%"></div></div></div></div>${rb}</div><div class="pk-body${dIsOpen?' open':''}">${dInner}</div></div>`;
+    const dTickHtml=`<div class="pk-ticks" title="${dIsMax?'Al máximo':dIsO?'Lo tienes':'Pendiente'}"><span class="pk-tick${dIsO?' on':''}">✓</span><span class="pk-tick${dIsMax?' on':''}">✓</span></div>`;
+    return `<div class="pk-card" id="c-${albumId}" style="background:${t.color}"><div class="pk-top" onclick="togCard('${albumId}')"><div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">${r.n.replace(/^[GD]-/,'')}</div><div class="tags-row">${isG(r)?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>'}</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>${r.dps.toFixed(1)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${Math.round(r.dps/maxD*100)}%"></div></div></div></div>${dTickHtml}${rb}</div><div class="pk-body${dIsOpen?' open':''}">${dInner}</div></div>`;
   }).join('')+emptyDmax;
 }
 function removeDmaxEntry(albumId) {
@@ -3704,6 +3770,14 @@ const POKEDEX = {
   '820': {es:'Skwovet', en:'skwovet'},
   '143': {es:'Snorlax', en:'snorlax'},
   '25':  {es:'Pikachu', en:'pikachu'},
+
+  '16': {es:'Pidgey', en:'pidgey'},
+  '19': {es:'Rattata', en:'rattata'},
+  '41': {es:'Zubat', en:'zubat'},
+  '116': {es:'Horsea', en:'horsea'},
+  '21': {es:'Spearow', en:'spearow'},
+  '52': {es:'Meowth', en:'meowth'},
+  '100': {es:'Voltorb', en:'voltorb'},
 };
 
 // ── Resolución nombre/forma -> id de evolución base ──────────────────────────
@@ -4402,6 +4476,13 @@ const NAME_TO_ID = {
   'hoothoot':'163',
   'skwovet':'820',
   'snorlax':'143',
+  'pidgey':'16',
+  'rattata':'19',
+  'zubat':'41',
+  'horsea':'116',
+  'spearow':'21',
+  'meowth':'52',
+  'voltorb':'100',
 };
 
 // ── Compatibilidad: EVO_MAP, ENG_NAMES y EVO_MAP_EXTRA derivados de POKEDEX ──
@@ -4525,6 +4606,14 @@ function buildObjetivoData(profileName) {
     let tradeCategory = needsGoodBase ? 'viernes' : 'resto';
     if (tradeAnyDay[key]) tradeCategory = 'resto'; // override manual del usuario
 
+    // ¿Esta familia tiene CUALQUIER capacidad Dynamax? (aunque ya no queden normales pendientes)
+    const hasDmaxCapability = e.raidDmax.length > 0 || e.dmaxEntries.length > 0;
+
+    // Totales de caramelos/XL para las barras de progreso
+    const CANDY = {normal:{c:250,xl:296}, shadow:{c:298,xl:360}, purified:{c:220,xl:268}, dmaxSkill:{c:350,xl:120}};
+    const totalC  = normal*CANDY.normal.c + shadow*CANDY.shadow.c + purified*CANDY.purified.c + dmaxSkills*CANDY.dmaxSkill.c;
+    const totalXL = normal*CANDY.normal.xl + shadow*CANDY.shadow.xl + purified*CANDY.purified.xl + dmaxSkills*CANDY.dmaxSkill.xl;
+
     results.push({
       n: e.n, id: key,
       count: pendingCount,
@@ -4534,15 +4623,21 @@ function buildObjetivoData(profileName) {
       totalCopies: e.totalCopies,
       maxedCopies: e.maxedCopies,
       tradeCategory,
-      forcedAnyDay: !!tradeAnyDay[key]
+      forcedAnyDay: !!tradeAnyDay[key],
+      hasDmaxCapability,
+      totalC, totalXL
     });
   }
 
-  // Sort: pending first (by candy weight desc), completed (done) at the end
+  // Sort: pending first (by REMAINING candy weight desc, accounting for saved progress), completed (done) at the end
+  const candyProgress = p.candyProgress || {};
   return results.sort((a,b) => {
     if (a.done !== b.done) return a.done ? 1 : -1;
-    const wa = a.normal + a.shadow + a.purified + a.dmaxSkills;
-    const wb = b.normal + b.shadow + b.purified + b.dmaxSkills;
+    const pa = candyProgress[a.id] || {c:0, xl:0};
+    const pb = candyProgress[b.id] || {c:0, xl:0};
+    // peso restante = caramelos+XL que aún faltan (total - lo que ya tienes guardado)
+    const wa = Math.max(0, a.totalC - pa.c) + Math.max(0, a.totalXL - pa.xl);
+    const wb = Math.max(0, b.totalC - pb.c) + Math.max(0, b.totalXL - pb.xl);
     return wb - wa || a.n.localeCompare(b.n);
   });
 }
@@ -4556,6 +4651,119 @@ function openNovedades() {
   window.scrollTo(0, 0);
 }
 function closeNovedades() {
+  document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+  document.getElementById('profile-screen').style.display = 'block';
+  document.getElementById('home-menu').style.display = 'block';
+  document.getElementById('home-profile-section').style.display = 'none';
+  document.getElementById('trainer-name-bar').textContent = '👋 ' + ST.cur;
+  updateHomeMenu();
+  window.scrollTo(0, 0);
+}
+
+
+// ── POKEPARADAS! ──────────────────────────────────────────────────────────
+// Misiones de Investigación de Campo — Temporada Memories in Motion (jun 2026)
+const PP_DATA = [
+  {cat:'🎯 Capturar Pokémon', missions:[
+    {id:'catch5', text:'Captura 5 Pokémon', pkm:['pidgey','rattata','zubat']},
+    {id:'catch10', text:'Captura 10 Pokémon', pkm:['eevee','snubbull','bagon']},
+    {id:'catch7fire', text:'Captura 7 Pokémon de tipo Fuego', pkm:['vulpix','growlithe','torchic']},
+    {id:'catch7water', text:'Captura 7 Pokémon de tipo Agua', pkm:['squirtle','horsea','mudkip']},
+    {id:'catchweather', text:'Captura un Pokémon con clima potenciado', pkm:['larvitar','dratini']},
+    {id:'catchnice', text:'Haz 3 lanzamientos "Bien" seguidos', pkm:['spearow','venonat','meowth']},
+    {id:'catchgreat', text:'Haz 5 lanzamientos "Genial"', pkm:['gastly','wooper','larvitar']},
+    {id:'catchcurve', text:'Captura 3 Pokémon con lanzamiento curvo', pkm:['scyther','sneasel']},
+  ]},
+  {cat:'⚔️ Batallas', missions:[
+    {id:'win1raid', text:'Gana una incursión', pkm:['aerodactyl','onix']},
+    {id:'win3raid', text:'Gana 3 incursiones', pkm:['absol','larvitar']},
+    {id:'winGBL', text:'Gana una batalla en GO Battle League', pkm:['shinx','meditite']},
+    {id:'defeatGrunt', text:'Derrota a un Grunt del Team GO Rocket', pkm:['skorupi','stunky']},
+    {id:'win3raidstreak', text:'Gana 3 incursiones seguidas', pkm:['gible','dratini']},
+  ]},
+  {cat:'🤝 Compañero & Sociales', missions:[
+    {id:'sendgift', text:'Envía 3 regalos a amigos', pkm:['igglybuff','cleffa']},
+    {id:'trade', text:'Intercambia un Pokémon', pkm:['machop','makuhita']},
+    {id:'earnhearts', text:'Gana 3 corazones con tu compañero', pkm:['eevee','bagon']},
+    {id:'takesnapshot', text:'Haz una foto a tu Pokémon compañero', pkm:['smoochum','elekid']},
+  ]},
+  {cat:'💪 Power-Up & Evolución', missions:[
+    {id:'powerup5', text:'Mejora un Pokémon 5 veces', pkm:['voltorb','vanillite']},
+    {id:'powerup10', text:'Mejora un Pokémon 10 veces', pkm:['deino','sandile']},
+    {id:'evolve1', text:'Evoluciona un Pokémon', pkm:['slowpoke','wooper']},
+    {id:'evolve2', text:'Evoluciona 2 Pokémon', pkm:['darumaka','timburr']},
+  ]},
+  {cat:'🥚 Huevos & Rutas', missions:[
+    {id:'hatch2', text:'Eclosiona 2 huevos', pkm:['togepi','riolu']},
+    {id:'walkroute', text:'Completa una Ruta', pkm:['rookidee','fletchling']},
+  ]},
+];
+
+let _ppPinned = {};
+
+function ppLoadPinned() {
+  const p = goc(ST.cur);
+  _ppPinned = p.ppPinned || {};
+}
+function ppSavePinned() {
+  const p = goc(ST.cur);
+  p.ppPinned = _ppPinned;
+  save();
+}
+function ppToggleSpoiler(el) {
+  el.classList.toggle('revealed');
+}
+function ppTogglePin(missionId) {
+  _ppPinned[missionId] = !_ppPinned[missionId];
+  ppSavePinned();
+  renderPokeparadas();
+}
+function ppMissionHtml(m, pinned) {
+  const balls = m.pkm.map(name => {
+    const id = NAME_TO_ID && NAME_TO_ID[name] ? NAME_TO_ID[name] : null;
+    const img = id ? 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + id + '.png' : '';
+    return `<div class="pp-spoiler-ball" onclick="ppToggleSpoiler(this)"><img src="${img}" onerror="this.style.opacity=.1"></div>`;
+  }).join('');
+  return `<div class="pp-mission${pinned?' pinned':''}">
+    <div class="pp-mission-text"><b>${m.text}</b><div class="pp-spoiler-row">${balls}</div></div>
+    <button class="pp-pin-btn${pinned?' on':''}" onclick="ppTogglePin('${m.id}')" title="Fijar">📌</button>
+  </div>`;
+}
+function renderPokeparadas() {
+  ppLoadPinned();
+  const pinnedSection = document.getElementById('pp-pinned-section');
+  const pinnedList = document.getElementById('pp-pinned-list');
+  const catBox = document.getElementById('pp-categories');
+
+  // Build a flat lookup of all missions
+  const allMissions = [];
+  PP_DATA.forEach(cat => cat.missions.forEach(m => allMissions.push(m)));
+
+  const pinnedIds = Object.keys(_ppPinned).filter(id => _ppPinned[id]);
+  if (pinnedIds.length) {
+    pinnedSection.style.display = 'block';
+    pinnedList.innerHTML = pinnedIds.map(id => {
+      const m = allMissions.find(x => x.id === id);
+      return m ? ppMissionHtml(m, true) : '';
+    }).join('');
+  } else {
+    pinnedSection.style.display = 'none';
+  }
+
+  catBox.innerHTML = PP_DATA.map(cat => {
+    const rows = cat.missions.map(m => ppMissionHtml(m, !!_ppPinned[m.id])).join('');
+    return `<div class="pp-cat"><div class="pp-cat-title">${cat.cat}</div>${rows}</div>`;
+  }).join('');
+}
+function openPokeparadas() {
+  if (!ST.cur) { showToast('Selecciona un entrenador primero'); return; }
+  renderPokeparadas();
+  document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+  document.getElementById('pokeparadas-screen').style.display = 'block';
+  document.getElementById('home-menu').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+function closePokeparadas() {
   document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
   document.getElementById('profile-screen').style.display = 'block';
   document.getElementById('home-menu').style.display = 'block';
@@ -4696,6 +4904,15 @@ function closeFiltro() {
 }
 
 
+
+function toggleObjInfo() {
+  const detail = document.getElementById('obj-info-detail');
+  const label = document.getElementById('obj-info-toggle-label');
+  const isOpen = detail.style.display === 'block';
+  detail.style.display = isOpen ? 'none' : 'block';
+  label.textContent = isOpen ? '+Info ▾' : '-Info ▴';
+}
+
 function openObjetivo() {
   if (!ST.cur) { showToast('Selecciona un entrenador primero'); return; }
   const data = buildObjetivoData(ST.cur);
@@ -4774,45 +4991,51 @@ function openObjPopup(idx) {
     document.getElementById('obj-popup-count').innerHTML = '<span style="color:#43a047;font-weight:700">✓ Completado · todas las copias al máximo</span>';
     document.getElementById('obj-popup-breakdown').innerHTML = '';
     document.getElementById('obj-popup-total').textContent = '';
+    const tcBox0 = document.getElementById('obj-popup-tradecat'); if (tcBox0) tcBox0.innerHTML = '';
     document.getElementById('obj-popup').style.display = 'flex';
     return;
   }
-  // Costs per pokemon type to power up to max
-  const CANDY = {
-    normal:   {c:250, xl:296},
-    shadow:   {c:298, xl:360},
-    purified: {c:220, xl:268},
-    dmaxSkill:{c:350, xl:120}  // extra for dynamax skills only
-  };
-  const raidC  = d.normal*CANDY.normal.c + d.shadow*CANDY.shadow.c + d.purified*CANDY.purified.c;
-  const raidXL = d.normal*CANDY.normal.xl + d.shadow*CANDY.shadow.xl + d.purified*CANDY.purified.xl;
-  const skillC  = d.dmaxSkills * CANDY.dmaxSkill.c;
-  const skillXL = d.dmaxSkills * CANDY.dmaxSkill.xl;
-  const totalC  = raidC + skillC;
-  const totalXL = raidXL + skillXL;
 
-  const imgUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + d.id + '.png';
-  document.getElementById('obj-popup-img').src = imgUrl;
+  document.getElementById('obj-popup-img').src = imgUrlTop;
   document.getElementById('obj-popup-name').textContent = d.n;
 
-  const totalUnique = d.normal + d.shadow + d.purified;
-  const dmaxInfo = d.dmaxSkills > 0 ? ' · ' + d.dmaxSkills + ' en Dynamax' : '';
-  document.getElementById('obj-popup-count').textContent = totalUnique + ' Pokémon únicos a subir' + dmaxInfo;
-
-  let breakdown = '';
+  // ── Resumen: "3 Dynamax · 2 Oscuros" (si tiene capacidad dmax, normales se llaman Dynamax) ──
+  const parts = [];
   if (d.normal > 0) {
-    const shared = d.sharedDmax > 0 ? ' <span style="font-size:10px;color:#888">(' + d.sharedDmax + ' también en Dynamax)</span>' : '';
-    breakdown += '<span style="color:#1565c0">⬛ Normal/Mega: ' + d.normal + ' × 250c+296XL = <b>' + (d.normal*250) + 'c+' + (d.normal*296) + 'XL</b>' + shared + '</span><br>';
+    const label = d.hasDmaxCapability ? 'Dynamax' : (d.normal === 1 ? 'Normal' : 'Normales');
+    parts.push(d.normal + ' ' + label);
   }
-  if (d.shadow > 0)
-    breakdown += '<span style="color:#6a1b9a">🟣 Oscuro: ' + d.shadow + ' × 298c+360XL = <b>' + (d.shadow*298) + 'c+' + (d.shadow*360) + 'XL</b></span><br>';
-  if (d.purified > 0)
-    breakdown += '<span style="color:#2e7d32">⬜ Purificado: ' + d.purified + ' × 220c+268XL = <b>' + (d.purified*220) + 'c+' + (d.purified*268) + 'XL</b></span><br>';
-  if (d.dmaxSkills > 0)
-    breakdown += '<span style="color:#0277bd">⚡ Habilidades Dynamax: ' + d.dmaxSkills + ' × 350c+120XL = <b>' + skillC + 'c+' + skillXL + 'XL</b></span><br>';
+  if (d.shadow > 0) parts.push(d.shadow + ' ' + (d.shadow === 1 ? 'Oscuro' : 'Oscuros'));
+  if (d.purified > 0) parts.push(d.purified + ' ' + (d.purified === 1 ? 'Purificado' : 'Purificados'));
+  document.getElementById('obj-popup-count').innerHTML = parts.join(' &nbsp;·&nbsp; ') || '<span style="color:#aaa">Sin pendientes</span>';
 
-  document.getElementById('obj-popup-breakdown').innerHTML = breakdown || '<span style="color:#aaa">Sin datos</span>';
-  document.getElementById('obj-popup-total').textContent = '🍬 Total: ~' + totalC + ' caramelos + ' + totalXL + ' XL';
+  // Sin desglose detallado: solo total
+  document.getElementById('obj-popup-breakdown').innerHTML = '';
+  document.getElementById('obj-popup-total').textContent = '🍬 Total necesario: ~' + d.totalC + ' caramelos + ' + d.totalXL + ' XL';
+
+  // ── Barras correderas de progreso (caramelos que ya tienes) ──────────────
+  const p = goc(ST.cur);
+  if (!p.candyProgress) p.candyProgress = {};
+  if (!p.candyProgress[d.id]) p.candyProgress[d.id] = {c:0, xl:0};
+  const prog = p.candyProgress[d.id];
+  // clamp por si el total bajó (p.ej. tras marcar maxed) y el guardado quedó por encima
+  prog.c = Math.min(prog.c, d.totalC);
+  prog.xl = Math.min(prog.xl, d.totalXL);
+
+  const barsBox = document.getElementById('obj-popup-bars');
+  if (barsBox) {
+    barsBox.innerHTML = `
+      <div style="margin-top:10px;padding:10px;background:#f5f5f5;border-radius:10px">
+        <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:#444;margin-bottom:3px">
+          <span>🍬 Caramelos que tengo</span><span id="obj-bar-c-val">${prog.c} / ${d.totalC}</span>
+        </div>
+        <input type="range" min="0" max="${d.totalC}" value="${prog.c}" oninput="updateCandyProgress('${d.id}','c',this.value)" style="width:100%;accent-color:#CC0000">
+        <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:#444;margin:8px 0 3px">
+          <span>⭐ XL que tengo</span><span id="obj-bar-xl-val">${prog.xl} / ${d.totalXL}</span>
+        </div>
+        <input type="range" min="0" max="${d.totalXL}" value="${prog.xl}" oninput="updateCandyProgress('${d.id}','xl',this.value)" style="width:100%;accent-color:#FF9800">
+      </div>`;
+  }
 
   // Categoría de trade + toggle manual
   const tcBox = document.getElementById('obj-popup-tradecat');
@@ -4828,6 +5051,21 @@ function openObjPopup(idx) {
 
   const popup = document.getElementById('obj-popup');
   popup.style.display = 'flex';
+}
+function updateCandyProgress(evoId, kind, value) {
+  const p = goc(ST.cur);
+  if (!p.candyProgress) p.candyProgress = {};
+  if (!p.candyProgress[evoId]) p.candyProgress[evoId] = {c:0, xl:0};
+  p.candyProgress[evoId][kind] = parseInt(value, 10) || 0;
+  save();
+  // Actualiza SOLO el número del label correspondiente (sin recrear el slider, para no perder el foco mientras se arrastra)
+  const d = window._objData.find(x => x.id === evoId);
+  if (!d) return;
+  const prog = p.candyProgress[evoId];
+  const labelId = kind === 'c' ? 'obj-bar-c-val' : 'obj-bar-xl-val';
+  const max = kind === 'c' ? d.totalC : d.totalXL;
+  const labelEl = document.getElementById(labelId);
+  if (labelEl) labelEl.textContent = prog[kind] + ' / ' + max;
 }
 function toggleTradeAnyDay(evoId) {
   const p = goc(ST.cur);
