@@ -434,7 +434,7 @@ body.dark .pp-mission-text{color:#ddd}
           🎁 Poképaradas!
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v85
+          🆕 Novedades · v86
         </button>
       </div>
 
@@ -1031,10 +1031,18 @@ body.dark .pp-mission-text{color:#ddd}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v85</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v86</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v85 · actual</span><span class="nov-version-tag">Ticks y Poképaradas</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v86 · actual</span><span class="nov-version-tag">Misiones reales</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🎁</span><span>Poképaradas! actualizado con las 33 misiones reales de la temporada actual (Leek Duck), organizadas en 7 categorías con sus Pokémon recompensa exactos.</span></div>
+        <div class="nov-item"><span>✨</span><span>Las misiones de captura por tipo ahora muestran también la posible Megaenergía de recompensa (Sceptile, Blaziken, Blastoise, Pidgeot...).</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v85</span><span class="nov-version-tag">Ticks y Poképaradas</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>✅</span><span>Doble tick visual en cada carta de "Mis Pokémon": se ilumina al marcar "Lo tengo" y el segundo al marcar "Al máximo".</span></div>
         <div class="nov-item"><span>🎁</span><span>Nueva pantalla "Poképaradas!" con misiones de investigación de campo, sprites con spoiler (toca para revelar) y opción de fijar tus misiones favoritas arriba.</span></div>
@@ -3778,6 +3786,67 @@ const POKEDEX = {
   '21': {es:'Spearow', en:'spearow'},
   '52': {es:'Meowth', en:'meowth'},
   '100': {es:'Voltorb', en:'voltorb'},
+
+  '74': {es:'Geodude de Alola', en:'geodude'},
+  '343': {es:'Baltoy', en:'baltoy'},
+  '356': {es:'Dusclops', en:'dusclops'},
+  '397': {es:'Staravia', en:'staravia'},
+  '597': {es:'Ferroseed', en:'ferroseed'},
+  '915': {es:'Lechonk', en:'lechonk'},
+  '27': {es:'Sandshrew de Alola', en:'sandshrew'},
+  '191': {es:'Sunkern', en:'sunkern'},
+  '274': {es:'Nuzleaf', en:'nuzleaf'},
+  '618': {es:'Stunfisk', en:'stunfisk'},
+  '732': {es:'Trumbeak', en:'trumbeak'},
+  '747': {es:'Mareanie', en:'mareanie'},
+  '366': {es:'Clamperl', en:'clamperl'},
+  '345': {es:'Lileep', en:'lileep'},
+  '347': {es:'Anorith', en:'anorith'},
+  '327': {es:'Spinda', en:'spinda'},
+  '50': {es:'Diglett de Alola', en:'diglett'},
+  '105': {es:'Marowak de Alola', en:'marowak'},
+  '531': {es:'Audino', en:'audino'},
+  '698': {es:'Amaura', en:'amaura'},
+  '759': {es:'Stufful', en:'stufful'},
+  '223': {es:'Remoraid', en:'remoraid'},
+  '19': {es:'Rattata de Alola', en:'rattata'},
+  '58': {es:'Growlithe de Hisui', en:'growlithe'},
+  '79': {es:'Slowpoke de Galar', en:'slowpoke'},
+  '206': {es:'Dunsparce', en:'dunsparce'},
+  '263': {es:'Zigzagoon de Galar', en:'zigzagoon'},
+  '399': {es:'Bidoof', en:'bidoof'},
+  '568': {es:'Trubbish', en:'trubbish'},
+  '751': {es:'Dewpider', en:'dewpider'},
+  '827': {es:'Nickit', en:'nickit'},
+  '946': {es:'Tarountula', en:'tarountula'},
+  '427': {es:'Buneary', en:'buneary'},
+  '431': {es:'Glameow', en:'glameow'},
+  '659': {es:'Bunnelby', en:'bunnelby'},
+  '667': {es:'Litleo', en:'litleo'},
+  '702': {es:'Dedenne', en:'dedenne'},
+  '61': {es:'Poliwhirl', en:'poliwhirl'},
+  '67': {es:'Machoke', en:'machoke'},
+  '54': {es:'Psyduck', en:'psyduck'},
+  '119': {es:'Seaking', en:'seaking'},
+  '183': {es:'Marill', en:'marill'},
+  '216': {es:'Teddiursa', en:'teddiursa'},
+  '271': {es:'Lombre', en:'lombre'},
+  '653': {es:'Fennekin', en:'fennekin'},
+  '278': {es:'Wingull', en:'wingull'},
+  '459': {es:'Snover', en:'snover'},
+  '404': {es:'Luxio', en:'luxio'},
+  '444': {es:'Gabite', en:'gabite'},
+  '608': {es:'Lampent', en:'lampent'},
+  '662': {es:'Fletchinder', en:'fletchinder'},
+  '566': {es:'Archen', en:'archen'},
+  '103': {es:'Exeggutor de Alola', en:'exeggutor'},
+  '117': {es:'Seadra', en:'seadra'},
+  '219': {es:'Magcargo', en:'magcargo'},
+  '326': {es:'Grumpig', en:'grumpig'},
+  '544': {es:'Whirlipede', en:'whirlipede'},
+  '603': {es:'Eelektrik', en:'eelektrik'},
+  '660': {es:'Diggersby', en:'diggersby'},
+  '202': {es:'Wobbuffet', en:'wobbuffet'},
 };
 
 // ── Resolución nombre/forma -> id de evolución base ──────────────────────────
@@ -4483,6 +4552,70 @@ const NAME_TO_ID = {
   'spearow':'21',
   'meowth':'52',
   'voltorb':'100',
+  'alolan-geodude':'74',
+  'baltoy':'343',
+  'dusclops':'356',
+  'staravia':'397',
+  'ferroseed':'597',
+  'lechonk':'915',
+  'alolan-sandshrew':'27',
+  'sunkern':'191',
+  'nuzleaf':'274',
+  'stunfisk':'618',
+  'trumbeak':'732',
+  'mareanie':'747',
+  'clamperl':'366',
+  'lileep':'345',
+  'anorith':'347',
+  'spinda2':'327',
+  'spinda3':'327',
+  'alolan-diglett':'50',
+  'diglett':'50',
+  'alolan-marowak':'105',
+  'audino':'531',
+  'amaura':'698',
+  'stufful':'759',
+  'remoraid':'223',
+  'alolan-rattata':'19',
+  'hisuian-growlithe':'58',
+  'galarian-slowpoke':'79',
+  'dunsparce':'206',
+  'galarian-zigzagoon':'263',
+  'zigzagoon':'263',
+  'bidoof':'399',
+  'trubbish':'568',
+  'dewpider':'751',
+  'nickit':'827',
+  'tarountula':'946',
+  'buneary':'427',
+  'glameow':'431',
+  'bunnelby':'659',
+  'litleo':'667',
+  'dedenne':'702',
+  'galarian-stunfisk':'618',
+  'poliwhirl':'61',
+  'machoke':'67',
+  'psyduck':'54',
+  'seaking':'119',
+  'marill':'183',
+  'teddiursa':'216',
+  'lombre':'271',
+  'fennekin':'653',
+  'wingull':'278',
+  'snover':'459',
+  'luxio':'404',
+  'gabite':'444',
+  'lampent':'608',
+  'fletchinder':'662',
+  'archen':'566',
+  'alolan-exeggutor':'103',
+  'seadra':'117',
+  'magcargo':'219',
+  'grumpig':'326',
+  'whirlipede':'544',
+  'eelektrik':'603',
+  'diggersby':'660',
+  'wobbuffet':'202',
 };
 
 // ── Compatibilidad: EVO_MAP, ENG_NAMES y EVO_MAP_EXTRA derivados de POKEDEX ──
@@ -4663,41 +4796,55 @@ function closeNovedades() {
 
 // ── POKEPARADAS! ──────────────────────────────────────────────────────────
 // Misiones de Investigación de Campo — Temporada Memories in Motion (jun 2026)
-const PP_DATA = [
-  {cat:'🎯 Capturar Pokémon', missions:[
-    {id:'catch5', text:'Captura 5 Pokémon', pkm:['pidgey','rattata','zubat']},
-    {id:'catch10', text:'Captura 10 Pokémon', pkm:['eevee','snubbull','bagon']},
-    {id:'catch7fire', text:'Captura 7 Pokémon de tipo Fuego', pkm:['vulpix','growlithe','torchic']},
-    {id:'catch7water', text:'Captura 7 Pokémon de tipo Agua', pkm:['squirtle','horsea','mudkip']},
-    {id:'catchweather', text:'Captura un Pokémon con clima potenciado', pkm:['larvitar','dratini']},
-    {id:'catchnice', text:'Haz 3 lanzamientos "Bien" seguidos', pkm:['spearow','venonat','meowth']},
-    {id:'catchgreat', text:'Haz 5 lanzamientos "Genial"', pkm:['gastly','wooper','larvitar']},
-    {id:'catchcurve', text:'Captura 3 Pokémon con lanzamiento curvo', pkm:['scyther','sneasel']},
-  ]},
-  {cat:'⚔️ Batallas', missions:[
-    {id:'win1raid', text:'Gana una incursión', pkm:['aerodactyl','onix']},
-    {id:'win3raid', text:'Gana 3 incursiones', pkm:['absol','larvitar']},
-    {id:'winGBL', text:'Gana una batalla en GO Battle League', pkm:['shinx','meditite']},
-    {id:'defeatGrunt', text:'Derrota a un Grunt del Team GO Rocket', pkm:['skorupi','stunky']},
-    {id:'win3raidstreak', text:'Gana 3 incursiones seguidas', pkm:['gible','dratini']},
-  ]},
-  {cat:'🤝 Compañero & Sociales', missions:[
-    {id:'sendgift', text:'Envía 3 regalos a amigos', pkm:['igglybuff','cleffa']},
-    {id:'trade', text:'Intercambia un Pokémon', pkm:['machop','makuhita']},
-    {id:'earnhearts', text:'Gana 3 corazones con tu compañero', pkm:['eevee','bagon']},
-    {id:'takesnapshot', text:'Haz una foto a tu Pokémon compañero', pkm:['smoochum','elekid']},
-  ]},
-  {cat:'💪 Power-Up & Evolución', missions:[
-    {id:'powerup5', text:'Mejora un Pokémon 5 veces', pkm:['voltorb','vanillite']},
-    {id:'powerup10', text:'Mejora un Pokémon 10 veces', pkm:['deino','sandile']},
-    {id:'evolve1', text:'Evoluciona un Pokémon', pkm:['slowpoke','wooper']},
-    {id:'evolve2', text:'Evoluciona 2 Pokémon', pkm:['darumaka','timburr']},
-  ]},
-  {cat:'🥚 Huevos & Rutas', missions:[
-    {id:'hatch2', text:'Eclosiona 2 huevos', pkm:['togepi','riolu']},
-    {id:'walkroute', text:'Completa una Ruta', pkm:['rookidee','fletchling']},
-  ]},
-];
+const PP_DATA = {
+  '🎯 Lanzamientos': [
+    {id:'curve10', text:'Haz 10 lanzamientos curvos', pkm:['alolan-geodude','electabuzz','makuhita','swablu','baltoy','dusclops','staravia','emolga','ferroseed','lechonk']},
+    {id:'nice10', text:'Haz 10 lanzamientos "Bien"', pkm:['alolan-sandshrew','machop','magmar','magikarp','sunkern','nuzleaf','stunfisk','trumbeak','mareanie','nymble']},
+    {id:'excellent2', text:'Haz 2 lanzamientos "Excelente"', pkm:['goomy']},
+    {id:'excellent3row', text:'Haz 3 lanzamientos "Excelente" seguidos', pkm:['larvitar','beldum','gible']},
+    {id:'great3', text:'Haz 3 lanzamientos "Genial"', pkm:['omanyte','kabuto','clamperl','elgyem','binacle']},
+    {id:'great3row', text:'Haz 3 lanzamientos "Genial" seguidos', pkm:['lileep','anorith']},
+    {id:'curve5row', text:'Haz 5 lanzamientos curvos "Genial" seguidos', pkm:['spinda2','spinda3']},
+    {id:'nice5', text:'Haz 5 lanzamientos "Bien"', pkm:['alolan-diglett','diglett','sudowoodo']},
+  ],
+  '🚶 Exploración': [
+    {id:'hatch1', text:'Eclosiona un huevo', pkm:['alolan-marowak','scyther','dratini','noctowl','sudowoodo','nincada','combee','audino','cubchoo','tyrunt','amaura','stufful','wimpod']},
+    {id:'hatch2', text:'Eclosiona 2 huevos', pkm:['sneasel','mawile','feebas']},
+    {id:'spin3', text:'Gira 3 PokéParadas o Gimnasios', pkm:['doduo','remoraid','ralts','aron']},
+    {id:'spin5', text:'Gira 5 PokéParadas o Gimnasios', pkm:['alolan-rattata','rattata','growlithe','hisuian-growlithe','galarian-slowpoke','slowpoke','dunsparce','sneasel','galarian-zigzagoon','zigzagoon','snorunt','bidoof','hippopotas','trubbish','ducklett','dewpider','skwovet','nickit','wooloo','tarountula','nacli']},
+    {id:'snapshot', text:'Haz una foto a un Pokémon salvaje', pkm:['trapinch','croagunk','cottonee']},
+  ],
+  '🤝 Compañero y Amistad': [
+    {id:'buddycandy2', text:'Gana 2 caramelos caminando con tu compañero', pkm:['jigglypuff','buneary','glameow','bunnelby','litleo','dedenne']},
+    {id:'buddycandy3', text:'Gana 3 caramelos caminando con tu compañero', pkm:['galarian-stunfisk','stunfisk']},
+    {id:'gift3sticker', text:'Envía 3 regalos y añade una pegatina a cada uno', pkm:['clefairy','jigglypuff','eevee','togetic']},
+    {id:'trade1', text:'Intercambia un Pokémon', pkm:['poliwhirl','machoke','haunter','karrablast','shelmet']},
+  ],
+  '🎯 Captura': [
+    {id:'catch7', text:'Captura 7 Pokémon', pkm:['magikarp','stufful','wimpod']},
+    {id:'catchdragon', text:'Captura un Pokémon de tipo Dragón', pkm:['dratini','bagon','axew']},
+    {id:'catch7species', text:'Captura 7 especies diferentes de Pokémon', pkm:['psyduck','seaking','marill','teddiursa','lombre','stunky','liepard','darumaka','clauncher','dedenne','cutiefly','smoliv']},
+    {id:'catch10grass', text:'Captura 10 Pokémon de tipo Planta', pkm:['bulbasaur','chikorita','treecko','turtwig','snivy','chespin','rowlet','grookey','sprigatito'], mega:['Sceptile','Venusaur']},
+    {id:'catch10fire', text:'Captura 10 Pokémon de tipo Fuego', pkm:['charmander','cyndaquil','torchic','chimchar','tepig','fennekin','litten','scorbunny','fuecoco'], mega:['Blaziken','Charizard X']},
+    {id:'catch10water', text:'Captura 10 Pokémon de tipo Agua', pkm:['squirtle','totodile','mudkip','piplup','oshawott','froakie','popplio','sobble','quaxly'], mega:['Blastoise','Swampert']},
+    {id:'catch10normal', text:'Captura 10 Pokémon de tipo Normal', pkm:[], mega:['Pidgeot']},
+    {id:'catch5weather', text:'Captura 5 Pokémon con clima potenciado', pkm:['vulpix','poliwag','wingull','hippopotas','snover','roggenrola','vanillite']},
+  ],
+  '⚔️ Combate': [
+    {id:'winraid1', text:'Gana una incursión', pkm:['onix','vaporeon','jolteon','flareon','snorlax','piloswine','sealeo','metang','luxio','gabite','lampent','fletchinder']},
+    {id:'win3star', text:'Gana una incursión de 3 estrellas o superior', pkm:['tirtouga','archen']},
+    {id:'win5raids', text:'Gana 5 incursiones', pkm:['alolan-exeggutor','alolan-marowak','aerodactyl']},
+  ],
+  '🏋️ Entrenamiento': [
+    {id:'evolve1', text:'Evoluciona un Pokémon', pkm:['seadra','starmie','eevee','magcargo','grumpig','whirlipede','eelektrik','diggersby']},
+    {id:'powerup3', text:'Mejora un Pokémon 3 veces', pkm:['bulbasaur','charmander','squirtle']},
+    {id:'powerup5', text:'Mejora un Pokémon 5 veces', pkm:['snivy','tepig','oshawott'], mega:['Aggron','Beedrill','Blastoise','Charizard X','Manectric','Pidgeot','Venusaur']},
+    {id:'powerup7', text:'Mejora un Pokémon 7 veces', pkm:['rowlet','litten','popplio']},
+  ],
+  '🚀 Team GO Rocket': [
+    {id:'defeatgrunt', text:'Derrota a un Grunt del Team GO Rocket', pkm:['meowth','wobbuffet','yamask']},
+  ],
+};
 
 let _ppPinned = {};
 
@@ -4718,14 +4865,21 @@ function ppTogglePin(missionId) {
   ppSavePinned();
   renderPokeparadas();
 }
+function ppMegaBall(name) {
+  const id = megaIdByName ? megaIdByName(name) : null;
+  const img = id ? megaArt(id) : '';
+  return `<div class="pp-spoiler-ball revealed" style="border-color:#7b1fa2;background:#f3e5f5" title="${name} Mega Energy"><img src="${img}" onerror="this.style.opacity=.1"></div>`;
+}
 function ppMissionHtml(m, pinned) {
-  const balls = m.pkm.map(name => {
+  const balls = (m.pkm||[]).map(name => {
     const id = NAME_TO_ID && NAME_TO_ID[name] ? NAME_TO_ID[name] : null;
     const img = id ? 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + id + '.png' : '';
     return `<div class="pp-spoiler-ball" onclick="ppToggleSpoiler(this)"><img src="${img}" onerror="this.style.opacity=.1"></div>`;
   }).join('');
+  const megaBalls = (m.mega||[]).map(name => ppMegaBall(name)).join('');
+  const megaLabel = (m.mega && m.mega.length) ? `<div style="font-size:9px;color:#7b1fa2;font-weight:700;margin-top:4px">✨ Posible Megaenergía:</div>` : '';
   return `<div class="pp-mission${pinned?' pinned':''}">
-    <div class="pp-mission-text"><b>${m.text}</b><div class="pp-spoiler-row">${balls}</div></div>
+    <div class="pp-mission-text"><b>${m.text}</b><div class="pp-spoiler-row">${balls}</div>${megaLabel}<div class="pp-spoiler-row">${megaBalls}</div></div>
     <button class="pp-pin-btn${pinned?' on':''}" onclick="ppTogglePin('${m.id}')" title="Fijar">📌</button>
   </div>`;
 }
@@ -4737,7 +4891,7 @@ function renderPokeparadas() {
 
   // Build a flat lookup of all missions
   const allMissions = [];
-  PP_DATA.forEach(cat => cat.missions.forEach(m => allMissions.push(m)));
+  Object.values(PP_DATA).forEach(missions => missions.forEach(m => allMissions.push(m)));
 
   const pinnedIds = Object.keys(_ppPinned).filter(id => _ppPinned[id]);
   if (pinnedIds.length) {
@@ -4750,9 +4904,9 @@ function renderPokeparadas() {
     pinnedSection.style.display = 'none';
   }
 
-  catBox.innerHTML = PP_DATA.map(cat => {
-    const rows = cat.missions.map(m => ppMissionHtml(m, !!_ppPinned[m.id])).join('');
-    return `<div class="pp-cat"><div class="pp-cat-title">${cat.cat}</div>${rows}</div>`;
+  catBox.innerHTML = Object.entries(PP_DATA).map(([catName, missions]) => {
+    const rows = missions.map(m => ppMissionHtml(m, !!_ppPinned[m.id])).join('');
+    return `<div class="pp-cat"><div class="pp-cat-title">${catName}</div>${rows}</div>`;
   }).join('');
 }
 function openPokeparadas() {
@@ -4807,7 +4961,15 @@ function buildBaseFilterByCat(cat) {
     .filter(d => !d.done && d.tradeCategory === cat)
     .map(d => {
       const eng = (POKEDEX[d.id] && POKEDEX[d.id].en) || ENG_NAMES[d.id];
-      return eng ? '+' + eng : null;
+      if (!eng) return null;
+      let block = '+' + eng;
+      // Si la familia tiene capacidad Dynamax, distinguimos el bloque:
+      // Viernes -> solo los que YA son Dynamax (la base buena que buscamos)
+      // Resto   -> excluimos los Dynamax (esos van siempre a Viernes, nunca se mezclan aquí)
+      if (d.hasDmaxCapability) {
+        block += (cat === 'viernes') ? '&dynamax' : '&!dynamax';
+      }
+      return block;
     })
     .filter(Boolean)
     .join(',');
