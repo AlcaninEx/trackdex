@@ -434,7 +434,7 @@ body.dark .pp-mission-text{color:#ddd}
           🎁 Poképaradas!
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v86
+          🆕 Novedades · v87
         </button>
       </div>
 
@@ -1031,10 +1031,17 @@ body.dark .pp-mission-text{color:#ddd}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v86</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v87</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v86 · actual</span><span class="nov-version-tag">Misiones reales</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v87 · actual</span><span class="nov-version-tag">Filtro Dynamax inteligente</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>⚡</span><span>El filtro Viernes ahora añade &dynamax automáticamente a las familias con capacidad Dynamax, y el filtro Resto añade &!dynamax para excluirlas. Sin necesidad de etiquetar nada a mano.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v86</span><span class="nov-version-tag">Misiones reales</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🎁</span><span>Poképaradas! actualizado con las 33 misiones reales de la temporada actual (Leek Duck), organizadas en 7 categorías con sus Pokémon recompensa exactos.</span></div>
         <div class="nov-item"><span>✨</span><span>Las misiones de captura por tipo ahora muestran también la posible Megaenergía de recompensa (Sceptile, Blaziken, Blastoise, Pidgeot...).</span></div>
@@ -1139,31 +1146,40 @@ body.dark .pp-mission-text{color:#ddd}
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
 
-    <div class="filtro-label">Entrenador:</div>
-    <select id="filtro-trainer-select" class="filtro-add-input" style="width:calc(100% - 28px);margin:0 14px" onchange="onFiltroTrainerChange()"></select>
-
     <p style="font-size:10.5px;color:#999;margin:10px 14px 0;line-height:1.5">⭐ <b>Viernes</b>: Pokémon que aún necesitan buena base (búscalos en intercambios de Viernes para Lucky/buenos IVs). 📅 <b>Resto de días</b>: ya tienen base, solo intercambia para caramelos.</p>
 
-    <!-- BLOQUE VIERNES -->
-    <div style="margin:16px 14px 0;padding:10px 12px;background:#e3f2fd;border-radius:10px 10px 0 0;border:1.5px solid #1565c0;border-bottom:none">
-      <span style="font-size:13px;font-weight:800;color:#0d47a1">⭐ Filtro Viernes (buscar buena base)</span>
-    </div>
-    <textarea id="filtro-text-viernes" class="filtro-textarea" style="margin:0 14px;border-color:#1565c0;border-radius:0" oninput="onFiltroEdit('viernes')" spellcheck="false"></textarea>
-    <div class="filtro-toggles" id="filtro-toggles-viernes" data-cat="viernes"></div>
-    <button class="filtro-copy-btn" style="background:#1565c0;margin-top:8px" onclick="copyFiltroFinal('viernes')">📋 Copiar Filtro Viernes</button>
-
-    <!-- BLOQUE RESTO DE DÍAS -->
-    <div style="margin:22px 14px 0;padding:10px 12px;background:#eceff1;border-radius:10px 10px 0 0;border:1.5px solid #607d8b;border-bottom:none">
+    <!-- BLOQUE RESTO DE DÍAS (siempre visible, es tu propio filtro) -->
+    <div style="margin:16px 14px 0;padding:10px 12px;background:#eceff1;border-radius:10px 10px 0 0;border:1.5px solid #607d8b;border-bottom:none">
       <span style="font-size:13px;font-weight:800;color:#37474f">📅 Filtro Resto de días (solo caramelos)</span>
     </div>
     <textarea id="filtro-text-resto" class="filtro-textarea" style="margin:0 14px;border-color:#607d8b;border-radius:0" oninput="onFiltroEdit('resto')" spellcheck="false"></textarea>
     <div class="filtro-toggles" id="filtro-toggles-resto" data-cat="resto"></div>
     <button class="filtro-copy-btn" style="background:#607d8b;margin-top:8px" onclick="copyFiltroFinal('resto')">📋 Copiar Filtro Resto de días</button>
 
-    <div class="filtro-label" style="margin-top:20px">Añadir Pokémon (al filtro Viernes):</div>
+    <div class="filtro-label" style="margin-top:20px">Añadir Pokémon (al filtro Resto):</div>
     <div class="filtro-add-row">
       <input id="filtro-add-input" class="filtro-add-input" type="text" placeholder="ej. pikachu" spellcheck="false">
       <button class="filtro-add-btn" onclick="addFiltroPokemon()">Añadir</button>
+    </div>
+
+    <!-- BLOQUE VIERNES (requiere elegir con quién comerciar) -->
+    <div style="margin:26px 14px 0;padding:10px 12px;background:#e3f2fd;border-radius:10px 10px 0 0;border:1.5px solid #1565c0;border-bottom:none;position:relative">
+      <span style="font-size:13px;font-weight:800;color:#0d47a1">⭐ Filtro Viernes (buscar buena base)</span>
+      <div id="filtro-trade-with-label" style="font-size:11px;color:#1565c0;margin-top:4px;cursor:pointer;display:none" onclick="toggleTradeWithDropdown()">
+        Comerciando con "<b id="filtro-trade-with-name"></b>" <span style="font-size:9px">▾</span>
+      </div>
+      <select id="filtro-trade-with-select" style="display:none;width:100%;margin-top:6px;padding:6px;border-radius:6px;border:1px solid #1565c0;font-size:12px" onchange="onTradeWithChange()"></select>
+    </div>
+    <div id="filtro-viernes-locked" style="margin:0 14px;padding:24px 16px;background:#fff;border:1.5px solid #1565c0;border-top:none;border-radius:0 0 10px 10px;text-align:center">
+      <p style="font-size:12px;color:#666;margin-bottom:10px">Elige con quién vas a comerciar para ver tu filtro Viernes</p>
+      <select id="filtro-trade-with-select-initial" style="padding:8px 12px;border-radius:8px;border:1.5px solid #1565c0;font-size:13px;font-weight:700;color:#0d47a1" onchange="onTradeWithInitialSelect()">
+        <option value="">Selecciona un entrenador...</option>
+      </select>
+    </div>
+    <div id="filtro-viernes-unlocked" style="display:none">
+      <textarea id="filtro-text-viernes" class="filtro-textarea" style="margin:0 14px;border-color:#1565c0;border-radius:0" oninput="onFiltroEdit('viernes')" spellcheck="false"></textarea>
+      <div class="filtro-toggles" id="filtro-toggles-viernes" data-cat="viernes"></div>
+      <button class="filtro-copy-btn" style="background:#1565c0;margin-top:8px" onclick="copyFiltroFinal('viernes')">📋 Copiar Filtro Viernes</button>
     </div>
 
   </div>
@@ -4943,7 +4959,7 @@ function closeDiarias() {
   window.scrollTo(0, 0);
 }
 
-// ── CREA TU FILTRO (con categorías Viernes / Resto de días) ──────────────────
+// ── CREA TU FILTRO (Resto = tu perfil siempre · Viernes = persona elegida, persistente) ──
 const FILTRO_SUFFIXES = [
   {label:'Quitar con etiquetas', suffix:'&!#'},
   {label:'Quitar favoritos', suffix:'&!favoritos'},
@@ -4951,11 +4967,11 @@ const FILTRO_SUFFIXES = [
   {label:'Quitar dinamax', suffix:'&!dinamax'},
   {label:'Quitar tamaños (XXS / XXL)', suffix:'&!xxs&!xxl', full:true},
 ];
-let _filtroTrainer = null;
 let _filtroBaseByCat = {viernes:'', resto:''};
+let _objDataResto = [];
+let _objDataViernes = [];
 
-function buildBaseFilterByCat(cat) {
-  const data = window._objData;
+function buildBaseFilterFromData(data, cat) {
   if (!data || !data.length) return '';
   return data
     .filter(d => !d.done && d.tradeCategory === cat)
@@ -4963,9 +4979,6 @@ function buildBaseFilterByCat(cat) {
       const eng = (POKEDEX[d.id] && POKEDEX[d.id].en) || ENG_NAMES[d.id];
       if (!eng) return null;
       let block = '+' + eng;
-      // Si la familia tiene capacidad Dynamax, distinguimos el bloque:
-      // Viernes -> solo los que YA son Dynamax (la base buena que buscamos)
-      // Resto   -> excluimos los Dynamax (esos van siempre a Viernes, nunca se mezclan aquí)
       if (d.hasDmaxCapability) {
         block += (cat === 'viernes') ? '&dynamax' : '&!dynamax';
       }
@@ -4984,7 +4997,8 @@ function getActiveSuffixesByCat(cat) {
 function rebuildFiltroCat(cat) {
   const ta = document.getElementById('filtro-text-' + cat);
   if (!ta) return;
-  const base = _filtroBaseByCat[cat] !== undefined ? _filtroBaseByCat[cat] : buildBaseFilterByCat(cat);
+  const data = cat === 'viernes' ? _objDataViernes : _objDataResto;
+  const base = _filtroBaseByCat[cat] !== undefined ? _filtroBaseByCat[cat] : buildBaseFilterFromData(data, cat);
   ta.value = base + getActiveSuffixesByCat(cat);
 }
 function onFiltroEdit(cat) {
@@ -5005,12 +5019,11 @@ function addFiltroPokemon() {
   const input = document.getElementById('filtro-add-input');
   const val = (input.value || '').trim().toLowerCase().replace(/\s+/g, '-');
   if (!val) { showToast('Escribe un Pokémon primero'); return; }
-  // Se añade al filtro Viernes por defecto
-  onFiltroEdit('viernes');
-  const base = _filtroBaseByCat.viernes || '';
-  _filtroBaseByCat.viernes = base ? (base + ',+' + val) : ('+' + val);
+  onFiltroEdit('resto');
+  const base = _filtroBaseByCat.resto || '';
+  _filtroBaseByCat.resto = base ? (base + ',+' + val) : ('+' + val);
   input.value = '';
-  rebuildFiltroCat('viernes');
+  rebuildFiltroCat('resto');
 }
 function copyFiltroFinal(cat) {
   const ta = document.getElementById('filtro-text-' + cat);
@@ -5032,30 +5045,78 @@ function renderFiltroToggles() {
     ).join('');
   });
 }
-function populateFiltroTrainerSelect() {
-  const sel = document.getElementById('filtro-trainer-select');
-  if (!sel) return;
-  const names = (ST.profiles || []).map(p => p.name);
-  sel.innerHTML = names.map(n => `<option value="${n}"${n===_filtroTrainer?' selected':''}>${n===ST.cur ? n+' (tú)' : n}</option>`).join('');
+
+// ── Persistencia de "con quién comercio" (localStorage, sobrevive cerrar la app) ──
+function getTradeWithStorageKey() {
+  return 'pbcn_tradeWith_' + ST.cur;
 }
-function onFiltroTrainerChange() {
-  const sel = document.getElementById('filtro-trainer-select');
-  _filtroTrainer = sel.value;
-  loadFiltroForTrainer();
+function getSavedTradeWith() {
+  try { return localStorage.getItem(getTradeWithStorageKey()) || ''; } catch(e) { return ''; }
 }
-function loadFiltroForTrainer() {
-  const data = buildObjetivoData(_filtroTrainer);
-  window._objData = data;
-  _filtroBaseByCat = {viernes: buildBaseFilterByCat('viernes'), resto: buildBaseFilterByCat('resto')};
-  document.querySelectorAll('#filtro-screen .filtro-tog').forEach(b => b.classList.remove('on'));
+function saveTradeWith(name) {
+  try { localStorage.setItem(getTradeWithStorageKey(), name); } catch(e) {}
+}
+
+function populateTradeWithSelects(selectedName) {
+  const names = (ST.profiles || []).map(p => p.name).filter(n => n !== ST.cur);
+  const optsHtml = '<option value="">Selecciona un entrenador...</option>' +
+    names.map(n => `<option value="${n}"${n===selectedName?' selected':''}>${n}</option>`).join('');
+  const selInitial = document.getElementById('filtro-trade-with-select-initial');
+  const selTop = document.getElementById('filtro-trade-with-select');
+  if (selInitial) selInitial.innerHTML = optsHtml;
+  if (selTop) selTop.innerHTML = optsHtml;
+}
+
+function loadViernesForTrainer(name) {
+  if (!name) {
+    document.getElementById('filtro-viernes-locked').style.display = 'block';
+    document.getElementById('filtro-viernes-unlocked').style.display = 'none';
+    document.getElementById('filtro-trade-with-label').style.display = 'none';
+    return;
+  }
+  _objDataViernes = buildObjetivoData(name);
+  delete _filtroBaseByCat.viernes; // forzar recálculo desde los datos de esta persona
+  document.querySelectorAll('#filtro-toggles-viernes .filtro-tog').forEach(b => b.classList.remove('on'));
   rebuildFiltroCat('viernes');
-  rebuildFiltroCat('resto');
+
+  document.getElementById('filtro-viernes-locked').style.display = 'none';
+  document.getElementById('filtro-viernes-unlocked').style.display = 'block';
+  document.getElementById('filtro-trade-with-label').style.display = 'block';
+  document.getElementById('filtro-trade-with-name').textContent = name;
 }
+function onTradeWithInitialSelect() {
+  const name = document.getElementById('filtro-trade-with-select-initial').value;
+  if (!name) return;
+  saveTradeWith(name);
+  loadViernesForTrainer(name);
+}
+function onTradeWithChange() {
+  const name = document.getElementById('filtro-trade-with-select').value;
+  if (!name) return;
+  saveTradeWith(name);
+  loadViernesForTrainer(name);
+  toggleTradeWithDropdown(); // cierra el desplegable tras elegir
+}
+function toggleTradeWithDropdown() {
+  const sel = document.getElementById('filtro-trade-with-select');
+  const isOpen = sel.style.display === 'block';
+  sel.style.display = isOpen ? 'none' : 'block';
+}
+
 function openFiltro() {
-  _filtroTrainer = ST.cur;
   renderFiltroToggles();
-  populateFiltroTrainerSelect();
-  loadFiltroForTrainer();
+
+  // Bloque Resto: siempre con TU propio perfil
+  _objDataResto = buildObjetivoData(ST.cur);
+  delete _filtroBaseByCat.resto;
+  document.querySelectorAll('#filtro-toggles-resto .filtro-tog').forEach(b => b.classList.remove('on'));
+  rebuildFiltroCat('resto');
+
+  // Bloque Viernes: persona guardada en localStorage (si hay)
+  const savedName = getSavedTradeWith();
+  populateTradeWithSelects(savedName);
+  loadViernesForTrainer(savedName);
+
   document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
   document.getElementById('filtro-screen').style.display = 'block';
   document.getElementById('home-menu').style.display = 'none';
@@ -5064,7 +5125,6 @@ function openFiltro() {
 function closeFiltro() {
   openObjetivo();
 }
-
 
 
 function toggleObjInfo() {
