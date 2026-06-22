@@ -334,12 +334,8 @@ body.dark .pp-mission{background:#1e1e1e}
 body.dark .pp-mission-text{color:#ddd}
 .pp-mission-text b{color:#c2185b}
 .pp-spoiler-row{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
-.pp-spoiler-ball{width:34px;height:34px;border-radius:50%;background:#e0e0e0;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;border:2px solid #ccc;position:relative;overflow:hidden}
-.pp-spoiler-ball img{width:28px;height:28px;object-fit:contain;filter:blur(5px);transition:filter .25s}
-.pp-spoiler-ball.revealed img{filter:blur(0)}
-.pp-spoiler-ball.revealed{border-color:#c2185b;background:#fce4ec}
-.pp-spoiler-ball::after{content:'?';position:absolute;font-size:14px;font-weight:800;color:#999;transition:opacity .2s}
-.pp-spoiler-ball.revealed::after{opacity:0}
+.pp-spoiler-ball{width:68px;height:68px;border-radius:50%;background:#fce4ec;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid #c2185b;position:relative;overflow:hidden}
+.pp-spoiler-ball img{width:58px;height:58px;object-fit:contain}
 .pp-pin-btn{flex-shrink:0;width:30px;height:30px;border-radius:50%;border:1.5px solid #ddd;background:#fff;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;color:#bbb}
 .pp-pin-btn.on{background:#c2185b;border-color:#c2185b;color:#fff}
 .pp-empty-pin{font-size:11px;color:#aaa;padding:6px 0 12px}
@@ -434,7 +430,7 @@ body.dark .pp-mission-text{color:#ddd}
           🎁 Poképaradas!
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v87
+          🆕 Novedades · v89
         </button>
       </div>
 
@@ -1014,7 +1010,7 @@ body.dark .pp-mission-text{color:#ddd}
     <button class="back-btn" onclick="closePokeparadas()">←</button>
     <h1>🎁 Poképaradas!</h1>
   </div>
-  <p style="text-align:center;font-size:10.5px;color:#888;padding:10px 14px 0">Temporada: <b style="color:#c2185b">Memories in Motion</b> · toca un sprite para revelarlo · 📌 fija tus misiones favoritas arriba</p>
+  <p style="text-align:center;font-size:10.5px;color:#888;padding:10px 14px 0">Temporada: <b style="color:#c2185b">Memories in Motion</b> · 📌 fija tus misiones favoritas arriba</p>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
     <div class="pp-pinned-section" id="pp-pinned-section" style="display:none">
       <div class="pp-pinned-title">📌 Fijadas</div>
@@ -1031,10 +1027,27 @@ body.dark .pp-mission-text{color:#ddd}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v87</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v89</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v87 · actual</span><span class="nov-version-tag">Filtro Dynamax inteligente</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v89 · actual</span><span class="nov-version-tag">Correcciones</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🔀</span><span>Corregido: el botón "Ranking DPS" en Mis Pokémon ahora respeta si estabas en incursiones o en Dynamax, en lugar de saltar siempre a Dynamax.</span></div>
+        <div class="nov-item"><span>📊</span><span>Corregido: los Pokémon Dynamax en Mis Pokémon ahora se ordenan por daño máximo, no por orden de llegada.</span></div>
+        <div class="nov-item"><span>🖼️</span><span>Poképaradas!: los sprites ya no llevan spoiler, se ven directamente. Bolas el doble de grandes.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v88</span><span class="nov-version-tag">Comerciando con...</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🤝</span><span>El filtro Viernes ahora requiere elegir con quién vas a comerciar antes de mostrarse, con un selector persistente que recuerda tu elección entre sesiones.</span></div>
+        <div class="nov-item"><span>📌</span><span>El bloque Resto de días sigue mostrando siempre tu propio filtro, sin pasos extra.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v87</span><span class="nov-version-tag">Filtro Dynamax inteligente</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>⚡</span><span>El filtro Viernes ahora añade &dynamax automáticamente a las familias con capacidad Dynamax, y el filtro Resto añade &!dynamax para excluirlas. Sin necesidad de etiquetar nada a mano.</span></div>
       </div>
@@ -2990,10 +3003,16 @@ function addFromRanking(id) {
     p.custom[newId]={n:data.n,dps:data.dps||0,img:data.img||'',fast:_ft,charge:_ct,type:type,tags:_tt,isDmax:isDmaxEntry};
   }
   save(); renderAlbum(); renderRanking(); renderMain();
-  // Aviso equipo completo sin Mega (solo incursiones, no dmax)
-  if(!isDmaxEntry) {
-    const newCount=countAlbumForType(p, type);
-    if(newCount===6 && !hasMegaInTeam(p,type)) {
+  // Toast con huecos restantes
+  if(isDmaxEntry){
+    const dmaxNow=Object.keys(p.album).filter(k=>p.album[k]===true&&k.startsWith(type+'-dmax-')).length;
+    const dmaxLeft=6-dmaxNow;
+    showToast(dmaxLeft===0?'⚡ Equipo Dynamax completo ('+dmaxNow+'/6)':'⚡ Añadido · '+dmaxLeft+' hueco'+(dmaxLeft===1?'':'s')+' libre'+(dmaxLeft===1?'':'s')+' ('+dmaxNow+'/6)');
+  } else {
+    const raidNow=countAlbumForType(p, type);
+    const raidLeft=6-raidNow;
+    showToast(raidLeft===0?'⚔️ Equipo completo ('+raidNow+'/6)':'⚔️ Añadido · '+raidLeft+' hueco'+(raidLeft===1?'':'s')+' libre'+(raidLeft===1?'':'s')+' ('+raidNow+'/6)');
+    if(raidNow===6 && !hasMegaInTeam(p,type)) {
       showMegaWarning();
     }
   }
@@ -3112,12 +3131,13 @@ function switchTab(t) {
   document.getElementById('tab-r').className='tab'+(t==='ranking'?' active':'');
   document.getElementById('album-panel').style.display=t==='album'?'':'none';
   document.getElementById('ranking-panel').style.display=t==='ranking'?'':'none';
-  if(t==='ranking' && ST.albumTab==='dmax'){
-    switchRankTab('dmax');
+  // Cada pestaña (Mis Pokémon / Ranking) mantiene su propia subtab (raid/dmax) de forma independiente.
+  // Al entrar, simplemente re-renderizamos la subtab que YA tenía esa pestaña, sin forzar la otra.
+  if(t==='ranking'){
+    if(ST.rankTab==='dmax') switchRankTab('dmax'); else switchRankTab('raid');
   }
-  // Mis Pokémon: mantener subtab dmax si veníamos del ranking dmax
-  if(t==='album' && ST.rankTab==='dmax'){
-    switchAlbumTab('dmax');
+  if(t==='album'){
+    if(ST.albumTab==='dmax') switchAlbumTab('dmax'); else switchAlbumTab('raid');
   }
 }
 function switchAlbumTab(tab) {
@@ -3261,6 +3281,7 @@ function renderAlbumDmax() {
     });
     if(r) slots.push({r, albumId});
   });
+  slots.sort((a,b)=>b.r.dps-a.r.dps); // orden por daño máximo, de mayor a menor
   const maxD=slots.length?Math.max(...slots.map(s=>s.r.dps)):1;
   const dmaxMax=6;
   const emptyDmax=Array(Math.max(0,dmaxMax-slots.length)).fill('<div class="empty-slot"><div class="empty-slot-icon">⚡</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Máx recomendado: 3</div></div>').join('');
@@ -4873,9 +4894,6 @@ function ppSavePinned() {
   p.ppPinned = _ppPinned;
   save();
 }
-function ppToggleSpoiler(el) {
-  el.classList.toggle('revealed');
-}
 function ppTogglePin(missionId) {
   _ppPinned[missionId] = !_ppPinned[missionId];
   ppSavePinned();
@@ -4884,13 +4902,13 @@ function ppTogglePin(missionId) {
 function ppMegaBall(name) {
   const id = megaIdByName ? megaIdByName(name) : null;
   const img = id ? megaArt(id) : '';
-  return `<div class="pp-spoiler-ball revealed" style="border-color:#7b1fa2;background:#f3e5f5" title="${name} Mega Energy"><img src="${img}" onerror="this.style.opacity=.1"></div>`;
+  return `<div class="pp-spoiler-ball" style="border-color:#7b1fa2;background:#f3e5f5" title="${name} Mega Energy"><img src="${img}" onerror="this.style.opacity=.1"></div>`;
 }
 function ppMissionHtml(m, pinned) {
   const balls = (m.pkm||[]).map(name => {
     const id = NAME_TO_ID && NAME_TO_ID[name] ? NAME_TO_ID[name] : null;
     const img = id ? 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + id + '.png' : '';
-    return `<div class="pp-spoiler-ball" onclick="ppToggleSpoiler(this)"><img src="${img}" onerror="this.style.opacity=.1"></div>`;
+    return `<div class="pp-spoiler-ball"><img src="${img}" onerror="this.style.opacity=.1"></div>`;
   }).join('');
   const megaBalls = (m.mega||[]).map(name => ppMegaBall(name)).join('');
   const megaLabel = (m.mega && m.mega.length) ? `<div style="font-size:9px;color:#7b1fa2;font-weight:700;margin-top:4px">✨ Posible Megaenergía:</div>` : '';
