@@ -418,19 +418,19 @@ body.dark .pp-mission-text{color:#ddd}
           ℹ️ Info
         </button>
         <button class="home-btn-small" onclick="openObjetivo()" style="grid-column:1/-1;background:#fff3e0;border-color:#FF6F00;color:#E65100">
-          🎯 Pokémons Wanted
+          🎯 Pokémon Objetivo
         </button>
         <button class="home-btn-small" onclick="openDiarias()" style="grid-column:1/-1;background:#e8f5e9;border-color:#2e7d32;color:#1b5e20">
           📋 Diarias
         </button>
         <button class="home-btn-small" onclick="openLegacy()" style="grid-column:1/-1;background:#e0f2f1;border-color:#00838f;color:#00695c">
-          ⭐ Legacy info
+          ⭐ Ataques Legacy
         </button>
         <button class="home-btn-small" onclick="openPokeparadas()" style="grid-column:1/-1;background:#fce4ec;border-color:#c2185b;color:#880e4f">
-          🗽 Poképaradas!
+          🎁 Poképaradas!
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v89
+          🆕 Novedades · v90
         </button>
       </div>
 
@@ -1027,10 +1027,19 @@ body.dark .pp-mission-text{color:#ddd}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v89</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v90</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v89 · actual</span><span class="nov-version-tag">Correcciones</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v90 · actual</span><span class="nov-version-tag">XL restantes y toast</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>⭐</span><span>Pokémon Objetivo: cada tarjeta ahora muestra los XL restantes que necesitas (teniendo en cuenta los que ya tienes marcados en la barra). Si ya los tienes todos, muestra ✓.</span></div>
+        <div class="nov-item"><span>📋</span><span>El popup de cada Pokémon ahora muestra "Necesarios: X" tanto para caramelos normales como para XL, en color rojo o verde según si ya los tienes todos.</span></div>
+        <div class="nov-item"><span>🔔</span><span>Al añadir un Pokémon desde los rankings aparece un toast con los huecos restantes del equipo (ej. "⚔️ Añadido · 3 huecos libres (3/6)").</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v89</span><span class="nov-version-tag">Correcciones</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🔀</span><span>Corregido: el botón "Ranking DPS" en Mis Pokémon ahora respeta si estabas en incursiones o en Dynamax, en lugar de saltar siempre a Dynamax.</span></div>
         <div class="nov-item"><span>📊</span><span>Corregido: los Pokémon Dynamax en Mis Pokémon ahora se ordenan por daño máximo, no por orden de llegada.</span></div>
@@ -5173,15 +5182,18 @@ function openObjetivo() {
           '</div>';
       }
       const badge = d.count > 1 ? '<div class="obj-badge">x' + d.count + '</div>' : '';
-      const tcColor = d.tradeCategory === 'viernes' ? '#1565c0' : '#789';
-      const tcLabel = d.tradeCategory === 'viernes' ? '⭐ Viernes' : '📅 Resto';
-      const tcTag = '<div style="position:absolute;bottom:2px;left:2px;right:2px;font-size:7.5px;font-weight:700;color:#fff;background:'+tcColor+';border-radius:5px;padding:1px 2px;text-align:center">'+tcLabel+'</div>';
-      return '<div class="obj-card" onclick="openObjPopup(' + i + ')" style="cursor:pointer;position:relative;padding-bottom:14px">' + badge + tcTag +
+      const p_obj = window._ST_CUR_PROFILE;
+      const prog_obj = (p_obj && p_obj.candyProgress && p_obj.candyProgress[d.id]) || {c:0, xl:0};
+      const xlRemaining = Math.max(0, d.totalXL - prog_obj.xl);
+      const xlColor = xlRemaining === 0 ? '#43a047' : '#e65100';
+      const xlTag = '<div style="position:absolute;bottom:2px;left:2px;right:2px;font-size:7.5px;font-weight:700;color:#fff;background:'+xlColor+';border-radius:5px;padding:1px 2px;text-align:center">'+(xlRemaining===0?'✓ XL':'⭐'+xlRemaining+' XL')+'</div>';
+      return '<div class="obj-card" onclick="openObjPopup(' + i + ')" style="cursor:pointer;position:relative;padding-bottom:14px">' + badge + xlTag +
         '<img class="obj-img" src="' + imgUrl + '" alt="' + d.n + '" onerror="this.style.opacity=.2">' +
         '<div class="obj-name">' + d.n + '</div>' +
         '</div>';
     }).join('');
     window._objData = data;
+    window._ST_CUR_PROFILE = gp(ST.cur); // snapshot for grid render (XL remaining badge)
   }
   // Show screen and scroll to top
   document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
@@ -5264,15 +5276,23 @@ function openObjPopup(idx) {
 
   const barsBox = document.getElementById('obj-popup-bars');
   if (barsBox) {
+    const xlNeeded = Math.max(0, d.totalXL - prog.xl);
+    const cNeeded  = Math.max(0, d.totalC  - prog.c);
+    const xlColor  = xlNeeded === 0 ? '#43a047' : '#e65100';
+    const cColor   = cNeeded  === 0 ? '#43a047' : '#CC0000';
     barsBox.innerHTML = `
       <div style="margin-top:10px;padding:10px;background:#f5f5f5;border-radius:10px">
-        <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:#444;margin-bottom:3px">
-          <span>🍬 Caramelos que tengo</span><span id="obj-bar-c-val">${prog.c} / ${d.totalC}</span>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:11px;font-weight:700;color:#444">🍬 Caramelos que tengo</span>
+          <span style="font-size:10px;font-weight:700;color:${cColor}">Necesarios: ${cNeeded}</span>
         </div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:#999;margin-bottom:2px"><span>0</span><span id="obj-bar-c-val">${prog.c} / ${d.totalC}</span></div>
         <input type="range" min="0" max="${d.totalC}" value="${prog.c}" oninput="updateCandyProgress('${d.id}','c',this.value)" style="width:100%;accent-color:#CC0000">
-        <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:#444;margin:8px 0 3px">
-          <span>⭐ XL que tengo</span><span id="obj-bar-xl-val">${prog.xl} / ${d.totalXL}</span>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0 6px">
+          <span style="font-size:11px;font-weight:700;color:#444">⭐ XL que tengo</span>
+          <span style="font-size:10px;font-weight:700;color:${xlColor}">Necesarios: ${xlNeeded}</span>
         </div>
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:#999;margin-bottom:2px"><span>0</span><span id="obj-bar-xl-val">${prog.xl} / ${d.totalXL}</span></div>
         <input type="range" min="0" max="${d.totalXL}" value="${prog.xl}" oninput="updateCandyProgress('${d.id}','xl',this.value)" style="width:100%;accent-color:#FF9800">
       </div>`;
   }
