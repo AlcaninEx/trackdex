@@ -25,6 +25,32 @@ window.renderBadges = renderBadges;
 window.si = si;
 window.SP = SP;
 
+// Helper function for renderProfiles
+function countOwnedDesired(p) {
+  if (!p || !p.album || !p.pk) return { owned: 0, total: 0 };
+  let owned = 0, total = 0;
+  for (const id in p.album) {
+    if (p.album[id] !== true) continue;
+    if (id.includes('-dmax-')) continue;
+    total++;
+    if (p.pk[id] && p.pk[id].owned) owned++;
+  }
+  return { owned, total };
+}
+
+export function renderProfiles() {
+  const el = document.getElementById('profiles-list');
+  if (!ST.profiles.length) {
+    el.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px">Añade tu primer entrenador abajo</p>';
+    return;
+  }
+  el.innerHTML = ST.profiles.map((p, i) => {
+    const ini = p.name.substring(0, 2).toUpperCase();
+    const { owned, total } = countOwnedDesired(p);
+    return `<div class="profile-row"><div class="avatar">${ini}</div><div class="profile-info" onclick="selProfileIdx(${i})"><div class="profile-name">${p.name}</div><div class="profile-stat">${owned}/${total} Pokémon deseados obtenidos</div></div><div class="profile-actions"><button class="view-btn" onclick="viewProfileIdx(${i})">Ver</button></div></div>`;
+  }).join('');
+}
+
 // Profile functions
 export function addProfile() {
   const inp = document.getElementById('new-name');
