@@ -221,6 +221,16 @@ export async function fbSaveUserProfile(communityId, userId, data) {
   }
 }
 
+export async function fbDeleteUserProfile(communityId, userId) {
+  try {
+    const col = getUserProfilesCol(communityId);
+    await deleteDoc(doc(col, userId));
+  } catch (e) {
+    console.warn('Firebase delete user profile error:', e.code);
+    throw e;
+  }
+}
+
 export function fbSubscribeUserProfile(communityId, userId, callback) {
   const col = getUserProfilesCol(communityId);
   const docRef = doc(col, userId);
