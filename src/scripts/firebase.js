@@ -136,13 +136,19 @@ export async function fbLoadCommunityMembers(communityId) {
     joinedAt: data.joinedAt,
     isOwner: data.isOwner || false
   }));
-}
-
 export async function fbDeleteMember(communityId, userId) {
   const community = await fbLoadCommunity(communityId);
   if (!community?.members?.[userId]) return;
   
   delete community.members[userId];
+  await fbSaveCommunity(communityId, community);
+}
+
+export async function fbUpdateMember(communityId, userId, data) {
+  const community = await fbLoadCommunity(communityId);
+  if (!community?.members?.[userId]) return;
+  
+  community.members[userId] = { ...community.members[userId], ...data };
   await fbSaveCommunity(communityId, community);
 }
 
