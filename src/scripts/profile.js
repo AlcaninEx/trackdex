@@ -38,30 +38,118 @@ function countOwnedDesired(p) {
   return { owned, total };
 }
 
+// ============ PROFILE STATES & RENDERING ============
+
 export function renderProfiles() {
   const el = document.getElementById('profiles-list');
+  if (!el) return;
+  
   if (!ST.profiles.length) {
-    el.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px">Añade tu primer entrenador abajo</p>';
+    // Empty state handled by showOnboardingState()
+    el.innerHTML = '';
     return;
   }
+  
   el.innerHTML = ST.profiles.map((p, i) => {
     const ini = p.name.substring(0, 2).toUpperCase();
     const { owned, total } = countOwnedDesired(p);
-    return `<div class="profile-row"><div class="avatar">${ini}</div><div class="profile-info" onclick="selProfileIdx(${i})"><div class="profile-name">${p.name}</div><div class="profile-stat">${owned}/${total} Pokémon deseados obtenidos</div></div><div class="profile-actions"><button class="view-btn" onclick="viewProfileIdx(${i})">Ver</button></div></div>`;
+    const hasData = (p.pk && Object.keys(p.pk).length > 0) || (p.album && Object.keys(p.album).length > 0);
+    return `
+      <li class="profile-row" role="listitem">
+        <div class="avatar" aria-hidden="true">${ini}</div>
+        <div class="profile-info" onclick="selProfileIdx(${i})" role="button" tabindex="0" onkeydown="event.key==='Enter'&&selProfileIdx(${i})">
+          <div class="profile-name">${p.name}</div>
+          <div class="profile-stat">${owned}/${total} Pokémon deseados obtenidos${hasData ? ' · Datos guardados' : ' · Nuevo'}</div>
+        </div>
+        <div class="profile-actions">
+          <button class="view-btn" onclick="viewProfileIdx(${i})" aria-label="Ver perfil de ${p.name}">Ver</button>
+          <button class="del-btn" onclick="delProfileIdx(${i}, event)" aria-label="Eliminar ${p.name}" title="Eliminar">✕</button>
+        </div>
+      </li>
+    `;
   }).join('');
 }
 
-// Profile functions
-export function addProfile() {
+export function updateProfileCount() {
+  const el = document.getElementById('profiles-count');
+  if (el) {
+    const count = ST.profiles.length;
+    el.textContent = count === 1 ? '1 entrenador' : `${count} entrenadores`;
+  }
+}
+
+// ============ STATE MANAGEMENT ============
+
+export function showOnboardingState() {
+  document.getElementById('onboarding-state').style.display = 'block';
+  document.getElementById('profiles-state').style.display = 'none';
+  document.getElementById('home-menu').style.display = 'none';
+  document.getElementById('home-profile-section').style.display = 'block';
+  document.getElementById('trainer-name-bar').textContent = 'Selecciona tu entrenador';
+  updateProfileCount();
+}
+
+export function showProfilesState() {
+  document.getElementById('onboarding-state').style.display = 'none';
+  document.getElementById('profiles-state').style.display = 'block';
+  document.getElementById('home-menu').style.display = 'none';
+  document.getElementById('home-profile-section').style.display = 'block';
+  document.getElementById('trainer-name-bar').textContent = 'Selecciona tu entrenador';
+  renderProfiles();
+  updateProfileCount();
+}
+
+export function showHomeMenu() {
+  document.getElementById('onboarding-state').style.display = 'none';
+  document.getElementById('profiles-state').style.display = 'none';
+  document.getElementById('home-menu').style.display = 'block';
+  document.getElementById('home-profile-section').style.display = 'none';
+  document.getElementById('trainer-name-bar').textContent = '👋 ' + ST.cur;
+}
+
+// ============ PROFILE ACTIONS ============
+
+export function createFirstProfile() {
+  const inp = document.getElementById('onboarding-name');
+  const name = inp.value.trim();
+  if (!name) { showToast('Escribe tu nombre 👤'); inp.focus(); return; }
+  if (ST.profiles.find(p => p.name === name)) { showToast('Ya existe ese perfil 👤'); return; }
+  
+  goc(name);
+  inp.value = '';
+  import('./firebase.js').then(({ fbSave }) => fbSave(name, { pk: {}, album: null, custom: null }));
+  save();
+  showToast(`¡Bienvenido, ${name}! 🎉`);
+  showHomeMenu();
+  updateHomeMenu();
+}
+
+export function addProfile(e) {
+  if (e) e.preventDefault();
   const inp = document.getElementById('new-name');
   const n = inp.value.trim();
   if (!n) return;
   if (ST.profiles.find(p => p.name === n)) { showToast('Ya existe ese perfil 👤'); return; }
   goc(n);
   inp.value = '';
+  hideAddProfileForm();
   import('./firebase.js').then(({ fbSave }) => fbSave(n, { pk: {}, album: null, custom: null }));
   save();
   renderProfiles();
+  updateProfileCount();
+  showToast(`Perfil "${n}" creado 👤`);
+}
+
+export function showAddProfileForm() {
+  document.querySelector('.btn-add-profile').style.display = 'none';
+  document.getElementById('add-profile-form').style.display = 'block';
+  document.getElementById('new-name').focus();
+}
+
+export function hideAddProfileForm() {
+  document.querySelector('.btn-add-profile').style.display = 'flex';
+  document.getElementById('add-profile-form').style.display = 'none';
+  document.getElementById('new-name').value = '';
 }
 
 export function delProfile(n, e) { 
@@ -70,7 +158,19 @@ export function delProfile(n, e) {
   ST.profiles = ST.profiles.filter(p => p.name !== n); 
   import('./firebase.js').then(({ fbDelete }) => fbDelete(n)); 
   save(); 
-  renderProfiles(); 
+  renderProfiles();
+  updateProfileCount();
+  showToast('Perfil eliminado 🗑️');
+  
+  // If no profiles left, show onboarding
+  if (!ST.profiles.length) {
+    showOnboardingState();
+  }
+}
+
+export function delProfileIdx(i, e) { 
+  const p = ST.profiles[i]; 
+  if (p) delProfile(p.name, e); 
 }
 
 export function selProfileIdx(i) {
@@ -78,9 +178,9 @@ export function selProfileIdx(i) {
   if (!p) return;
   ST.cur = p.name;
   ST.view = null;
+  showHomeMenu();
+  document.getElementById('home-menu').style.display = 'block';
   document.getElementById('home-profile-section').style.display = 'none';
-  const menu = document.getElementById('home-menu');
-  menu.style.display = 'block';
   document.getElementById('trainer-name-bar').textContent = '👋 ' + p.name;
   updateHomeMenu();
 }
@@ -94,11 +194,6 @@ export function viewProfileIdx(i) {
   renderMain();
 }
 
-export function delProfileIdx(i, e) { 
-  const p = ST.profiles[i]; 
-  if (p) delProfile(p.name, e); 
-}
-
 export function goProfiles() {
   ST.cur = null;
   ST.view = null;
@@ -106,7 +201,12 @@ export function goProfiles() {
   document.getElementById('home-menu').style.display = 'none';
   document.getElementById('home-profile-section').style.display = '';
   document.getElementById('trainer-name-bar').textContent = 'Selecciona tu entrenador';
-  renderProfiles();
+  
+  if (ST.profiles.length === 0) {
+    showOnboardingState();
+  } else {
+    showProfilesState();
+  }
 }
 
 export function goToTypes() {
@@ -147,6 +247,20 @@ export function goBack() {
   renderMain(); 
 }
 
+export function updateHomeMenu() {
+  // Update progress bars in home menu
+  const p = ST.profiles.find(x => x.name === ST.cur);
+  if (!p) return;
+  
+  const raidOwned = Object.values(p.pk || {}).filter(x => x.owned && !x.dmax).length;
+  const dmaxOwned = Object.values(p.pk || {}).filter(x => x.dmax).length;
+  
+  document.getElementById('hm-raid-count').textContent = raidOwned;
+  document.getElementById('hm-raid-bar').style.width = Math.min(100, (raidOwned / 102) * 100) + '%';
+  document.getElementById('hm-dmax-count').textContent = dmaxOwned;
+  document.getElementById('hm-dmax-bar').style.width = Math.min(100, (dmaxOwned / 51) * 100) + '%';
+}
+
 // Make functions globally available for inline onclick handlers
 window.addProfile = addProfile;
 window.delProfile = delProfile;
@@ -158,3 +272,6 @@ window.goToTypes = goToTypes;
 window.goToFireRanking = goToFireRanking;
 window.backToHome = backToHome;
 window.goBack = goBack;
+window.showAddProfileForm = showAddProfileForm;
+window.hideAddProfileForm = hideAddProfileForm;
+window.createFirstProfile = createFirstProfile;

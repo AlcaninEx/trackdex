@@ -29,57 +29,122 @@
 
 <div id="app">
 
-<!-- PROFILE -->
+<!-- PROFILE / ONBOARDING -->
 <div id="profile-screen" class="screen">
   <div id="profile-screen-inner">
-    <div style="background:#CC0000;padding:16px;display:flex;align-items:center;gap:12px">
-      <svg width="36" height="36" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#CC0000" stroke="white" stroke-width="3"/><rect x="2" y="29" width="60" height="6" fill="white"/><circle cx="32" cy="32" r="10" fill="white" stroke="#CC0000" stroke-width="3"/><circle cx="32" cy="32" r="5" fill="#CC0000" stroke="white" stroke-width="2"/></svg>
-      <div style="flex:1">
-        <div style="color:#fff;font-size:20px;font-weight:800">PokeBestBCN</div>
-        <div style="color:rgba(255,255,255,.8);font-size:12px;cursor:pointer;text-decoration:underline" id="trainer-name-bar" onclick="openPerfilScreen()">Selecciona tu entrenador</div>
+
+    <!-- LOGO HEADER (always visible) -->
+    <header class="profile-header">
+      <svg class="profile-logo" width="40" height="40" viewBox="0 0 64 64" fill="none">
+        <circle cx="32" cy="32" r="30" fill="#CC0000" stroke="white" stroke-width="3"/>
+        <rect x="2" y="29" width="60" height="6" fill="white"/>
+        <circle cx="32" cy="32" r="10" fill="white" stroke="#CC0000" stroke-width="3"/>
+        <circle cx="32" cy="32" r="5" fill="#CC0000" stroke="white" stroke-width="2"/>
+      </svg>
+      <div class="profile-title">
+        <h1>PokeBestBCN</h1>
+        <p id="trainer-name-bar" class="trainer-name">Selecciona tu entrenador</p>
       </div>
-      <button onclick="toggleDark()" id="dark-btn-home" style="background:none;border:none;cursor:pointer;font-size:22px;padding:4px" title="Modo oscuro">🌙</button>
-      <button onclick="goProfiles()" style="background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);border-radius:50%;width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0" title="Cambiar usuario">
+      <button class="icon-btn" onclick="toggleDark()" id="dark-btn-home" title="Modo oscuro" aria-label="Modo oscuro">🌙</button>
+      <button class="icon-btn" onclick="goProfiles()" title="Cambiar usuario" aria-label="Cambiar usuario">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
       </button>
-    </div>
+    </header>
 
-    <div id="home-profile-section" style="padding:12px 12px 0">
-      <p id="status-msg" style="text-align:center;font-size:12px;color:#888;min-height:16px;margin-bottom:6px"></p>
-      <div class="profiles-list" id="profiles-list"></div>
-    </div>
+    <!-- ONBOARDING STATE (empty state for new users) -->
+    <section id="onboarding-state" class="profile-state" style="display: none;">
+      <div class="onboarding-card">
+        <div class="onboarding-icon">👋</div>
+        <h2>¡Bienvenido a PokeBestBCN!</h2>
+        <p>Tu álbum personal de los mejores atacantes para Incursiones y Dynamax en Pokémon GO.</p>
+        
+        <ul class="onboarding-features">
+          <li><span>⚔️</span> <strong>Rankings DPS</strong> — Top 50 por tipo con datos reales de Dittobase</li>
+          <li><span>⚡</span> <strong>Equipos Dynamax</strong> — 51 Pokémon con stats de Max Battles</li>
+          <li><span>🍬</span> <strong>Guía Megaenergía</strong> — Rotaciones, misiones, Mega Buddy</li>
+          <li><span>⭐</span> <strong>Legacy & Diarias</strong> — Ataques legacy, tareas diarias, Poképaradas</li>
+          <li><span>🎯</span> <strong>Pokémon Objetivo</strong> — Filtros para copiar a Pokémon GO</li>
+          <li><span>☁️</span> <strong>Sync en la nube</strong> — Firebase + localStorage, multi-dispositivo</li>
+        </ul>
 
-    <div id="home-menu" style="display:none;padding:12px;display:none">
-      <button onclick="goToFireRanking()" style="width:100%;margin-top:10px;background:linear-gradient(135deg,#7B1FA2,#AB47BC);color:#fff;border:none;border-radius:14px;padding:14px 16px;cursor:pointer;text-align:center;box-shadow:0 4px 12px rgba(123,31,162,.35);transition:transform .1s;display:flex;align-items:center;justify-content:center;gap:10px;font-size:16px;font-weight:800" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''">
-        <span style="font-size:22px">&#x1F451;</span>
-        <span>Rankings DPS</span>
-        <span style="font-size:12px;font-weight:600;opacity:.85;background:rgba(255,255,255,.2);border-radius:20px;padding:2px 10px">Top 50 por tipo</span>
+        <div class="onboarding-cta">
+          <input type="text" id="onboarding-name" placeholder="Tu nombre de entrenador" maxlength="20" autocomplete="off" aria-label="Nombre de entrenador">
+          <button class="btn-primary btn-lg" onclick="createFirstProfile()">Empezar mi álbum</button>
+        </div>
+        
+        <p class="onboarding-hint">Tus datos se guardan en la nube (Firebase) y en tu dispositivo. Funciona offline.</p>
+      </div>
+    </section>
+
+    <!-- PROFILES LIST STATE (existing users) -->
+    <section id="profiles-state" class="profile-state" style="display: none;">
+      <div class="profiles-header">
+        <h2>Tus entrenadores</h2>
+        <span id="profiles-count" class="profiles-count">0 entrenadores</span>
+      </div>
+
+      <p id="status-msg" class="status-msg" aria-live="polite"></p>
+      
+      <ul class="profiles-list" id="profiles-list" role="list"></ul>
+
+      <div class="add-profile-section">
+        <button class="btn-secondary btn-add-profile" onclick="showAddProfileForm()">
+          <span class="btn-icon">+</span> Añadir entrenador
+        </button>
+        
+        <form id="add-profile-form" class="add-profile-form" style="display: none;" onsubmit="addProfile(event)">
+          <input type="text" id="new-name" placeholder="Nombre del nuevo entrenador" maxlength="20" required autocomplete="off" aria-label="Nombre del nuevo entrenador">
+          <div class="form-actions">
+            <button type="button" class="btn-ghost" onclick="hideAddProfileForm()">Cancelar</button>
+            <button type="submit" class="btn-primary">Crear</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- HOME MENU (after profile selected) -->
+    <section id="home-menu" class="home-menu" style="display: none;">
+      <button class="home-btn-big" onclick="goToFireRanking()">
+        <span class="home-btn-icon">💎</span>
+        <div class="home-btn-text">
+          <strong>Rankings DPS</strong>
+          <span>Top 50 por tipo · Datos Dittobase</span>
+        </div>
       </button>
 
-      <button class="home-btn-big" style="margin-top:10px" onclick="goToTypes()">
-        <div style="font-size:18px;font-weight:800">⚔️ Equipos por Tipos</div>
-        <div style="font-size:13px;opacity:.85;margin-top:6px"><span id="hm-raid-count">0</span>/102 Pokémon Incursiones</div>
-        <div class="home-prog-bar"><div class="home-prog-fill" id="hm-raid-bar" style="width:0%"></div></div>
-        <div style="font-size:12px;opacity:.75;margin-top:6px"><span id="hm-dmax-count">0</span>/51 Pokémon Dynamax</div>
-        <div class="home-prog-bar" style="background:rgba(255,255,255,.2)"><div class="home-prog-fill" style="width:0%;background:rgba(255,255,255,.7)" id="hm-dmax-bar"></div></div>
+      <button class="home-btn-big" onclick="goToTypes()">
+        <div class="home-btn-icon">⚔️</div>
+        <div class="home-btn-text">
+          <strong>Equipos por Tipos</strong>
+          <div class="home-progress-row">
+            <span id="hm-raid-count">0</span>/102 Incursiones
+            <div class="home-prog-bar"><div class="home-prog-fill" id="hm-raid-bar" style="width:0%"></div></div>
+          </div>
+          <div class="home-progress-row">
+            <span id="hm-dmax-count">0</span>/51 Dynamax
+            <div class="home-prog-bar"><div class="home-prog-fill" id="hm-dmax-bar" style="width:0%"></div></div>
+          </div>
+        </div>
       </button>
 
-      <button class="home-btn-small" style="width:100%;margin-top:10px;font-size:15px" onclick="showTypeChart()">🔥 Eficacia de Tipos (Calculadora)</button>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+      <button class="home-btn-secondary" onclick="showTypeChart()">🔥 Eficacia de Tipos (Calculadora)</button>
+      
+      <div class="home-grid">
         <button class="home-btn-small" onclick="showMegaCandy()">🍬 Guía Megaenergía</button>
         <button class="home-btn-small" onclick="showLegacyGuide()">⭐ Guía Pokémon Legacy</button>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
-        <button class="home-btn-small" onclick="openGuia()">📖 Guía</button>
-        <button class="home-btn-small" onclick="openInfo()">ℹ️ Info</button>
-        <button class="home-btn-small" onclick="openObjetivo()" style="grid-column:1/-1;background:#fff3e0;border-color:#FF6F00;color:#E65100">🎯 Pokémon Objetivo</button>
-        <button class="home-btn-small" onclick="openDiarias()" style="grid-column:1/-1;background:#e8f5e9;border-color:#2e7d32;color:#1b5e20">📋 Diarias</button>
-        <button class="home-btn-small" onclick="openLegacy()" style="grid-column:1/-1;background:#e0f2f1;border-color:#00838f;color:#00695c">⭐ Ataques Legacy</button>
-        <button class="home-btn-small" onclick="openPokeparadas()" style="grid-column:1/-1;background:#fce4ec;border-color:#c2185b;color:#880e4f">🎁 Poképaradas!</button>
-        <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">🆕 Novedades · v93</button>
+      <div class="home-grid">
+        <button class="home-btn-small" onclick="openGuia()">📖 Guía completa</button>
+        <button class="home-btn-small" onclick="openInfo()">ℹ️ Info app</button>
+        <button class="home-btn-small home-btn-accent" onclick="openObjetivo()">🎯 Pokémon Objetivo</button>
+        <button class="home-btn-small home-btn-success" onclick="openDiarias()">📋 Diarias</button>
+        <button class="home-btn-small home-btn-info" onclick="openLegacy()">⭐ Ataques Legacy</button>
+        <button class="home-btn-small home-btn-pink" onclick="openPokeparadas()">🎁 Poképaradas!</button>
+        <button class="home-btn-small home-btn-purple" onclick="openNovedades()">🆕 Novedades · v93</button>
       </div>
-    </div>
+    </section>
+
   </div>
 </div>
 

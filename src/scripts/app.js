@@ -1,8 +1,8 @@
 // Main App entry point - exports init function for main.js to call
 import { loadAllData } from './data-loader.js';
 import { loadFromFirebase, load } from './storage.js';
-import { renderProfiles } from './profile.js';
-import { show } from './helpers.js';
+import { renderProfiles, showOnboardingState, showProfilesState, showHomeMenu } from './profile.js';
+import { show, ST } from './helpers.js';
 
 // Initialize dark mode from localStorage
 if (localStorage.getItem('darkMode') === '1') {
@@ -35,14 +35,23 @@ export async function init() {
       load(); // fallback to localStorage
     }
     
-    renderProfiles();
+    // Show appropriate state based on profiles
+    if (ST.profiles.length === 0) {
+      showOnboardingState();
+    } else {
+      showProfilesState();
+    }
     show('profile-screen');
     window.scrollTo(0, 0);
   } catch (e) {
     console.error('Boot error:', e);
     // Fallback to localStorage
     load();
-    renderProfiles();
+    if (ST.profiles.length === 0) {
+      showOnboardingState();
+    } else {
+      showProfilesState();
+    }
     show('profile-screen');
     window.scrollTo(0, 0);
   }

@@ -2,6 +2,8 @@
 export const SP = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
 export const si = n => SP + n + '.png';
 
+export { ST } from './state.js';
+
 export const TYPE_EFF = {
   normal:   {rock:0.625,ghost:0.390625,steel:0.625},
   fire:     {fire:0.625,water:0.625,grass:1.6,ice:1.6,bug:1.6,rock:0.625,dragon:0.625,steel:1.6},
