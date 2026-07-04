@@ -1,0 +1,23 @@
+new Set([
+  "bulbasaur","ivysaur","venusaur","charmander","charmeleon","charizard",
+  "squirtle","wartortle","blastoise","caterpie","metapod","butterfree",
+  "meowth","growlithe","arcanine","abra","kadabra","alakazam",
+  "machop","machoke","machamp","gastly","haunter","gengar",
+  "krabby","kingler","hitmonlee","hitmonchan","chansey","lapras",
+  "eevee","vaporeon","jolteon","flareon","omanyte","omastar",
+  "kabuto","kabutops","snorlax","articuno","zapdos","moltres",
+  "espeon","umbreon","shuckle","hitmontop","blissey",
+  "raikou","entei","suicune","lugia","ho-oh",
+  "ralts","kirlia","gardevoir","sableye","wailmer","wailord",
+  "spheal","sealeo","walrein","beldum","metang","metagross",
+  "regirock","regice","registeel","latias","latios",
+  "leafeon","glaceon","gallade",
+  "pidove","tranquill","unfezant","roggenrola","boldore","gigalith",
+  "woobat","swoobat","drilbur","excadrill","darumaka","darmanitan",
+  "trubbish","garbodor","cryogonal","inkay","malamar",
+  "sylveon","bounsweet","steenee","tsareena","passimian","drampa",
+  "grookey","thwackey","rillaboom","scorbunny","raboot","cinderace",
+  "sobble","drizzile","inteleon","skwovet","greedent",
+  "rookidee","corvisquire","corviknight","wooloo","dubwool",
+  "toxtricity","hatenna","hattrem","hatterene","grimmsnarl","falinks","duraludon"
+])

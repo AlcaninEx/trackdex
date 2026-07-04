@@ -1,0 +1,482 @@
+{
+  "f-mega-lucario-l": [
+    236,
+    144,
+    172
+  ],
+  "f-mega-lucario": [
+    236,
+    144,
+    172
+  ],
+  "f-mega-blaziken": [
+    239,
+    141,
+    190
+  ],
+  "f-shd-blaziken": [
+    239,
+    141,
+    190
+  ],
+  "f-shd-conkeldurr": [
+    243,
+    158,
+    233
+  ],
+  "f-shd-machamp": [
+    234,
+    159,
+    207
+  ],
+  "v-shd-toucan-l": [
+    200,
+    164,
+    198
+  ],
+  "v-shd-starap-l": [
+    234,
+    140,
+    198
+  ],
+  "v-mega-pidgeot-l": [
+    166,
+    154,
+    186
+  ],
+  "v-shd-starap": [
+    234,
+    140,
+    198
+  ],
+  "v-mega-pidgeot": [
+    166,
+    154,
+    186
+  ],
+  "v-braviary": [
+    232,
+    152,
+    198
+  ],
+  "p-mega-beedrill": [
+    169,
+    130,
+    163
+  ],
+  "p-shd-overqwil": [
+    175,
+    179,
+    190
+  ],
+  "p-mega-victreebel": [
+    207,
+    135,
+    190
+  ],
+  "g-mega-garc-l": [
+    261,
+    193,
+    239
+  ],
+  "g-shd-garc-l": [
+    261,
+    193,
+    239
+  ],
+  "g-mega-garc": [
+    261,
+    193,
+    239
+  ],
+  "g-shd-excadrill": [
+    255,
+    129,
+    242
+  ],
+  "g-shd-rhyperior": [
+    241,
+    190,
+    251
+  ],
+  "g-shd-mamoswin": [
+    247,
+    146,
+    242
+  ],
+  "r-mega-diancie": [
+    190,
+    285,
+    137
+  ],
+  "r-shd-rhyp-l": [
+    241,
+    190,
+    251
+  ],
+  "r-mega-tyran-l": [
+    251,
+    207,
+    225
+  ],
+  "r-rampardos": [
+    295,
+    109,
+    181
+  ],
+  "b-mega-pinsir": [
+    238,
+    197,
+    163
+  ],
+  "b-mega-scizor": [
+    236,
+    191,
+    172
+  ],
+  "b-shd-vikavolt": [
+    254,
+    155,
+    163
+  ],
+  "b-mega-beed-l": [
+    169,
+    130,
+    163
+  ],
+  "b-mega-beed": [
+    169,
+    130,
+    163
+  ],
+  "gh-mega-geng-l": [
+    261,
+    149,
+    155
+  ],
+  "gh-mega-geng": [
+    261,
+    149,
+    155
+  ],
+  "gh-mega-bane": [
+    218,
+    127,
+    162
+  ],
+  "gh-shd-chand": [
+    271,
+    182,
+    155
+  ],
+  "gh-dragapult": [
+    275,
+    175,
+    188
+  ],
+  "gh-chandelure": [
+    271,
+    182,
+    155
+  ],
+  "st-mega-meta-l": [
+    257,
+    228,
+    190
+  ],
+  "st-shd-meta-l": [
+    257,
+    228,
+    190
+  ],
+  "st-mega-lucar": [
+    236,
+    144,
+    172
+  ],
+  "st-shd-excad": [
+    255,
+    129,
+    242
+  ],
+  "st-mega-meta": [
+    257,
+    228,
+    190
+  ],
+  "st-mega-aggron": [
+    198,
+    257,
+    172
+  ],
+  "fi-mega-blaz-l": [
+    239,
+    141,
+    190
+  ],
+  "fi-mega-char-y-l": [
+    223,
+    173,
+    186
+  ],
+  "fi-mega-blaz": [
+    239,
+    141,
+    190
+  ],
+  "fi-mega-char-y": [
+    223,
+    173,
+    186
+  ],
+  "fi-shd-chand": [
+    271,
+    182,
+    155
+  ],
+  "fi-shd-darman": [
+    263,
+    128,
+    233
+  ],
+  "wa-mega-swamp-l": [
+    208,
+    175,
+    225
+  ],
+  "wa-mega-blast-l": [
+    171,
+    207,
+    188
+  ],
+  "wa-mega-gyara": [
+    237,
+    186,
+    216
+  ],
+  "wa-shd-kingler": [
+    240,
+    143,
+    163
+  ],
+  "wa-mega-swamp": [
+    208,
+    175,
+    225
+  ],
+  "wa-mega-blast": [
+    171,
+    207,
+    188
+  ],
+  "gr-mega-scept-l": [
+    223,
+    169,
+    172
+  ],
+  "gr-mega-scept": [
+    223,
+    169,
+    172
+  ],
+  "gr-shaymin": [
+    261,
+    166,
+    176
+  ],
+  "gr-mega-venu-l": [
+    198,
+    189,
+    190
+  ],
+  "gr-rillaboom": [
+    225,
+    186,
+    233
+  ],
+  "gr-roserade": [
+    243,
+    185,
+    155
+  ],
+  "el-mega-manec": [
+    215,
+    127,
+    163
+  ],
+  "el-shd-electiv": [
+    249,
+    163,
+    181
+  ],
+  "el-shd-magnez": [
+    238,
+    205,
+    172
+  ],
+  "el-mega-amphar": [
+    211,
+    169,
+    207
+  ],
+  "el-electivire": [
+    249,
+    163,
+    181
+  ],
+  "el-magnezone": [
+    238,
+    205,
+    172
+  ],
+  "ps-mega-alak-l": [
+    271,
+    167,
+    146
+  ],
+  "ps-mega-gallade": [
+    237,
+    195,
+    169
+  ],
+  "ps-mega-garde": [
+    237,
+    195,
+    169
+  ],
+  "ps-mega-meta": [
+    257,
+    228,
+    190
+  ],
+  "ps-shd-garde": [
+    237,
+    195,
+    169
+  ],
+  "ps-espeon": [
+    261,
+    175,
+    163
+  ],
+  "ic-shd-mamosw": [
+    247,
+    146,
+    242
+  ],
+  "ic-shd-weavile": [
+    243,
+    171,
+    172
+  ],
+  "ic-baxcalibur": [
+    258,
+    167,
+    216
+  ],
+  "ic-mega-aboma": [
+    178,
+    158,
+    207
+  ],
+  "ic-darman-galar": [
+    263,
+    128,
+    233
+  ],
+  "ic-mamoswine": [
+    247,
+    146,
+    242
+  ],
+  "dr-mega-garc": [
+    261,
+    193,
+    239
+  ],
+  "dr-shd-garc": [
+    261,
+    193,
+    239
+  ],
+  "dr-mega-salamen": [
+    277,
+    168,
+    190
+  ],
+  "dr-garchomp": [
+    261,
+    193,
+    239
+  ],
+  "dr-shd-salamen": [
+    277,
+    168,
+    190
+  ],
+  "dr-dragonite": [
+    263,
+    201,
+    209
+  ],
+  "dk-mega-tyran": [
+    251,
+    207,
+    225
+  ],
+  "dk-shd-tyran": [
+    251,
+    207,
+    225
+  ],
+  "dk-shd-hydrei-l": [
+    256,
+    188,
+    211
+  ],
+  "dk-mega-absol-l": [
+    246,
+    120,
+    163
+  ],
+  "dk-mega-hound": [
+    224,
+    144,
+    181
+  ],
+  "dk-hydreigon": [
+    256,
+    188,
+    211
+  ],
+  "fa-mega-garde": [
+    237,
+    195,
+    169
+  ],
+  "fa-gardevoir": [
+    237,
+    195,
+    169
+  ],
+  "fa-togekiss": [
+    225,
+    217,
+    198
+  ],
+  "fa-shd-granbull": [
+    212,
+    131,
+    207
+  ],
+  "fa-hatterene": [
+    214,
+    199,
+    163
+  ],
+  "fa-sylveon": [
+    203,
+    205,
+    216
+  ]
+}

@@ -1,0 +1,1574 @@
+{
+  "1": {
+    "es": "Bulbasaur",
+    "en": "bulbasaur"
+  },
+  "4": {
+    "es": "Charmander",
+    "en": "charmander"
+  },
+  "7": {
+    "es": "Squirtle",
+    "en": "squirtle"
+  },
+  "10": {
+    "es": "Caterpie",
+    "en": "caterpie"
+  },
+  "13": {
+    "es": "Weedle",
+    "en": "weedle"
+  },
+  "16": {
+    "es": "Pidgey",
+    "en": "pidgey"
+  },
+  "19": {
+    "es": "Rattata de Alola",
+    "en": "rattata"
+  },
+  "21": {
+    "es": "Spearow",
+    "en": "spearow"
+  },
+  "23": {
+    "es": "Ekans",
+    "en": "ekans"
+  },
+  "25": {
+    "es": "Pikachu",
+    "en": "pikachu"
+  },
+  "27": {
+    "es": "Sandshrew de Alola",
+    "en": "sandshrew"
+  },
+  "29": {
+    "es": "Nidoran",
+    "en": "nidoran"
+  },
+  "32": {
+    "es": "Nidoran",
+    "en": "nidoran"
+  },
+  "37": {
+    "es": "Vulpix",
+    "en": "vulpix"
+  },
+  "41": {
+    "es": "Zubat",
+    "en": "zubat"
+  },
+  "43": {
+    "es": "Oddish",
+    "en": "oddish"
+  },
+  "48": {
+    "es": "Venonat",
+    "en": "venonat"
+  },
+  "50": {
+    "es": "Diglett de Alola",
+    "en": "diglett"
+  },
+  "52": {
+    "es": "Meowth",
+    "en": "meowth"
+  },
+  "54": {
+    "es": "Psyduck",
+    "en": "psyduck"
+  },
+  "56": {
+    "es": "Mankey",
+    "en": "mankey"
+  },
+  "58": {
+    "es": "Growlithe de Hisui",
+    "en": "growlithe"
+  },
+  "60": {
+    "es": "Poliwag",
+    "en": "poliwag"
+  },
+  "61": {
+    "es": "Poliwhirl",
+    "en": "poliwhirl"
+  },
+  "63": {
+    "es": "Abra",
+    "en": "abra"
+  },
+  "66": {
+    "es": "Machop",
+    "en": "machop"
+  },
+  "67": {
+    "es": "Machoke",
+    "en": "machoke"
+  },
+  "69": {
+    "es": "Bellsprout",
+    "en": "bellsprout"
+  },
+  "72": {
+    "es": "Tentacool",
+    "en": "tentacool"
+  },
+  "74": {
+    "es": "Geodude de Alola",
+    "en": "geodude"
+  },
+  "77": {
+    "es": "Ponyta",
+    "en": "ponyta"
+  },
+  "79": {
+    "es": "Slowpoke de Galar",
+    "en": "slowpoke"
+  },
+  "81": {
+    "es": "Magnemite",
+    "en": "magnemite"
+  },
+  "83": {
+    "es": "Farfetchd",
+    "en": "farfetchd"
+  },
+  "84": {
+    "es": "Doduo",
+    "en": "doduo"
+  },
+  "88": {
+    "es": "Grimer",
+    "en": "grimer"
+  },
+  "90": {
+    "es": "Shellder",
+    "en": "shellder"
+  },
+  "92": {
+    "es": "Gastly",
+    "en": "gastly"
+  },
+  "95": {
+    "es": "Onix",
+    "en": "onix"
+  },
+  "98": {
+    "es": "Krabby",
+    "en": "krabby"
+  },
+  "100": {
+    "es": "Voltorb",
+    "en": "voltorb"
+  },
+  "102": {
+    "es": "Exeggcute",
+    "en": "exeggcute"
+  },
+  "103": {
+    "es": "Exeggutor de Alola",
+    "en": "exeggutor"
+  },
+  "105": {
+    "es": "Marowak de Alola",
+    "en": "marowak"
+  },
+  "109": {
+    "es": "Koffing",
+    "en": "koffing"
+  },
+  "111": {
+    "es": "Rhyhorn",
+    "en": "rhyhorn"
+  },
+  "114": {
+    "es": "Tangela",
+    "en": "tangela"
+  },
+  "115": {
+    "es": "Kangaskhan",
+    "en": "kangaskhan"
+  },
+  "116": {
+    "es": "Horsea",
+    "en": "horsea"
+  },
+  "117": {
+    "es": "Seadra",
+    "en": "seadra"
+  },
+  "119": {
+    "es": "Seaking",
+    "en": "seaking"
+  },
+  "120": {
+    "es": "Staryu",
+    "en": "staryu"
+  },
+  "122": {
+    "es": "Mr. Mime",
+    "en": "mr-mime"
+  },
+  "123": {
+    "es": "Scyther",
+    "en": "scyther"
+  },
+  "127": {
+    "es": "Pinsir",
+    "en": "pinsir"
+  },
+  "129": {
+    "es": "Magikarp",
+    "en": "magikarp"
+  },
+  "131": {
+    "es": "Lapras",
+    "en": "lapras"
+  },
+  "133": {
+    "es": "Eevee",
+    "en": "eevee"
+  },
+  "137": {
+    "es": "Porygon",
+    "en": "porygon"
+  },
+  "138": {
+    "es": "Omanyte",
+    "en": "omanyte"
+  },
+  "140": {
+    "es": "Kabuto",
+    "en": "kabuto"
+  },
+  "142": {
+    "es": "Aerodactyl",
+    "en": "aerodactyl"
+  },
+  "143": {
+    "es": "Snorlax",
+    "en": "snorlax"
+  },
+  "144": {
+    "es": "Articuno",
+    "en": "articuno"
+  },
+  "145": {
+    "es": "Zapdos",
+    "en": "zapdos"
+  },
+  "146": {
+    "es": "Moltres",
+    "en": "moltres"
+  },
+  "147": {
+    "es": "Dratini",
+    "en": "dratini"
+  },
+  "150": {
+    "es": "Mewtwo",
+    "en": "mewtwo"
+  },
+  "151": {
+    "es": "Mew",
+    "en": "mew"
+  },
+  "152": {
+    "es": "Chikorita",
+    "en": "chikorita"
+  },
+  "155": {
+    "es": "Cyndaquil",
+    "en": "cyndaquil"
+  },
+  "158": {
+    "es": "Totodile",
+    "en": "totodile"
+  },
+  "163": {
+    "es": "Hoothoot",
+    "en": "hoothoot"
+  },
+  "167": {
+    "es": "Spinarak",
+    "en": "spinarak"
+  },
+  "172": {
+    "es": "Alolan Pichu",
+    "en": "pichu"
+  },
+  "173": {
+    "es": "Cleffa",
+    "en": "cleffa"
+  },
+  "174": {
+    "es": "Igglybuff",
+    "en": "igglybuff"
+  },
+  "175": {
+    "es": "Togepi",
+    "en": "togepi"
+  },
+  "177": {
+    "es": "Natu",
+    "en": "natu"
+  },
+  "179": {
+    "es": "Mareep",
+    "en": "mareep"
+  },
+  "183": {
+    "es": "Marill",
+    "en": "marill"
+  },
+  "187": {
+    "es": "Hoppip",
+    "en": "hoppip"
+  },
+  "191": {
+    "es": "Sunkern",
+    "en": "sunkern"
+  },
+  "193": {
+    "es": "Yanma",
+    "en": "yanma"
+  },
+  "194": {
+    "es": "Wooper",
+    "en": "wooper"
+  },
+  "198": {
+    "es": "Murkrow",
+    "en": "murkrow"
+  },
+  "200": {
+    "es": "Misdreavus",
+    "en": "misdreavus"
+  },
+  "202": {
+    "es": "Wobbuffet",
+    "en": "wobbuffet"
+  },
+  "206": {
+    "es": "Dunsparce",
+    "en": "dunsparce"
+  },
+  "207": {
+    "es": "Gligar",
+    "en": "gligar"
+  },
+  "209": {
+    "es": "Snubbull",
+    "en": "snubbull"
+  },
+  "211": {
+    "es": "Qwilfish",
+    "en": "qwilfish"
+  },
+  "214": {
+    "es": "Heracross",
+    "en": "heracross"
+  },
+  "215": {
+    "es": "Sneasel",
+    "en": "sneasel"
+  },
+  "216": {
+    "es": "Teddiursa",
+    "en": "teddiursa"
+  },
+  "219": {
+    "es": "Magcargo",
+    "en": "magcargo"
+  },
+  "220": {
+    "es": "Swinub",
+    "en": "swinub"
+  },
+  "222": {
+    "es": "Corsola",
+    "en": "corsola"
+  },
+  "223": {
+    "es": "Remoraid",
+    "en": "remoraid"
+  },
+  "227": {
+    "es": "Skarmory",
+    "en": "skarmory"
+  },
+  "228": {
+    "es": "Houndour",
+    "en": "houndour"
+  },
+  "231": {
+    "es": "Phanpy",
+    "en": "phanpy"
+  },
+  "236": {
+    "es": "Tyrogue",
+    "en": "tyrogue"
+  },
+  "238": {
+    "es": "Smoochum",
+    "en": "smoochum"
+  },
+  "239": {
+    "es": "Elekid",
+    "en": "elekid"
+  },
+  "240": {
+    "es": "Magby",
+    "en": "magby"
+  },
+  "243": {
+    "es": "Raikou",
+    "en": "raikou"
+  },
+  "244": {
+    "es": "Entei",
+    "en": "entei"
+  },
+  "245": {
+    "es": "Suicune",
+    "en": "suicune"
+  },
+  "246": {
+    "es": "Larvitar",
+    "en": "larvitar"
+  },
+  "249": {
+    "es": "Lugia",
+    "en": "lugia"
+  },
+  "250": {
+    "es": "Ho-Oh",
+    "en": "ho-oh"
+  },
+  "251": {
+    "es": "Celebi",
+    "en": "celebi"
+  },
+  "252": {
+    "es": "Treecko",
+    "en": "treecko"
+  },
+  "255": {
+    "es": "Torchic",
+    "en": "torchic"
+  },
+  "258": {
+    "es": "Mudkip",
+    "en": "mudkip"
+  },
+  "263": {
+    "es": "Zigzagoon de Galar",
+    "en": "zigzagoon"
+  },
+  "271": {
+    "es": "Lombre",
+    "en": "lombre"
+  },
+  "273": {
+    "es": "Seedot",
+    "en": "seedot"
+  },
+  "274": {
+    "es": "Nuzleaf",
+    "en": "nuzleaf"
+  },
+  "278": {
+    "es": "Wingull",
+    "en": "wingull"
+  },
+  "280": {
+    "es": "Ralts",
+    "en": "ralts"
+  },
+  "285": {
+    "es": "Shroomish",
+    "en": "shroomish"
+  },
+  "290": {
+    "es": "Nincada",
+    "en": "nincada"
+  },
+  "296": {
+    "es": "Makuhita",
+    "en": "makuhita"
+  },
+  "299": {
+    "es": "Nosepass",
+    "en": "nosepass"
+  },
+  "300": {
+    "es": "Skitty",
+    "en": "skitty"
+  },
+  "302": {
+    "es": "Sableye",
+    "en": "sableye"
+  },
+  "303": {
+    "es": "Mawile",
+    "en": "mawile"
+  },
+  "304": {
+    "es": "Aron",
+    "en": "aron"
+  },
+  "307": {
+    "es": "Meditite",
+    "en": "meditite"
+  },
+  "309": {
+    "es": "Electrike",
+    "en": "electrike"
+  },
+  "318": {
+    "es": "Carvanha",
+    "en": "carvanha"
+  },
+  "320": {
+    "es": "Wailmer",
+    "en": "wailmer"
+  },
+  "322": {
+    "es": "Numel",
+    "en": "numel"
+  },
+  "326": {
+    "es": "Grumpig",
+    "en": "grumpig"
+  },
+  "327": {
+    "es": "Spinda",
+    "en": "spinda"
+  },
+  "328": {
+    "es": "Trapinch",
+    "en": "trapinch"
+  },
+  "333": {
+    "es": "Swablu",
+    "en": "swablu"
+  },
+  "336": {
+    "es": "Seviper",
+    "en": "seviper"
+  },
+  "337": {
+    "es": "Lunatone",
+    "en": "lunatone"
+  },
+  "338": {
+    "es": "Solrock",
+    "en": "solrock"
+  },
+  "341": {
+    "es": "Corphish",
+    "en": "corphish"
+  },
+  "343": {
+    "es": "Baltoy",
+    "en": "baltoy"
+  },
+  "345": {
+    "es": "Lileep",
+    "en": "lileep"
+  },
+  "347": {
+    "es": "Anorith",
+    "en": "anorith"
+  },
+  "349": {
+    "es": "Feebas",
+    "en": "feebas"
+  },
+  "353": {
+    "es": "Shuppet",
+    "en": "shuppet"
+  },
+  "355": {
+    "es": "Duskull",
+    "en": "duskull"
+  },
+  "356": {
+    "es": "Dusclops",
+    "en": "dusclops"
+  },
+  "359": {
+    "es": "Absol",
+    "en": "absol"
+  },
+  "361": {
+    "es": "Snorunt",
+    "en": "snorunt"
+  },
+  "363": {
+    "es": "Spheal",
+    "en": "spheal"
+  },
+  "366": {
+    "es": "Clamperl",
+    "en": "clamperl"
+  },
+  "371": {
+    "es": "Bagon",
+    "en": "bagon"
+  },
+  "374": {
+    "es": "Beldum",
+    "en": "beldum"
+  },
+  "377": {
+    "es": "Regirock",
+    "en": "regirock"
+  },
+  "378": {
+    "es": "Regice",
+    "en": "regice"
+  },
+  "379": {
+    "es": "Registeel",
+    "en": "registeel"
+  },
+  "380": {
+    "es": "Latias",
+    "en": "latias"
+  },
+  "381": {
+    "es": "Latios",
+    "en": "latios"
+  },
+  "382": {
+    "es": "Kyogre",
+    "en": "kyogre"
+  },
+  "383": {
+    "es": "Groudon",
+    "en": "groudon"
+  },
+  "384": {
+    "es": "Rayquaza",
+    "en": "rayquaza"
+  },
+  "385": {
+    "es": "Jirachi",
+    "en": "jirachi"
+  },
+  "386": {
+    "es": "Deoxys",
+    "en": "deoxys"
+  },
+  "387": {
+    "es": "Turtwig",
+    "en": "turtwig"
+  },
+  "390": {
+    "es": "Chimchar",
+    "en": "chimchar"
+  },
+  "393": {
+    "es": "Piplup",
+    "en": "piplup"
+  },
+  "396": {
+    "es": "Starly",
+    "en": "starly"
+  },
+  "397": {
+    "es": "Staravia",
+    "en": "staravia"
+  },
+  "399": {
+    "es": "Bidoof",
+    "en": "bidoof"
+  },
+  "403": {
+    "es": "Shinx",
+    "en": "shinx"
+  },
+  "404": {
+    "es": "Luxio",
+    "en": "luxio"
+  },
+  "406": {
+    "es": "Budew",
+    "en": "budew"
+  },
+  "408": {
+    "es": "Cranidos",
+    "en": "cranidos"
+  },
+  "415": {
+    "es": "Combee",
+    "en": "combee"
+  },
+  "422": {
+    "es": "Shellos",
+    "en": "shellos"
+  },
+  "425": {
+    "es": "Drifloon",
+    "en": "drifloon"
+  },
+  "427": {
+    "es": "Buneary",
+    "en": "buneary"
+  },
+  "431": {
+    "es": "Glameow",
+    "en": "glameow"
+  },
+  "434": {
+    "es": "Stunky",
+    "en": "stunky"
+  },
+  "438": {
+    "es": "Bonsly",
+    "en": "bonsly"
+  },
+  "443": {
+    "es": "Gible",
+    "en": "gible"
+  },
+  "444": {
+    "es": "Gabite",
+    "en": "gabite"
+  },
+  "447": {
+    "es": "Riolu",
+    "en": "riolu"
+  },
+  "449": {
+    "es": "Hippopotas",
+    "en": "hippopotas"
+  },
+  "451": {
+    "es": "Skorupi",
+    "en": "skorupi"
+  },
+  "453": {
+    "es": "Croagunk",
+    "en": "croagunk"
+  },
+  "459": {
+    "es": "Snover",
+    "en": "snover"
+  },
+  "462": {
+    "es": "magnezone",
+    "en": "magnezone"
+  },
+  "479": {
+    "es": "Rotom",
+    "en": "rotom"
+  },
+  "482": {
+    "es": "Azelf",
+    "en": "azelf"
+  },
+  "483": {
+    "es": "Dialga",
+    "en": "dialga"
+  },
+  "484": {
+    "es": "Palkia",
+    "en": "palkia"
+  },
+  "485": {
+    "es": "Heatran",
+    "en": "heatran"
+  },
+  "486": {
+    "es": "Regigigas",
+    "en": "regigigas"
+  },
+  "487": {
+    "es": "Giratina",
+    "en": "giratina"
+  },
+  "491": {
+    "es": "Darkrai",
+    "en": "darkrai"
+  },
+  "492": {
+    "es": "Shaymin",
+    "en": "shaymin"
+  },
+  "494": {
+    "es": "Victini",
+    "en": "victini"
+  },
+  "495": {
+    "es": "Snivy",
+    "en": "snivy"
+  },
+  "498": {
+    "es": "Tepig",
+    "en": "tepig"
+  },
+  "501": {
+    "es": "Oshawott",
+    "en": "oshawott"
+  },
+  "509": {
+    "es": "Purrloin",
+    "en": "purrloin"
+  },
+  "511": {
+    "es": "Pansage",
+    "en": "pansage"
+  },
+  "519": {
+    "es": "Pidove",
+    "en": "pidove"
+  },
+  "522": {
+    "es": "Blitzle",
+    "en": "blitzle"
+  },
+  "524": {
+    "es": "Roggenrola",
+    "en": "roggenrola"
+  },
+  "527": {
+    "es": "Woobat",
+    "en": "woobat"
+  },
+  "529": {
+    "es": "Drilbur",
+    "en": "drilbur"
+  },
+  "531": {
+    "es": "Audino",
+    "en": "audino"
+  },
+  "532": {
+    "es": "Timburr",
+    "en": "timburr"
+  },
+  "535": {
+    "es": "Tympole",
+    "en": "tympole"
+  },
+  "539": {
+    "es": "Sawk",
+    "en": "sawk"
+  },
+  "540": {
+    "es": "Sewaddle",
+    "en": "sewaddle"
+  },
+  "543": {
+    "es": "Venipede",
+    "en": "venipede"
+  },
+  "544": {
+    "es": "Whirlipede",
+    "en": "whirlipede"
+  },
+  "546": {
+    "es": "Cottonee",
+    "en": "cottonee"
+  },
+  "551": {
+    "es": "Sandile",
+    "en": "sandile"
+  },
+  "554": {
+    "es": "Darumaka",
+    "en": "darumaka"
+  },
+  "557": {
+    "es": "Dwebble",
+    "en": "dwebble"
+  },
+  "562": {
+    "es": "Yamask",
+    "en": "yamask"
+  },
+  "564": {
+    "es": "Tirtouga",
+    "en": "tirtouga"
+  },
+  "566": {
+    "es": "Archen",
+    "en": "archen"
+  },
+  "568": {
+    "es": "Trubbish",
+    "en": "trubbish"
+  },
+  "570": {
+    "es": "Zorua",
+    "en": "zorua"
+  },
+  "577": {
+    "es": "Solosis",
+    "en": "solosis"
+  },
+  "580": {
+    "es": "Ducklett",
+    "en": "ducklett"
+  },
+  "582": {
+    "es": "Vanillite",
+    "en": "vanillite"
+  },
+  "588": {
+    "es": "Karrablast",
+    "en": "karrablast"
+  },
+  "592": {
+    "es": "Frillish",
+    "en": "frillish"
+  },
+  "595": {
+    "es": "Joltik",
+    "en": "joltik"
+  },
+  "597": {
+    "es": "Ferroseed",
+    "en": "ferroseed"
+  },
+  "602": {
+    "es": "Tynamo",
+    "en": "tynamo"
+  },
+  "603": {
+    "es": "Eelektrik",
+    "en": "eelektrik"
+  },
+  "605": {
+    "es": "Elgyem",
+    "en": "elgyem"
+  },
+  "607": {
+    "es": "Litwick",
+    "en": "litwick"
+  },
+  "608": {
+    "es": "Lampent",
+    "en": "lampent"
+  },
+  "610": {
+    "es": "Axew",
+    "en": "axew"
+  },
+  "613": {
+    "es": "Cubchoo",
+    "en": "cubchoo"
+  },
+  "615": {
+    "es": "Cryogonal",
+    "en": "cryogonal"
+  },
+  "616": {
+    "es": "Shelmet",
+    "en": "shelmet"
+  },
+  "618": {
+    "es": "Stunfisk",
+    "en": "stunfisk"
+  },
+  "619": {
+    "es": "Mienfoo",
+    "en": "mienfoo"
+  },
+  "622": {
+    "es": "Golett",
+    "en": "golett"
+  },
+  "624": {
+    "es": "Pawniard",
+    "en": "pawniard"
+  },
+  "627": {
+    "es": "Rufflet",
+    "en": "rufflet"
+  },
+  "632": {
+    "es": "Durant",
+    "en": "durant"
+  },
+  "633": {
+    "es": "Deino",
+    "en": "deino"
+  },
+  "636": {
+    "es": "Larvesta",
+    "en": "larvesta"
+  },
+  "638": {
+    "es": "Cobalion",
+    "en": "cobalion"
+  },
+  "639": {
+    "es": "Terrakion",
+    "en": "terrakion"
+  },
+  "640": {
+    "es": "Virizion",
+    "en": "virizion"
+  },
+  "641": {
+    "es": "Tornadus",
+    "en": "tornadus"
+  },
+  "642": {
+    "es": "Thundurus",
+    "en": "thundurus"
+  },
+  "643": {
+    "es": "Reshiram",
+    "en": "reshiram"
+  },
+  "644": {
+    "es": "Zekrom",
+    "en": "zekrom"
+  },
+  "645": {
+    "es": "Landorus",
+    "en": "landorus"
+  },
+  "646": {
+    "es": "Kyurem",
+    "en": "kyurem"
+  },
+  "647": {
+    "es": "Keldeo",
+    "en": "keldeo"
+  },
+  "649": {
+    "es": "Genesect",
+    "en": "genesect"
+  },
+  "650": {
+    "es": "Chespin",
+    "en": "chespin"
+  },
+  "653": {
+    "es": "Fennekin",
+    "en": "fennekin"
+  },
+  "656": {
+    "es": "Froakie",
+    "en": "froakie"
+  },
+  "659": {
+    "es": "Bunnelby",
+    "en": "bunnelby"
+  },
+  "660": {
+    "es": "Diggersby",
+    "en": "diggersby"
+  },
+  "661": {
+    "es": "Fletchling",
+    "en": "fletchling"
+  },
+  "662": {
+    "es": "Fletchinder",
+    "en": "fletchinder"
+  },
+  "667": {
+    "es": "Litleo",
+    "en": "litleo"
+  },
+  "669": {
+    "es": "Flabébé",
+    "en": "flabebe"
+  },
+  "672": {
+    "es": "Skiddo",
+    "en": "skiddo"
+  },
+  "674": {
+    "es": "Pancham",
+    "en": "pancham"
+  },
+  "683": {
+    "es": "Spritzee",
+    "en": "spritzee"
+  },
+  "685": {
+    "es": "Swirlix",
+    "en": "swirlix"
+  },
+  "686": {
+    "es": "Inkay",
+    "en": "inkay"
+  },
+  "688": {
+    "es": "Binacle",
+    "en": "binacle"
+  },
+  "690": {
+    "es": "Skrelp",
+    "en": "skrelp"
+  },
+  "692": {
+    "es": "Clauncher",
+    "en": "clauncher"
+  },
+  "694": {
+    "es": "Helioptile",
+    "en": "helioptile"
+  },
+  "696": {
+    "es": "Tyrunt",
+    "en": "tyrunt"
+  },
+  "698": {
+    "es": "Amaura",
+    "en": "amaura"
+  },
+  "701": {
+    "es": "Hawlucha",
+    "en": "hawlucha"
+  },
+  "702": {
+    "es": "Dedenne",
+    "en": "dedenne"
+  },
+  "703": {
+    "es": "Carbink",
+    "en": "carbink"
+  },
+  "704": {
+    "es": "Goomy",
+    "en": "goomy"
+  },
+  "708": {
+    "es": "Phantump",
+    "en": "phantump"
+  },
+  "710": {
+    "es": "Pumpkaboo",
+    "en": "pumpkaboo"
+  },
+  "712": {
+    "es": "Bergmite",
+    "en": "bergmite"
+  },
+  "714": {
+    "es": "Noibat",
+    "en": "noibat"
+  },
+  "716": {
+    "es": "Xerneas",
+    "en": "xerneas"
+  },
+  "717": {
+    "es": "Yveltal",
+    "en": "yveltal"
+  },
+  "718": {
+    "es": "Zygarde",
+    "en": "zygarde"
+  },
+  "719": {
+    "es": "Diancie",
+    "en": "diancie"
+  },
+  "720": {
+    "es": "Hoopa",
+    "en": "hoopa"
+  },
+  "721": {
+    "es": "Volcanion",
+    "en": "volcanion"
+  },
+  "722": {
+    "es": "Rowlet",
+    "en": "rowlet"
+  },
+  "725": {
+    "es": "Litten",
+    "en": "litten"
+  },
+  "728": {
+    "es": "Popplio",
+    "en": "popplio"
+  },
+  "731": {
+    "es": "Pikipek",
+    "en": "pikipek"
+  },
+  "732": {
+    "es": "Trumbeak",
+    "en": "trumbeak"
+  },
+  "736": {
+    "es": "Grubbin",
+    "en": "grubbin"
+  },
+  "739": {
+    "es": "Crabrawler",
+    "en": "crabrawler"
+  },
+  "742": {
+    "es": "Cutiefly",
+    "en": "cutiefly"
+  },
+  "744": {
+    "es": "Rockruff",
+    "en": "rockruff"
+  },
+  "747": {
+    "es": "Mareanie",
+    "en": "mareanie"
+  },
+  "749": {
+    "es": "Mudbray",
+    "en": "mudbray"
+  },
+  "751": {
+    "es": "Dewpider",
+    "en": "dewpider"
+  },
+  "757": {
+    "es": "Salandit",
+    "en": "salandit"
+  },
+  "759": {
+    "es": "Stufful",
+    "en": "stufful"
+  },
+  "761": {
+    "es": "Bounsweet",
+    "en": "bounsweet"
+  },
+  "766": {
+    "es": "Passimian",
+    "en": "passimian"
+  },
+  "767": {
+    "es": "Wimpod",
+    "en": "wimpod"
+  },
+  "770": {
+    "es": "Sandygast",
+    "en": "sandygast"
+  },
+  "780": {
+    "es": "Drampa",
+    "en": "drampa"
+  },
+  "781": {
+    "es": "Dhelmise",
+    "en": "dhelmise"
+  },
+  "782": {
+    "es": "Jangmo-o",
+    "en": "jangmo-o"
+  },
+  "785": {
+    "es": "Tapu Koko",
+    "en": "tapu-koko"
+  },
+  "786": {
+    "es": "Tapu Lele",
+    "en": "tapu-lele"
+  },
+  "787": {
+    "es": "Tapu Bulu",
+    "en": "tapu-bulu"
+  },
+  "788": {
+    "es": "Tapu Fini",
+    "en": "tapu-fini"
+  },
+  "789": {
+    "es": "Cosmog",
+    "en": "cosmog"
+  },
+  "793": {
+    "es": "Nihilego",
+    "en": "nihilego"
+  },
+  "794": {
+    "es": "Buzzwole",
+    "en": "buzzwole"
+  },
+  "795": {
+    "es": "Pheromosa",
+    "en": "pheromosa"
+  },
+  "796": {
+    "es": "Xurkitree",
+    "en": "xurkitree"
+  },
+  "798": {
+    "es": "Kartana",
+    "en": "kartana"
+  },
+  "799": {
+    "es": "Guzzlord",
+    "en": "guzzlord"
+  },
+  "800": {
+    "es": "Necrozma",
+    "en": "necrozma"
+  },
+  "802": {
+    "es": "Marshadow",
+    "en": "marshadow"
+  },
+  "803": {
+    "es": "Poipole",
+    "en": "poipole"
+  },
+  "805": {
+    "es": "Stakataka",
+    "en": "stakataka"
+  },
+  "806": {
+    "es": "Blacephalon",
+    "en": "blacephalon"
+  },
+  "807": {
+    "es": "Zeraora",
+    "en": "zeraora"
+  },
+  "808": {
+    "es": "Meltan",
+    "en": "meltan"
+  },
+  "810": {
+    "es": "Grookey",
+    "en": "grookey"
+  },
+  "813": {
+    "es": "Scorbunny",
+    "en": "scorbunny"
+  },
+  "816": {
+    "es": "Sobble",
+    "en": "sobble"
+  },
+  "820": {
+    "es": "Skwovet",
+    "en": "skwovet"
+  },
+  "821": {
+    "es": "Rookidee",
+    "en": "rookidee"
+  },
+  "827": {
+    "es": "Nickit",
+    "en": "nickit"
+  },
+  "831": {
+    "es": "Wooloo",
+    "en": "wooloo"
+  },
+  "840": {
+    "es": "Applin",
+    "en": "applin"
+  },
+  "843": {
+    "es": "Silicobra",
+    "en": "silicobra"
+  },
+  "848": {
+    "es": "Toxel",
+    "en": "toxel"
+  },
+  "850": {
+    "es": "Sizzlipede",
+    "en": "sizzlipede"
+  },
+  "854": {
+    "es": "Sinistea",
+    "en": "sinistea"
+  },
+  "856": {
+    "es": "Hatenna",
+    "en": "hatenna"
+  },
+  "859": {
+    "es": "Impidimp",
+    "en": "impidimp"
+  },
+  "870": {
+    "es": "Falinks",
+    "en": "falinks"
+  },
+  "872": {
+    "es": "Snom",
+    "en": "snom"
+  },
+  "874": {
+    "es": "Stonjourner",
+    "en": "stonjourner"
+  },
+  "884": {
+    "es": "Duraludon",
+    "en": "duraludon"
+  },
+  "885": {
+    "es": "Dreepy",
+    "en": "dreepy"
+  },
+  "888": {
+    "es": "Zacian",
+    "en": "zacian"
+  },
+  "889": {
+    "es": "Zamazenta",
+    "en": "zamazenta"
+  },
+  "890": {
+    "es": "Eternatus",
+    "en": "eternatus"
+  },
+  "891": {
+    "es": "Kubfu",
+    "en": "kubfu"
+  },
+  "893": {
+    "es": "Zarude",
+    "en": "zarude"
+  },
+  "894": {
+    "es": "Regieleki",
+    "en": "regieleki"
+  },
+  "895": {
+    "es": "Regidrago",
+    "en": "regidrago"
+  },
+  "905": {
+    "es": "Enamorus",
+    "en": "enamorus"
+  },
+  "906": {
+    "es": "Sprigatito",
+    "en": "sprigatito"
+  },
+  "909": {
+    "es": "Fuecoco",
+    "en": "fuecoco"
+  },
+  "912": {
+    "es": "Quaxly",
+    "en": "quaxly"
+  },
+  "914": {
+    "es": "quaxly",
+    "en": "quaxly"
+  },
+  "915": {
+    "es": "Lechonk",
+    "en": "lechonk"
+  },
+  "921": {
+    "es": "Pawmi",
+    "en": "pawmi"
+  },
+  "926": {
+    "es": "Fidough",
+    "en": "fidough"
+  },
+  "928": {
+    "es": "Smoliv",
+    "en": "smoliv"
+  },
+  "932": {
+    "es": "Nacli",
+    "en": "nacli"
+  },
+  "935": {
+    "es": "Charcadet",
+    "en": "charcadet"
+  },
+  "946": {
+    "es": "Tarountula",
+    "en": "tarountula"
+  },
+  "950": {
+    "es": "Klawf",
+    "en": "klawf"
+  },
+  "952": {
+    "es": "Grafaiai",
+    "en": "grafaiai"
+  },
+  "957": {
+    "es": "Tinkatink",
+    "en": "tinkatink"
+  },
+  "959": {
+    "es": "Tadbulb",
+    "en": "tadbulb"
+  },
+  "962": {
+    "es": "Bombirdier",
+    "en": "bombirdier"
+  },
+  "963": {
+    "es": "Wattrel",
+    "en": "wattrel"
+  },
+  "969": {
+    "es": "Glimmet",
+    "en": "glimmet"
+  },
+  "970": {
+    "es": "Greavard",
+    "en": "greavard"
+  },
+  "971": {
+    "es": "Nymble",
+    "en": "nymble"
+  },
+  "973": {
+    "es": "Flamigo",
+    "en": "flamigo"
+  },
+  "974": {
+    "es": "Cetoddle",
+    "en": "cetoddle"
+  },
+  "996": {
+    "es": "Frigibax",
+    "en": "frigibax"
+  },
+  "999": {
+    "es": "Gimmighoul",
+    "en": "gimmighoul"
+  },
+  "1004": {
+    "es": "Varoom",
+    "en": "varoom"
+  },
+  "1008": {
+    "es": "Tatsugiri",
+    "en": "tatsugiri"
+  },
+  "1012": {
+    "es": "Poltchageist",
+    "en": "poltchageist"
+  },
+  "10169": {
+    "es": "Galarian Articuno",
+    "en": "articuno"
+  },
+  "10170": {
+    "es": "Galarian Zapdos",
+    "en": "zapdos"
+  },
+  "10171": {
+    "es": "Galarian Moltres",
+    "en": "moltres"
+  },
+  "10235": {
+    "es": "Hisuian Sneasel",
+    "en": "sneasel"
+  }
+}
