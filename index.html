@@ -50,7 +50,7 @@
     <form onsubmit="createCommunityHandler(event)">
       <div class="form-group">
         <label for="new-community-id">ID de la comunidad</label>
-        <input type="text" id="new-community-id" placeholder="ej: raidersbcn" maxlength="30" required autocomplete="off" aria-label="ID de la comunidad" pattern="[a-z0-9_-]+">
+        <input type="text" id="new-community-id" placeholder="ej: raidersbcn" maxlength="30" required autocomplete="off" aria-label="ID de la comunidad" pattern="[a-z0-9_\-]+">
         <p class="form-hint">Solo letras minúsculas, números, guiones y guiones bajos</p>
       </div>
       <div class="form-group">
@@ -65,7 +65,7 @@
       <p style="font-size:13px;color:#666;margin-bottom:12px">Tu usuario en esta comunidad (el owner):</p>
       <div class="form-group">
         <label for="new-community-user-id">Tu ID de usuario</label>
-        <input type="text" id="new-community-user-id" placeholder="ej: ash" maxlength="20" required autocomplete="off" aria-label="Tu ID de usuario" pattern="[a-z0-9_-]+">
+        <input type="text" id="new-community-user-id" placeholder="ej: ash" maxlength="20" required autocomplete="off" aria-label="Tu ID de usuario" pattern="[a-z0-9_\-]+">
         <p class="form-hint">Solo letras minúsculas, números, guiones y guiones bajos</p>
       </div>
       <div class="form-group">
@@ -75,6 +75,10 @@
       <div class="form-group">
         <label for="new-community-user-confirm">Confirmar tu contraseña</label>
         <input type="password" id="new-community-user-confirm" placeholder="Repite tu contraseña" minlength="4" required autocomplete="new-password" aria-label="Confirmar tu contraseña">
+      </div>
+      <div class="form-group">
+        <label for="new-community-display-name">Tu nombre visible</label>
+        <input type="text" id="new-community-display-name" placeholder="Tu nombre visible" maxlength="20" autocomplete="off" aria-label="Tu nombre visible">
       </div>
       <div class="form-group">
         <label for="new-community-display-name">Tu nombre visible</label>
@@ -98,7 +102,7 @@
     <form onsubmit="loginCommunityHandler(event)">
       <div class="form-group">
         <label for="login-user-id">Tu ID de usuario</label>
-        <input type="text" id="login-user-id" placeholder="Tu ID" required autocomplete="username" aria-label="Tu ID de usuario" pattern="[a-z0-9_-]+">
+        <input type="text" id="login-user-id" placeholder="Tu ID" required autocomplete="username" aria-label="Tu ID de usuario" pattern="[a-z0-9_\-]+">
       </div>
       <div class="form-group">
         <label for="login-user-password">Tu contraseña</label>
@@ -125,7 +129,7 @@
     <form onsubmit="registerCommunityHandler(event)">
       <div class="form-group">
         <label for="register-user-id">Tu ID de usuario</label>
-        <input type="text" id="register-user-id" placeholder="Elige tu ID" maxlength="20" required autocomplete="off" aria-label="Tu ID de usuario" pattern="[a-z0-9_-]+">
+        <input type="text" id="register-user-id" placeholder="Elige tu ID" maxlength="20" required autocomplete="off" aria-label="Tu ID de usuario" pattern="[a-z0-9_\-]+">
         <p class="form-hint">Solo letras minúsculas, números, guiones y guiones bajos</p>
       </div>
       <div class="form-group">
