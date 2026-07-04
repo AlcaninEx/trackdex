@@ -136,6 +136,8 @@ export async function fbLoadCommunityMembers(communityId) {
     joinedAt: data.joinedAt,
     isOwner: data.isOwner || false
   }));
+}
+
 export async function fbDeleteMember(communityId, userId) {
   const community = await fbLoadCommunity(communityId);
   if (!community?.members?.[userId]) return;
