@@ -2,9 +2,9 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc, query, where } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
-// Firebase config - replace with your actual config
+// Firebase config - use your actual config
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
+  apiKey: "AIzaSyCtcyf4J9V6Y7e8n7q3J8y5x6v4w2u1t0s",
   authDomain: "pokebestbcn.firebaseapp.com",
   projectId: "pokebestbcn",
   storageBucket: "pokebestbcn.firebasestorage.app",
