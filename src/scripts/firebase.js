@@ -4,7 +4,7 @@ import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc, query, where
 
 // Firebase config - use your actual config
 const firebaseConfig = {
-  apiKey: "AIzaSyCtcyf4J9V6Y7e8n7q3J8y5x6v4w2u1t0s",
+  apiKey: "AIzaSyAy32J4YkD6mEeZ9tBryT3-lk3nzi42a34",
   authDomain: "pokebestbcn.firebaseapp.com",
   projectId: "pokebestbcn",
   storageBucket: "pokebestbcn.firebasestorage.app",
