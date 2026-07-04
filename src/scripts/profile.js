@@ -340,13 +340,13 @@ export function leaveCommunityHandler() {
 
 export function showCreateCommunityForm() {
   document.getElementById('community-list').style.display = 'none';
-  document.getElementById('community-create-form').style.display = 'block';
+  document.getElementById('create-community-form').style.display = 'block';
   document.getElementById('new-community-id').focus();
 }
 
 export function hideCreateCommunityForm() {
   document.getElementById('community-list').style.display = 'block';
-  document.getElementById('community-create-form').style.display = 'none';
+  document.getElementById('create-community-form').style.display = 'none';
   document.getElementById('new-community-id').value = '';
   document.getElementById('new-community-password').value = '';
   document.getElementById('new-community-confirm').value = '';
