@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokebestbcn-v93';
+const CACHE_NAME = 'pokebestbcn-v94';
 const ASSETS = [
   '/',
   '/index.html',
@@ -7,39 +7,7 @@ const ASSETS = [
   '/icon-512.png',
   '/shadow_icon.png',
   '/src/styles/styles.css',
-  '/src/scripts/main.js',
-  '/src/scripts/app.js',
-  '/src/scripts/data-loader.js',
-  '/src/scripts/firebase.js',
-  '/src/scripts/storage.js',
-  '/src/scripts/state.js',
-  '/src/scripts/helpers.js',
-  '/src/scripts/profile.js',
-  '/src/scripts/main-screen.js',
-  '/src/scripts/album.js',
-  '/src/scripts/ranking.js',
-  '/src/scripts/typechart.js',
-  '/src/scripts/megaguide.js',
-  '/src/scripts/legacy.js',
-  '/src/scripts/diarias.js',
-  '/src/scripts/pokeparadas.js',
-  '/src/scripts/perfil.js',
-  '/src/scripts/novedades.js',
-  '/src/scripts/filtro.js',
-  '/src/scripts/objetivo.js',
-  '/src/data/types.json',
-  '/src/data/rankings.json',
-  '/src/data/dmax.json',
-  '/src/data/pd.json',
-  '/src/data/base_stats.json',
-  '/src/data/pokedex.json',
-  '/src/data/name_to_id.json',
-  '/src/data/mega_list.json',
-  '/src/data/pp_data.json',
-  '/src/data/legacy_sprites.json',
-  '/src/data/filtro_suffixes.json',
-  '/src/data/type_eff.json',
-  '/src/data/dmax_names.json'
+  // JS modules - let them be fetched fresh, not cached by SW
 ];
 
 self.addEventListener('install', e => {
@@ -53,22 +21,30 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  // Skip Firebase/API requests
-  if (e.request.url.includes('firestore.googleapis.com') ||
-      e.request.url.includes('firebase') ||
-      e.request.url.includes('gstatic.com/firebasejs') ||
-      e.request.url.includes('firebasedatabase') ||
-      e.request.url.includes('pokeapi')) {
+  const url = new URL(e.request.url);
+  
+  // Skip Firebase/API requests - never cache
+  if (url.hostname.includes('firestore.googleapis.com') ||
+      url.hostname.includes('firebase') ||
+      url.hostname.includes('gstatic.com') ||
+      url.hostname.includes('firebasedatabase') ||
+      url.hostname.includes('pokeapi')) {
     e.respondWith(fetch(e.request));
     return;
   }
-
+  
+  // JS Modules - always fetch fresh, never cache (to avoid stale modules)
+  if (url.pathname.endsWith('.js') && e.request.destination === 'script') {
+    e.respondWith(fetch(e.request));
+    return;
+  }
+  
   // HTML documents - network first
   if (e.request.destination === 'document') {
     e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
     return;
   }
-
+  
   // Everything else - cache first
   e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
 });
