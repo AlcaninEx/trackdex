@@ -338,6 +338,24 @@ export function leaveCommunityHandler() {
   showCommunitySelection();
 }
 
+export function showCreateCommunityForm() {
+  document.getElementById('community-list').style.display = 'none';
+  document.getElementById('community-create-form').style.display = 'block';
+  document.getElementById('new-community-id').focus();
+}
+
+export function hideCreateCommunityForm() {
+  document.getElementById('community-list').style.display = 'block';
+  document.getElementById('community-create-form').style.display = 'none';
+  document.getElementById('new-community-id').value = '';
+  document.getElementById('new-community-password').value = '';
+  document.getElementById('new-community-confirm').value = '';
+  document.getElementById('new-community-user-id').value = '';
+  document.getElementById('new-community-user-password').value = '';
+  document.getElementById('new-community-user-confirm').value = '';
+  document.getElementById('new-community-display-name').value = '';
+}
+
 export function kickMember(userId, e) {
   e.stopPropagation();
   if (!isCurrentUserOwner()) { showToast('Solo el owner puede expulsar'); return; }
