@@ -73,7 +73,7 @@ export async function fbCreateCommunity(communityId, password, ownerId, displayN
     await setDoc(communityRef, community);
     return community;
   } catch (e) {
-    console.warn('Firebase create community error:', e.code);
+    console.warn('Firebase create community error:', e);
     throw e;
   }
 }
