@@ -1,6 +1,6 @@
-// Main App entry point - imports all modules and initializes the app
+// Main App entry point - exports init function for main.js to call
 import { loadAllData } from './data-loader.js';
-import { loadFromFirebase } from './storage.js';
+import { loadFromFirebase, load } from './storage.js';
 import { renderProfiles } from './profile.js';
 import { show } from './helpers.js';
 
@@ -17,8 +17,8 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 }
 
-// Main initialization
-async function init() {
+// Export init function for main.js to call
+export async function init() {
   try {
     // Show loading state
     document.getElementById('profile-screen').style.display = 'block';
@@ -26,34 +26,26 @@ async function init() {
     const el = document.getElementById('profiles-list');
     if (el) el.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px">⏳ Cargando...</p>';
 
-    // Load data first
+    // Load data FIRST (needed for countType, albumPks, etc.)
     await loadAllData();
 
     // Load profiles from Firebase or localStorage
     const firebaseLoaded = await loadFromFirebase();
     if (!firebaseLoaded) {
-      // loadFromFirebase already falls back to localStorage
+      load(); // fallback to localStorage
     }
     
     renderProfiles();
     show('profile-screen');
     window.scrollTo(0, 0);
   } catch (e) {
-    console.error('Boot error, using localStorage:', e);
-    // Fallback is handled in loadFromFirebase
-    import('./storage.js').then(m => m.load());
+    console.error('Boot error:', e);
+    // Fallback to localStorage
+    load();
     renderProfiles();
     show('profile-screen');
     window.scrollTo(0, 0);
   }
 }
 
-// Start when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
-}
-
-// Make init available globally for debugging
-window.init = init;
+// DO NOT auto-run init - let main.js control initialization
