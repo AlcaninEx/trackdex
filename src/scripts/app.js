@@ -1,7 +1,7 @@
 // Main App entry point - exports init function for main.js to call
 import { loadAllData } from './data-loader.js';
-import { loadFromFirebase, load } from './storage.js';
-import { renderProfiles, showOnboardingState, showProfilesState, showHomeMenu } from './profile.js';
+import { loadFromFirebase, load, setCurrentCommunity } from './storage.js';
+import { renderProfiles, showOnboardingState, showProfilesState, showHomeMenu, showCommunitySelection } from './profile.js';
 import { show, ST } from './helpers.js';
 
 // Initialize dark mode from localStorage
@@ -35,10 +35,25 @@ export async function init() {
       load(); // fallback to localStorage
     }
     
-    // Show appropriate state based on profiles
+    // Restore current community if we have one saved
+    if (ST.communityId) {
+      const community = ST.availableCommunities.find(c => c.id === ST.communityId);
+      if (community) {
+        setCurrentCommunity(ST.communityId);
+      }
+    }
+    
+    // Show appropriate state based on profiles and community
     if (ST.profiles.length === 0) {
       showOnboardingState();
+    } else if (!ST.communityId && ST.availableCommunities && ST.availableCommunities.length > 0) {
+      // Has profiles but no community selected - show community selection
+      showCommunitySelection();
+    } else if (ST.communityId && ST.community) {
+      // Has community selected - go to members view
+      import('./profile.js').then(m => m.showCommunityMembersState());
     } else {
+      // Has profiles but no communities available - show profiles state
       showProfilesState();
     }
     show('profile-screen');
@@ -49,6 +64,10 @@ export async function init() {
     load();
     if (ST.profiles.length === 0) {
       showOnboardingState();
+    } else if (!ST.communityId && ST.availableCommunities && ST.availableCommunities.length > 0) {
+      showCommunitySelection();
+    } else if (ST.communityId && ST.community) {
+      import('./profile.js').then(m => m.showCommunityMembersState());
     } else {
       showProfilesState();
     }

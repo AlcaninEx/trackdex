@@ -65,6 +65,7 @@
           <li><span>⭐</span> <strong>Legacy & Diarias</strong> — Ataques legacy, tareas diarias, Poképaradas</li>
           <li><span>🎯</span> <strong>Pokémon Objetivo</strong> — Filtros para copiar a Pokémon GO</li>
           <li><span>☁️</span> <strong>Sync en la nube</strong> — Firebase + localStorage, multi-dispositivo</li>
+          <li><span>🏘️</span> <strong>Comunidades</strong> — Crea o únete a grupos de raid compartidos</li>
         </ul>
 
         <div class="onboarding-cta">
@@ -73,6 +74,91 @@
         </div>
         
         <p class="onboarding-hint">Tus datos se guardan en la nube (Firebase) y en tu dispositivo. Funciona offline.</p>
+      </div>
+    </section>
+
+    <!-- COMMUNITY SELECTION STATE -->
+    <section id="community-state" class="profile-state" style="display: none;">
+      <div class="community-header">
+        <h2>Comunidades</h2>
+        <span id="community-count" class="profiles-count">0 disponibles</span>
+      </div>
+
+      <div id="community-list" class="community-list"></div>
+
+      <!-- CREATE COMMUNITY FORM -->
+      <div id="community-create-form" class="community-form" style="display: none;">
+        <h3>Crear nueva comunidad</h3>
+        <form onsubmit="createCommunityHandler(event)">
+          <div class="form-group">
+            <label for="new-community-name">Nombre de la comunidad</label>
+            <input type="text" id="new-community-name" placeholder="ej: RaidersBCN" maxlength="30" required autocomplete="off" aria-label="Nombre de la comunidad">
+            <p class="form-hint">Solo letras, números y guiones. Se convertirá a minúsculas.</p>
+          </div>
+          <div class="form-group">
+            <label for="new-community-displayName">Tu nombre en la comunidad</label>
+            <input type="text" id="new-community-displayName" placeholder="Tu nombre visible" maxlength="20" autocomplete="off" aria-label="Tu nombre visible en la comunidad">
+          </div>
+          <div class="form-group">
+            <label for="new-community-password">Contraseña</label>
+            <input type="password" id="new-community-password" placeholder="Mínimo 4 caracteres" minlength="4" required autocomplete="new-password" aria-label="Contraseña de la comunidad">
+          </div>
+          <div class="form-group">
+            <label for="new-community-confirm">Confirmar contraseña</label>
+            <input type="password" id="new-community-confirm" placeholder="Repite la contraseña" minlength="4" required autocomplete="new-password" aria-label="Confirmar contraseña">
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-ghost" onclick="hideCommunityCreateForm()">Cancelar</button>
+            <button type="submit" class="btn-primary">Crear comunidad</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- JOIN COMMUNITY FORM -->
+      <div id="community-join-form" class="community-form" style="display: none;">
+        <h3>Unirse a <span id="join-community-name"></span></h3>
+        <input type="hidden" id="join-community-id">
+        <form onsubmit="joinCommunityHandler(event)">
+          <div class="form-group">
+            <label for="join-community-password">Contraseña de la comunidad</label>
+            <input type="password" id="join-community-password" placeholder="Contraseña" required autocomplete="current-password" aria-label="Contraseña de la comunidad">
+          </div>
+          <div class="form-group">
+            <label for="join-community-displayName">Tu nombre en la comunidad</label>
+            <input type="text" id="join-community-displayName" placeholder="Tu nombre visible" maxlength="20" autocomplete="off" aria-label="Tu nombre visible en la comunidad">
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-ghost" onclick="hideCommunityJoinForm()">Cancelar</button>
+            <button type="submit" class="btn-primary">Unirse</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="community-actions">
+        <button class="btn-secondary btn-add-community" onclick="showCommunityCreateForm()">
+          <span class="btn-icon">+</span> Crear comunidad
+        </button>
+      </div>
+    </section>
+
+    <!-- COMMUNITY MEMBERS STATE -->
+    <section id="community-members-state" class="profile-state" style="display: none;">
+      <div class="community-members-header">
+        <div class="community-members-title">
+          <h2>🏘️ <span id="current-community-name"></span></h2>
+          <span id="member-count" class="profiles-count">0 miembros</span>
+        </div>
+        <div class="community-members-actions">
+          <button class="btn-ghost" onclick="leaveCommunityHandler()">Salir</button>
+        </div>
+      </div>
+
+      <p id="community-status-msg" class="status-msg" aria-live="polite"></p>
+
+      <ul class="community-members-list" id="community-members-list" role="list"></ul>
+
+      <div class="community-members-footer">
+        <p class="community-hint">Tu perfil siempre aparece primero. Toca "Ver" en otros miembros para ver su álbum en modo vista (solo lectura).</p>
       </div>
     </section>
 

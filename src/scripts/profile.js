@@ -1,6 +1,6 @@
 // Main App - UI logic, imports all modules
-import { ST, gp, goc, defaultAlbum, getAlbum, getCurrentDpsForName, albumPks, countType } from './state.js';
-import { save, load, loadFromFirebase } from './storage.js';
+import { ST, gp, goc, defaultAlbum, getAlbum, getCurrentDpsForName, albumPks, countType, getCommunityMembers, getMyRoleInCommunity, isCommunityOwner, setCommunity, clearCommunity } from './state.js';
+import { save, load, loadFromFirebase, createCommunity, joinCommunity, leaveCommunity, setCurrentCommunity } from './storage.js';
 import { 
   getEff, inferTags, renderBadges, showToast, toggleDark, show, evoH, placeBalls, renderBalls,
   SP, si
@@ -78,20 +78,168 @@ export function updateProfileCount() {
   }
 }
 
+// ============ COMMUNITY STATES & RENDERING ============
+
+export function showCommunitySelection() {
+  // Show community selection screen (replaces onboarding)
+  document.getElementById('onboarding-state').style.display = 'none';
+  document.getElementById('profiles-state').style.display = 'none';
+  document.getElementById('community-state').style.display = 'block';
+  document.getElementById('home-menu').style.display = 'none';
+  document.getElementById('home-profile-section').style.display = 'block';
+  document.getElementById('trainer-name-bar').textContent = 'Comunidad';
+  renderAvailableCommunities();
+  updateProfileCount();
+}
+
+export function showCommunityCreateForm() {
+  document.getElementById('community-list').style.display = 'none';
+  document.getElementById('community-create-form').style.display = 'block';
+  document.getElementById('community-join-form').style.display = 'none';
+  document.getElementById('new-community-name').focus();
+}
+
+export function hideCommunityCreateForm() {
+  document.getElementById('community-list').style.display = 'block';
+  document.getElementById('community-create-form').style.display = 'none';
+  document.getElementById('community-join-form').style.display = 'none';
+  document.getElementById('new-community-name').value = '';
+  document.getElementById('new-community-password').value = '';
+  document.getElementById('new-community-confirm').value = '';
+}
+
+export function showCommunityJoinForm(communityId) {
+  document.getElementById('community-list').style.display = 'none';
+  document.getElementById('community-create-form').style.display = 'none';
+  document.getElementById('community-join-form').style.display = 'block';
+  document.getElementById('join-community-id').value = communityId;
+  document.getElementById('join-community-password').value = '';
+  document.getElementById('join-community-displayName').value = ST.cur || '';
+  document.getElementById('join-community-password').focus();
+}
+
+export function hideCommunityJoinForm() {
+  document.getElementById('community-list').style.display = 'block';
+  document.getElementById('community-create-form').style.display = 'none';
+  document.getElementById('community-join-form').style.display = 'none';
+}
+
+export function renderAvailableCommunities() {
+  const el = document.getElementById('community-list');
+  if (!el) return;
+  
+  const communities = ST.availableCommunities || [];
+  
+  if (communities.length === 0) {
+    el.innerHTML = `
+      <div class="community-empty">
+        <div class="community-empty-icon">🏘️</div>
+        <h3>No hay comunidades aún</h3>
+        <p>Sé el primero en crear una comunidad para tu grupo de raid</p>
+      </div>
+    `;
+    return;
+  }
+  
+  el.innerHTML = communities.map(c => {
+    const memberCount = c.members ? Object.keys(c.members).length : 0;
+    const amMember = ST.cur && c.members && c.members[ST.cur];
+    const isOwner = amMember?.isOwner;
+    return `
+      <div class="community-card ${amMember ? 'joined' : ''}" onclick="${amMember ? `enterCommunity('${c.id}')` : `showCommunityJoinForm('${c.id}')`}">
+        <div class="community-card-header">
+          <div class="community-icon">🏘️</div>
+          <div class="community-info">
+            <div class="community-name">${c.id}${isOwner ? ' <span class="owner-badge">Owner</span>' : ''}${amMember && !isOwner ? ' <span class="member-badge">Miembro</span>' : ''}</div>
+            <div class="community-meta">${memberCount} miembro${memberCount !== 1 ? 's' : ''} · ${isOwner ? 'Tu comunidad' : amMember ? 'Eres miembro' : 'Privada'}</div>
+          </div>
+        </div>
+        ${amMember 
+          ? `<button class="community-enter-btn" onclick="event.stopPropagation(); enterCommunity('${c.id}')">Entrar</button>`
+          : `<button class="community-join-btn" onclick="event.stopPropagation(); showCommunityJoinForm('${c.id}')">Unirse</button>`
+        }
+      </div>
+    `;
+  }).join('');
+}
+
+export function renderCommunityMembers() {
+  const el = document.getElementById('community-members-list');
+  if (!el || !ST.community) return;
+  
+  const members = getCommunityMembers();
+  const isOwner = isCommunityOwner();
+  
+  el.innerHTML = members.map((member, index) => {
+    const isMe = member.name === ST.cur;
+    const displayName = member.displayName || member.name;
+    const initials = displayName.substring(0, 2).toUpperCase();
+    const isMemberOwner = member.isOwner;
+    
+    return `
+      <li class="member-row ${isMe ? 'me' : ''} ${!isMe ? 'readonly' : ''}" data-member="${member.name}">
+        <div class="member-avatar" style="${isMemberOwner ? 'background: linear-gradient(135deg, #7B1FA2, #AB47BC);' : ''}">${initials}</div>
+        <div class="member-info">
+          <div class="member-name-row">
+            <span class="member-display-name">${displayName}${isMe ? ' <span class="you-badge">(Tú)</span>' : ''}${isMemberOwner ? ' <span class="crown-badge">👑</span>' : ''}</span>
+            <span class="member-username">@${member.name}</span>
+          </div>
+          <div class="member-meta">
+            <span>Miembro desde ${new Date(member.joinedAt).toLocaleDateString('es-ES')}</span>
+            ${isMe ? '<span class="edit-mode-badge">Modo edición</span>' : '<span class="view-mode-badge">Modo vista</span>'}
+          </div>
+        </div>
+        <div class="member-actions">
+          ${isMe 
+            ? '<span class="current-user-indicator">Tu perfil</span>'
+            : `<button class="view-member-btn" onclick="viewMemberProfile('${member.name}')" aria-label="Ver perfil de ${displayName}">Ver</button>`
+          }
+          ${isOwner && !isMe ? `<button class="kick-member-btn" onclick="kickMember('${member.name}', event)" aria-label="Expulsar a ${displayName}">✕</button>` : ''}
+        </div>
+      </li>
+    `;
+  }).join('');
+}
+
+export function showCommunityMembersView() {
+  document.getElementById('community-state').style.display = 'none';
+  document.getElementById('community-members-state').style.display = 'block';
+  document.getElementById('home-menu').style.display = 'none';
+  document.getElementById('home-profile-section').style.display = 'block';
+  document.getElementById('trainer-name-bar').textContent = ST.community ? `🏘️ ${ST.community.id}` : 'Comunidad';
+  renderCommunityMembers();
+}
+
+export function showCommunityProfileView(memberName, isReadOnly) {
+  ST.view = memberName;
+  ST.viewReadOnly = isReadOnly;
+  show('main-screen');
+  renderMain();
+}
+
 // ============ STATE MANAGEMENT ============
 
 export function showOnboardingState() {
-  document.getElementById('onboarding-state').style.display = 'block';
-  document.getElementById('profiles-state').style.display = 'none';
-  document.getElementById('home-menu').style.display = 'none';
-  document.getElementById('home-profile-section').style.display = 'block';
-  document.getElementById('trainer-name-bar').textContent = 'Selecciona tu entrenador';
-  updateProfileCount();
+  // Check if user has communities
+  if (ST.availableCommunities && ST.availableCommunities.length > 0) {
+    showCommunitySelection();
+  } else {
+    document.getElementById('onboarding-state').style.display = 'block';
+    document.getElementById('profiles-state').style.display = 'none';
+    document.getElementById('community-state').style.display = 'none';
+    document.getElementById('community-members-state').style.display = 'none';
+    document.getElementById('home-menu').style.display = 'none';
+    document.getElementById('home-profile-section').style.display = 'block';
+    document.getElementById('trainer-name-bar').textContent = 'Selecciona tu entrenador';
+    updateProfileCount();
+  }
 }
 
 export function showProfilesState() {
   document.getElementById('onboarding-state').style.display = 'none';
   document.getElementById('profiles-state').style.display = 'block';
+  document.getElementById('community-state').style.display = 'none';
+  document.getElementById('community-members-state').style.display = 'none';
   document.getElementById('home-menu').style.display = 'none';
   document.getElementById('home-profile-section').style.display = 'block';
   document.getElementById('trainer-name-bar').textContent = 'Selecciona tu entrenador';
@@ -102,9 +250,118 @@ export function showProfilesState() {
 export function showHomeMenu() {
   document.getElementById('onboarding-state').style.display = 'none';
   document.getElementById('profiles-state').style.display = 'none';
+  document.getElementById('community-state').style.display = 'none';
+  document.getElementById('community-members-state').style.display = 'none';
   document.getElementById('home-menu').style.display = 'block';
   document.getElementById('home-profile-section').style.display = 'none';
   document.getElementById('trainer-name-bar').textContent = '👋 ' + ST.cur;
+}
+
+export function showCommunityMembersState() {
+  document.getElementById('onboarding-state').style.display = 'none';
+  document.getElementById('profiles-state').style.display = 'none';
+  document.getElementById('community-state').style.display = 'none';
+  document.getElementById('community-members-state').style.display = 'block';
+  document.getElementById('home-menu').style.display = 'none';
+  document.getElementById('home-profile-section').style.display = 'block';
+  document.getElementById('trainer-name-bar').textContent = ST.community ? `🏘️ ${ST.community.id}` : 'Comunidad';
+  renderCommunityMembers();
+}
+
+// ============ COMMUNITY ACTIONS ============
+
+export async function createCommunityHandler(e) {
+  if (e) e.preventDefault();
+  const nameInput = document.getElementById('new-community-name');
+  const passInput = document.getElementById('new-community-password');
+  const confirmInput = document.getElementById('new-community-confirm');
+  const displayNameInput = document.getElementById('new-community-displayName');
+  
+  const communityId = nameInput.value.trim().toLowerCase().replace(/\s+/g, '-');
+  const password = passInput.value;
+  const confirm = confirmInput.value;
+  const displayName = displayNameInput.value.trim() || ST.cur;
+  
+  if (!communityId) { showToast('Escribe un nombre para la comunidad'); nameInput.focus(); return; }
+  if (!password) { showToast('Escribe una contraseña'); passInput.focus(); return; }
+  if (password.length < 4) { showToast('La contraseña debe tener al menos 4 caracteres'); passInput.focus(); return; }
+  if (password !== confirm) { showToast('Las contraseñas no coinciden'); confirmInput.focus(); return; }
+  if (!ST.cur) { showToast('Primero selecciona tu entrenador'); return; }
+  
+  try {
+    await createCommunity(communityId, password, ST.cur, displayName);
+    showToast(`¡Comunidad "${communityId}" creada! 🎉`);
+    hideCommunityCreateForm();
+    showCommunityMembersState();
+  } catch (err) {
+    showToast(err.message || 'Error al crear comunidad');
+  }
+}
+
+export async function joinCommunityHandler(e) {
+  if (e) e.preventDefault();
+  const communityId = document.getElementById('join-community-id').value;
+  const password = document.getElementById('join-community-password').value;
+  const displayName = document.getElementById('join-community-displayName').value.trim() || ST.cur;
+  
+  if (!password) { showToast('Escribe la contraseña'); document.getElementById('join-community-password').focus(); return; }
+  if (!ST.cur) { showToast('Primero selecciona tu entrenador'); return; }
+  
+  try {
+    await joinCommunity(communityId, password, ST.cur, displayName);
+    showToast(`¡Te uniste a "${communityId}"! 🎉`);
+    hideCommunityJoinForm();
+    showCommunityMembersState();
+  } catch (err) {
+    showToast(err.message || 'Error al unirte a la comunidad');
+  }
+}
+
+export function enterCommunity(communityId) {
+  const community = ST.availableCommunities.find(c => c.id === communityId);
+  if (!community) { showToast('Comunidad no encontrada'); return; }
+  
+  setCurrentCommunity(communityId);
+  showCommunityMembersState();
+}
+
+export function leaveCommunityHandler() {
+  if (!confirm('¿Salir de la comunidad? Perderás acceso a los perfiles de los demás miembros.')) return;
+  leaveCommunity();
+  showToast('Has salido de la comunidad');
+  showCommunitySelection();
+}
+
+export function kickMember(memberName, e) {
+  e.stopPropagation();
+  if (!isCommunityOwner()) { showToast('Solo el owner puede expulsar'); return; }
+  if (memberName === ST.cur) { showToast('No puedes expulsarte a ti mismo'); return; }
+  if (!confirm(`¿Expulsar a ${memberName} de la comunidad?`)) return;
+  
+  if (ST.community?.members?.[memberName]) {
+    delete ST.community.members[memberName];
+    save();
+    renderCommunityMembers();
+    showToast(`${memberName} expulsado de la comunidad`);
+  }
+}
+
+export function viewMemberProfile(memberName) {
+  const member = ST.community?.members?.[memberName];
+  if (!member) return;
+  // View in read-only mode
+  ST.view = memberName;
+  ST.viewReadOnly = true;
+  show('main-screen');
+  renderMain();
+}
+
+export function backToCommunityMembers() {
+  if (ST.view) {
+    ST.view = null;
+    ST.viewReadOnly = false;
+    showCommunityMembersState();
+  }
 }
 
 // ============ PROFILE ACTIONS ============
@@ -120,8 +377,13 @@ export function createFirstProfile() {
   import('./firebase.js').then(({ fbSave }) => fbSave(name, { pk: {}, album: null, custom: null }));
   save();
   showToast(`¡Bienvenido, ${name}! 🎉`);
-  showHomeMenu();
-  updateHomeMenu();
+  
+  // After creating first profile, go to community selection
+  if (ST.availableCommunities && ST.availableCommunities.length > 0) {
+    showCommunitySelection();
+  } else {
+    showCommunitySelection(); // Will show empty state with create option
+  }
 }
 
 export function addProfile(e) {
@@ -178,11 +440,18 @@ export function selProfileIdx(i) {
   if (!p) return;
   ST.cur = p.name;
   ST.view = null;
-  showHomeMenu();
-  document.getElementById('home-menu').style.display = 'block';
-  document.getElementById('home-profile-section').style.display = 'none';
-  document.getElementById('trainer-name-bar').textContent = '👋 ' + p.name;
-  updateHomeMenu();
+  ST.viewReadOnly = false;
+  
+  // If user has communities, go to community selection
+  if (ST.availableCommunities && ST.availableCommunities.length > 0) {
+    showCommunitySelection();
+  } else {
+    showHomeMenu();
+    document.getElementById('home-menu').style.display = 'block';
+    document.getElementById('home-profile-section').style.display = 'none';
+    document.getElementById('trainer-name-bar').textContent = '👋 ' + p.name;
+    updateHomeMenu();
+  }
 }
 
 export function viewProfileIdx(i) { 
@@ -190,6 +459,7 @@ export function viewProfileIdx(i) {
   if (!p) return; 
   if (!ST.cur) { showToast('Primero selecciona tu perfil 👤'); return; }
   ST.view = p.name;
+  ST.viewReadOnly = false;
   show('main-screen');
   renderMain();
 }
@@ -197,6 +467,8 @@ export function viewProfileIdx(i) {
 export function goProfiles() {
   ST.cur = null;
   ST.view = null;
+  ST.viewReadOnly = false;
+  clearCommunity();
   show('profile-screen');
   document.getElementById('home-menu').style.display = 'none';
   document.getElementById('home-profile-section').style.display = '';
@@ -275,3 +547,16 @@ window.goBack = goBack;
 window.showAddProfileForm = showAddProfileForm;
 window.hideAddProfileForm = hideAddProfileForm;
 window.createFirstProfile = createFirstProfile;
+
+// Community functions
+window.createCommunityHandler = createCommunityHandler;
+window.joinCommunityHandler = joinCommunityHandler;
+window.enterCommunity = enterCommunity;
+window.leaveCommunityHandler = leaveCommunityHandler;
+window.kickMember = kickMember;
+window.viewMemberProfile = viewMemberProfile;
+window.backToCommunityMembers = backToCommunityMembers;
+window.showCommunityCreateForm = showCommunityCreateForm;
+window.hideCommunityCreateForm = hideCommunityCreateForm;
+window.showCommunityJoinForm = showCommunityJoinForm;
+window.hideCommunityJoinForm = hideCommunityJoinForm;

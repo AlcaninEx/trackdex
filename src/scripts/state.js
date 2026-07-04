@@ -1,16 +1,23 @@
 // State management - single source of truth
 export const ST = {
   profiles: [],
-  cur: null,        // current profile name
-  view: null,       // viewing another profile (read-only)
-  type: null,       // current type (fire, water, etc.)
-  expanded: null,   // expanded card id
-  tab: 'album',     // 'album' or 'ranking'
-  rankTab: 'raid',  // 'raid' or 'dmax'
-  albumTab: 'raid', // 'raid' or 'dmax'
+  cur: null,              // current profile name (trainer)
+  view: null,             // viewing another profile (read-only)
+  type: null,             // current type (fire, water, etc.)
+  expanded: null,         // expanded card id
+  tab: 'album',           // 'album' or 'ranking'
+  rankTab: 'raid',        // 'raid' or 'dmax'
+  albumTab: 'raid',       // 'raid' or 'dmax'
   _pendingSave: null,
   _rankCache: {},
-  _megaFilter: {}
+  _megaFilter: {},
+  
+  // Community system
+  community: null,        // current community object {id, name, members, owner, etc}
+  communityId: null,      // current community ID
+  communityRole: null,    // 'owner' | 'member'
+  myMemberData: null,     // my member data in current community
+  availableCommunities: [], // list of communities user can see/join
 };
 
 export function gp(n) { return ST.profiles.find(p => p.name === n); }
@@ -73,4 +80,62 @@ export function countType(n, type) {
   const pks = albumPks(n, type);
   const owned = pks.filter(pk => p?.pk?.[pk.id]?.owned).length;
   return { o: owned, t: 6 };
+}
+
+// ============ COMMUNITY HELPERS ============
+
+export function getCurrentCommunity() {
+  return ST.community;
+}
+
+export function getMyRoleInCommunity() {
+  return ST.communityRole;
+}
+
+export function isCommunityOwner() {
+  return ST.communityRole === 'owner';
+}
+
+export function getCommunityMembers() {
+  if (!ST.community?.members) return [];
+  return Object.entries(ST.community.members).map(([name, data]) => ({
+    name,
+    displayName: data.displayName || name,
+    joinedAt: data.joinedAt,
+    isOwner: data.isOwner || false
+  })).sort((a, b) => {
+    // Owner first, then by join date
+    if (a.isOwner && !b.isOwner) return -1;
+    if (!a.isOwner && b.isOwner) return 1;
+    return a.joinedAt - b.joinedAt;
+  });
+}
+
+export function getCommunityMemberCount() {
+  return ST.community?.members ? Object.keys(ST.community.members).length : 0;
+}
+
+export function setCommunity(community) {
+  ST.community = community;
+  ST.communityId = community?.id || null;
+  if (community?.members && ST.cur) {
+    ST.myMemberData = community.members[ST.cur] || null;
+    ST.communityRole = ST.myMemberData?.isOwner ? 'owner' : 'member';
+  } else {
+    ST.myMemberData = null;
+    ST.communityRole = null;
+  }
+}
+
+export function clearCommunity() {
+  ST.community = null;
+  ST.communityId = null;
+  ST.communityRole = null;
+  ST.myMemberData = null;
+}
+
+export function inferTags(name, isFastLegacy, isChargeLegacy, evo) {
+  const tags = [];
+  if (isFastLegacy || isChargeLegacy) tags.push({ type: 'legacy', label: 'Legacy' });
+  return tags;
 }
