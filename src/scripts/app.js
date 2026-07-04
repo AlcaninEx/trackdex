@@ -46,14 +46,11 @@ export async function init() {
     // Show appropriate state based on profiles and community
     if (ST.profiles.length === 0) {
       showOnboardingState();
-    } else if (!ST.communityId && ST.availableCommunities && ST.availableCommunities.length > 0) {
-      // Has profiles but no community selected - show community selection
-      showCommunitySelection();
     } else if (ST.communityId && ST.community) {
-      // Has community selected - go to members view
+      // Has community selected - go to members view (cur should be restored from storage)
       import('./profile.js').then(m => m.showCommunityMembersState());
     } else {
-      // Has profiles but no communities available - show profiles state
+      // Has profiles but no community selected - show profiles to pick trainer FIRST
       showProfilesState();
     }
     show('profile-screen');
@@ -64,8 +61,6 @@ export async function init() {
     load();
     if (ST.profiles.length === 0) {
       showOnboardingState();
-    } else if (!ST.communityId && ST.availableCommunities && ST.availableCommunities.length > 0) {
-      showCommunitySelection();
     } else if (ST.communityId && ST.community) {
       import('./profile.js').then(m => m.showCommunityMembersState());
     } else {
