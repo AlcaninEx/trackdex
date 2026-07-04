@@ -138,6 +138,14 @@ export async function fbLoadCommunityMembers(communityId) {
   }));
 }
 
+export async function fbDeleteMember(communityId, userId) {
+  const community = await fbLoadCommunity(communityId);
+  if (!community?.members?.[userId]) return;
+  
+  delete community.members[userId];
+  await fbSaveCommunity(communityId, community);
+}
+
 // Real-time subscriptions
 export function fbSubscribeCommunity(communityId, callback) {
   const communityRef = doc(communitiesCol, communityId);
