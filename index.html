@@ -29,11 +29,199 @@
 
 <div id="app">
 
-<!-- PROFILE / ONBOARDING -->
-<div id="profile-screen" class="screen">
-  <div id="profile-screen-inner">
+<!-- COMMUNITY SELECTION SCREEN -->
+<div id="community-selection-screen" class="profile-state" style="display: none;">
+  <div class="community-header">
+    <h2>Comunidades</h2>
+    <span id="community-count" class="profiles-count">0 disponibles</span>
+  </div>
 
-    <!-- LOGO HEADER (always visible) -->
+  <div id="community-list" class="community-list"></div>
+
+  <div class="community-actions">
+    <button class="btn-secondary btn-add-community" onclick="showCreateCommunityForm()">
+      <span class="btn-icon">+</span> Crear comunidad
+    </button>
+  </div>
+
+  <!-- CREATE COMMUNITY FORM -->
+  <div id="create-community-form" class="community-form" style="display: none;">
+    <h3>Crear nueva comunidad</h3>
+    <form onsubmit="createCommunityHandler(event)">
+      <div class="form-group">
+        <label for="new-community-id">ID de la comunidad</label>
+        <input type="text" id="new-community-id" placeholder="ej: raidersbcn" maxlength="30" required autocomplete="off" aria-label="ID de la comunidad" pattern="[a-z0-9_-]+">
+        <p class="form-hint">Solo letras minúsculas, números, guiones y guiones bajos</p>
+      </div>
+      <div class="form-group">
+        <label for="new-community-password">Contraseña de la comunidad</label>
+        <input type="password" id="new-community-password" placeholder="Mínimo 4 caracteres" minlength="4" required autocomplete="new-password" aria-label="Contraseña de la comunidad">
+      </div>
+      <div class="form-group">
+        <label for="new-community-confirm">Confirmar contraseña comunidad</label>
+        <input type="password" id="new-community-confirm" placeholder="Repite la contraseña" minlength="4" required autocomplete="new-password" aria-label="Confirmar contraseña de la comunidad">
+      </div>
+      <hr style="margin:16px 0;border-color:#e0e0e0">
+      <p style="font-size:13px;color:#666;margin-bottom:12px">Tu usuario en esta comunidad (el owner):</p>
+      <div class="form-group">
+        <label for="new-community-user-id">Tu ID de usuario</label>
+        <input type="text" id="new-community-user-id" placeholder="ej: ash" maxlength="20" required autocomplete="off" aria-label="Tu ID de usuario" pattern="[a-z0-9_-]+">
+        <p class="form-hint">Solo letras minúsculas, números, guiones y guiones bajos</p>
+      </div>
+      <div class="form-group">
+        <label for="new-community-user-password">Tu contraseña personal</label>
+        <input type="password" id="new-community-user-password" placeholder="Mínimo 4 caracteres" minlength="4" required autocomplete="new-password" aria-label="Tu contraseña personal">
+      </div>
+      <div class="form-group">
+        <label for="new-community-user-confirm">Confirmar tu contraseña</label>
+        <input type="password" id="new-community-user-confirm" placeholder="Repite tu contraseña" minlength="4" required autocomplete="new-password" aria-label="Confirmar tu contraseña">
+      </div>
+      <div class="form-group">
+        <label for="new-community-display-name">Tu nombre visible</label>
+        <input type="text" id="new-community-display-name" placeholder="Tu nombre visible" maxlength="20" autocomplete="off" aria-label="Tu nombre visible">
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-ghost" onclick="hideCreateCommunityForm()">Cancelar</button>
+        <button type="submit" class="btn-primary">Crear comunidad</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- COMMUNITY LOGIN SCREEN -->
+<div id="community-login-screen" class="profile-state" style="display: none;">
+  <div class="community-header">
+    <h2>Entrar a <span id="login-community-name"></span></h2>
+  </div>
+
+  <div class="community-form">
+    <form onsubmit="loginCommunityHandler(event)">
+      <div class="form-group">
+        <label for="login-user-id">Tu ID de usuario</label>
+        <input type="text" id="login-user-id" placeholder="Tu ID" required autocomplete="username" aria-label="Tu ID de usuario" pattern="[a-z0-9_-]+">
+      </div>
+      <div class="form-group">
+        <label for="login-user-password">Tu contraseña</label>
+        <input type="password" id="login-user-password" placeholder="Tu contraseña" required autocomplete="current-password" aria-label="Tu contraseña">
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-ghost" onclick="showCommunitySelection()">← Volver</button>
+        <button type="submit" class="btn-primary">Entrar</button>
+      </div>
+    </form>
+    <p class="form-hint" style="margin-top:16px;text-align:center">
+      ¿No tienes cuenta? <button class="link-btn" onclick="showCommunityRegister(ST.pendingCommunityId)">Regístrate</button>
+    </p>
+  </div>
+</div>
+
+<!-- COMMUNITY REGISTER SCREEN -->
+<div id="community-register-screen" class="profile-state" style="display: none;">
+  <div class="community-header">
+    <h2>Unirse a <span id="register-community-name"></span></h2>
+  </div>
+
+  <div class="community-form">
+    <form onsubmit="registerCommunityHandler(event)">
+      <div class="form-group">
+        <label for="register-user-id">Tu ID de usuario</label>
+        <input type="text" id="register-user-id" placeholder="Elige tu ID" maxlength="20" required autocomplete="off" aria-label="Tu ID de usuario" pattern="[a-z0-9_-]+">
+        <p class="form-hint">Solo letras minúsculas, números, guiones y guiones bajos</p>
+      </div>
+      <div class="form-group">
+        <label for="register-user-password">Tu contraseña</label>
+        <input type="password" id="register-user-password" placeholder="Mínimo 4 caracteres" minlength="4" required autocomplete="new-password" aria-label="Tu contraseña">
+      </div>
+      <div class="form-group">
+        <label for="register-user-confirm">Confirmar contraseña</label>
+        <input type="password" id="register-user-confirm" placeholder="Repite la contraseña" minlength="4" required autocomplete="new-password" aria-label="Confirmar contraseña">
+      </div>
+      <div class="form-group">
+        <label for="register-display-name">Tu nombre visible</label>
+        <input type="text" id="register-display-name" placeholder="Tu nombre visible" maxlength="20" autocomplete="off" aria-label="Tu nombre visible">
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-ghost" onclick="showCommunityLogin(ST.pendingCommunityId)">← Volver</button>
+        <button type="submit" class="btn-primary">Crear cuenta</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MAIN APP SCREEN (after login) -->
+<div id="main-app-screen" class="profile-state" style="display: none;">
+  <div class="community-members-header">
+    <div class="community-members-title">
+      <h2>🏘️ <span id="current-community-name"></span></h2>
+      <span id="member-count" class="profiles-count">0 miembros</span>
+    </div>
+    <div class="community-members-actions">
+      <button class="btn-ghost" onclick="showCommunityMembersView()">👥 Miembros</button>
+      <button class="btn-ghost" onclick="leaveCommunityHandler()">Salir</button>
+    </div>
+  </div>
+
+  <!-- HOME MENU -->
+  <div id="home-menu" class="home-menu" style="display: block;">
+    <button class="home-btn-big primary" onclick="goToFireRanking()">
+      <span class="home-btn-icon">💎</span>
+      <div class="home-btn-text">
+        <strong>Rankings DPS</strong>
+        <span>Top 50 por tipo · Datos Dittobase</span>
+      </div>
+    </button>
+
+    <button class="home-btn-big" onclick="goToTypes()">
+      <div class="home-btn-icon">⚔️</div>
+      <div class="home-btn-text">
+        <strong>Equipos por Tipos</strong>
+        <div class="home-progress-row">
+          <span id="hm-raid-count">0</span>/102 Incursiones
+          <div class="home-prog-bar"><div class="home-prog-fill" id="hm-raid-bar" style="width:0%"></div></div>
+        </div>
+        <div class="home-progress-row">
+          <span id="hm-dmax-count">0</span>/51 Dynamax
+          <div class="home-prog-bar"><div class="home-prog-fill" id="hm-dmax-bar" style="width:0%"></div></div>
+        </div>
+      </div>
+    </button>
+
+    <button class="home-btn-secondary" onclick="showTypeChart()">🔥 Eficacia de Tipos (Calculadora)</button>
+    
+    <div class="home-grid">
+      <button class="home-btn-small" onclick="showMegaCandy()">🍬 Guía Megaenergía</button>
+      <button class="home-btn-small" onclick="showLegacyGuide()">⭐ Guía Pokémon Legacy</button>
+    </div>
+
+    <div class="home-grid">
+      <button class="home-btn-small" onclick="openGuia()">📖 Guía completa</button>
+      <button class="home-btn-small" onclick="openInfo()">ℹ️ Info app</button>
+      <button class="home-btn-small home-btn-accent" onclick="openObjetivo()">🎯 Pokémon Objetivo</button>
+      <button class="home-btn-small home-btn-success" onclick="openDiarias()">📋 Diarias</button>
+      <button class="home-btn-small home-btn-info" onclick="openLegacy()">⭐ Ataques Legacy</button>
+      <button class="home-btn-small home-btn-pink" onclick="openPokeparadas()">🎁 Poképaradas!</button>
+      <button class="home-btn-small home-btn-purple" onclick="openNovedades()">🆕 Novedades · v93</button>
+    </div>
+  </div>
+</div>
+
+<!-- COMMUNITY MEMBERS SCREEN -->
+<div id="community-members-screen" class="screen" style="display: none;">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToMainApp()">←</button>
+    <h1>👥 Miembros de <span id="members-community-name"></span></h1>
+  </div>
+  <div style="padding:16px">
+    <ul class="community-members-list" id="community-members-list" role="list"></ul>
+    <p class="community-hint">Tu perfil siempre aparece primero. Toca "Ver" en otros miembros para ver su álbum en modo vista (solo lectura).</p>
+  </div>
+</div>
+
+</div> <!-- /#app -->
+
+<!-- PROFILE SCREEN WRAPPER (for backward compat) -->
+<div id="profile-screen" class="screen" style="display: none;">
+  <div id="profile-screen-inner">
     <header class="profile-header">
       <svg class="profile-logo" width="40" height="40" viewBox="0 0 64 64" fill="none">
         <circle cx="32" cy="32" r="30" fill="#CC0000" stroke="white" stroke-width="3"/>
@@ -43,198 +231,20 @@
       </svg>
       <div class="profile-title">
         <h1>PokeBestBCN</h1>
-        <p id="trainer-name-bar" class="trainer-name">Selecciona tu entrenador</p>
+        <p id="trainer-name-bar" class="trainer-name">Cargando...</p>
       </div>
       <button class="icon-btn" onclick="toggleDark()" id="dark-btn-home" title="Modo oscuro" aria-label="Modo oscuro">🌙</button>
-      <button class="icon-btn" onclick="goProfiles()" title="Cambiar usuario" aria-label="Cambiar usuario">
+      <button class="icon-btn" onclick="goProfiles()" title="Cambiar comunidad" aria-label="Cambiar comunidad">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
       </button>
     </header>
-
-    <!-- ONBOARDING STATE (empty state for new users) -->
-    <section id="onboarding-state" class="profile-state" style="display: none;">
-      <div class="onboarding-card">
-        <div class="onboarding-icon">👋</div>
-        <h2>¡Bienvenido a PokeBestBCN!</h2>
-        <p>Tu álbum personal de los mejores atacantes para Incursiones y Dynamax en Pokémon GO.</p>
-        
-        <ul class="onboarding-features">
-          <li><span>⚔️</span> <strong>Rankings DPS</strong> — Top 50 por tipo con datos reales de Dittobase</li>
-          <li><span>⚡</span> <strong>Equipos Dynamax</strong> — 51 Pokémon con stats de Max Battles</li>
-          <li><span>🍬</span> <strong>Guía Megaenergía</strong> — Rotaciones, misiones, Mega Buddy</li>
-          <li><span>⭐</span> <strong>Legacy & Diarias</strong> — Ataques legacy, tareas diarias, Poképaradas</li>
-          <li><span>🎯</span> <strong>Pokémon Objetivo</strong> — Filtros para copiar a Pokémon GO</li>
-          <li><span>☁️</span> <strong>Sync en la nube</strong> — Firebase + localStorage, multi-dispositivo</li>
-          <li><span>🏘️</span> <strong>Comunidades</strong> — Crea o únete a grupos de raid compartidos</li>
-        </ul>
-
-        <div class="onboarding-cta">
-          <input type="text" id="onboarding-name" placeholder="Tu nombre de entrenador" maxlength="20" autocomplete="off" aria-label="Nombre de entrenador">
-          <button class="btn-primary btn-lg" onclick="createFirstProfile()">Empezar mi álbum</button>
-        </div>
-        
-        <p class="onboarding-hint">Tus datos se guardan en la nube (Firebase) y en tu dispositivo. Funciona offline.</p>
-      </div>
-    </section>
-
-    <!-- COMMUNITY SELECTION STATE -->
-    <section id="community-state" class="profile-state" style="display: none;">
-      <div class="community-header">
-        <h2>Comunidades</h2>
-        <span id="community-count" class="profiles-count">0 disponibles</span>
-      </div>
-
-      <div id="community-list" class="community-list"></div>
-
-      <!-- CREATE COMMUNITY FORM -->
-      <div id="community-create-form" class="community-form" style="display: none;">
-        <h3>Crear nueva comunidad</h3>
-        <form onsubmit="createCommunityHandler(event)">
-          <div class="form-group">
-            <label for="new-community-name">Nombre de la comunidad</label>
-            <input type="text" id="new-community-name" placeholder="ej: RaidersBCN" maxlength="30" required autocomplete="off" aria-label="Nombre de la comunidad">
-            <p class="form-hint">Solo letras, números y guiones. Se convertirá a minúsculas.</p>
-          </div>
-          <div class="form-group">
-            <label for="new-community-displayName">Tu nombre en la comunidad</label>
-            <input type="text" id="new-community-displayName" placeholder="Tu nombre visible" maxlength="20" autocomplete="off" aria-label="Tu nombre visible en la comunidad">
-          </div>
-          <div class="form-group">
-            <label for="new-community-password">Contraseña</label>
-            <input type="password" id="new-community-password" placeholder="Mínimo 4 caracteres" minlength="4" required autocomplete="new-password" aria-label="Contraseña de la comunidad">
-          </div>
-          <div class="form-group">
-            <label for="new-community-confirm">Confirmar contraseña</label>
-            <input type="password" id="new-community-confirm" placeholder="Repite la contraseña" minlength="4" required autocomplete="new-password" aria-label="Confirmar contraseña">
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn-ghost" onclick="hideCommunityCreateForm()">Cancelar</button>
-            <button type="submit" class="btn-primary">Crear comunidad</button>
-          </div>
-        </form>
-      </div>
-
-      <!-- JOIN COMMUNITY FORM -->
-      <div id="community-join-form" class="community-form" style="display: none;">
-        <h3>Unirse a <span id="join-community-name"></span></h3>
-        <input type="hidden" id="join-community-id">
-        <form onsubmit="joinCommunityHandler(event)">
-          <div class="form-group">
-            <label for="join-community-password">Contraseña de la comunidad</label>
-            <input type="password" id="join-community-password" placeholder="Contraseña" required autocomplete="current-password" aria-label="Contraseña de la comunidad">
-          </div>
-          <div class="form-group">
-            <label for="join-community-displayName">Tu nombre en la comunidad</label>
-            <input type="text" id="join-community-displayName" placeholder="Tu nombre visible" maxlength="20" autocomplete="off" aria-label="Tu nombre visible en la comunidad">
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn-ghost" onclick="hideCommunityJoinForm()">Cancelar</button>
-            <button type="submit" class="btn-primary">Unirse</button>
-          </div>
-        </form>
-      </div>
-
-      <div class="community-actions">
-        <button class="btn-secondary btn-add-community" onclick="showCommunityCreateForm()">
-          <span class="btn-icon">+</span> Crear comunidad
-        </button>
-      </div>
-    </section>
-
-    <!-- COMMUNITY MEMBERS STATE -->
-    <section id="community-members-state" class="profile-state" style="display: none;">
-      <div class="community-members-header">
-        <div class="community-members-title">
-          <h2>🏘️ <span id="current-community-name"></span></h2>
-          <span id="member-count" class="profiles-count">0 miembros</span>
-        </div>
-        <div class="community-members-actions">
-          <button class="btn-ghost" onclick="leaveCommunityHandler()">Salir</button>
-        </div>
-      </div>
-
-      <p id="community-status-msg" class="status-msg" aria-live="polite"></p>
-
-      <ul class="community-members-list" id="community-members-list" role="list"></ul>
-
-      <div class="community-members-footer">
-        <p class="community-hint">Tu perfil siempre aparece primero. Toca "Ver" en otros miembros para ver su álbum en modo vista (solo lectura).</p>
-      </div>
-    </section>
-
-    <!-- PROFILES LIST STATE (existing users) -->
-    <section id="profiles-state" class="profile-state" style="display: none;">
-      <div class="profiles-header">
-        <h2>Tus entrenadores</h2>
-        <span id="profiles-count" class="profiles-count">0 entrenadores</span>
-      </div>
-
-      <p id="status-msg" class="status-msg" aria-live="polite"></p>
-      
-      <ul class="profiles-list" id="profiles-list" role="list"></ul>
-
-      <div class="add-profile-section">
-        <button class="btn-secondary btn-add-profile" onclick="showAddProfileForm()">
-          <span class="btn-icon">+</span> Añadir entrenador
-        </button>
-        
-        <form id="add-profile-form" class="add-profile-form" style="display: none;" onsubmit="addProfile(event)">
-          <input type="text" id="new-name" placeholder="Nombre del nuevo entrenador" maxlength="20" required autocomplete="off" aria-label="Nombre del nuevo entrenador">
-          <div class="form-actions">
-            <button type="button" class="btn-ghost" onclick="hideAddProfileForm()">Cancelar</button>
-            <button type="submit" class="btn-primary">Crear</button>
-          </div>
-        </form>
-      </div>
-    </section>
-
-    <!-- HOME MENU (after profile selected) -->
-    <section id="home-menu" class="home-menu" style="display: none;">
-      <button class="home-btn-big" onclick="goToFireRanking()">
-        <span class="home-btn-icon">💎</span>
-        <div class="home-btn-text">
-          <strong>Rankings DPS</strong>
-          <span>Top 50 por tipo · Datos Dittobase</span>
-        </div>
-      </button>
-
-      <button class="home-btn-big" onclick="goToTypes()">
-        <div class="home-btn-icon">⚔️</div>
-        <div class="home-btn-text">
-          <strong>Equipos por Tipos</strong>
-          <div class="home-progress-row">
-            <span id="hm-raid-count">0</span>/102 Incursiones
-            <div class="home-prog-bar"><div class="home-prog-fill" id="hm-raid-bar" style="width:0%"></div></div>
-          </div>
-          <div class="home-progress-row">
-            <span id="hm-dmax-count">0</span>/51 Dynamax
-            <div class="home-prog-bar"><div class="home-prog-fill" id="hm-dmax-bar" style="width:0%"></div></div>
-          </div>
-        </div>
-      </button>
-
-      <button class="home-btn-secondary" onclick="showTypeChart()">🔥 Eficacia de Tipos (Calculadora)</button>
-      
-      <div class="home-grid">
-        <button class="home-btn-small" onclick="showMegaCandy()">🍬 Guía Megaenergía</button>
-        <button class="home-btn-small" onclick="showLegacyGuide()">⭐ Guía Pokémon Legacy</button>
-      </div>
-
-      <div class="home-grid">
-        <button class="home-btn-small" onclick="openGuia()">📖 Guía completa</button>
-        <button class="home-btn-small" onclick="openInfo()">ℹ️ Info app</button>
-        <button class="home-btn-small home-btn-accent" onclick="openObjetivo()">🎯 Pokémon Objetivo</button>
-        <button class="home-btn-small home-btn-success" onclick="openDiarias()">📋 Diarias</button>
-        <button class="home-btn-small home-btn-info" onclick="openLegacy()">⭐ Ataques Legacy</button>
-        <button class="home-btn-small home-btn-pink" onclick="openPokeparadas()">🎁 Poképaradas!</button>
-        <button class="home-btn-small home-btn-purple" onclick="openNovedades()">🆕 Novedades · v93</button>
-      </div>
-    </section>
-
+    
+    <div id="home-profile-section" style="display:block;padding:16px"></div>
+    <div id="home-menu" style="display:none;padding:16px"></div>
   </div>
 </div>
 
-<!-- MAIN -->
+<!-- MAIN SCREEN -->
 <div id="main-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="backToHome()">←</button>
@@ -250,7 +260,7 @@
   <div class="types-grid" id="types-grid"></div>
 </div>
 
-<!-- DETAIL -->
+<!-- DETAIL SCREEN -->
 <div id="detail-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="goBack()">←</button>
@@ -286,10 +296,10 @@
   </div>
 </div>
 
-<!-- TYPE CHART -->
+<!-- TYPE CHART SCREEN -->
 <div id="typechart-screen" class="screen">
   <div class="app-header">
-    <button class="back-btn" onclick="show('profile-screen');document.getElementById('home-menu').style.display='block'">←</button>
+    <button class="back-btn" onclick="backToHome()">←</button>
     <h1>Eficacia de Tipos</h1>
   </div>
   <div style="padding:12px;background:#f0f0f0;min-height:100vh">
@@ -317,10 +327,10 @@
   </div>
 </div>
 
-<!-- MEGA GUIDE -->
+<!-- MEGA GUIDE SCREEN -->
 <div id="megaguide-screen" class="screen">
   <div class="app-header">
-    <button class="back-btn" onclick="show('profile-screen');document.getElementById('home-menu').style.display='block'">←</button>
+    <button class="back-btn" onclick="backToHome()">←</button>
     <h1>🍬 Guía Megaenergía</h1>
   </div>
   <div style="padding:12px;background:#f0f0f0;min-height:100vh">
@@ -366,7 +376,7 @@
           <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/15.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Beedrill</div>
+          <div style="font-size:9px;font-weight:font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Beedrill</div>
           <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
         </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
           <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
@@ -397,12 +407,6 @@
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/359.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
           <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Absol</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/302.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Sableye</div>
           <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
         </div></div>
     </div>
@@ -458,7 +462,7 @@
       <p style="font-size:14px;font-weight:800;margin-bottom:8px">📍 Misiones Fijas en Poképaradas</p>
       <div style="background:#fff8e1;border-left:4px solid #f9a825;border-radius:8px;padding:10px 12px;margin-bottom:8px">
         <p style="font-weight:700;font-size:12px">⚡ "Potencia un Pokémon 5 veces" → 10 Megaenergía aleatoria de:</p>
-        <p style="font-size:11px;color:#555;margin-top:4px">Venusaur · Charizard · Blastoise · Beedrill · Pidgeot · Aggron · Manectric</p>
+        <p style="font-size:11px">Venusaur · Charizard · Blastoise · Beedrill · Pidgeot · Aggron · Manectric</p>
       </div>
       <div style="background:#e8f5e9;border-left:4px solid #43a047;border-radius:8px;padding:10px 12px">
         <p style="font-weight:700;font-size:12px;margin-bottom:6px">🎯 Misiones de captura:</p>
@@ -485,7 +489,7 @@
           <tbody>
             <tr><td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700">Base</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">1</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">7 días</td><td style="padding:6px 5px;border:1px solid #e0e0e0">Coste base reducido (ej. 40 de energía)</td></tr>
             <tr style="background:#fafafa"><td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700">Alto</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">7</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">5 días</td><td style="padding:6px 5px;border:1px solid #e0e0e0">50% de descuento sobre el nivel base</td></tr>
-            <tr><td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700">Máximo</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">30</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">3 días</td><td style="padding:6px 5px;border:1px solid #e0e0e0">75% de descuento sobre el nivel base</td></tr>
+            <tr><td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700">Máximo</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">30</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">3 días</td><td style="padding:6px 5px;border:1px solid #e0e0e0e0">75% de descuento sobre el nivel base</td></tr>
             <tr style="background:#fff8e1"><td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700">Super Max</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">Especial*</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">24 h</td><td style="padding:6px 5px;border:1px solid #e0e0e0">Descuento casi total</td></tr>
           </tbody>
         </table>
@@ -513,15 +517,15 @@
     <div style="border-top:1px solid #eee;padding-top:12px;margin-bottom:12px">
       <p style="font-size:12px;font-weight:700;color:#CC0000;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">💰 El coste real de subir un Pokémon</p>
       <div style="background:#fff8e1;border-radius:8px;padding:10px 12px;border-left:3px solid #f9a825;margin-bottom:8px"><p style="font-size:12px;color:#444;line-height:1.7;margin:0"><b>Nivel 1 → 40:</b> ~272.500 polvos · 273 caramelos<br><b>Nivel 40 → 50:</b> ~296.000 polvos · 296 caramelos XL<br><b>Total nivel 1 → 50: ~568.500 polvos</b><br><span style="color:#888">Shadow: +20% polvos y caramelos · Lucky: −50% polvos</span></p></div>
-      <p style="font-size:12px;color:#555;line-height:1.6">Subir un solo Pokémon al nivel 50 cuesta más de medio millón de polvos. Por eso tiene sentido <b>esperar a tener la versión Dinamax</b> si existe: obtienes el mismo Pokémon con la capacidad extra de los Max Battles sin gastar polvos de más en la versión normal.</p>
+      <p style="font-size:12px;color:#555;line-height:1.6">Subir un solo Pokémon al nivel 50 cuesta más de medio millón de polvos. Por eso tiene sentido <b>esperar a tener la versión Dynamax</b> si existe: obtienes el mismo Pokémon con la capacidad extra de los Max Battles sin gastar polvos de más en la versión normal.</p>
     </div>
     <p style="font-size:12px;color:#555;line-height:1.6">La diferencia entre un Pokémon con IVs perfectos y uno con IVs bajos es <b>prácticamente irrelevante en raids</b>. Para atacantes Mega, Shadow o Dinamax con mucho ataque base, un IV de ataque 10 vs 15 supone menos del 2% de daño extra. <b>Es mucho más importante tener el Pokémon correcto que tener el hundo perfecto</b>. No descartes un buen atacante por tener IVs imperfectos.</p>
   </div>
 </div>
 
-<!-- DIARIAS -->
+<!-- DIARIAS SCREEN -->
 <div id="diarias-screen" class="screen">
-  <div class="app-header"><button class="back-btn" onclick="closeDiarias()">←</button><h1>📋��� Tareas Diarias</h1></div>
+  <div class="app-header"><button class="back-btn" onclick="backToHome()">←</button><h1>📋 Tareas Diarias</h1></div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:20px">
     <div class="diarias-section">
       <div class="diarias-section-header casa">🏠 Desde Casa</div>
@@ -549,9 +553,9 @@
   </div>
 </div>
 
-<!-- LEGACY -->
+<!-- LEGACY SCREEN -->
 <div id="legacy-screen" class="screen">
-  <div class="app-header"><button class="back-btn" onclick="closeLegacy()">←</button><h1>⭐ Ataques Legacy</h1></div>
+  <div class="app-header"><button class="back-btn" onclick="backToHome()">←</button><h1>⭐ Ataques Legacy</h1></div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
     <div class="lg-card"><div class="lg-title">¿Cómo se obtienen?</div><div class="lg-text">Hay dos formas principales:<br><br><b>🎉 En eventos (gratis):</b> evolucionando al Pokémon base hasta su última etapa, o capturándolo en incursiones/salvaje durante las horas del evento.<br><br><b>💳 En cualquier momento (de pago):</b> usando una <b>MT Élite</b> (rápida o cargada). Son objetos raros que se consiguen al final de las temporadas PvP (Rango 19+) o en packs de la tienda.</div></div>
     <div class="lg-card"><div class="lg-title">📅 Legacy de este año (Ene-May 2026)</div><div id="lg-thisyear"></div></div>
@@ -560,9 +564,9 @@
   </div>
 </div>
 
-<!-- POKEPARADAS -->
+<!-- POKEPARADAS SCREEN -->
 <div id="pokeparadas-screen" class="screen">
-  <div class="app-header"><button class="back-btn" onclick="closePokeparadas()">←</button><h1>🎁 Poképaradas!</h1></div>
+  <div class="app-header"><button class="back-btn" onclick="backToHome()">←</button><h1>🎁 Poképaradas!</h1></div>
   <p style="text-align:center;font-size:10.5px;color:#888;padding:10px 14px 0">Temporada: <b style="color:#c2185b">Memories in Motion</b> · 📌 fija tus misiones favoritas arriba</p>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
     <div class="pp-pinned-section" id="pp-pinned-section" style="display:none"><div class="pp-pinned-title">📌 Fijadas</div><div id="pp-pinned-list"></div></div>
@@ -570,21 +574,9 @@
   </div>
 </div>
 
-<!-- PERFIL -->
-<div id="perfil-screen" class="screen">
-  <div class="app-header"><button class="back-btn" onclick="closePerfilScreen()">←</button><h1>👤 Perfil</h1></div>
-  <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:13px;color:#888;padding:14px 14px 0">Entrenador: <b id="perfil-name-label" style="color:#37474f"></b></p>
-    <div class="perfil-card"><p style="font-size:13px;font-weight:800;color:#c62828;margin-bottom:10px">⚠️ Zona de peligro</p><button class="perfil-danger-btn" onclick="confirmDeleteRaidTeam()">🗑️ Borrar todos tus Pokémon de Incursión</button><button class="perfil-danger-btn" onclick="confirmDeleteDmaxTeam()">🗑️ Borrar todos tus Pokémon Dynamax</button></div>
-  </div>
-</div>
-
-<!-- NOVEDADES -->
+<!-- NOVEDADES SCREEN -->
 <div id="novedades-screen" class="screen">
-  <div class="app-header"><button class="back-btn" onclick="closeNovedades()">←</button><h1>🆕 Novedades</h1></div>
+  <div class="app-header"><button class="back-btn" onclick="backToHome()">←</button><h1>🆕 Novedades</h1></div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
     <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v93</b></p>
-    <div class="nov-version nov-item-current"><div class="nov-version-head"><span class="nov-version-num">v93 · actual</span><span class="nov-version-tag">Correcciones varias + Perfil</span></div><div class="nov-list"><div class="nov-item"><span>🐛</span><span>Corregido: el contador "Equipos por Tipos" sumaba el doble (los Pokémon Dynamax se contaban también como incursiones).</span></div><div class="nov-item"><span>🐛</span><span>Corregido: el DPS mostrado en "Mis Pokémon" ya no se queda desactualizado tras una actualización de rankings — ahora lee siempre el valor actual.</span></div><div class="nov-item"><span>🐛</span><span>Corregido: cambiar entre "Mis Pokémon" y "Ranking DPS" ahora mantiene el modo Incursión/Dynamax que estabas viendo, en lugar de resetear a Incursión.</span></div><div class="nov-item"><span>👤</span><span>Nueva pantalla de Perfil (toca tu nombre arriba) con opciones para borrar todos tus Pokémon de Incursión o todos los Dynamax, con confirmación.</span></div><div class="nov-item"><span>🖼️</span><span>Corregidos sprites cruzados: Mega Altaria (tenía el de Mega Steelix) y Hoopa Unbound (tenía un id roto) en los rankings.</span></div></div></div>
-    <div class="nov-version"><div class="nov-version-head"><span class="nov-version-num">v92</span><span class="nov-version-tag">Fix: progreso de caramelos</span></div><div class="nov-list"><div class="nov-item"><span>🐛</span><span>Corregido bug crítico: el progreso de caramelos/XL en Pokémon Objetivo (las barras) nunca se guardaba en la nube, solo en el dispositivo. Ahora se sincroniza con Firebase y persiste entre actualizaciones y dispositivos.</span></div><div class="nov-item"><span>🐛</span><span>También se corrige la persistencia de "cualquier día" y de las misiones fijadas en Poképaradas!, que tenían el mismo problema.</span></div></div></div>
-    <div class="nov-version"><div class="nov-version-head"><span class="nov-version-num">v91</span><span class="nov-version-tag">Rankings actualizados</span></div><div class="nov-list"><div class="nov-item"><span>📊</span><span>Rankings de incursiones actualizados con datos reales de Dittobase: 850 entradas, top 50 de los 17 tipos, ordenados por eDPS (DPS efectivo).</span></div><div class="nov-item"><span>🆕</span><span>Nuevos en el top: Kyurem, Zeraora, Mega Skarmory, Shadow Corviknight, Shadow Haxorus, Shadow Kingdra, Shadow Noctowl, Shadow Noivern, Shadow Reshiram.</span></div></div></div>
-    <div class="nov-version"><div class="nov-version-head"><span class="nov-version-num">v90</span><span class="nov-version-tag">XL restantes y toast</span></div><div class="nov-list"><div class="nov-item"><span>⭐</span><span>Pokémon Objetivo: cada tarjeta ahora muestra los XL restantes que necesitas (teniendo en cuenta los que ya tienes marcados en la barra). Si ya los tienes todos, muestra ✓.</span></div><div class="nov-item"><span>📋</span><span>El popup de cada Pokémon ahora muestra "Necesarios: X" tanto para caramelos normales como para XL, en color rojo o verde según si ya los tienes todos.</span></div><div class="nov-item"><span>🔔</span><span>Al añadir un Pokémon desde los rankings aparece un toast con los huecos restantes del equipo (ej. "
+    <div class="nov-version nov-item-current"><div class="nov-version-head"><span class="nov-version-num">v93 · actual</span><span class="nov-version-tag">Correcciones varias + Perfil</span></div><div class="nov-list"><div

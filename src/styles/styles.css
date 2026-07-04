@@ -527,3 +527,95 @@ body.dark .current-user-indicator{color:#81c784}
 body.dark .community-members-footer{border-color:#333}
 .community-hint{font-size:12px;color:#888;text-align:center;line-height:1.5}
 body.dark .community-hint{color:#777}
+
+/* COMMUNITY SELECTION / LOGIN / REGISTER FORMS */
+.link-btn{background:none;border:none;color:#CC0000;font-weight:700;cursor:pointer;padding:0;font-size:inherit}
+.link-btn:hover{text-decoration:underline}
+body.dark .link-btn{color:#ff6b6b}
+
+.community-selection-screen,.community-login-screen,.community-register-screen,.main-app-screen{
+  padding:20px 16px 40px;
+}
+
+.community-header{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px
+}
+.community-header h2{font-size:16px;font-weight:700;color:#222;margin:0}
+body.dark .community-header h2{color:#fff}
+
+.community-list{display:flex;flex-direction:column;gap:10px}
+.community-card{
+  display:flex;align-items:center;justify-content:space-between;padding:14px;
+  background:#fff;border:1px solid #ddd;border-radius:14px;
+  cursor:pointer;transition:box-shadow .15s,border-color .15s
+}
+.community-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);border-color:#CC0000}
+body.dark .community-card{background:#1e1e1e;border-color:#333}
+body.dark .community-card:hover{border-color:#ff6b6b;box-shadow:0 4px 16px rgba(204,0,0,.2)}
+.community-card.joined{border-color:#43a047;background:#f0fff4}
+body.dark .community-card.joined{border-color:#4caf50;background:#1a2a1a}
+.community-card-header{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+.community-icon{font-size:28px;flex-shrink:0}
+.community-info{flex:1;min-width:0}
+.community-name{font-size:16px;font-weight:700;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.dark .community-name{color:#fff}
+.community-meta{font-size:12px;color:#888;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.dark .community-meta{color:#aaa}
+.owner-badge{background:#7B1FA2;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px}
+.member-badge{background:#43a047;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px}
+.community-enter-btn,.community-join-btn{
+  flex-shrink:0;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;
+  cursor:pointer;transition:transform .1s,background .1s
+}
+.community-enter-btn{background:#CC0000;color:#fff;border:none}
+.community-enter-btn:active{transform:scale(.96);background:#b30000}
+.community-join-btn{background:#43a047;color:#fff;border:none}
+.community-join-btn:active{transform:scale(.96);background:#2e7d32}
+.community-empty{text-align:center;padding:40px 20px;color:#888}
+.community-empty-icon{font-size:48px;margin-bottom:12px}
+.community-empty h3{font-size:18px;font-weight:700;color:#222;margin-bottom:8px}
+body.dark .community-empty h3{color:#fff}
+.community-empty p{font-size:13px;line-height:1.5}
+
+.community-actions{margin-top:20px;padding-top:16px;border-top:1px solid #e0e0e0}
+body.dark .community-actions{border-color:#333}
+.btn-add-community{
+  display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;
+  background:#fff;border:2px dashed #ddd;border-radius:12px;color:#666;
+  font-size:14px;font-weight:700;cursor:pointer;transition:all .15s
+}
+.btn-add-community:hover{border-color:#CC0000;color:#CC0000;background:#fff5f5}
+body.dark .btn-add-community{background:#1e1e1e;border-color:#444;color:#888}
+body.dark .btn-add-community:hover{border-color:#ff6b6b;color:#ff6b6b;background:#2a1a1a}
+
+.community-form{
+  margin-top:16px;padding:20px;background:#fff;border:1px solid #e0e0e0;border-radius:16px;
+  animation:slideDown .2s ease
+}
+body.dark .community-form{background:#1e1e1e;border-color:#333}
+.community-form h3{font-size:16px;font-weight:700;color:#222;margin-bottom:16px}
+body.dark .community-form h3{color:#fff}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:13px;font-weight:700;color:#333;margin-bottom:6px}
+body.dark .form-group label{color:#ddd}
+.form-group input{width:100%;padding:14px 16px;border:2px solid #ddd;border-radius:12px;font-size:16px;background:#fff!important;color:#222!important}
+body.dark .form-group input{background:#1e1e1e!important;border-color:#444!important;color:#eee!important}
+.form-group input:focus{outline:none;border-color:#CC0000;box-shadow:0 0 0 3px rgba(204,0,0,.15)}
+.form-hint{font-size:11px;color:#888;margin-top:4px}
+body.dark .form-hint{color:#777}
+.form-actions{display:flex;gap:8px;justify-content:flex-end}
+.btn-ghost{padding:10px 18px;border:2px solid #ddd;background:#fff;border-radius:10px;font-size:13px;font-weight:700;color:#666;cursor:pointer;transition:all .15s}
+.btn-ghost:hover{border-color:#CC0000;color:#CC0000;background:#fff5f5}
+body.dark .btn-ghost{background:#1e1e1e;border-color:#444;color:#aaa}
+body.dark .btn-ghost:hover{border-color:#ff6b6b;color:#ff6b6b;background:#2a1a1a}
+.btn-primary{padding:10px 18px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;transition:transform .1s,background .1s}
+.btn-primary:active{transform:scale(.98);background:#b30000}
+.btn-lg{padding:14px 24px;font-size:16px}
+
+.community-members-header{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px
+}
+.community-members-title{display:flex;align-items:center;gap:10px}
+.community-members-title h2{font-size:18px;font-weight:800;color:#222;margin:0}
+body.dark .community-members-title h2{color:#fff}
+.community-members-actions{display:flex;gap:8px}

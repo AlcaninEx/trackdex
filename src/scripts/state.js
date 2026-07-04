@@ -1,37 +1,55 @@
 // State management - single source of truth
+// NEW ARCHITECTURE: Community-first, identity per community
+
 export const ST = {
-  profiles: [],
-  cur: null,              // current profile name (trainer)
-  view: null,             // viewing another profile (read-only)
-  type: null,             // current type (fire, water, etc.)
-  expanded: null,         // expanded card id
-  tab: 'album',           // 'album' or 'ranking'
-  rankTab: 'raid',        // 'raid' or 'dmax'
-  albumTab: 'raid',       // 'raid' or 'dmax'
+  // Community state
+  communities: [],           // List of available communities {id, name, memberCount}
+  currentCommunity: null,    // Active community {id, name, ownerId, settings}
+  communityMembers: [],      // Members of current community [{userId, displayName, isOwner, joinedAt}]
+  
+  // User identity within current community
+  currentUserId: null,       // User's ID in current community
+  currentUserDisplayName: null,
+  isOwner: false,
+  isLoggedIn: false,
+  
+  // App state (scoped to current community + user)
+  cur: null,                 // current view/profile context
+  view: null,                // viewing another user's profile (read-only)
+  type: null,                // current type (fire, water, etc.)
+  expanded: null,            // expanded card id
+  tab: 'album',              // 'album' or 'ranking'
+  rankTab: 'raid',           // 'raid' or 'dmax'
+  albumTab: 'raid',          // 'raid' or 'dmax'
   _pendingSave: null,
   _rankCache: {},
   _megaFilter: {},
   
-  // Community system
-  community: null,        // current community object {id, name, members, owner, etc}
-  communityId: null,      // current community ID
-  communityRole: null,    // 'owner' | 'member'
-  myMemberData: null,     // my member data in current community
-  availableCommunities: [], // list of communities user can see/join
+  // Community-scoped data (loaded per community)
+  profiles: [],              // All members' profiles in this community
+  userProfile: null,         // Current user's profile data
+  
+  // Auth state
+  authState: 'idle',         // 'idle' | 'selecting_community' | 'logging_in' | 'registering' | 'logged_in'
+  pendingCommunityId: null,  // Community user is trying to join
 };
 
-export function gp(n) { return ST.profiles.find(p => p.name === n); }
+// Helpers
+export function gp(userId) { return ST.profiles.find(p => p.userId === userId); }
 
-export function goc(n) { 
-  let p = gp(n); 
-  if (!p) { p = { name: n, pk: {} }; ST.profiles.push(p); } 
+export function goc(userId) { 
+  let p = gp(userId); 
+  if (!p) { 
+    p = { userId, pk: {}, album: null, custom: null, candyProgress: {}, tradeAnyDay: {}, ppPinned: {} }; 
+    ST.profiles.push(p); 
+  } 
   return p; 
 }
 
 export function defaultAlbum() { return {}; }
 
-export function getAlbum(n) {
-  const p = gp(n);
+export function getAlbum(userId) {
+  const p = gp(userId);
   if (!p) return defaultAlbum();
   if (p.album === undefined || p.album === null) return defaultAlbum();
   return p.album;
@@ -45,9 +63,9 @@ export function getCurrentDpsForName(name, type) {
   return row ? row.dps : null;
 }
 
-export function albumPks(n, type) {
-  const a = getAlbum(n);
-  const p = gp(n);
+export function albumPks(userId, type) {
+  const a = getAlbum(userId);
+  const p = gp(userId);
   const customIds = new Set(p?.custom ? Object.keys(p.custom) : []);
   
   // PD entries in album (not overridden by custom)
@@ -75,63 +93,55 @@ export function albumPks(n, type) {
   return [...pdPks, ...customPks].sort((a, b) => b.dps - a.dps);
 }
 
-export function countType(n, type) {
-  const p = gp(n);
-  const pks = albumPks(n, type);
+export function countType(userId, type) {
+  const p = gp(userId);
+  const pks = albumPks(userId, type);
   const owned = pks.filter(pk => p?.pk?.[pk.id]?.owned).length;
   return { o: owned, t: 6 };
 }
 
-// ============ COMMUNITY HELPERS ============
-
+// Community helpers
 export function getCurrentCommunity() {
-  return ST.community;
-}
-
-export function getMyRoleInCommunity() {
-  return ST.communityRole;
-}
-
-export function isCommunityOwner() {
-  return ST.communityRole === 'owner';
+  return ST.currentCommunity;
 }
 
 export function getCommunityMembers() {
-  if (!ST.community?.members) return [];
-  return Object.entries(ST.community.members).map(([name, data]) => ({
-    name,
-    displayName: data.displayName || name,
-    joinedAt: data.joinedAt,
-    isOwner: data.isOwner || false
-  })).sort((a, b) => {
-    // Owner first, then by join date
-    if (a.isOwner && !b.isOwner) return -1;
-    if (!a.isOwner && b.isOwner) return 1;
-    return a.joinedAt - b.joinedAt;
-  });
+  return ST.communityMembers || [];
 }
 
-export function getCommunityMemberCount() {
-  return ST.community?.members ? Object.keys(ST.community.members).length : 0;
+export function getCurrentUser() {
+  if (!ST.currentUserId) return null;
+  return ST.communityMembers.find(m => m.userId === ST.currentUserId) || null;
 }
 
-export function setCommunity(community) {
-  ST.community = community;
-  ST.communityId = community?.id || null;
-  if (community?.members && ST.cur) {
-    ST.myMemberData = community.members[ST.cur] || null;
-    ST.communityRole = ST.myMemberData?.isOwner ? 'owner' : 'member';
-  } else {
-    ST.myMemberData = null;
-    ST.communityRole = null;
-  }
+export function isCurrentUserOwner() {
+  return ST.isOwner === true;
 }
 
-export function clearCommunity() {
-  ST.community = null;
-  ST.communityId = null;
-  ST.communityRole = null;
-  ST.myMemberData = null;
+export function setCurrentCommunity(community) {
+  ST.currentCommunity = community;
+  ST.currentCommunityId = community?.id || null;
+}
+
+export function setCurrentUser(userId, displayName, isOwner = false) {
+  ST.currentUserId = userId;
+  ST.currentUserDisplayName = displayName;
+  ST.isOwner = isOwner;
+  ST.isLoggedIn = true;
+}
+
+export function clearCommunitySession() {
+  ST.currentCommunity = null;
+  ST.currentCommunityId = null;
+  ST.communityMembers = [];
+  ST.currentUserId = null;
+  ST.currentUserDisplayName = null;
+  ST.isOwner = false;
+  ST.isLoggedIn = false;
+  ST.profiles = [];
+  ST.userProfile = null;
+  ST.authState = 'idle';
+  ST.pendingCommunityId = null;
 }
 
 export function inferTags(name, isFastLegacy, isChargeLegacy, evo) {

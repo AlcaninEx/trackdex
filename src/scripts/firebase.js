@@ -2,7 +2,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc, query, where, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
-// Firebase config - use your actual config
+// Firebase config
 const firebaseConfig = {
   apiKey: "«reda...»",
   authDomain: "pokebestbcn.firebaseapp.com",
@@ -17,35 +17,8 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
 // Collection references
-const profilesCol = collection(db, 'profiles');
 const communitiesCol = collection(db, 'communities');
 const configCol = collection(db, 'config');
-
-export async function fbLoadProfiles() {
-  try {
-    const snap = await getDocs(profilesCol);
-    return snap.docs.map(d => ({ name: d.id, ...d.data() }));
-  } catch (e) {
-    console.warn('Firebase load error:', e.code, '— using localStorage');
-    return null;
-  }
-}
-
-export async function fbSave(name, data) {
-  try {
-    await setDoc(doc(profilesCol, name), data);
-  } catch (e) {
-    console.warn('Firebase save error:', e.code);
-  }
-}
-
-export async function fbDelete(name) {
-  try {
-    await deleteDoc(doc(profilesCol, name));
-  } catch (e) {
-    console.warn('Firebase delete error:', e.code);
-  }
-}
 
 // ============ COMMUNITIES ============
 
@@ -77,47 +50,19 @@ export async function fbDeleteCommunity(communityId) {
   }
 }
 
-// Join a community (add user to members)
-export async function fbJoinCommunity(communityId, userName, displayName) {
+export async function fbCreateCommunity(communityId, password, ownerId, displayName) {
   const communityRef = doc(communitiesCol, communityId);
   try {
-    // Use transaction or direct update - for simplicity, read-modify-write
-    const snap = await getDocs(query(communitiesCol, where('__name__', '==', communityId)));
-    if (snap.empty) throw new Error('Comunidad no encontrada');
-    const community = { id: snap.docs[0].id, ...snap.docs[0].data() };
-    
-    if (!community.members) community.members = {};
-    if (community.members[userName]) throw new Error('Ya eres miembro de esta comunidad');
-    
-    community.members[userName] = {
-      displayName: displayName || userName,
-      joinedAt: Date.now(),
-      isOwner: false
-    };
-    
-    await setDoc(communityRef, community);
-    return community;
-  } catch (e) {
-    console.warn('Firebase join community error:', e.code);
-    throw e;
-  }
-}
-
-// Create a new community
-export async function fbCreateCommunity(communityId, password, ownerName, displayName) {
-  const communityRef = doc(communitiesCol, communityId);
-  try {
-    // Check if exists
     const snap = await getDocs(query(communitiesCol, where('__name__', '==', communityId)));
     if (!snap.empty) throw new Error('El nombre de comunidad ya existe');
     
     const community = {
       id: communityId,
-      password: password, // In production, should be hashed
-      owner: ownerName,
+      password: password, // In production, hash this
+      ownerId: ownerId,
       members: {
-        [ownerName]: {
-          displayName: displayName || ownerName,
+        [ownerId]: {
+          displayName: displayName || ownerId,
           joinedAt: Date.now(),
           isOwner: true
         }
@@ -133,7 +78,31 @@ export async function fbCreateCommunity(communityId, password, ownerName, displa
   }
 }
 
-// Verify community password
+export async function fbJoinCommunity(communityId, userId, displayName) {
+  const communityRef = doc(communitiesCol, communityId);
+  try {
+    const snap = await getDocs(query(communitiesCol, where('__name__', '==', communityId)));
+    if (snap.empty) throw new Error('Comunidad no encontrada');
+    
+    const community = { id: snap.docs[0].id, ...snap.docs[0].data() };
+    
+    if (!community.members) community.members = {};
+    if (community.members[userId]) throw new Error('Ya eres miembro de esta comunidad');
+    
+    community.members[userId] = {
+      displayName: displayName || userId,
+      joinedAt: Date.now(),
+      isOwner: false
+    };
+    
+    await setDoc(communityRef, community);
+    return community;
+  } catch (e) {
+    console.warn('Firebase join community error:', e.code);
+    throw e;
+  }
+}
+
 export async function fbVerifyCommunityPassword(communityId, password) {
   try {
     const snap = await getDocs(query(communitiesCol, where('__name__', '==', communityId)));
@@ -146,7 +115,30 @@ export async function fbVerifyCommunityPassword(communityId, password) {
   }
 }
 
-// Subscribe to community changes (real-time)
+// Get community with members
+export async function fbLoadCommunity(communityId) {
+  try {
+    const snap = await getDocs(query(communitiesCol, where('__name__', '==', communityId)));
+    if (snap.empty) return null;
+    return { id: snap.docs[0].id, ...snap.docs[0].data() };
+  } catch (e) {
+    console.warn('Firebase load community error:', e.code);
+    return null;
+  }
+}
+
+export async function fbLoadCommunityMembers(communityId) {
+  const community = await fbLoadCommunity(communityId);
+  if (!community?.members) return [];
+  return Object.entries(community.members).map(([userId, data]) => ({
+    userId,
+    displayName: data.displayName || userId,
+    joinedAt: data.joinedAt,
+    isOwner: data.isOwner || false
+  }));
+}
+
+// Real-time subscriptions
 export function fbSubscribeCommunity(communityId, callback) {
   const communityRef = doc(communitiesCol, communityId);
   return onSnapshot(communityRef, (doc) => {
@@ -160,6 +152,83 @@ export function fbSubscribeCommunity(communityId, callback) {
     callback(null);
   });
 }
+
+export function fbSubscribeCommunityMembers(communityId, callback) {
+  const communityRef = doc(communitiesCol, communityId);
+  return onSnapshot(communityRef, (doc) => {
+    if (doc.exists()) {
+      const community = { id: doc.id, ...doc.data() };
+      const members = community.members ? Object.entries(community.members).map(([userId, data]) => ({
+        userId,
+        displayName: data.displayName || userId,
+        joinedAt: data.joinedAt,
+        isOwner: data.isOwner || false
+      })) : [];
+      callback(members);
+    } else {
+      callback([]);
+    }
+  }, (error) => {
+    console.warn('Members subscription error:', error.code);
+    callback([]);
+  });
+}
+
+// ============ USER PROFILES (scoped to community) ============
+
+function getUserProfilesCol(communityId) {
+  return collection(db, 'communities', communityId, 'profiles');
+}
+
+export async function fbLoadAllProfiles(communityId) {
+  try {
+    const col = getUserProfilesCol(communityId);
+    const snap = await getDocs(col);
+    return snap.docs.map(d => ({ userId: d.id, ...d.data() }));
+  } catch (e) {
+    console.warn('Firebase load all profiles error:', e.code);
+    return [];
+  }
+}
+
+export async function fbLoadUserProfile(communityId, userId) {
+  try {
+    const col = getUserProfilesCol(communityId);
+    const snap = await getDocs(query(col, where('__name__', '==', userId)));
+    if (snap.empty) return null;
+    return { userId: snap.docs[0].id, ...snap.docs[0].data() };
+  } catch (e) {
+    console.warn('Firebase load user profile error:', e.code);
+    return null;
+  }
+}
+
+export async function fbSaveUserProfile(communityId, userId, data) {
+  try {
+    const col = getUserProfilesCol(communityId);
+    await setDoc(doc(col, userId), data);
+  } catch (e) {
+    console.warn('Firebase save user profile error:', e.code);
+    throw e;
+  }
+}
+
+export function fbSubscribeUserProfile(communityId, userId, callback) {
+  const col = getUserProfilesCol(communityId);
+  const docRef = doc(col, userId);
+  return onSnapshot(docRef, (doc) => {
+    if (doc.exists()) {
+      callback({ userId: doc.id, ...doc.data() });
+    } else {
+      callback(null);
+    }
+  }, (error) => {
+    console.warn('Profile subscription error:', error.code);
+    callback(null);
+  });
+}
+
+// ============ MEGA CONFIG ============
 
 export async function fbLoadMegaConfig() {
   try {

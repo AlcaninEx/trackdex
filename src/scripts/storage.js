@@ -1,89 +1,64 @@
 // Storage module - localStorage + Firebase sync
+// NEW ARCHITECTURE: Community-first, scoped data
 import { ST } from './state.js';
-import { fbSave, fbDelete, fbLoadProfiles, fbLoadCommunities, fbSaveCommunity, fbJoinCommunity, fbCreateCommunity, fbVerifyCommunityPassword } from './firebase.js';
+import { 
+  fbLoadCommunities, fbSaveCommunity, fbVerifyCommunityPassword, fbCreateCommunity,
+  fbJoinCommunity, fbLoadCommunityMembers, fbUpdateMember, fbDeleteMember,
+  fbLoadUserProfile, fbLoadAllProfiles, fbSaveUserProfile, fbDeleteUserProfile,
+  fbSubscribeCommunity, fbSubscribeCommunityMembers, fbSubscribeUserProfile,
+  fbLoadMegaConfig, fbSaveMegaConfig
+} from './firebase.js';
 
-const STORAGE_KEY = 'pokeBCN';
+const STORAGE_KEY = 'pokeBCN_v2';
 
-export function save() {
-  // Save to localStorage as backup (includes community data)
+// ============ LOCALSTORAGE ============
+
+export function saveCommunityList() {
   try {
     const data = { 
-      profiles: ST.profiles,
-      currentCommunityId: ST.communityId,
-      availableCommunities: ST.availableCommunities
+      communities: ST.communities,
+      lastCommunityId: ST.currentCommunityId,
+      lastUserId: ST.currentUserId
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); 
   } catch(e) { console.warn('localStorage save failed:', e); }
-  
-  // Debounced Firebase save for profiles
-  if (ST._pendingSave) {
-    clearTimeout(ST._pendingSave);
-  }
-  ST._pendingSave = setTimeout(async () => {
-    for (const p of ST.profiles) {
-      await fbSave(p.name, {
-        pk: p.pk || {},
-        album: p.album || null,
-        custom: p.custom || null,
-        candyProgress: p.candyProgress || {},
-        tradeAnyDay: p.tradeAnyDay || {},
-        ppPinned: p.ppPinned || {}
-      });
-    }
-    // Save community data if in a community
-    if (ST.communityId && ST.community) {
-      await fbSaveCommunity(ST.communityId, ST.community);
-    }
-  }, 500);
 }
 
-export function load() {
+export function loadCommunityList() {
   try { 
     const s = localStorage.getItem(STORAGE_KEY); 
     if (s) { 
       const d = JSON.parse(s); 
-      ST.profiles = d.profiles || []; 
-      ST.communityId = d.currentCommunityId || null;
-      ST.availableCommunities = d.availableCommunities || [];
+      ST.communities = d.communities || []; 
+      ST.currentCommunityId = d.lastCommunityId || null;
+      ST.currentUserId = d.lastUserId || null;
     } 
   } catch(e) { 
-    ST.profiles = []; 
-    ST.communityId = null;
-    ST.availableCommunities = [];
+    ST.communities = []; 
+    ST.currentCommunityId = null;
+    ST.currentUserId = null;
   }
 }
 
+// ============ FIREBASE SYNC ============
+
 export async function loadFromFirebase() {
   try {
-    // Load profiles
-    const fbProfiles = await fbLoadProfiles();
-    if (fbProfiles !== null && fbProfiles.length >= 0) {
-      ST.profiles = fbProfiles.sort((a, b) => a.name.localeCompare(b.name));
-    }
-    
-    // Load communities
+    // Load communities list
     const fbCommunities = await fbLoadCommunities();
     if (fbCommunities !== null) {
-      ST.availableCommunities = fbCommunities;
+      ST.communities = fbCommunities;
     }
     
-    // Restore current community if we have one
-    if (ST.communityId) {
-      const community = ST.availableCommunities.find(c => c.id === ST.communityId);
+    // Restore last community if any
+    if (ST.currentCommunityId) {
+      const community = ST.communities.find(c => c.id === ST.currentCommunityId);
       if (community) {
-        ST.community = community;
-        if (community.members && ST.cur) {
-          ST.myMemberData = community.members[ST.cur] || null;
-          ST.communityRole = ST.myMemberData?.isOwner ? 'owner' : 'member';
-        }
+        await enterCommunity(community.id);
       }
     }
     
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ 
-      profiles: ST.profiles,
-      currentCommunityId: ST.communityId,
-      availableCommunities: ST.availableCommunities
-    })); } catch(e) {}
+    saveCommunityList();
     return true;
   } catch (e) {
     console.warn('Firebase load failed, using localStorage:', e);
@@ -91,73 +66,201 @@ export async function loadFromFirebase() {
   }
 }
 
-// Community-specific storage functions
-export async function createCommunity(communityId, password, ownerName, displayName) {
-  const community = await fbCreateCommunity(communityId, password, ownerName, displayName);
-  ST.community = community;
-  ST.communityId = communityId;
-  ST.communityRole = 'owner';
-  ST.myMemberData = community.members[ownerName];
+// ============ COMMUNITY ACTIONS ============
+
+export async function createCommunity(communityId, password, userId, displayName) {
+  // Create community in Firebase
+  await fbCreateCommunity(communityId, password, userId, displayName);
   
-  // Add to available communities
-  if (!ST.availableCommunities.find(c => c.id === communityId)) {
-    ST.availableCommunities.push(community);
+  // Add owner as member
+  await fbJoinCommunity(communityId, userId, displayName);
+  
+  // Update local state
+  const community = { id: communityId, password, ownerId: userId, createdAt: Date.now() };
+  ST.currentCommunity = community;
+  ST.currentCommunityId = communityId;
+  ST.communityMembers = [{
+    userId,
+    displayName,
+    isOwner: true,
+    joinedAt: Date.now()
+  }];
+  ST.currentUserId = userId;
+  ST.currentUserDisplayName = displayName;
+  ST.isOwner = true;
+  ST.isLoggedIn = true;
+  ST.authState = 'logged_in';
+  
+  // Create empty profile for owner
+  ST.profiles = [{ userId, pk: {}, album: null, custom: null, candyProgress: {}, tradeAnyDay: {}, ppPinned: {} }];
+  ST.userProfile = ST.profiles[0];
+  
+  // Add to communities list
+  if (!ST.communities.find(c => c.id === communityId)) {
+    ST.communities.push({ id: communityId, memberCount: 1 });
   }
   
-  save();
+  saveCommunityList();
   return community;
 }
 
-export async function joinCommunity(communityId, password, userName, displayName) {
+export async function joinCommunity(communityId, password, userId, displayName) {
+  // Verify password
   const result = await fbVerifyCommunityPassword(communityId, password);
   if (!result.valid) {
     throw new Error(result.error || 'Contraseña incorrecta');
   }
   
-  const community = await fbJoinCommunity(communityId, userName, displayName);
-  ST.community = community;
-  ST.communityId = communityId;
-  ST.communityRole = 'member';
-  ST.myMemberData = community.members[userName];
+  // Join community (add to members)
+  await fbJoinCommunity(communityId, userId, displayName);
   
-  // Add to available communities
-  if (!ST.availableCommunities.find(c => c.id === communityId)) {
-    ST.availableCommunities.push(community);
+  // Load members
+  const members = await fbLoadCommunityMembers(communityId) || [];
+  
+  // Load or create user profile
+  let profile = await fbLoadUserProfile(communityId, userId);
+  if (!profile) {
+    profile = { userId, pk: {}, album: null, custom: null, candyProgress: {}, tradeAnyDay: {}, ppPinned: {} };
+    await fbSaveUserProfile(communityId, userId, profile);
   }
   
-  save();
-  return community;
+  // Load all profiles in community
+  const allProfiles = await fbLoadAllProfiles(communityId) || [];
+  
+  // Update local state
+  ST.currentCommunity = result.community;
+  ST.currentCommunityId = communityId;
+  ST.communityMembers = members;
+  ST.currentUserId = userId;
+  ST.currentUserDisplayName = displayName;
+  ST.isOwner = members.find(m => m.userId === userId)?.isOwner || false;
+  ST.isLoggedIn = true;
+  ST.authState = 'logged_in';
+  ST.profiles = allProfiles;
+  ST.userProfile = profile;
+  
+  // Add to communities list
+  if (!ST.communities.find(c => c.id === communityId)) {
+    ST.communities.push(result.community);
+  }
+  
+  saveCommunityList();
+  return result.community;
+}
+
+export async function loginToCommunity(communityId, userId, password) {
+  // Verify community password first
+  const result = await fbVerifyCommunityPassword(communityId, password);
+  if (!result.valid) {
+    throw new Error(result.error || 'Contraseña de comunidad incorrecta');
+  }
+  
+  // Verify user exists in community
+  const members = await fbLoadCommunityMembers(communityId) || [];
+  const member = members.find(m => m.userId === userId);
+  if (!member) {
+    throw new Error('Usuario no encontrado en esta comunidad');
+  }
+  
+  // Verify user password (in production, use proper auth)
+  // For now, we trust the community password + userId combo
+  
+  // Load user profile
+  const profile = await fbLoadUserProfile(communityId, userId) || { userId, pk: {}, pk: {}, album: null, custom: null, candyProgress: {}, tradeAnyDay: {}, ppPinned: {} };
+  
+  // Load all profiles
+  const allProfiles = await fbLoadAllProfiles(communityId) || [];
+  
+  // Update state
+  ST.currentCommunity = result.community;
+  ST.currentCommunityId = communityId;
+  ST.communityMembers = members;
+  ST.currentUserId = userId;
+  ST.currentUserDisplayName = member.displayName;
+  ST.isOwner = member.isOwner || false;
+  ST.isLoggedIn = true;
+  ST.authState = 'logged_in';
+  ST.profiles = allProfiles;
+  ST.userProfile = profile;
+  
+  saveCommunityList();
+  return result.community;
 }
 
 export async function leaveCommunity() {
-  if (!ST.communityId || !ST.cur) return;
+  if (!ST.currentCommunityId || !ST.currentUserId) return;
   
-  // Remove user from community members
-  if (ST.community?.members?.[ST.cur]) {
-    delete ST.community.members[ST.cur];
-    await fbSaveCommunity(ST.communityId, ST.community);
-  }
+  // Could remove member from Firebase here if desired
+  // For now just clear local state
   
-  clearCommunity();
-  save();
+  clearCommunitySession();
+  saveCommunityList();
 }
 
-export function clearCommunity() {
-  ST.community = null;
-  ST.communityId = null;
-  ST.communityRole = null;
-  ST.myMemberData = null;
+export function clearCommunitySession() {
+  ST.currentCommunity = null;
+  ST.currentCommunityId = null;
+  ST.communityMembers = [];
+  ST.currentUserId = null;
+  ST.currentUserDisplayName = null;
+  ST.isOwner = false;
+  ST.isLoggedIn = false;
+  ST.profiles = [];
+  ST.userProfile = null;
+  ST.authState = 'idle';
+  ST.pendingCommunityId = null;
 }
 
-export function setCurrentCommunity(communityId) {
-  ST.communityId = communityId;
-  const community = ST.availableCommunities.find(c => c.id === communityId);
+export async function setCurrentCommunity(communityId) {
+  ST.currentCommunityId = communityId;
+  const community = ST.communities.find(c => c.id === communityId);
   if (community) {
-    ST.community = community;
-    if (community.members && ST.cur) {
-      ST.myMemberData = community.members[ST.cur] || null;
-      ST.communityRole = ST.myMemberData?.isOwner ? 'owner' : 'member';
-    }
+    ST.currentCommunity = community;
+    // Load members
+    const members = await fbLoadCommunityMembers(communityId) || [];
+    ST.communityMembers = members;
   }
-  save();
+  saveCommunityList();
+}
+
+// ============ USER PROFILE SYNC ============
+
+export async function saveUserProfile() {
+  if (!ST.currentCommunityId || !ST.currentUserId || !ST.userProfile) return;
+  
+  try {
+    await fbSaveUserProfile(ST.currentCommunityId, ST.currentUserId, ST.userProfile);
+  } catch(e) { console.warn('Profile save failed:', e); }
+}
+
+// Debounced save
+export function save() {
+  if (ST._pendingSave) clearTimeout(ST._pendingSave);
+  ST._pendingSave = setTimeout(async () => {
+    await saveUserProfile();
+  }, 500);
+}
+
+// ============ MEGA CONFIG ============
+
+export async function loadMegaConfig() {
+  return await fbLoadMegaConfig();
+}
+
+export async function saveMegaConfig(config) {
+  await fbSaveMegaConfig(config);
+}
+
+// ============ REAL-TIME SUBSCRIPTIONS ============
+
+export function subscribeToCommunity(communityId, onCommunityChange, onMembersChange, onProfileChange) {
+  const unsubCommunity = fbSubscribeCommunity(communityId, onCommunityChange);
+  const unsubMembers = fbSubscribeCommunityMembers(communityId, onMembersChange);
+  const unsubProfile = fbSubscribeUserProfile(communityId, ST.currentUserId, onProfileChange);
+  
+  return () => {
+    unsubCommunity();
+    unsubMembers();
+    unsubProfile();
+  };
 }

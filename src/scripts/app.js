@@ -1,7 +1,8 @@
 // Main App entry point - exports init function for main.js to call
+// NEW ARCHITECTURE: Community-first
 import { loadAllData } from './data-loader.js';
-import { loadFromFirebase, load, setCurrentCommunity } from './storage.js';
-import { renderProfiles, showOnboardingState, showProfilesState, showHomeMenu, showCommunitySelection } from './profile.js';
+import { loadFromFirebase, load, loadCommunityList } from './storage.js';
+import { showCommunitySelection, showMainApp, showCommunityLogin, showCommunityRegister } from './profile.js';
 import { show, ST } from './helpers.js';
 
 // Initialize dark mode from localStorage
@@ -23,49 +24,44 @@ export async function init() {
     // Show loading state
     document.getElementById('profile-screen').style.display = 'block';
     window.scrollTo(0, 0);
-    const el = document.getElementById('profiles-list');
-    if (el) el.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px">⏳ Cargando...</p>';
 
     // Load data FIRST (needed for countType, albumPks, etc.)
     await loadAllData();
 
-    // Load profiles from Firebase or localStorage
+    // Load community list and try to restore session
     const firebaseLoaded = await loadFromFirebase();
     if (!firebaseLoaded) {
-      load(); // fallback to localStorage
+      load(); // fallback to localStorage (loads community list)
     }
-    
-    // Restore current community if we have one saved
-    if (ST.communityId) {
-      const community = ST.availableCommunities.find(c => c.id === ST.communityId);
-      if (community) {
-        setCurrentCommunity(ST.communityId);
+
+    // Check if we have a valid session to restore
+    if (ST.isLoggedIn && ST.currentCommunityId && ST.currentUserId) {
+      // Try to restore the community session
+      try {
+        const community = ST.communities.find(c => c.id === ST.currentCommunityId);
+        if (community) {
+          await loadFromFirebase(); // This will restore the full session
+          if (ST.isLoggedIn && ST.currentCommunityId === ST.currentCommunityId) {
+            showMainApp();
+            show('profile-screen');
+            window.scrollTo(0, 0);
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to restore session:', e);
       }
     }
-    
-    // Show appropriate state based on profiles and community
-    if (ST.profiles.length === 0) {
-      showOnboardingState();
-    } else if (ST.communityId && ST.community) {
-      // Has community selected - go to members view (cur should be restored from storage)
-      import('./profile.js').then(m => m.showCommunityMembersState());
-    } else {
-      // Has profiles but no community selected - show profiles to pick trainer FIRST
-      showProfilesState();
-    }
+
+    // No valid session - show community selection
+    showCommunitySelection();
     show('profile-screen');
     window.scrollTo(0, 0);
   } catch (e) {
     console.error('Boot error:', e);
-    // Fallback to localStorage
+    // Fallback
     load();
-    if (ST.profiles.length === 0) {
-      showOnboardingState();
-    } else if (ST.communityId && ST.community) {
-      import('./profile.js').then(m => m.showCommunityMembersState());
-    } else {
-      showProfilesState();
-    }
+    showCommunitySelection();
     show('profile-screen');
     window.scrollTo(0, 0);
   }
