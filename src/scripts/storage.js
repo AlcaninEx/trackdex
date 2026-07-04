@@ -66,6 +66,9 @@ export async function loadFromFirebase() {
   }
 }
 
+// Alias for backward compatibility
+export const load = loadFromFirebase;
+
 // ============ COMMUNITY ACTIONS ============
 
 export async function createCommunity(communityId, password, userId, displayName) {
