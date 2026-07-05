@@ -1,6 +1,6 @@
 // Firebase module - handles all Firestore operations
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc, query, where, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc, query, where, onSnapshot, connectFirestoreEmulator } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 // Firebase config
 const firebaseConfig = {
@@ -16,103 +16,146 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
+// Connect to emulator if running locally (localhost:8080)
+if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+  try {
+    connectFirestoreEmulator(db, 'localhost', 8080);
+    console.log('🔧 Conectado a Firestore Emulator en localhost:8080');
+  } catch (e) {
+    console.log('ℹ️ No se pudo conectar a emulador, usando Firebase real');
+  }
+}
+
 // Collection references
 const communitiesCol = collection(db, 'communities');
 const configCol = collection(db, 'config');
 
+// Simple delay utility for rate limiting
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Retry wrapper for rate limited operations
+async function withRetry(fn, maxRetries = 3, baseDelay = 1000) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await fn();
+    } catch (e) {
+      if (i === maxRetries - 1) throw e;
+      if (e.code === 'resource-exhausted' || e.code === '8' || e.message?.includes('quota')) {
+        const wait = baseDelay * Math.pow(2, i);
+        console.log(`⏳ Rate limited, esperando ${wait}ms...`);
+        await delay(wait);
+      } else {
+        throw e;
+      }
+    }
+  }
+}
+
 // ============ COMMUNITIES ============
 
 export async function fbLoadCommunities() {
-  try {
-    const snap = await getDocs(communitiesCol);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  } catch (e) {
-    console.warn('Firebase load communities error:', e.code);
-    return null;
-  }
+  return withRetry(async () => {
+    try {
+      const snap = await getDocs(communitiesCol);
+      return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    } catch (e) {
+      console.warn('Firebase load communities error:', e.code);
+      return null;
+    }
+  });
 }
 
 export async function fbSaveCommunity(communityId, data) {
-  try {
-    await setDoc(doc(communitiesCol, communityId), data);
-  } catch (e) {
-    console.warn('Firebase save community error:', e.code);
-    throw e;
-  }
+  return withRetry(async () => {
+    try {
+      await setDoc(doc(communitiesCol, communityId), data);
+    } catch (e) {
+      console.warn('Firebase save community error:', e.code);
+      throw e;
+    }
+  });
 }
 
 export async function fbDeleteCommunity(communityId) {
-  try {
-    await deleteDoc(doc(communitiesCol, communityId));
-  } catch (e) {
-    console.warn('Firebase delete community error:', e.code);
-    throw e;
-  }
+  return withRetry(async () => {
+    try {
+      await deleteDoc(doc(communitiesCol, communityId));
+    } catch (e) {
+      console.warn('Firebase delete community error:', e.code);
+      throw e;
+    }
+  });
 }
 
 export async function fbCreateCommunity(communityId, password, ownerId, displayName) {
-  const communityRef = doc(communitiesCol, communityId);
-  try {
-    const snap = await getDocs(query(communitiesCol, where('__name__', '==', communityId)));
-    if (!snap.empty) throw new Error('El nombre de comunidad ya existe');
-    
-    const community = {
-      id: communityId,
-      password: password, // In production, hash this
-      ownerId: ownerId,
-      members: {
-        [ownerId]: {
-          displayName: displayName || ownerId,
-          joinedAt: Date.now(),
-          isOwner: true
-        }
-      },
-      createdAt: Date.now()
-    };
-    
-    await setDoc(communityRef, community);
-    return community;
-  } catch (e) {
-    console.warn('Firebase create community error:', e);
-    throw e;
-  }
+  return withRetry(async () => {
+    const communityRef = doc(communitiesCol, communityId);
+    try {
+      const snap = await getDocs(query(communitiesCol, where('__name__', '==', communityId)));
+      if (!snap.empty) throw new Error('El nombre de comunidad ya existe');
+      
+      const community = {
+        id: communityId,
+        password: password, // In production, hash this
+        ownerId: ownerId,
+        members: {
+          [ownerId]: {
+            displayName: displayName || ownerId,
+            joinedAt: Date.now(),
+            isOwner: true
+          }
+        },
+        createdAt: Date.now()
+      };
+      
+      await setDoc(communityRef, community);
+      return community;
+    } catch (e) {
+      console.warn('Firebase create community error:', e);
+      throw e;
+    }
+  });
 }
 
 export async function fbJoinCommunity(communityId, userId, displayName) {
-  const communityRef = doc(communitiesCol, communityId);
-  try {
-    const snap = await getDocs(query(communitiesCol, where('__name__', '==', communityId)));
-    if (snap.empty) throw new Error('Comunidad no encontrada');
-    
-    const community = { id: snap.docs[0].id, ...snap.docs[0].data() };
-    
-    if (!community.members) community.members = {};
-    if (community.members[userId]) throw new Error('Ya eres miembro de esta comunidad');
-    
-    community.members[userId] = {
-      displayName: displayName || userId,
-      joinedAt: Date.now(),
-      isOwner: false
-    };
-    
-    await setDoc(communityRef, community);
-    return community;
-  } catch (e) {
-    console.warn('Firebase join community error:', e.code);
-    throw e;
-  }
+  return withRetry(async () => {
+    const communityRef = doc(communitiesCol, communityId);
+    try {
+      const snap = await getDocs(query(communitiesCol, where('__name__', '==', communityId)));
+      if (snap.empty) throw new Error('Comunidad no encontrada');
+      
+      const community = { id: snap.docs[0].id, ...snap.docs[0].data() };
+      
+      if (!community.members) community.members = {};
+      if (community.members[userId]) throw new Error('Ya eres miembro de esta comunidad');
+      
+      community.members[userId] = {
+        displayName: displayName || userId,
+        joinedAt: Date.now(),
+        isOwner: false
+      };
+      
+      await setDoc(communityRef, community);
+      return community;
+    } catch (e) {
+      console.warn('Firebase join community error:', e.code);
+      throw e;
+    }
+  });
 }
 
 export async function fbVerifyCommunityPassword(communityId, password) {
-  try {
-    const snap = await getDocs(query(communitiesCol, where('__name__', '==', communityId)));
-    if (snap.empty) return { valid: false, error: 'Comunidad no encontrada' };
-    const community = { id: snap.docs[0].id, ...snap.docs[0].data() };
-    return { valid: community.password === password, community: community };
-  } catch (e) {
-    console.warn('Firebase verify password error:', e.code);
-    return { valid: false, error: e.message };
-  }
+  return withRetry(async () => {
+    try {
+      const snap = await getDocs(query(communitiesCol, where('__name__', '==', communityId)));
+      if (snap.empty) return { valid: false, error: 'Comunidad no encontrada' };
+      const community = { id: snap.docs[0].id, ...snap.docs[0].data() };
+      return { valid: community.password === password, community: community };
+    } catch (e) {
+      console.warn('Firebase verify password error:', e.code);
+      return { valid: false, error: e.message };
+    }
+  });
 }
 
 // Get community with members
