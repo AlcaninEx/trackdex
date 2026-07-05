@@ -30,12 +30,11 @@ const { chromium } = require('playwright');
     console.log('✅ Página cargada');
     await page.waitForTimeout(3000);
     
-    // 1. Click en "Crear comunidad"
+    // First, create a community
     console.log('\n📝 Paso 1: Crear comunidad...');
     await page.click('.btn-add-community');
     await page.waitForTimeout(1000);
     
-    // Fill create community form
     const timestamp = Date.now();
     await page.fill('#new-community-id', `testcomunidad_${timestamp}`);
     await page.fill('#new-community-password', '1234');
@@ -47,40 +46,44 @@ const { chromium } = require('playwright');
     
     console.log('📝 Formulario llenado, enviando...');
     await page.click('button[type="submit"]:has-text("Crear comunidad")');
-    await page.waitForTimeout(10000);
+    await page.waitForTimeout(8000);
     
-    // Check what's visible
-    const screens = await page.evaluate(() => {
-      const s = document.querySelectorAll('.screen');
-      return Array.from(s).filter(s => s.style.display !== 'none').map(s => s.id);
-    });
-    console.log('\n📱 Pantallas visibles:', screens);
+    // Now logout and login again
+    console.log('\n🚪 Paso 2: Salir y volver a entrar...');
+    await page.click('button:has-text("Salir")');
+    await page.waitForTimeout(2000);
     
-    // Check create form still visible
-    const formVisible = await page.isVisible('#create-community-form');
-    console.log('Create form visible:', formVisible);
+    // Should be back at community selection
+    await page.waitForTimeout(2000);
+    const commSelVisible = await page.isVisible('#community-selection-screen');
+    console.log('Community selection visible:', commSelVisible);
     
-    if (formVisible) {
-      const formHtml = await page.$eval('#create-community-form', el => el.innerHTML);
-      console.log('Form HTML:', formHtml.substring(0, 500));
-    }
+    // Click on the community to login
+    console.log('\n🔑 Paso 3: Login en la comunidad...');
+    await page.click('.community-card:has-text("testcomunidad")');
+    await page.waitForTimeout(2000);
     
-    // Check for toast
-    const toastText = await page.$eval('#toast', el => el.textContent).catch(() => 'no toast');
-    console.log('Toast:', toastText);
+    // Should show login form
+    const loginVisible = await page.isVisible('#community-login-screen');
+    console.log('Login form visible:', loginVisible);
     
-    // Check if main app visible
-    const mainAppVisible = await page.isVisible('#main-app-screen');
-    console.log('\n🏠 Main app visible:', mainAppVisible);
-    
-    if (mainAppVisible) {
-      console.log('\n✅ FLUJO COMPLETO FUNCIONA!');
-    } else {
-      console.log('\n⚠️ No se llegó a main-app-screen');
+    if (loginVisible) {
+      await page.fill('#login-user-id', 'testuser_...');
+      await page.fill('#login-user-password', '1234');
+      await page.click('button[type="submit"]:has-text("Entrar")');
+      await page.waitForTimeout(5000);
+      
+      // Check if main app visible
+      const mainAppVisible = await page.isVisible('#main-app-screen');
+      console.log('\n🏠 Main app visible after login:', mainAppVisible);
+      
+      if (mainAppVisible) {
+        console.log('\n✅ LOGIN FUNCIONA!');
+      }
     }
     
     // Screenshot
-    await page.screenshot({ path: '/tmp/pokebestbcn-flow3.png', fullPage: true });
+    await page.screenshot({ path: '/tmp/pokebestbcn-login.png', fullPage: true });
     console.log('📸 Screenshot guardado');
     
     console.log('\n✅ Test completado');

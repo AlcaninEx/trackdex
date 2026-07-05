@@ -335,7 +335,15 @@ export function leaveCommunityHandler() {
   
   leaveCommunity();
   showToast('Has salido de la comunidad');
-  showCommunitySelection();
+  
+  // Force show community selection screen
+  document.getElementById('community-selection-screen').style.display = 'block';
+  document.getElementById('main-app-screen').style.display = 'none';
+  document.getElementById('community-members-screen').style.display = 'none';
+  document.getElementById('home-menu').style.display = 'none';
+  document.getElementById('home-profile-section').style.display = 'block';
+  document.getElementById('trainer-name-bar').textContent = 'Comunidades';
+  renderCommunityList();
 }
 
 export function showCreateCommunityForm() {
