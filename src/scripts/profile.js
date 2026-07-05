@@ -300,18 +300,19 @@ export async function createCommunityHandler(e) {
   const communityId = document.getElementById('new-community-id').value.trim().toLowerCase().replace(/\s+/g, '-');
   const password = document.getElementById('new-community-password').value;
   const confirm = document.getElementById('new-community-confirm').value;
-  const userId = document.getElementById('new-community-user-id').value.trim().toLowerCase();
+  // El input para el user ID del owner es #register-user-id (no new-community-user-id)
+  const userId = document.getElementById('register-user-id').value.trim().toLowerCase();
   const userPassword = document.getElementById('new-community-user-password').value;
   const userConfirm = document.getElementById('new-community-user-confirm').value;
   const displayName = document.getElementById('new-community-display-name').value.trim() || userId;
   
   if (!communityId) { showToast('Escribe un nombre para la comunidad'); document.getElementById('new-community-id').focus(); return; }
-  if (!/^[a-z0-9_-]+$/.test(communityId)) { showToast('Solo letras, números, guiones y guiones bajos'); document.getElementById('new-community-id').focus(); return; }
+  if (!/^[a-z0-9_\-]+$/.test(communityId)) { showToast('Solo letras, números, guiones y guiones bajos'); document.getElementById('new-community-id').focus(); return; }
   if (!password) { showToast('Escribe contraseña de comunidad'); document.getElementById('new-community-password').focus(); return; }
   if (password.length < 4) { showToast('Mínimo 4 caracteres'); document.getElementById('new-community-password').focus(); return; }
   if (password !== confirm) { showToast('Las contraseñas no coinciden'); document.getElementById('new-community-confirm').focus(); return; }
-  if (!userId) { showToast('Escribe tu ID de usuario'); document.getElementById('new-community-user-id').focus(); return; }
-  if (!/^[a-z0-9_-]+$/.test(userId)) { showToast('Solo letras, números, guiones y guiones bajos'); document.getElementById('new-community-user-id').focus(); return; }
+  if (!userId) { showToast('Escribe tu ID de usuario'); document.getElementById('register-user-id').focus(); return; }
+  if (!/^[a-z0-9_\-]+$/.test(userId)) { showToast('Solo letras, números, guiones y guiones bajos'); document.getElementById('register-user-id').focus(); return; }
   if (!userPassword) { showToast('Escribe tu contraseña personal'); document.getElementById('new-community-user-password').focus(); return; }
   if (userPassword.length < 4) { showToast('Mínimo 4 caracteres'); document.getElementById('new-community-user-password').focus(); return; }
   if (userPassword !== userConfirm) { showToast('Las contraseñas no coinciden'); document.getElementById('new-community-user-confirm').focus(); return; }
