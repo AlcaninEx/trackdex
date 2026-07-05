@@ -157,13 +157,14 @@ export async function loginToCommunity(communityId, userId, password) {
   
   // Verify user exists in community
   const members = await fbLoadCommunityMembers(communityId) || [];
-  console.log('🔍 Members loaded for login:', members);
+  console.log('🔍 Members loaded for login:', JSON.stringify(members, null, 2));
   console.log('🔍 Looking for userId:', userId);
   
   const member = members.find(m => m.userId === userId);
   console.log('🔍 Member found:', member);
   
   if (!member) {
+    console.log('🔍 All member IDs:', members.map(m => m.userId));
     throw new Error('Usuario no encontrado en esta comunidad');
   }
   
@@ -171,7 +172,7 @@ export async function loginToCommunity(communityId, userId, password) {
   // For now, we trust the community password + userId combo
   
   // Load user profile
-  const profile = await fbLoadUserProfile(communityId, userId) || { userId, pk: {}, pk: {}, album: null, custom: null, candyProgress: {}, tradeAnyDay: {}, ppPinned: {} };
+  const profile = await fbLoadUserProfile(communityId, userId) || { userId, pk: {}, album: null, custom: null, candyProgress: {}, tradeAnyDay: {}, ppPinned: {} };
   
   // Load all profiles
   const allProfiles = await fbLoadAllProfiles(communityId) || [];
@@ -183,11 +184,10 @@ export async function loginToCommunity(communityId, userId, password) {
   ST.currentUserId = userId;
   ST.currentUserDisplayName = member.displayName;
   ST.isOwner = member.isOwner || false;
-  ST.isLoggedIn = true;
-  ST.authState = 'logged_in';
-  ST.profiles = allProfiles;
-  ST.userProfile = profile;
-  
+    ST.isLoggedIn = true;
+    ST.authState = 'logged_in';
+    ST.profiles = allProfiles;
+    ST.userProfile = profile;
   saveCommunityList();
   return result.community;
 }
