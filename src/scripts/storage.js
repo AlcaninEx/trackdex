@@ -72,11 +72,8 @@ export const load = loadFromFirebase;
 // ============ COMMUNITY ACTIONS ============
 
 export async function createCommunity(communityId, password, userId, displayName) {
-  // Create community in Firebase
+  // Create community in Firebase (already adds owner as member)
   await fbCreateCommunity(communityId, password, userId, displayName);
-  
-  // Add owner as member
-  await fbJoinCommunity(communityId, userId, displayName);
   
   // Update local state
   const community = { id: communityId, password, ownerId: userId, createdAt: Date.now() };
