@@ -94,9 +94,11 @@ export async function fbCreateCommunity(communityId, password, ownerId, displayN
       const snap = await getDocs(query(communitiesCol, where('__name__', '==', communityId)));
       if (!snap.empty) throw new Error('El nombre de comunidad ya existe');
       
+      console.log('🔍 fbCreateCommunity - ownerId received:', ownerId);
+      
       const community = {
         id: communityId,
-        password: password, // In production, hash this
+        password: password,
         ownerId: ownerId,
         members: {
           [ownerId]: {
@@ -107,6 +109,8 @@ export async function fbCreateCommunity(communityId, password, ownerId, displayN
         },
         createdAt: Date.now()
       };
+      
+      console.log('🔍 fbCreateCommunity - member key being set:', Object.keys({ [ownerId]: {} })[0]);
       
       await setDoc(communityRef, community);
       return community;
@@ -126,6 +130,9 @@ export async function fbJoinCommunity(communityId, userId, displayName) {
       
       const community = { id: snap.docs[0].id, ...snap.docs[0].data() };
       
+      console.log('🔍 fbJoinCommunity - userId received:', userId);
+      console.log('🔍 fbJoinCommunity - existing members:', Object.keys(community.members || {}));
+      
       if (!community.members) community.members = {};
       if (community.members[userId]) throw new Error('Ya eres miembro de esta comunidad');
       
@@ -135,10 +142,12 @@ export async function fbJoinCommunity(communityId, userId, displayName) {
         isOwner: false
       };
       
+      console.log('🔍 fbJoinCommunity - member key being set:', userId);
+      
       await setDoc(communityRef, community);
       return community;
     } catch (e) {
-      console.warn('Firebase join community error:', e.code);
+      console.warn('Firebase join community error:', e);
       throw e;
     }
   });
