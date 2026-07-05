@@ -35,11 +35,13 @@ const { chromium } = require('playwright');
     await page.click('.btn-add-community');
     await page.waitForTimeout(1000);
     
+    // Fill create community form
     const timestamp = Date.now();
     await page.fill('#new-community-id', `debug_login_${timestamp}`);
     await page.fill('#new-community-password', '1234');
     await page.fill('#new-community-confirm', '1234');
-    await page.fill('#new-community-user-id', `debuguser_${timestamp}`);
+    // El input para el user ID del owner es #register-user-id (no new-community-user-id)
+    await page.fill('#register-user-id', `debuguser_${timestamp}`);
     await page.fill('#new-community-user-password', '1234');
     await page.fill('#new-community-user-confirm', '1234');
     await page.fill('#new-community-display-name', 'Debug User');
