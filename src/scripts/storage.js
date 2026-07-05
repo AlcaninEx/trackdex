@@ -149,43 +149,49 @@ export async function joinCommunity(communityId, password, userId, displayName) 
 }
 
 export async function loginToCommunity(communityId, userId, password) {
-  // Verify community password first
-  const result = await fbVerifyCommunityPassword(communityId, password);
-  if (!result.valid) {
-    throw new Error(result.error || 'Contraseña de comunidad incorrecta');
+  export async function loginToCommunity(communityId, userId, password) {
+    // Verify community password first
+    const result = await fbVerifyCommunityPassword(communityId, password);
+    if (!result.valid) {
+      throw new Error(result.error || 'Contraseña de comunidad incorrecta');
+    }
+  
+    // Verify user exists in community
+    const members = await fbLoadCommunityMembers(communityId) || [];
+    console.log('🔍 Members loaded for login:', members);
+    console.log('🔍 Looking for userId:', userId);
+  
+    const member = members.find(m => m.userId === userId);
+    console.log('🔍 Member found:', member);
+  
+    if (!member) {
+      throw new Error('Usuario no encontrado en esta comunidad');
+    }
+  
+    // Verify user password (in production, use proper auth)
+    // For now, we trust the community password + userId combo
+  
+    // Load user profile
+    const profile = await fbLoadUserProfile(communityId, userId) || { userId, pk: {}, pk: {}, album: null, custom: null, candyProgress: {}, tradeAnyDay: {}, ppPinned: {} };
+  
+    // Load all profiles
+    const allProfiles = await fbLoadAllProfiles(communityId) || [];
+  
+    // Update state
+    ST.currentCommunity = result.community;
+    ST.currentCommunityId = communityId;
+    ST.communityMembers = members;
+    ST.currentUserId = userId;
+    ST.currentUserDisplayName = member.displayName;
+    ST.isOwner = member.isOwner || false;
+    ST.isLoggedIn = true;
+    ST.authState = 'logged_in';
+    ST.profiles = allProfiles;
+    ST.userProfile = profile;
+  
+    saveCommunityList();
+    return result.community;
   }
-  
-  // Verify user exists in community
-  const members = await fbLoadCommunityMembers(communityId) || [];
-  const member = members.find(m => m.userId === userId);
-  if (!member) {
-    throw new Error('Usuario no encontrado en esta comunidad');
-  }
-  
-  // Verify user password (in production, use proper auth)
-  // For now, we trust the community password + userId combo
-  
-  // Load user profile
-  const profile = await fbLoadUserProfile(communityId, userId) || { userId, pk: {}, pk: {}, album: null, custom: null, candyProgress: {}, tradeAnyDay: {}, ppPinned: {} };
-  
-  // Load all profiles
-  const allProfiles = await fbLoadAllProfiles(communityId) || [];
-  
-  // Update state
-  ST.currentCommunity = result.community;
-  ST.currentCommunityId = communityId;
-  ST.communityMembers = members;
-  ST.currentUserId = userId;
-  ST.currentUserDisplayName = member.displayName;
-  ST.isOwner = member.isOwner || false;
-  ST.isLoggedIn = true;
-  ST.authState = 'logged_in';
-  ST.profiles = allProfiles;
-  ST.userProfile = profile;
-  
-  saveCommunityList();
-  return result.community;
-}
 
 export async function leaveCommunity() {
   if (!ST.currentCommunityId || !ST.currentUserId) return;
