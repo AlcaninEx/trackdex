@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#CC0000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="PokeBestBCN">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>PokeBestBCN</title>
+<link rel="stylesheet" href="src/styles/styles.css">
+<script type="module" src="src/scripts/main.js"></script>
+</head>
+<body>
+<div id="toast"></div>
+
+<div id="modal-mega-warn">
+  <div class="mega-warn-box">
+    <div class="mega-warn-icon">⚠️</div>
+    <div class="mega-warn-title">¡Aviso!</div>
+    <div class="mega-warn-msg">Tu equipo no contiene un Pokémon Mega. Estos dan más poder a los demás Pokémon del mismo tipo en incursiones. Recuerda añadir uno.</div>
+    <button class="mega-warn-btn" id="mega-warn-ok" disabled onclick="closeMegaWarning()">Aceptar (<span id="mega-warn-timer">3</span>)</button>
+  </div>
+</div>
+
+<div id="app">
+
+<!-- GLOBAL LOGIN SCREEN -->
+<div id="global-login-screen" class="screen" style="display: none;">
+  <div class="login-container">
+    <div class="login-header">
+      <svg class="login-logo" width="64" height="64" viewBox="0 0 64 64" fill="none">
+        <circle cx="32" cy="32" r="30" fill="#CC0000" stroke="white" stroke-width="3"/>
+        <rect x="2" y="29" width="60" height="6" fill="white"/>
+        <circle cx="32" cy="32" r="10" fill="white" stroke="#CC0000" stroke-width="3"/>
+        <circle cx="32" cy="32" r="5" fill="#CC0000" stroke="white" stroke-width="2"/>
+      </svg>
+      <h1>PokeBestBCN</h1>
+      <p class="login-subtitle">Inicia sesión para continuar</p>
+    </div>
+    
+    <form id="global-login-form" onsubmit="globalLoginHandler(event)">
+      <div class="form-group">
+        <label for="global-user-id">ID de usuario</label>
+        <input type="text" id="global-user-id" placeholder="Tu ID de usuario" required autocomplete="username" aria-label="ID de usuario">
+      </div>
+      <div class="form-group">
+        <label for="global-user-password">Contraseña</label>
+        <input type="password" id="global-user-password" placeholder="Tu contraseña" required autocomplete="current-password" aria-label="Contraseña">
+      </div>
+      <div class="form-group checkbox-group">
+        <input type="checkbox" id="remember-me" name="remember-me">
+        <label for="remember-me">Recordar sesión</label>
+      </div>
+      <button type="submit" class="btn-primary btn-lg">Entrar</button>
+    </form>
+    
+    <p class="login-footer">
+      ¿No tienes cuenta? <button class="link-btn" onclick="showGlobalRegister()">Regístrate</button>
+    </p>
+  </div>
+</div>
+
+<!-- GLOBAL REGISTER SCREEN -->
+<div id="global-register-screen" class="screen" style="display: none;">
+  <div class="login-container">
+    <div class="login-header">
+      <svg class="login-logo" width="64" height="64" viewBox="0 0 64 64" fill="none">
+        <circle cx="32" cy="32" r="30" fill="#CC0000" stroke="white" stroke-width="3"/>
+        <rect x="2" y="29" width="60" height="6" fill="white"/>
+        <circle cx="32" cy="32" r="10" fill="white" stroke="#CC0000" stroke-width="3"/>
+        <circle cx="32" cy="32" r="5" fill="#CC0000" stroke="white" stroke-width="2"/>
+      </svg>
+      <h1>PokeBestBCN</h1>
+      <p class="login-subtitle">Crea tu cuenta global</p>
+    </div>
+    
+    <form id="global-register-form" onsubmit="globalRegisterHandler(event)">
+      <div class="form-group">
+        <label for="reg-global-user-id">ID de usuario</label>
+        <input type="text" id="reg-global-user-id" placeholder="Elige tu ID" maxlength="30" required autocomplete="off" aria-label="ID de usuario">
+        <p class="form-hint">Solo letras, números, guiones y guiones bajos</p>
+      </div>
+      <div class="form-group">
+        <label for="reg-global-user-password">Contraseña</label>
+        <input type="password" id="reg-global-user-password" placeholder="Mínimo 4 caracteres" minlength="4" required autocomplete="new-password" aria-label="Contraseña">
+      </div>
+      <div class="form-group">
+        <label for="reg-global-user-confirm">Confirmar contraseña</label>
+        <input type="password" id="reg-global-user-confirm" placeholder="Repite la contraseña" minlength="4" required autocomplete="new-password" aria-label="Confirmar contraseña">
+      </div>
+      <button type="submit" class="btn-primary btn-lg">Crear cuenta</button>
+    </form>
+    
+    <p class="login-footer">
+      ¿Ya tienes cuenta? <button class="link-btn" onclick="showGlobalLogin()">Inicia sesión</button>
+    </p>
+  </div>
+</div>
+
+<!-- COMMUNITY SELECTION SCREEN -->
+<div id="community-selection-screen" class="screen" style="display: none;">
+  <div class="community-header">
+    <h2>🏘️ Mis Comunidades</h2>
+    <span id="community-count" class="profiles-count">0 disponibles</span>
+  </div>
+
+  <div id="community-list" class="community-list"></div>
+
+  <div class="community-actions">
+    <button class="btn-secondary btn-add-community" onclick="showCreateCommunityForm()">
+      <span class="btn-icon">+</span> Crear comunidad
+    </button>
+  </div>
+
+  <!-- CREATE COMMUNITY FORM -->
+  <div id="create-community-form" class="community-form" style="display: none;">
+    <h3>Crear nueva comunidad</h3>
+    <form onsubmit="createCommunityHandler(event)">
+      <div class="form-group">
+        <label for="new-community-name">Nombre de la comunidad</label>
+        <input type="text" id="new-community-name" placeholder="ej: Raiders BCN" maxlength="50" required autocomplete="off" aria-label="Nombre de la comunidad">
+      </div>
+      <div class="form-group">
+        <label for="new-community-password">Contraseña de la comunidad</label>
+        <input type="password" id="new-community-password" placeholder="Mínimo 4 caracteres" minlength="4" required autocomplete="new-password" aria-label="Contraseña de la comunidad">
+      </div>
+      <div class="form-group">
+        <label for="new-community-confirm">Confirmar contraseña</label>
+        <input type="password" id="new-community-confirm" placeholder="Repite la contraseña" minlength="4" required autocomplete="new-password" aria-label="Confirmar contraseña">
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-ghost" onclick="hideCreateCommunityForm()">Cancelar</button>
+        <button type="submit" class="btn-primary">Crear comunidad</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- COMMUNITY JOIN SCREEN (enter existing community) -->
+<div id="community-join-screen" class="screen" style="display: none;">
+  <div class="community-header">
+    <h2>Entrar a <span id="join-community-name"></span></h2>
+  </div>
+  <div class="community-form">
+    <form onsubmit="joinCommunityHandler(event)">
+      <div class="form-group">
+        <label for="join-community-password">Contraseña de la comunidad</label>
+        <input type="password" id="join-community-password" placeholder="Contraseña de la comunidad" required autocomplete="current-password" aria-label="Contraseña de la comunidad">
+      </div>
+      <div class="form-group">
+        <label for="join-user-alias">Tu alias en esta comunidad</label>
+        <input type="text" id="join-user-alias" placeholder="Cómo te verán los demás" maxlength="30" required autocomplete="off" aria-label="Tu alias">
+        <p class="form-hint">Será tu nombre visible dentro de esta comunidad</p>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-ghost" onclick="showCommunitySelection()">← Volver</button>
+        <button type="submit" class="btn-primary">Entrar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- COMMUNITY REGISTER SCREEN (new user in community) -->
+<div id="community-register-screen" class="screen" style="display: none;">
+  <div class="community-header">
+    <h2>Unirse a <span id="register-community-name"></span></h2>
+  </div>
+  <div class="community-form">
+    <form onsubmit="registerCommunityHandler(event)">
+      <div class="form-group">
+        <label for="register-user-alias">Tu alias en esta comunidad</label>
+        <input type="text" id="register-user-alias" placeholder="Cómo te verán los demás" maxlength="30" required autocomplete="off" aria-label="Tu alias">
+        <p class="form-hint">Será tu nombre visible dentro de esta comunidad</p>
+      </div>
+      <div class="form-group">
+        <label for="register-community-password">Contraseña de la comunidad</label>
+        <input type="password" id="register-community-password" placeholder="Contraseña de la comunidad" required autocomplete="current-password" aria-label="Contraseña de la comunidad">
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-ghost" onclick="showCommunityJoin(ST.pendingCommunityId)">← Volver</button>
+        <button type="submit" class="btn-primary">Crear perfil</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MAIN APP SCREEN (after community login) -->
+<div id="main-app-screen" class="screen" style="display: none;">
+  <div class="community-members-header">
+    <div class="community-members-title">
+      <h2>🏘️ <span id="current-community-name"></span></h2>
+      <span id="member-count" class="profiles-count">0 miembros</span>
+    </div>
+    <div class="community-members-actions">
+      <button class="btn-ghost" onclick="showCommunityMembersView()">👥 Miembros</button>
+      <button class="btn-ghost" onclick="leaveCommunityHandler()">Salir</button>
+    </div>
+  </div>
+
+  <!-- HOME MENU -->
+  <div id="home-menu" class="home-menu" style="display: block;">
+    <button class="home-btn-big primary" onclick="goToFireRanking()">
+      <span class="home-btn-icon">💎</span>
+      <div class="home-btn-text">
+        <strong>Rankings DPS</strong>
+        <span>Top 50 por tipo · Datos Dittobase</span>
+      </div>
+    </button>
+
+    <button class="home-btn-big" onclick="goToTypes()">
+      <div class="home-btn-icon">⚔️</div>
+      <div class="home-btn-text">
+        <strong>Equipos por Tipos</strong>
+        <div class="home-progress-row">
+          <span id="hm-raid-count">0</span>/102 Incursiones
+          <div class="home-prog-bar"><div class="home-prog-fill" id="hm-raid-bar" style="width:0%"></div></div>
+        </div>
+        <div class="home-progress-row">
+          <span id="hm-dmax-count">0</span>/51 Dynamax
+          <div class="home-prog-bar"><div class="home-prog-fill" id="hm-dmax-bar" style="width:0%"></div></div>
+        </div>
+      </div>
+
+    <button class="home-btn-secondary" onclick="showTypeChart()">🔥 Eficacia de Tipos (Calculadora)</button>
+    
+    <div class="home-grid">
+      <button class="home-btn-small" onclick="showMegaCandy()">🍬 Guía Megaenergía</button>
+      <button class="home-btn-small" onclick="showLegacyGuide()">⭐ Guía Pokémon Legacy</button>
+    </div>
+
+    <div class="home-grid">
+      <button class="home-btn-small" onclick="openGuia()">📖 Guía completa</button>
+      <button class="home-btn-small" onclick="openInfo()">ℹ️ Info app</button>
+      <button class="home-btn-small home-btn-accent" onclick="openObjetivo()">🎯 Pokémon Objetivo</button>
+      <button class="home-btn-small home-btn-success" onclick="openDiarias()">📋 Diarias</button>
+      <button class="home-btn-small home-btn-info" onclick="openLegacy()">⭐ Ataques Legacy</button>
+      <button class="home-btn-small home-btn-pink" onclick="openPokeparadas()">🎁 Poképaradas!</button>
+      <button class="home-btn-small home-btn-purple" onclick="openNovedades()">🆕 Novedades · v93</button>
+    </div>
+  </div>
+</div>
+
+<!-- COMMUNITY MEMBERS SCREEN -->
+<div id="community-members-screen" class="screen" style="display: none;">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToMainApp()">←</button>
+    <h1>👥 Miembros de <span id="members-community-name"></span></h1>
+  </div>
+  <div style="padding:16px">
+    <ul class="community-members-list" id="community-members-list" role="list"></ul>
+    <p class="community-hint">Tu perfil siempre aparece primero. Toca "Ver" en otros miembros para ver su álbum en modo vista (solo lectura).</p>
+  </div>
+</div>
+
+<!-- PROFILE SCREEN WRAPPER (for backward compat) -->
+<div id="profile-screen" class="screen" style="display: none;">
+  <div id="profile-screen-inner">
+    <header class="profile-header">
+      <svg class="profile-logo" width="40" height="40" viewBox="0 0 64 64" fill="none">
+        <circle cx="32" cy="32" r="30" fill="#CC0000" stroke="white" stroke-width="3"/>
+        <rect x="2" y="29" width="60" height="6" fill="white"/>
+        <circle cx="32" cy="32" r="10" fill="white" stroke="#CC0000" stroke-width="3"/>
+        <circle cx="32" cy="32" r="5" fill="#CC0000" stroke="white" stroke-width="2"/>
+      </svg>
+      <div class="profile-title">
+        <h1>PokeBestBCN</h1>
+        <p id="trainer-name-bar" class="trainer-name">Cargando...</p>
+      </div>
+      <button class="icon-btn" onclick="toggleDark()" id="dark-btn-home" title="Modo oscuro" aria-label="Modo oscuro">🌙</button>
+      <button class="icon-btn" onclick="goProfiles()" title="Cambiar comunidad" aria-label="Cambiar comunidad">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+      </button>
+    </header>
+    
+    <div id="home-profile-section" style="display:block;padding:16px"></div>
+    <div id="home-menu" style="display:none;padding:16px"></div>
+  </div>
+</div>
+
+<!-- MAIN SCREEN -->
+<div id="main-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#CC0000" stroke="white" stroke-width="1.5"/><rect x="2" y="10.5" width="20" height="3" fill="white"/><circle cx="12" cy="12" r="3.5" fill="white" stroke="#CC0000" stroke-width="1.5"/></svg>
+    <h1>PokeBestBCN</h1>
+  </div>
+  <div class="user-bar">
+    <div class="user-bar-txt">Entrenador: <b id="uname"></b></div>
+    <div class="user-bar-right">
+      <button class="guia-btn" id="dark-btn" onclick="toggleDark()" title="Modo oscuro">🌙</button>
+    </div>
+  </div>
+  <div class="types-grid" id="types-grid"></div>
+</div>
+
+<!-- DETAIL SCREEN -->
+<div id="detail-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="goBack()">←</button>
+    <button class="guia-btn" id="dark-btn2" onclick="toggleDark()" title="Modo oscuro" style="font-size:14px;padding:4px 8px">🌙</button>
+    <h1 id="detail-title"></h1>
+  </div>
+  <div class="tabs">
+    <button class="tab active" id="tab-a" onclick="switchTab('album')">Mis Pokémon</button>
+    <button class="tab" id="tab-r" onclick="switchTab('ranking')">Ranking DPS</button>
+  </div>
+  <div id="type-nav-strip"></div>
+  <div id="view-badge-wrap" class="view-badge-bar" style="display:none">👁 Solo lectura — <span id="view-name"></span></div>
+  <div id="album-panel">
+    <div class="album-subtabs">
+      <button class="album-subtab active" id="atab-raid" onclick="switchAlbumTab('raid')">⚔️ Incursión</button>
+      <button class="album-subtab" id="atab-dmax" onclick="switchAlbumTab('dmax')">⚡ Dynamax</button>
+    </div>
+    <div id="apanel-raid"><div class="album-wrap" id="album-list"></div></div>
+    <div id="apanel-dmax" style="display:none"><div class="album-wrap" id="album-list-dmax"></div></div>
+  </div>
+  <div id="ranking-panel" style="display:none">
+    <div style="display:flex;border-bottom:2px solid #e0e0e0;background:#fff">
+      <button id="rtab-raid" class="tab active" onclick="switchRankTab('raid')" style="flex:1;font-size:12px;padding:8px">⚔️ Incursiones</button>
+      <button id="rtab-dmax" class="tab" onclick="switchRankTab('dmax')" style="flex:1;font-size:12px;padding:8px">⚡ Dynamax</button>
+    </div>
+    <div id="rpanel-raid">
+      <div id="rank-mega-toggle"></div>
+      <div class="rank-wrap"><div class="rank-list" id="rank-list"></div></div>
+    </div>
+    <div id="rpanel-dmax" style="display:none">
+      <div class="rank-wrap"><div id="rank-list-dmax"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TYPE CHART SCREEN -->
+<div id="typechart-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>Eficacia de Tipos</h1>
+  </div>
+  <div style="padding:12px;background:#f0f0f0;min-height:100vh">
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,.08);min-height:200px">
+      <p style="font-weight:800;font-size:15px;text-align:center;margin-bottom:12px;text-decoration:underline">⚔️ Atacando</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><p style="font-size:11px;font-weight:700;color:#888;text-align:center;margin-bottom:6px">x0.625 (poco eficaz)</p><div id="tc-atk-resisted" class="tc-ball-col"></div></div>
+        <div id="tc-atk-neutral" style="display:none"></div>
+        <div><p style="font-size:11px;font-weight:700;color:#e53935;text-align:center;margin-bottom:6px">x1.6 (super eficaz)</p><div id="tc-atk-super" class="tc-ball-col"></div></div>
+      </div>
+    </div>
+
+    <p style="font-size:12px;color:#666;text-align:center;margin-bottom:8px">Selecciona 1 o 2 tipos (toca para seleccionar/deseleccionar)</p>
+    <div id="tc-type-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:16px"></div>
+
+    <div style="background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,.08);min-height:220px">
+      <p style="font-weight:800;font-size:15px;text-align:center;margin-bottom:12px;text-decoration:underline">🛡️ Defendiendo</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px">
+        <div><p style="font-size:10px;font-weight:700;color:#43a047;text-align:center;margin-bottom:6px">x0.390 (doble resist.)</p><div id="tc-def-immune" class="tc-ball-col"></div></div>
+        <div><p style="font-size:10px;font-weight:700;color:#66bb6a;text-align:center;margin-bottom:6px">x0.625</p><div id="tc-def-resisted" class="tc-ball-col"></div></div>
+        <div><p style="font-size:10px;font-weight:700;color:#ef5350;text-align:center;margin-bottom:6px">x1.6</p><div id="tc-def-super" class="tc-ball-col"></div></div>
+        <div><p style="font-size:10px;font-weight:700;color:#b71c1c;text-align:center;margin-bottom:6px">x2.56</p><div id="tc-def-double" class="tc-ball-col"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MEGA GUIDE SCREEN -->
+<div id="megaguide-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>🍬 Guía Megaenergía</h1>
+  </div>
+  <div style="padding:12px;background:#f0f0f0;min-height:100vh">
+    <div id="mega-dev-bar" style="display:none;background:#263238;border-radius:12px;padding:12px 14px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:13px;font-weight:800;color:#fff">🛠️ Modo Desarrollador</span>
+        <label class="sw"><input type="checkbox" id="mega-dev-toggle" onchange="toggleMegaDevMode(this.checked)"><span class="sl"></span></label>
+      </div>
+      <p style="font-size:10px;color:#90a4ae;margin-top:6px">Activa para marcar qué Megas están en rotación. Los cambios se guardan para todos los jugadores.</p>
+    </div>
+
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px">🥊 Megaincursiones actuales</p>
+      <div id="mega-current-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px"></div>
+    </div>
+
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px">📅 Próximas rotaciones</p>
+      <div id="mega-upcoming-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px"></div>
+    </div>
+
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px">🎯 Todas las Megaenergías</p>
+      <div id="mega-all-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- LEGACY GUIDE SCREEN -->
+<div id="legacyguide-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>⭐ Guía Pokémon Legacy</h1>
+  </div>
+  <div style="padding:12px;background:#f0f0f0;min-height:100vh">
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px">🔍 Buscar Pokémon Legacy</p>
+      <input type="text" id="legacy-search" placeholder="Escribe nombre o número..." style="width:100%;padding:12px;border:2px solid #ddd;border-radius:8px;font-size:14px;margin-top:8px" oninput="filterLegacy(this.value)">
+    </div>
+    <div id="legacy-list" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px"></div>
+  </div>
+</div>
+
+<!-- GUÍA COMPLETA SCREEN -->
+<div id="guia-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>📖 Guía completa</h1>
+  </div>
+  <div style="padding:12px;background:#f0f0f0;min-height:100vh">
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <h2 style="font-size:16px;font-weight:800;margin-bottom:12px;color:#222">📋 Contenido de la guía</h2>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="home-btn-small" onclick="showMegaCandy()">🍬 Megaenergía</button>
+        <button class="home-btn-small" onclick="showLegacyGuide()">⭐ Legacy</button>
+        <button class="home-btn-small" onclick="showTypeChart()">🔥 Eficacia de Tipos</button>
+        <button class="home-btn-small" onclick="openObjetivo()">🎯 Pokémon Objetivo</button>
+        <button class="home-btn-small" onclick="openDiarias()">📋 Diarias</button>
+        <button class="home-btn-small" onclick="openPokeparadas()">🎁 Poképaradas</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INFO SCREEN -->
+<div id="info-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>ℹ️ Info app</h1>
+  </div>
+  <div style="padding:16px;background:#f0f0f0;min-height:100vh">
+    <div style="background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 6px rgba(0,0,0,.08);text-align:center">
+      <svg class="profile-logo" width="64" height="64" viewBox="0 0 64 64" fill="none" style="margin-bottom:12px">
+        <circle cx="32" cy="32" r="30" fill="#CC0000" stroke="white" stroke-width="3"/>
+        <rect x="2" y="29" width="60" height="6" fill="white"/>
+        <circle cx="32" cy="32" r="10" fill="white" stroke="#CC0000" stroke-width="3"/>
+        <circle cx="32" cy="32" r="5" fill="#CC0000" stroke="white" stroke-width="2"/>
+      </svg>
+      <h1 style="font-size:24px;font-weight:800;margin-bottom:8px;color:#222">PokeBestBCN</h1>
+      <p style="color:#666;margin-bottom:16px;font-size:14px">Tu app para gestionar equipos de incursión, Dynamax, Megaenergía y Legacy</p>
+      <p style="font-size:13px;color:#888">Versión 93 · Datos de Dittobase</p>
+      <hr style="margin:16px 0;border-color:#e0e0e0">
+      <p style="font-size:12px;color:#888">Desarrollado para la comunidad de Pokémon GO</p>
+    </div>
+  </div>
+</div>
+
+<!-- OBJETIVO SCREEN -->
+<div id="objetivo-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>🎯 Pokémon Objetivo</h1>
+  </div>
+  <div style="padding:12px;background:#f0f0f0;min-height:100vh">
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px">🎯 Tus objetivos de captura</p>
+      <div id="objetivo-list" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div>
+      <button class="btn-secondary btn-add-community" onclick="addObjetivo()" style="margin-top:12px;width:100%">
+        <span class="btn-icon">+</span> Añadir objetivo
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- DIARIAS SCREEN -->
+<div id="diarias-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>📋 Diarias</h1>
+  </div>
+  <div style="padding:12px;background:#f0f0f0;min-height:100vh">
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px">☑️ Tareas diarias</p>
+      <div id="diarias-list" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div>
+      <button class="btn-secondary btn-add-community" onclick="addDiaria()" style="margin-top:12px;width:100%">
+        <span class="btn-icon">+</span> Añadir tarea
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- LEGACY ATTACKS SCREEN -->
+<div id="legacy-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>⭐ Ataques Legacy</h1>
+  </div>
+  <div style="padding:12px;background:#f0f0f0;min-height:100vh">
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px">🔍 Buscar ataques Legacy</p>
+      <input type="text" id="legacy-attack-search" placeholder="Escribe nombre del ataque..." style="width:100%;padding:12px;border:2px solid #ddd;border-radius:8px;font-size:14px;margin-top:8px" oninput="filterLegacyAttacks(this.value)">
+    </div>
+    <div id="legacy-attack-list" style="display:flex;flex-direction:column;gap:8px"></div>
+  </div>
+</div>
+
+<!-- POKEPARADAS SCREEN -->
+<div id="pokeparadas-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>🎁 Poképaradas</h1>
+  </div>
+  <div style="padding:12px;background:#f0f0f0;min-height:100vh">
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px">📍 Misiones de Poképarada</p>
+      <div id="pokeparadas-list" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div>
+      <button class="btn-secondary btn-add-community" onclick="addPokeparada()" style="margin-top:12px;width:100%">
+        <span class="btn-icon">+</span> Añadir misión
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- NOVEDADES SCREEN -->
+<div id="novedades-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>🆕 Novedades</h1>
+  </div>
+  <div style="padding:16px;background:#f0f0f0;min-height:100vh">
+    <div style="background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <h2 style="font-size:16px;font-weight:800;margin-bottom:16px;color:#222">📝 Historial de versiones</h2>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="padding:12px;background:#f8f8f8;border-radius:8px;border-left:4px solid #CC0000">
+          <p style="font-weight:800;color:#222">v93 - Actual</p>
+          <p style="font-size:13px;color:#666;margin-top:4px">Sistema de comunidades rediseñado, login global, perfiles por comunidad</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div> <!-- /#app -->
+</body>
+</html>
