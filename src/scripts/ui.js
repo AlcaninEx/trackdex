@@ -797,7 +797,6 @@ window.updObjCandy = updObjCandy;
 // New screen functions
 window.showMegaCandy = showMegaCandy;
 window.showLegacyGuide = showLegacyGuide;
-window.showTypeChart = showTypeChart;
 window.openGuia = openGuia;
 window.openInfo = openInfo;
 window.openDiarias = openDiarias;
