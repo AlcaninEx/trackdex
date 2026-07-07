@@ -7,7 +7,8 @@ import {
   globalLogin, globalRegister, globalLogout,
   verifyGlobalPassword, saveGlobalUser, loadGlobalUser,
   clearGlobalSession,
-  loadCommunitiesFromFirebase
+  loadCommunitiesFromFirebase,
+  isAdminUser, deleteCommunity
 } from './storage.js';
 import { renderMain, renderRanking, renderTypeNav, switchTab, switchAlbumTab, switchRankTab, expandCard, toggleMegaFilter } from './ui.js';
 import { toggleDark, show, showToast } from './helpers.js';
@@ -139,11 +140,13 @@ export function renderCommunityList() {
   
   if (countEl) countEl.textContent = `${ST.communities.length} disponible${ST.communities.length !== 1 ? 's' : ''}`;
   
+  const isAdmin = isAdminUser(ST.globalUserId);
+
   el.innerHTML = ST.communities.map(c => {
     const isMember = ST.globalUserId && c.members && c.members[ST.globalUserId];
     const displayName = c.displayName || c.name || c.id;
     const memberCount = c.members ? Object.keys(c.members).length : (c.memberCount || 0);
-    
+
     return `
       <div class="community-card ${isMember ? 'joined' : ''}" onclick="handleCommunityClick('${c.id}')">
         <div class="community-card-info">
@@ -151,15 +154,40 @@ export function renderCommunityList() {
           <div class="community-card-meta">${memberCount} miembro${memberCount !== 1 ? 's' : ''}</div>
         </div>
         <div class="community-card-actions">
-          ${isMember 
+          ${isMember
             ? `<button class="btn-enter" onclick="event.stopPropagation(); enterCommunity('${c.id}')">Entrar</button>`
             : `<button class="btn-join" onclick="event.stopPropagation(); showCommunityJoin('${c.id}')">Unirse</button>`
+          }
+          ${isAdmin
+            ? `<button class="btn-admin-del" title="Borrar comunidad (admin)" onclick="event.stopPropagation(); adminDeleteCommunity('${c.id}')">🗑️</button>`
+            : ''
           }
         </div>
       </div>
     `;
   }).join('');
 }
+
+// ============ ADMIN ACTIONS ============
+
+export async function adminDeleteCommunity(communityId) {
+  if (!isAdminUser(ST.globalUserId)) { showToast('Solo el administrador puede borrar comunidades'); return; }
+
+  const c = ST.communities.find(x => x.id === communityId);
+  const name = c?.displayName || c?.name || communityId;
+
+  if (!confirm(`¿Borrar la comunidad "${name}"?\n\nEsta acción es permanente y no se puede deshacer.`)) return;
+
+  try {
+    await deleteCommunity(communityId);
+    renderCommunityList();
+    showToast(`Comunidad "${name}" borrada`);
+  } catch (e) {
+    console.warn('Error al borrar comunidad:', e);
+    showToast('Error al borrar: ' + (e?.message || e));
+  }
+}
+window.adminDeleteCommunity = adminDeleteCommunity;
 
 // ============ COMMUNITY ACTIONS ============
 

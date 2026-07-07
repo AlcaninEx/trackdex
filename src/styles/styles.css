@@ -159,6 +159,11 @@ body.dark .community-card-meta{color:#aaa}
 .btn-join:active{transform:scale(.96);background:#fff5f5}
 body.dark .btn-join{background:#1e1e1e;color:#ff6b6b;border-color:#ff6b6b}
 body.dark .btn-join:active{background:#2a1a1a}
+.btn-admin-del{padding:8px 12px;background:#fff;color:#666;border:2px solid #ddd;border-radius:20px;font-size:14px;line-height:1;cursor:pointer}
+.btn-admin-del:hover{background:#ffecec;color:#CC0000;border-color:#CC0000}
+.btn-admin-del:active{transform:scale(.96)}
+body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
+body.dark .btn-admin-del:hover{background:#2a1a1a;color:#ff6b6b;border-color:#ff6b6b}
 .community-actions{margin-top:16px}
 .btn-add-community-actions{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:#fff;border:2px dashed #ddd;border-radius:12px;color:#666;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s}
 .btnmunity:hover{border-color:#CC0000;color:#CC0000;background:#fff5f5}

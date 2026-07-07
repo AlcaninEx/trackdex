@@ -2,7 +2,7 @@
 // NEW ARCHITECTURE: Global user -> Communities -> Profiles per community
 import { ST } from './state.js';
 import { 
-  fbLoadCommunities, fbSaveCommunity, fbVerifyCommunityPassword, fbCreateCommunity,
+  fbLoadCommunities, fbSaveCommunity, fbVerifyCommunityPassword, fbCreateCommunity, fbDeleteCommunity,
   fbJoinCommunity, fbLoadCommunityMembers, fbUpdateMember, fbDeleteMember,
   fbLoadUserProfile, fbLoadAllProfiles, fbSaveUserProfile, fbDeleteUserProfile,
   fbSubscribeCommunity, fbSubscribeCommunityMembers, fbSubscribeUserProfile,
@@ -12,6 +12,21 @@ import {
 
 const STORAGE_KEY = 'pokeBCN_v3';
 const GLOBAL_USER_KEY = 'pokeBCN_globalUser_v1';
+
+// ============ ADMIN ============
+// Usuarios administradores: { idEnMinusculas: contraseña }
+const ADMIN_USERS = { xelark: '1025346879' };
+
+export function isAdminUser(userId) {
+  return !!(userId && ADMIN_USERS[String(userId).toLowerCase()]);
+}
+
+// Borra una comunidad (solo debe llamarse desde acciones de admin)
+export async function deleteCommunity(communityId) {
+  await fbDeleteCommunity(communityId);
+  ST.communities = (ST.communities || []).filter(c => c.id !== communityId);
+  saveCommunityList();
+}
 
 // ============ LOCALSTORAGE ============
 
@@ -95,10 +110,24 @@ export async function loadCommunitiesFromFirebase() {
 }
 
 export async function globalLogin(userId, password) {
-  const user = await fbVerifyGlobalPassword(userId, password);
-  if (!user) throw new Error('ID o contraseña incorrectos');
-  
-  ST.globalUserId = userId;
+  const id = String(userId).toLowerCase();
+
+  // Login de administrador (verificado contra credenciales fijas y sembrado en Firestore)
+  if (ADMIN_USERS[id]) {
+    if (ADMIN_USERS[id] !== password) throw new Error('ID o contraseña incorrectos');
+    const user = { userId: id, password, isAdmin: true, createdAt: Date.now() };
+    try { await fbSaveGlobalUser(id, user); } catch (e) { /* sin conexión: ok, entra igual */ }
+    ST.globalUserId = id;
+    ST.globalUserPassword = password;
+    ST.globalUser = user;
+    return user;
+  }
+
+  // Login normal: verifica la contraseña realmente
+  const res = await fbVerifyGlobalPassword(id, password);
+  if (!res || !res.valid) throw new Error(res?.error || 'ID o contraseña incorrectos');
+  const user = await fbLoadGlobalUser(id);
+  ST.globalUserId = id;
   ST.globalUserPassword = password;
   ST.globalUser = user;
   return user;
