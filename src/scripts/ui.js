@@ -806,20 +806,12 @@ window.openNovedades = openNovedades;
 window.backToHome = backToHome;
 window.goToTypes = goToTypes;
 window.goToFireRanking = goToFireRanking;
-window.renderLegacyGuide = renderLegacyGuide;
 window.openLegacyPopup = openLegacyPopup;
 window.closeLegacyPopup = closeLegacyPopup;
 window.renderTypeChart = renderTypeChart;
 window.renderDiarias = renderDiarias;
 window.addDiaria = addDiaria;
 window.renderLegacyAttacks = renderLegacyAttacks;
-window.renderPokeparadas = renderPokeparadas;
-window.ppTogglePin = ppTogglePin;
-window.toggleMegaDevMode = toggleMegaDevMode;
-window.toggleMegaInMonth = toggleMegaInMonth;
-window.toggleMegaActiveNow = toggleMegaActiveNow;
-window.renderMegaGrids = renderMegaGrids;
-window.renderMegaMissions = renderMegaMissions;
 
 // ============ LEGACY GUIDE POPUP ============
 function openLegacyPopup(id) {
@@ -940,7 +932,7 @@ export function openLegacy() {
 
 export function openPokeparadas() {
   show('pokeparadas-screen');
-  renderPokeparadas();
+  if (typeof window.renderPokeparadas === 'function') window.renderPokeparadas();
 }
 
 export function openNovedades() {
