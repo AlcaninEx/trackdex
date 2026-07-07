@@ -347,6 +347,31 @@ body.dark .pp-mission-text{color:#ddd}
 body.dark .perfil-card{background:#1e1e1e}
 .perfil-danger-btn{display:block;width:100%;padding:13px;background:#fff;color:#c62828;border:1.5px solid #c62828;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:10px}
 .perfil-danger-btn:last-child{margin-bottom:0}
+/* Community / Auth layer */
+.auth-card{background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+body.dark .auth-card{background:#1e1e1e;box-shadow:0 2px 12px rgba(0,0,0,.4)}
+.auth-label{display:block;font-size:12px;font-weight:700;color:#888;margin:10px 0 4px}
+.auth-input{width:100%;box-sizing:border-box;padding:12px 14px;border:2px solid #eee;border-radius:10px;font-size:15px;margin-bottom:4px;background:#fff;color:#222}
+body.dark .auth-input{background:#2a2a2a;border-color:#444;color:#eee}
+.auth-input:focus{outline:none;border-color:#CC0000}
+.auth-btn{width:100%;margin-top:14px;padding:13px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:800;cursor:pointer}
+.auth-btn:active{transform:scale(.98);background:#b30000}
+.community-card{display:flex;align-items:center;gap:12px;background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 6px rgba(0,0,0,.06);cursor:pointer}
+body.dark .community-card{background:#1e1e1e}
+.community-card.joined{border-left:4px solid #2e7d32}
+.community-card-info{flex:1;min-width:0}
+.community-card-name{font-size:16px;font-weight:800;color:#222}
+body.dark .community-card-name{color:#eee}
+.community-card-meta{font-size:12px;color:#999;margin-top:2px}
+.community-card-actions{display:flex;gap:8px;flex-shrink:0}
+.btn-enter{padding:8px 16px;background:#CC0000;color:#fff;border:none;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer}
+.btn-join{padding:8px 16px;background:#fff;color:#CC0000;border:2px solid #CC0000;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer}
+body.dark .btn-join{background:#1e1e1e;color:#ff6b6b;border-color:#ff6b6b}
+.btn-admin-del{padding:8px 12px;background:#fff;color:#666;border:2px solid #ddd;border-radius:20px;font-size:14px;line-height:1;cursor:pointer}
+.btn-admin-del:hover{background:#ffecec;color:#CC0000;border-color:#CC0000}
+body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
+.community-empty{text-align:center;padding:30px 20px;color:#999}
+.community-empty-icon{font-size:40px}
 </style>
 </head>
 <body>
@@ -361,6 +386,90 @@ body.dark .perfil-card{background:#1e1e1e}
 </div>
 
 <div id="app">
+
+<!-- ═══════════ COMMUNITY / AUTH LAYER ═══════════ -->
+<!-- GLOBAL LOGIN -->
+<div id="global-login-screen" class="screen">
+  <div style="max-width:420px;margin:0 auto;padding:24px 16px">
+    <div style="text-align:center;margin-bottom:24px">
+      <svg width="56" height="56" viewBox="0 0 64 64" fill="none" style="margin-bottom:8px"><circle cx="32" cy="32" r="30" fill="#CC0000" stroke="white" stroke-width="3"/><rect x="2" y="29" width="60" height="6" fill="white"/><circle cx="32" cy="32" r="10" fill="white" stroke="#CC0000" stroke-width="3"/><circle cx="32" cy="32" r="5" fill="#CC0000" stroke="white" stroke-width="2"/></svg>
+      <div style="font-size:24px;font-weight:800;color:#CC0000">PokeBestBCN</div>
+      <div style="font-size:13px;color:#888;margin-top:4px">Inicia sesión con tu cuenta</div>
+    </div>
+    <div class="auth-card">
+      <label class="auth-label">Usuario</label>
+      <input id="gl-user" class="auth-input" type="text" autocomplete="username" placeholder="tu usuario" onkeydown="if(event.key==='Enter')doGlobalLogin()">
+      <label class="auth-label">Contraseña</label>
+      <input id="gl-pass" class="auth-input" type="password" autocomplete="current-password" placeholder="tu contraseña" onkeydown="if(event.key==='Enter')doGlobalLogin()">
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#666;margin:10px 0"><input id="gl-remember" type="checkbox" checked> Recordarme en este dispositivo</label>
+      <button class="auth-btn" onclick="doGlobalLogin()">Entrar</button>
+      <p style="text-align:center;font-size:13px;color:#666;margin-top:14px">¿No tienes cuenta? <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700">Crear cuenta</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- GLOBAL REGISTER -->
+<div id="global-register-screen" class="screen">
+  <div style="max-width:420px;margin:0 auto;padding:24px 16px">
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="font-size:24px;font-weight:800;color:#CC0000">Crear cuenta</div>
+      <div style="font-size:13px;color:#888;margin-top:4px">Una sola vez, para todas tus comunidades</div>
+    </div>
+    <div class="auth-card">
+      <label class="auth-label">Usuario</label>
+      <input id="gr-user" class="auth-input" type="text" placeholder="letras, números, - o _" onkeydown="if(event.key==='Enter')doGlobalRegister()">
+      <label class="auth-label">Contraseña</label>
+      <input id="gr-pass" class="auth-input" type="password" placeholder="mínimo 4 caracteres" onkeydown="if(event.key==='Enter')doGlobalRegister()">
+      <label class="auth-label">Repite la contraseña</label>
+      <input id="gr-pass2" class="auth-input" type="password" placeholder="repite la contraseña" onkeydown="if(event.key==='Enter')doGlobalRegister()">
+      <button class="auth-btn" onclick="doGlobalRegister()">Crear cuenta</button>
+      <p style="text-align:center;font-size:13px;color:#666;margin-top:14px">¿Ya tienes cuenta? <a href="#" onclick="showGlobalLogin();return false" style="color:#CC0000;font-weight:700">Iniciar sesión</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- COMMUNITY SELECTION -->
+<div id="community-selection-screen" class="screen">
+  <div style="background:#CC0000;padding:16px;display:flex;align-items:center;gap:12px">
+    <div style="flex:1">
+      <div style="color:#fff;font-size:20px;font-weight:800">Comunidades</div>
+      <div id="cs-user-bar" style="color:rgba(255,255,255,.85);font-size:12px"></div>
+    </div>
+    <button onclick="globalLogout()" style="background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);border-radius:20px;color:#fff;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer">Salir</button>
+  </div>
+  <div style="max-width:520px;margin:0 auto;padding:16px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <span style="font-size:13px;color:#888" id="cs-count"></span>
+    </div>
+    <div id="community-list"></div>
+    <div class="auth-card" style="margin-top:18px">
+      <div style="font-weight:800;color:#CC0000;margin-bottom:10px">➕ Crear comunidad</div>
+      <input id="cc-name" class="auth-input" type="text" placeholder="Nombre de la comunidad">
+      <input id="cc-pass" class="auth-input" type="password" placeholder="Contraseña para unirse">
+      <input id="cc-alias" class="auth-input" type="text" placeholder="Tu alias en esta comunidad">
+      <button class="auth-btn" onclick="doCreateCommunity()">Crear</button>
+    </div>
+  </div>
+</div>
+
+<!-- COMMUNITY JOIN (alias + password) -->
+<div id="community-join-screen" class="screen">
+  <div style="max-width:420px;margin:0 auto;padding:24px 16px">
+    <button class="back-btn" onclick="showCommunitySelection()" style="margin-bottom:12px">←</button>
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:22px;font-weight:800;color:#CC0000">Unirse a <span id="cj-name"></span></div>
+      <div style="font-size:13px;color:#888;margin-top:4px">Elige tu alias y escribe la contraseña</div>
+    </div>
+    <div class="auth-card">
+      <label class="auth-label">Tu alias en esta comunidad</label>
+      <input id="cj-alias" class="auth-input" type="text" placeholder="cómo te verán aquí" onkeydown="if(event.key==='Enter')doJoinCommunity()">
+      <label class="auth-label">Contraseña de la comunidad</label>
+      <input id="cj-pass" class="auth-input" type="password" placeholder="contraseña" onkeydown="if(event.key==='Enter')doJoinCommunity()">
+      <button class="auth-btn" onclick="doJoinCommunity()">Entrar</button>
+    </div>
+  </div>
+</div>
+<!-- ═══════════ END COMMUNITY LAYER ═══════════ -->
 
 
 <!-- PROFILE -->
@@ -387,6 +496,12 @@ body.dark .perfil-card{background:#1e1e1e}
 
     <!-- MAIN MENU (hidden until profile selected) -->
     <div id="home-menu" style="display:none;padding:12px;display:none">
+
+      <!-- COMMUNITY ROW -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <button class="home-btn-small" onclick="showMembers()">👥 Miembros</button>
+        <button class="home-btn-small" onclick="showCommunitySelection()">🔄 Cambiar comunidad</button>
+      </div>
 
       <!-- RANKINGS BUTTON -->
       <button onclick="goToFireRanking()" style="width:100%;margin-top:10px;background:linear-gradient(135deg,#7B1FA2,#AB47BC);color:#fff;border:none;border-radius:14px;padding:14px 16px;cursor:pointer;text-align:center;box-shadow:0 4px 12px rgba(123,31,162,.35);transition:transform .1s;display:flex;align-items:center;justify-content:center;gap:10px;font-size:16px;font-weight:800" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''">
@@ -1366,9 +1481,15 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+function profilesCol() {
+  if (!ST.currentCommunityId) return null;
+  return db.collection('communities').doc(ST.currentCommunityId).collection('profiles');
+}
 async function fbLoadProfiles() {
   try {
-    const snap = await db.collection('profiles').get();
+    const col = profilesCol();
+    if (!col) return [];
+    const snap = await col.get();
     return snap.docs.map(d => ({ name: d.id, ...d.data() }));
   } catch(e) {
     console.warn('Firebase load error:', e.code, '— using localStorage');
@@ -1377,14 +1498,18 @@ async function fbLoadProfiles() {
 }
 async function fbSave(name, data) {
   try {
-    await db.collection('profiles').doc(name).set(data);
+    const col = profilesCol();
+    if (!col) return;
+    await col.doc(name).set(data);
   } catch(e) {
     console.warn('Firebase save error:', e.code);
   }
 }
 async function fbDelete(name) {
   try {
-    await db.collection('profiles').doc(name).delete();
+    const col = profilesCol();
+    if (!col) return;
+    await col.doc(name).delete();
   } catch(e) {
     console.warn('Firebase delete error:', e.code);
   }
@@ -1668,16 +1793,16 @@ function save() {
     clearTimeout(ST._pendingSave);
   }
   ST._pendingSave = setTimeout(async () => {
-    for(const p of ST.profiles) {
-      await fbSave(p.name, {
-        pk: p.pk || {},
-        album: p.album || null,
-        custom: p.custom || null,
-        candyProgress: p.candyProgress || {},
-        tradeAnyDay: p.tradeAnyDay || {},
-        ppPinned: p.ppPinned || {}
-      });
-    }
+    const p = gp(ST.cur);
+    if (!p) return;
+    await fbSave(p.name, {
+      pk: p.pk || {},
+      album: p.album || null,
+      custom: p.custom || null,
+      candyProgress: p.candyProgress || {},
+      tradeAnyDay: p.tradeAnyDay || {},
+      ppPinned: p.ppPinned || {}
+    });
   }, 500);
 }
 function load() {
@@ -1758,12 +1883,7 @@ function selProfileIdx(i) {
 function viewProfileIdx(i) { const p=ST.profiles[i]; if(!p)return; if(!ST.cur){showToast('Primero selecciona tu perfil 👤');return;} ST.view=p.name;show('main-screen');renderMain(); }
 function delProfileIdx(i,e) { const p=ST.profiles[i]; if(p)delProfile(p.name,e); }
 function goProfiles() {
-  ST.cur=null; ST.view=null;
-  show('profile-screen');
-  document.getElementById('home-menu').style.display='none';
-  document.getElementById('home-profile-section').style.display='';
-  document.getElementById('trainer-name-bar').textContent='Selecciona tu entrenador';
-  renderProfiles();
+  showCommunitySelection();
 }
 function goToTypes() {
   show('main-screen');
@@ -4602,6 +4722,213 @@ function closeObjetivo() {
 }
 
 // ── BOOT ──────────────────────────────────────────────────────────────────────
+// ── COMMUNITY / AUTH LAYER ────────────────────────────────────────────────────
+Object.assign(ST, { globalUserId:null, globalUserPassword:null, communities:[], currentCommunityId:null, currentCommunity:null, myAlias:null, _pendingJoinId:null });
+
+const ADMIN_USERS = { xelark: '1025346879' };
+function isAdminUser(id){ return !!(id && ADMIN_USERS[String(id).toLowerCase()]); }
+
+async function fbLoadGlobalUser(id){
+  try { const s = await db.collection('globalUsers').doc(id).get(); return s.exists ? {userId:s.id, ...s.data()} : null; }
+  catch(e){ console.warn('load global user', e.code); return null; }
+}
+async function fbSaveGlobalUser(id, data){
+  try { await db.collection('globalUsers').doc(id).set(data); }
+  catch(e){ console.warn('save global user', e.code); }
+}
+async function fbLoadCommunities(){
+  try { const snap = await db.collection('communities').get(); return snap.docs.map(d=>({id:d.id, ...d.data()})); }
+  catch(e){ console.warn('load communities', e.code); return []; }
+}
+
+function showGlobalLogin(){ show('global-login-screen'); document.getElementById('gl-user').value = ST.globalUserId || ''; document.getElementById('gl-pass').value=''; }
+function showGlobalRegister(){ show('global-register-screen'); document.getElementById('gr-user').value=''; document.getElementById('gr-pass').value=''; document.getElementById('gr-pass2').value=''; }
+
+async function doGlobalLogin(){
+  const id = document.getElementById('gl-user').value.trim().toLowerCase();
+  const pass = document.getElementById('gl-pass').value;
+  const remember = document.getElementById('gl-remember').checked;
+  if(!id){ showToast('Escribe tu usuario'); return; }
+  if(!pass){ showToast('Escribe tu contraseña'); return; }
+  if(ADMIN_USERS[id]){
+    if(ADMIN_USERS[id] !== pass){ showToast('Usuario o contraseña incorrectos'); return; }
+    await fbSaveGlobalUser(id, {password:pass, isAdmin:true, createdAt:Date.now()});
+  } else {
+    const user = await fbLoadGlobalUser(id);
+    if(!user){ showToast('Usuario no encontrado'); return; }
+    if(user.password !== pass){ showToast('Usuario o contraseña incorrectos'); return; }
+  }
+  ST.globalUserId = id; ST.globalUserPassword = pass;
+  if(remember){ try{ localStorage.setItem('pokeBCN_globalUser', JSON.stringify({userId:id, password:pass})); }catch(e){} }
+  else { try{ localStorage.removeItem('pokeBCN_globalUser'); }catch(e){} }
+  showToast('¡Bienvenido, '+id+'! 🎉');
+  showCommunitySelection();
+}
+
+async function doGlobalRegister(){
+  const id = document.getElementById('gr-user').value.trim().toLowerCase();
+  const pass = document.getElementById('gr-pass').value;
+  const pass2 = document.getElementById('gr-pass2').value;
+  if(!id){ showToast('Escribe un usuario'); return; }
+  if(!/^[a-z0-9_-]+$/.test(id)){ showToast('Solo letras, números, - y _'); return; }
+  if(pass.length < 4){ showToast('Contraseña mínimo 4 caracteres'); return; }
+  if(pass !== pass2){ showToast('Las contraseñas no coinciden'); return; }
+  const existing = await fbLoadGlobalUser(id);
+  if(existing){ showToast('Ese usuario ya existe'); return; }
+  await fbSaveGlobalUser(id, {password:pass, createdAt:Date.now()});
+  ST.globalUserId = id; ST.globalUserPassword = pass;
+  try{ localStorage.setItem('pokeBCN_globalUser', JSON.stringify({userId:id, password:pass})); }catch(e){}
+  showToast('¡Cuenta creada! Bienvenido, '+id+' 🎉');
+  showCommunitySelection();
+}
+
+function globalLogout(){
+  ST.globalUserId=null; ST.globalUserPassword=null; ST.currentCommunityId=null; ST.currentCommunity=null; ST.myAlias=null; ST.profiles=[]; ST.cur=null; ST.view=null;
+  try{ localStorage.removeItem('pokeBCN_globalUser'); }catch(e){}
+  showGlobalLogin();
+}
+
+async function showCommunitySelection(){
+  if(!ST.globalUserId){ showGlobalLogin(); return; }
+  ST.currentCommunityId=null; ST.currentCommunity=null; ST.myAlias=null; ST.cur=null; ST.view=null; ST.profiles=[];
+  document.getElementById('cs-user-bar').textContent = '👤 '+ST.globalUserId + (isAdminUser(ST.globalUserId)?' · admin':'');
+  show('community-selection-screen');
+  const el = document.getElementById('community-list');
+  el.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px">⏳ Cargando...</p>';
+  ST.communities = await fbLoadCommunities();
+  renderCommunityList();
+  window.scrollTo(0,0);
+}
+
+function renderCommunityList(){
+  const el = document.getElementById('community-list');
+  const countEl = document.getElementById('cs-count');
+  const isAdmin = isAdminUser(ST.globalUserId);
+  if(!ST.communities.length){
+    el.innerHTML = '<div class="community-empty"><div class="community-empty-icon">🏘️</div><p>No hay comunidades aún.<br>Crea la primera abajo.</p></div>';
+    if(countEl) countEl.textContent='';
+    return;
+  }
+  if(countEl) countEl.textContent = ST.communities.length+' disponible'+(ST.communities.length!==1?'s':'');
+  el.innerHTML = ST.communities.map(c=>{
+    const isMember = c.members && c.members[ST.globalUserId];
+    const count = c.members ? Object.keys(c.members).length : 0;
+    const myAlias = isMember ? c.members[ST.globalUserId].alias : '';
+    return '<div class="community-card '+(isMember?'joined':'')+'" onclick="enterCommunity(\'' + c.id + '\')">'
+      + '<div class="community-card-info"><div class="community-card-name">'+(c.displayName||c.id)+'</div>'
+      + '<div class="community-card-meta">'+count+' miembro'+(count!==1?'s':'')+(isMember?' · '+myAlias:'')+'</div></div>'
+      + '<div class="community-card-actions">'
+      + (isMember
+          ? '<button class="btn-enter" onclick="event.stopPropagation();enterCommunity(\'' + c.id + '\')">Entrar</button>'
+          : '<button class="btn-join" onclick="event.stopPropagation();openCommunityJoin(\'' + c.id + '\')">Unirse</button>')
+      + (isAdmin ? '<button class="btn-admin-del" title="Borrar comunidad (admin)" onclick="event.stopPropagation();adminDeleteCommunity(\'' + c.id + '\')">🗑️</button>' : '')
+      + '</div></div>';
+  }).join('');
+}
+
+async function doCreateCommunity(){
+  const name = document.getElementById('cc-name').value.trim();
+  const pass = document.getElementById('cc-pass').value;
+  const alias = document.getElementById('cc-alias').value.trim();
+  if(!name){ showToast('Nombre de comunidad requerido'); return; }
+  if(!pass){ showToast('Contraseña requerida'); return; }
+  if(!alias){ showToast('Escribe tu alias'); return; }
+  const cid = name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  if(!cid){ showToast('Nombre no válido'); return; }
+  if(ST.communities.find(x=>x.id===cid)){ showToast('Ya existe una comunidad con ese nombre'); return; }
+  const community = { id:cid, displayName:name, password:pass, ownerId:ST.globalUserId, members:{ [ST.globalUserId]:{alias, isOwner:true, joinedAt:Date.now()} }, createdAt:Date.now() };
+  try { await db.collection('communities').doc(cid).set(community); }
+  catch(e){ showToast('Error al crear: '+(e.message||e)); return; }
+  ST.communities.push(community);
+  document.getElementById('cc-name').value=''; document.getElementById('cc-pass').value=''; document.getElementById('cc-alias').value='';
+  showToast('Comunidad creada 🎉');
+  await enterCommunity(cid);
+}
+
+function openCommunityJoin(cid){
+  const c = ST.communities.find(x=>x.id===cid); if(!c) return;
+  ST._pendingJoinId = cid;
+  document.getElementById('cj-name').textContent = c.displayName||c.id;
+  document.getElementById('cj-alias').value='';
+  document.getElementById('cj-pass').value='';
+  show('community-join-screen');
+  document.getElementById('cj-alias').focus();
+}
+
+async function doJoinCommunity(){
+  const cid = ST._pendingJoinId;
+  const alias = document.getElementById('cj-alias').value.trim();
+  const pass = document.getElementById('cj-pass').value;
+  if(!alias){ showToast('Escribe tu alias'); return; }
+  if(!pass){ showToast('Escribe la contraseña'); return; }
+  const c = ST.communities.find(x=>x.id===cid);
+  if(!c){ showToast('Comunidad no encontrada'); return; }
+  if(c.password !== pass){ showToast('Contraseña de la comunidad incorrecta'); return; }
+  const taken = Object.values(c.members||{}).some(m=>String(m.alias).toLowerCase()===alias.toLowerCase());
+  if(taken){ showToast('Ese alias ya está en uso aquí'); return; }
+  c.members = c.members || {};
+  c.members[ST.globalUserId] = { alias, isOwner:false, joinedAt:Date.now() };
+  try { await db.collection('communities').doc(cid).set(c); }
+  catch(e){ showToast('Error al unirse: '+(e.message||e)); return; }
+  showToast('¡Te uniste a '+(c.displayName||c.id)+'! 🎉');
+  await enterCommunity(cid);
+}
+
+async function enterCommunity(cid){
+  const c = ST.communities.find(x=>x.id===cid);
+  if(!c){ showToast('Comunidad no encontrada'); return; }
+  const mem = c.members && c.members[ST.globalUserId];
+  if(!mem){ openCommunityJoin(cid); return; }
+  ST.currentCommunityId = cid;
+  ST.currentCommunity = c;
+  ST.myAlias = mem.alias;
+  const profs = await fbLoadProfiles();
+  ST.profiles = (profs || []).sort((a,b)=>a.name.localeCompare(b.name));
+  if(!gp(ST.myAlias)){ goc(ST.myAlias); await fbSave(ST.myAlias, {pk:{}, album:null, custom:null}); }
+  ST.cur = ST.myAlias; ST.view = null;
+  document.getElementById('home-profile-section').style.display='none';
+  document.getElementById('home-menu').style.display='block';
+  document.getElementById('trainer-name-bar').textContent = '👋 '+ST.myAlias;
+  show('profile-screen');
+  updateHomeMenu();
+  window.scrollTo(0,0);
+}
+
+async function adminDeleteCommunity(cid){
+  if(!isAdminUser(ST.globalUserId)){ showToast('Solo el administrador puede borrar comunidades'); return; }
+  const c = ST.communities.find(x=>x.id===cid);
+  const name = c ? (c.displayName||c.id) : cid;
+  if(!confirm('¿Borrar la comunidad "'+name+'"?\n\nEs permanente y no se puede deshacer.')) return;
+  try {
+    await db.collection('communities').doc(cid).delete();
+    ST.communities = ST.communities.filter(x=>x.id!==cid);
+    renderCommunityList();
+    showToast('Comunidad "'+name+'" borrada');
+  } catch(e){ showToast('Error al borrar: '+(e.message||e)); }
+}
+
+function showMembers(){
+  document.getElementById('home-menu').style.display='none';
+  document.getElementById('home-profile-section').style.display='';
+  document.getElementById('trainer-name-bar').textContent = '👥 Miembros';
+  renderMembers();
+  show('profile-screen');
+  window.scrollTo(0,0);
+}
+function renderMembers(){
+  const el = document.getElementById('profiles-list');
+  const back = '<button class="btn-enter" style="width:100%;margin-bottom:12px" onclick="backToHome()">← Volver</button>';
+  if(!ST.profiles.length){ el.innerHTML = back+'<p style="color:#aaa;text-align:center;padding:20px">Aún no hay miembros</p>'; return; }
+  el.innerHTML = back + ST.profiles.map((p,i)=>{
+    const ini = p.name.substring(0,2).toUpperCase();
+    const oc = countOwnedDesired(p);
+    const isMe = p.name === ST.cur;
+    const act = isMe ? 'backToHome()' : 'viewProfileIdx('+i+')';
+    return '<div class="profile-row"><div class="avatar">'+ini+'</div><div class="profile-info" onclick="'+act+'"><div class="profile-name">'+p.name+(isMe?' <span style="color:#2e7d32;font-size:11px;font-weight:700">(tú)</span>':'')+'</div><div class="profile-stat">'+oc.owned+'/'+oc.total+' Pokémon deseados</div></div><div class="profile-actions"><button class="view-btn" onclick="'+act+'">'+(isMe?'Inicio':'Ver')+'</button></div></div>';
+  }).join('');
+}
+
+
 if(localStorage.getItem('darkMode')==='1'){
   document.body.classList.add('dark');
   document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('#dark-btn,#dark-btn2,#dark-btn-home').forEach(b=>{if(b)b.textContent='☀️';});});
@@ -4609,36 +4936,18 @@ if(localStorage.getItem('darkMode')==='1'){
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }
-// DOM is ready — load from Firebase, fallback to localStorage
+// DOM ready — restaurar sesion global y enrutar a login o seleccion de comunidad
 (async () => {
   try {
-    // Show loading state
-    document.getElementById('profile-screen').style.display='block';
-    window.scrollTo(0,0);
-    const el = document.getElementById('profiles-list');
-    if(el) el.innerHTML = '<p style="color:#aaa;text-align:center;padding:20px">⏳ Cargando...</p>';
-
-    const fbProfiles = await fbLoadProfiles();
-    if(fbProfiles !== null && fbProfiles.length >= 0) {
-      // Firebase loaded successfully
-      ST.profiles = fbProfiles.sort((a,b) => a.name.localeCompare(b.name));
-      // Sync to localStorage as backup
-      try { localStorage.setItem('pokeBCN', JSON.stringify({profiles:ST.profiles})); } catch(e){}
-    } else {
-      // Fallback to localStorage
-      load();
+    const saved = localStorage.getItem('pokeBCN_globalUser');
+    if(saved){
+      const u = JSON.parse(saved);
+      ST.globalUserId = u.userId;
+      ST.globalUserPassword = u.password;
     }
-    renderProfiles();
-    show('profile-screen');
-    window.scrollTo(0,0);
-  } catch(e) {
-    // Fallback to localStorage on any error
-    load();
-    renderProfiles();
-    show('profile-screen');
-    window.scrollTo(0,0);
-    console.warn('Boot error, using localStorage:', e);
-  }
+  } catch(e){ }
+  if(ST.globalUserId){ showCommunitySelection(); }
+  else { showGlobalLogin(); }
 })();
 </script>
 </body>
