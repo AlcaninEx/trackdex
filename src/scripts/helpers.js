@@ -82,8 +82,36 @@ export function toggleDark() {
 }
 
 export function show(id) {
-  document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
-  document.getElementById(id).style.display = 'block';
+  console.log('🔍 show() called with id:', id);
+  const screens = document.querySelectorAll('.screen');
+  console.log('🔍 show() - found screens:', screens.length);
+  screens.forEach(s => {
+    s.style.display = 'none';
+    console.log('🔍 show() - hid screen:', s.id, 'display:', s.style.display);
+  });
+  const target = document.getElementById(id);
+  console.log('🔍 show() - target element:', target ? 'found' : 'NOT FOUND');
+  if (target) {
+    target.style.display = 'block';
+    console.log('🔍 show() - target display set to block:', target.style.display);
+    console.log('🔍 show() - target computed display:', window.getComputedStyle(target).display);
+    
+    // Add MutationObserver to detect unauthorized display changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+          const newDisplay = target.style.display;
+          const computedDisplay = window.getComputedStyle(target).display;
+          console.log('🔍 MUTATION DETECTED on', id, '- style.display:', newDisplay, '- computed:', computedDisplay);
+          console.log('🔍 Stack trace:', new Error().stack);
+        }
+      });
+    });
+    observer.observe(target, { attributes: true, attributeFilter: ['style'] });
+    
+    // Clean up observer after 10 seconds
+    setTimeout(() => observer.disconnect(), 10000);
+  }
 }
 
 export function evoH(evo, img, shadow) {

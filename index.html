@@ -18,6 +18,7 @@
 </head>
 <body>
 <div id="toast"></div>
+
 <div id="modal-mega-warn">
   <div class="mega-warn-box">
     <div class="mega-warn-icon">⚠️</div>
@@ -29,10 +30,83 @@
 
 <div id="app">
 
+<!-- GLOBAL LOGIN SCREEN -->
+<div id="global-login-screen" class="screen" style="display: none;">
+  <div class="login-container">
+    <div class="login-header">
+      <svg class="login-logo" width="64" height="64" viewBox="0 0 64 64" fill="none">
+        <circle cx="32" cy="32" r="30" fill="#CC0000" stroke="white" stroke-width="3"/>
+        <rect x="2" y="29" width="60" height="6" fill="white"/>
+        <circle cx="32" cy="32" r="10" fill="white" stroke="#CC0000" stroke-width="3"/>
+        <circle cx="32" cy="32" r="5" fill="#CC0000" stroke="white" stroke-width="2"/>
+      </svg>
+      <h1>PokeBestBCN</h1>
+      <p class="login-subtitle">Inicia sesión para continuar</p>
+    </div>
+    
+    <form id="global-login-form" onsubmit="globalLoginHandler(event)">
+      <div class="form-group">
+        <label for="global-user-id">ID de usuario</label>
+        <input type="text" id="global-user-id" placeholder="Tu ID de usuario" required autocomplete="username" aria-label="ID de usuario">
+      </div>
+      <div class="form-group">
+        <label for="global-user-password">Contraseña</label>
+        <input type="password" id="global-user-password" placeholder="Tu contraseña" required autocomplete="current-password" aria-label="Contraseña">
+      </div>
+      <div class="form-group checkbox-group">
+        <input type="checkbox" id="remember-me" name="remember-me">
+        <label for="remember-me">Recordar sesión</label>
+      </div>
+      <button type="submit" class="btn-primary btn-lg">Entrar</button>
+    </form>
+    
+    <p class="login-footer">
+      ¿No tienes cuenta? <button class="link-btn" onclick="showGlobalRegister()">Regístrate</button>
+    </p>
+  </div>
+</div>
+
+<!-- GLOBAL REGISTER SCREEN -->
+<div id="global-register-screen" class="screen" style="display: none;">
+  <div class="login-container">
+    <div class="login-header">
+      <svg class="login-logo" width="64" height="64" viewBox="0 0 64 64" fill="none">
+        <circle cx="32" cy="32" r="30" fill="#CC0000" stroke="white" stroke-width="3"/>
+        <rect x="2" y="29" width="60" height="6" fill="white"/>
+        <circle cx="32" cy="32" r="10" fill="white" stroke="#CC0000" stroke-width="3"/>
+        <circle cx="32" cy="32" r="5" fill="#CC0000" stroke="white" stroke-width="2"/>
+      </svg>
+      <h1>PokeBestBCN</h1>
+      <p class="login-subtitle">Crea tu cuenta global</p>
+    </div>
+    
+    <form id="global-register-form" onsubmit="globalRegisterHandler(event)">
+      <div class="form-group">
+        <label for="reg-global-user-id">ID de usuario</label>
+        <input type="text" id="reg-global-user-id" placeholder="Elige tu ID" maxlength="30" required autocomplete="off" aria-label="ID de usuario">
+        <p class="form-hint">Solo letras, números, guiones y guiones bajos</p>
+      </div>
+      <div class="form-group">
+        <label for="reg-global-user-password">Contraseña</label>
+        <input type="password" id="reg-global-user-password" placeholder="Mínimo 4 caracteres" minlength="4" required autocomplete="new-password" aria-label="Contraseña">
+      </div>
+      <div class="form-group">
+        <label for="reg-global-user-confirm">Confirmar contraseña</label>
+        <input type="password" id="reg-global-user-confirm" placeholder="Repite la contraseña" minlength="4" required autocomplete="new-password" aria-label="Confirmar contraseña">
+      </div>
+      <button type="submit" class="btn-primary btn-lg">Crear cuenta</button>
+    </form>
+    
+    <p class="login-footer">
+      ¿Ya tienes cuenta? <button class="link-btn" onclick="showGlobalLogin()">Inicia sesión</button>
+    </p>
+  </div>
+</div>
+
 <!-- COMMUNITY SELECTION SCREEN -->
-<div id="community-selection-screen" class="profile-state" style="display: none;">
+<div id="community-selection-screen" class="screen" style="display: none;">
   <div class="community-header">
-    <h2>Comunidades</h2>
+    <h2>🏘️ Mis Comunidades</h2>
     <span id="community-count" class="profiles-count">0 disponibles</span>
   </div>
 
@@ -49,40 +123,16 @@
     <h3>Crear nueva comunidad</h3>
     <form onsubmit="createCommunityHandler(event)">
       <div class="form-group">
-        <label for="new-community-id">ID de la comunidad</label>
-        <input type="text" id="new-community-id" placeholder="ej: raidersbcn" maxlength="30" required autocomplete="off" aria-label="ID de la comunidad" pattern="[a-z0-9_\-]+">
-        <p class="form-hint">Solo letras minúsculas, números, guiones y guiones bajos</p>
+        <label for="new-community-name">Nombre de la comunidad</label>
+        <input type="text" id="new-community-name" placeholder="ej: Raiders BCN" maxlength="50" required autocomplete="off" aria-label="Nombre de la comunidad">
       </div>
       <div class="form-group">
         <label for="new-community-password">Contraseña de la comunidad</label>
         <input type="password" id="new-community-password" placeholder="Mínimo 4 caracteres" minlength="4" required autocomplete="new-password" aria-label="Contraseña de la comunidad">
       </div>
       <div class="form-group">
-        <label for="new-community-confirm">Confirmar contraseña comunidad</label>
-        <input type="password" id="new-community-confirm" placeholder="Repite la contraseña" minlength="4" required autocomplete="new-password" aria-label="Confirmar contraseña de la comunidad">
-      </div>
-      <hr style="margin:16px 0;border-color:#e0e0e0">
-      <p style="font-size:13px;color:#666;margin-bottom:12px">Tu usuario en esta comunidad (el owner):</p>
-      <div class="form-group">
-              <label for="register-user-id">Tu ID de usuario</label>
-              <input type="text" id="register-user-id" placeholder="Elige tu ID" maxlength="30" required autocomplete="off" aria-label="Tu ID de usuario" pattern="[a-z0-9_\-]+">
-              <p class="form-hint">Solo letras minúsculas, números, guiones y guiones bajos</p>
-            </div>
-      <div class="form-group">
-        <label for="new-community-user-password">Tu contraseña personal</label>
-        <input type="password" id="new-community-user-password" placeholder="Mínimo 4 caracteres" minlength="4" required autocomplete="new-password" aria-label="Tu contraseña personal">
-      </div>
-      <div class="form-group">
-        <label for="new-community-user-confirm">Confirmar tu contraseña</label>
-        <input type="password" id="new-community-user-confirm" placeholder="Repite tu contraseña" minlength="4" required autocomplete="new-password" aria-label="Confirmar tu contraseña">
-      </div>
-      <div class="form-group">
-        <label for="new-community-display-name">Tu nombre visible</label>
-        <input type="text" id="new-community-display-name" placeholder="Tu nombre visible" maxlength="20" autocomplete="off" aria-label="Tu nombre visible">
-      </div>
-      <div class="form-group">
-        <label for="new-community-display-name">Tu nombre visible</label>
-        <input type="text" id="new-community-display-name" placeholder="Tu nombre visible" maxlength="20" autocomplete="off" aria-label="Tu nombre visible">
+        <label for="new-community-confirm">Confirmar contraseña</label>
+        <input type="password" id="new-community-confirm" placeholder="Repite la contraseña" minlength="4" required autocomplete="new-password" aria-label="Confirmar contraseña">
       </div>
       <div class="form-actions">
         <button type="button" class="btn-ghost" onclick="hideCreateCommunityForm()">Cancelar</button>
@@ -92,68 +142,56 @@
   </div>
 </div>
 
-<!-- COMMUNITY LOGIN SCREEN -->
-<div id="community-login-screen" class="profile-state" style="display: none;">
+<!-- COMMUNITY JOIN SCREEN (enter existing community) -->
+<div id="community-join-screen" class="screen" style="display: none;">
   <div class="community-header">
-    <h2>Entrar a <span id="login-community-name"></span></h2>
+    <h2>Entrar a <span id="join-community-name"></span></h2>
   </div>
-
   <div class="community-form">
-    <form onsubmit="loginCommunityHandler(event)">
+    <form onsubmit="joinCommunityHandler(event)">
       <div class="form-group">
-        <label for="login-user-id">Tu ID de usuario</label>
-        <input type="text" id="login-user-id" placeholder="Tu ID" required autocomplete="username" aria-label="Tu ID de usuario" pattern="[a-z0-9_\-]+">
+        <label for="join-community-password">Contraseña de la comunidad</label>
+        <input type="password" id="join-community-password" placeholder="Contraseña de la comunidad" required autocomplete="current-password" aria-label="Contraseña de la comunidad">
       </div>
       <div class="form-group">
-        <label for="login-user-password">Tu contraseña</label>
-        <input type="password" id="login-user-password" placeholder="Tu contraseña" required autocomplete="current-password" aria-label="Tu contraseña">
+        <label for="join-user-alias">Tu alias en esta comunidad</label>
+        <input type="text" id="join-user-alias" placeholder="Cómo te verán los demás" maxlength="30" required autocomplete="off" aria-label="Tu alias">
+        <p class="form-hint">Será tu nombre visible dentro de esta comunidad</p>
       </div>
       <div class="form-actions">
         <button type="button" class="btn-ghost" onclick="showCommunitySelection()">← Volver</button>
         <button type="submit" class="btn-primary">Entrar</button>
       </div>
     </form>
-    <p class="form-hint" style="margin-top:16px;text-align:center">
-      ¿No tienes cuenta? <button class="link-btn" onclick="showCommunityRegister(ST.pendingCommunityId)">Regístrate</button>
-    </p>
   </div>
 </div>
 
-<!-- COMMUNITY REGISTER SCREEN -->
-<div id="community-register-screen" class="profile-state" style="display: none;">
+<!-- COMMUNITY REGISTER SCREEN (new user in community) -->
+<div id="community-register-screen" class="screen" style="display: none;">
   <div class="community-header">
     <h2>Unirse a <span id="register-community-name"></span></h2>
   </div>
-
   <div class="community-form">
     <form onsubmit="registerCommunityHandler(event)">
       <div class="form-group">
-              <label for="register-user-id">Tu ID de usuario</label>
-              <input type="text" id="register-user-id" placeholder="Elige tu ID" maxlength="30" required autocomplete="off" aria-label="Tu ID de usuario" pattern="[a-z0-9_\-]+">
-              <p class="form-hint">Solo letras minúsculas, números, guiones y guiones bajos</p>
-            </div>
-      <div class="form-group">
-        <label for="register-user-password">Tu contraseña</label>
-        <input type="password" id="register-user-password" placeholder="Mínimo 4 caracteres" minlength="4" required autocomplete="new-password" aria-label="Tu contraseña">
+        <label for="register-user-alias">Tu alias en esta comunidad</label>
+        <input type="text" id="register-user-alias" placeholder="Cómo te verán los demás" maxlength="30" required autocomplete="off" aria-label="Tu alias">
+        <p class="form-hint">Será tu nombre visible dentro de esta comunidad</p>
       </div>
       <div class="form-group">
-        <label for="register-user-confirm">Confirmar contraseña</label>
-        <input type="password" id="register-user-confirm" placeholder="Repite la contraseña" minlength="4" required autocomplete="new-password" aria-label="Confirmar contraseña">
-      </div>
-      <div class="form-group">
-        <label for="register-display-name">Tu nombre visible</label>
-        <input type="text" id="register-display-name" placeholder="Tu nombre visible" maxlength="20" autocomplete="off" aria-label="Tu nombre visible">
+        <label for="register-community-password">Contraseña de la comunidad</label>
+        <input type="password" id="register-community-password" placeholder="Contraseña de la comunidad" required autocomplete="current-password" aria-label="Contraseña de la comunidad">
       </div>
       <div class="form-actions">
-        <button type="button" class="btn-ghost" onclick="showCommunityLogin(ST.pendingCommunityId)">← Volver</button>
-        <button type="submit" class="btn-primary">Crear cuenta</button>
+        <button type="button" class="btn-ghost" onclick="showCommunityJoin(ST.pendingCommunityId)">← Volver</button>
+        <button type="submit" class="btn-primary">Crear perfil</button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- MAIN APP SCREEN (after login) -->
-<div id="main-app-screen" class="profile-state" style="display: none;">
+<!-- MAIN APP SCREEN (after community login) -->
+<div id="main-app-screen" class="screen" style="display: none;">
   <div class="community-members-header">
     <div class="community-members-title">
       <h2>🏘️ <span id="current-community-name"></span></h2>
@@ -188,7 +226,6 @@
           <div class="home-prog-bar"><div class="home-prog-fill" id="hm-dmax-bar" style="width:0%"></div></div>
         </div>
       </div>
-    </button>
 
     <button class="home-btn-secondary" onclick="showTypeChart()">🔥 Eficacia de Tipos (Calculadora)</button>
     
@@ -220,8 +257,6 @@
     <p class="community-hint">Tu perfil siempre aparece primero. Toca "Ver" en otros miembros para ver su álbum en modo vista (solo lectura).</p>
   </div>
 </div>
-
-</div> <!-- /#app -->
 
 <!-- PROFILE SCREEN WRAPPER (for backward compat) -->
 <div id="profile-screen" class="screen" style="display: none;">
@@ -348,239 +383,165 @@
 
     <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
       <p style="font-size:14px;font-weight:800;margin-bottom:4px">🥊 Megaincursiones actuales</p>
-      <p style="font-size:11px;color:#888;margin-bottom:10px" id="mega-raids-subtitle">Las Megas en incursión este mes. La activa ahora aparece destacada.</p>
-      <div id="mega-raids-grid" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"></div>
+      <div id="mega-current-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px"></div>
     </div>
 
     <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
-      <p style="font-size:14px;font-weight:800;margin-bottom:4px">🏙️ Megaenergía en Poképaradas</p>
-      <p style="font-size:11px;color:#888;margin-bottom:12px">Misiones fijas que dan megaenergía. Busca siempre hueco libre antes de girar una nueva Poképarada.</p>
-      <p style="font-size:12px;font-weight:800;color:#2e7d32;margin-bottom:8px">🎯 Por capturar 10 de tipo (10 Megaenergía)</p>
-      <div id="mega-capture-missions"></div>
-      <p style="font-size:12px;font-weight:800;color:#1565c0;margin:16px 0 8px">💪 Por dar más poder / Power-Up</p>
-      <div id="mega-powerup-missions"></div>
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px">📅 Próximas rotaciones</p>
+      <div id="mega-upcoming-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px"></div>
     </div>
 
     <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
-      <p style="font-size:14px;font-weight:800;margin-bottom:4px">👥 Misiones de Grupo (Party Play)</p>
-      <p style="font-size:11px;color:#888;margin-bottom:10px">20 Megaenergía por "Ganar 2 incursiones" o "Derrotar 3 Reclutas Rocket"</p>
-      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Charizard</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Blastoise</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/15.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Beedrill</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/18.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Pidgeot</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/130.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Gyarados</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Gengar</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/127.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Pinsir</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/359.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Absol</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
-        </div></div>
-    </div>
-
-    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
-      <p style="font-size:14px;font-weight:800;margin-bottom:4px">⚠️ Métodos Especiales</p>
-      <p style="font-size:11px;color:#888;margin-bottom:10px">Estos NO están en la rotación normal — requieren método específico</p>
-      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10090.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Beedrill</div>
-          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2">Girando Fotodiscos de Gimnasios</div>
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10078.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Primal Groudon</div>
-          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2">Incursiones Primigenias (eventos)</div>
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10077.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Primal Kyogre</div>
-          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2">Incursiones Primigenias (eventos)</div>
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10079.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Rayquaza</div>
-          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2">Incursiones Élite + Meteorito</div>
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10043.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Mewtwo X</div>
-          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2">Super Mega Raids (GO Fest 2026)</div>
-        </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
-          <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
-            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10044.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
-          </div>
-          <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Mewtwo Y</div>
-          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2">Super Mega Raids (GO Fest 2026)</div>
-        </div></div>
-    </div>
-
-    <div style="background:#fff3e0;border-radius:12px;padding:14px;margin-bottom:10px;border-left:4px solid #f9a825">
-      <p style="font-size:13px;font-weight:800;margin-bottom:6px">💡 Regla de Oro del Compañero</p>
-      <p style="font-size:12px;color:#555;line-height:1.6">Una vez hayas registrado su Megaevolución <b>al menos una vez</b> en tu Pokédex, puedes poner cualquier miembro de su familia como <b>Compañero</b> y ganarás <b>5 Megaenergías por km caminado</b> (cada vez que encuentre un caramelo).</p>
-    </div>
-
-    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
-      <p style="font-size:14px;font-weight:800;margin-bottom:8px">📍 Misiones Fijas en Poképaradas</p>
-      <div style="background:#fff8e1;border-left:4px solid #f9a825;border-radius:8px;padding:10px 12px;margin-bottom:8px">
-        <p style="font-weight:700;font-size:12px">⚡ "Potencia un Pokémon 5 veces" → 10 Megaenergía aleatoria de:</p>
-        <p style="font-size:11px">Venusaur · Charizard · Blastoise · Beedrill · Pidgeot · Aggron · Manectric</p>
-      </div>
-      <div style="background:#e8f5e9;border-left:4px solid #43a047;border-radius:8px;padding:10px 12px">
-        <p style="font-weight:700;font-size:12px;margin-bottom:6px">🎯 Misiones de captura:</p>
-        <p style="font-size:11px">🔥 10 tipo Fuego → <b>Charizard o Blaziken</b></p>
-        <p style="font-size:11px">🌿 10 tipo Planta → <b>Venusaur o Sceptile</b></p>
-        <p style="font-size:11px">💧 10 tipo Agua → <b>Blastoise o Swampert</b></p>
-        <p style="font-size:11px">⭕ 10 tipo Normal → <b>Pidgeot</b></p>
-      </div>
-    </div>
-
-    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
-      <p style="font-size:14px;font-weight:800;margin-bottom:10px">ℹ️ Información sobre MegaEvoluciones</p>
-      <p style="font-size:12px;font-weight:700;color:#444;margin-bottom:8px">Requisitos y tiempos de espera por nivel</p>
-      <div style="overflow-x:auto">
-        <table style="width:100%;border-collapse:collapse;font-size:10.5px">
-          <thead>
-            <tr style="background:#f5f5f5">
-              <th style="padding:6px 5px;text-align:left;border:1px solid #e0e0e0;font-weight:800">Nivel</th>
-              <th style="padding:6px 5px;text-align:center;border:1px solid #e0e0e0;font-weight:800">Mega-Evos necesarias</th>
-              <th style="padding:6px 5px;text-align:center;border:1px solid #e0e0e0;font-weight:800">Espera para GRATIS</th>
-              <th style="padding:6px 5px;text-align:left;border:1px solid #e0e0e0;font-weight:800">Descuento si lo haces antes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700">Base</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">1</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">7 días</td><td style="padding:6px 5px;border:1px solid #e0e0e0">Coste base reducido (ej. 40 de energía)</td></tr>
-            <tr style="background:#fafafa"><td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700">Alto</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">7</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">5 días</td><td style="padding:6px 5px;border:1px solid #e0e0e0">50% de descuento sobre el nivel base</td></tr>
-            <tr><td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700">Máximo</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">30</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">3 días</td><td style="padding:6px 5px;border:1px solid #e0e0e0e0">75% de descuento sobre el nivel base</td></tr>
-            <tr style="background:#fff8e1"><td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700">Super Max</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">Especial*</td><td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">24 h</td><td style="padding:6px 5px;border:1px solid #e0e0e0">Descuento casi total</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div style="background:#fff3e0;border-left:3px solid #ff9800;border-radius:0 8px 8px 0;padding:10px 12px;margin-top:12px;font-size:11px;color:#5d4037;line-height:1.6"><b>⚠️ Cómo llegar a Super Max:</b> Para desbloquear este cuarto nivel, primero debes tener al Pokémon en Nivel Máximo (nivel 3). Después, ya no te servirá seguir megaevolucionándolo día a día; tendrás que gastar un pago único de <b>5.000 de Megaenergía</b> directamente para potenciarlo a Super Max. Para acumular esa cantidad, la mejor opción es farmear las incursiones <b>Super Mega Raids</b>.</div>
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px">🎯 Todas las Megaenergías</p>
+      <div id="mega-all-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px"></div>
     </div>
   </div>
 </div>
 
-<!-- MODAL INFO -->
-<div id="modal-info" class="modal-overlay" style="display:none" onclick="closeInfo(event)">
-  <div class="modal-box" style="max-width:390px">
-    <div class="modal-title"><span>ℹ️ ¿Para qué sirve esta app?</span><button class="modal-close" onclick="closeInfoBtn()">✕</button></div>
-    <p style="font-size:13px;color:#444;line-height:1.6;margin-bottom:14px"><b>PokeBestBCN</b> es un álbum personal para saber qué Pokémon tienes y cuáles te faltan de los <b>mejores atacantes por tipo</b> en incursiones. El objetivo es ayudarte a <b>invertir tus polvos de forma eficiente</b> y saber qué Pokémon vale la pena subir.</p>
-    <div style="border-top:1px solid #eee;padding-top:12px;margin-bottom:4px">
-      <p style="font-size:12px;font-weight:700;color:#CC0000;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em">🔗 Enlaces útiles</p>
-      <a href="https://db.pokemongohub.net/best/attackers-per-type" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f5f5f5;border-radius:8px;text-decoration:none;margin-bottom:6px"><span style="font-size:20px">⚔️</span><div><div style="font-size:13px;font-weight:700;color:#222">Mejores atacantes por tipo</div><div style="font-size:11px;color:#888">db.pokemongohub.net</div></div><span style="margin-left:auto;color:#aaa;font-size:16px">›</span></a>
-      <a href="https://db.pokemongohub.net/best/dynamax-attackers-per-type" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f5f5f5;border-radius:8px;text-decoration:none;margin-bottom:6px"><span style="font-size:20px">⚡</span><div><div style="font-size:13px;font-weight:700;color:#222">Mejores Dinamax por tipo</div><div style="font-size:11px;color:#888">db.pokemongohub.net</div></div><span style="margin-left:auto;color:#aaa;font-size:16px">›</span></a>
-      <a href="https://snacknap.com/max-battles" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f5f5f5;border-radius:8px;text-decoration:none"><span style="font-size:20px">🗺️</span><div><div style="font-size:13px;font-weight:700;color:#222">Rotación actual de Dinamax</div><div style="font-size:11px;color:#888">snacknap.com · actualizado cada 5 min</div></div><span style="margin-left:auto;color:#aaa;font-size:16px">›</span></a>
+<!-- LEGACY GUIDE SCREEN -->
+<div id="legacyguide-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>⭐ Guía Pokémon Legacy</h1>
+  </div>
+  <div style="padding:12px;background:#f0f0f0;min-height:100vh">
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px">🔍 Buscar Pokémon Legacy</p>
+      <input type="text" id="legacy-search" placeholder="Escribe nombre o número..." style="width:100%;padding:12px;border:2px solid #ddd;border-radius:8px;font-size:14px;margin-top:8px" oninput="filterLegacy(this.value)">
     </div>
-    <div style="border-top:1px solid #eee;padding-top:12px;margin-bottom:12px">
-      <p style="font-size:12px;font-weight:700;color:#1a237e;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">⚡ Dynamax y Mega Evolución</p>
-      <div style="background:#e8eaf6;border-radius:8px;padding:10px 12px;border-left:3px solid #3949ab;margin-bottom:8px"><p style="font-size:12px;color:#444;line-height:1.7;margin:0"><b>Un Pokémon Dynamax puede hacer Mega Evolución</b>, pero no puede estar en ambas formas a la vez.<br>Mientras dure la Mega Evolución <b>(8 horas)</b>, ese Pokémon <b>no puede participar en combates Dynamax</b>.<br><span style="color:#555">💡 Solución urgente: Mega Evoluciona otro Pokémon de tu equipo. Al solo poder tener un Mega activo, el primero vuelve automáticamente a su forma normal y ya puede entrar en Max Battles.</span></p></div>
+    <div id="legacy-list" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px"></div>
+  </div>
+</div>
+
+<!-- GUÍA COMPLETA SCREEN -->
+<div id="guia-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>📖 Guía completa</h1>
+  </div>
+  <div style="padding:12px;background:#f0f0f0;min-height:100vh">
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <h2 style="font-size:16px;font-weight:800;margin-bottom:12px;color:#222">📋 Contenido de la guía</h2>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="home-btn-small" onclick="showMegaCandy()">🍬 Megaenergía</button>
+        <button class="home-btn-small" onclick="showLegacyGuide()">⭐ Legacy</button>
+        <button class="home-btn-small" onclick="showTypeChart()">🔥 Eficacia de Tipos</button>
+        <button class="home-btn-small" onclick="openObjetivo()">🎯 Pokémon Objetivo</button>
+        <button class="home-btn-small" onclick="openDiarias()">📋 Diarias</button>
+        <button class="home-btn-small" onclick="openPokeparadas()">🎁 Poképaradas</button>
+      </div>
     </div>
-    <div style="border-top:1px solid #eee;padding-top:12px;margin-bottom:12px">
-      <p style="font-size:12px;font-weight:700;color:#CC0000;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">💰 El coste real de subir un Pokémon</p>
-      <div style="background:#fff8e1;border-radius:8px;padding:10px 12px;border-left:3px solid #f9a825;margin-bottom:8px"><p style="font-size:12px;color:#444;line-height:1.7;margin:0"><b>Nivel 1 → 40:</b> ~272.500 polvos · 273 caramelos<br><b>Nivel 40 → 50:</b> ~296.000 polvos · 296 caramelos XL<br><b>Total nivel 1 → 50: ~568.500 polvos</b><br><span style="color:#888">Shadow: +20% polvos y caramelos · Lucky: −50% polvos</span></p></div>
-      <p style="font-size:12px;color:#555;line-height:1.6">Subir un solo Pokémon al nivel 50 cuesta más de medio millón de polvos. Por eso tiene sentido <b>esperar a tener la versión Dynamax</b> si existe: obtienes el mismo Pokémon con la capacidad extra de los Max Battles sin gastar polvos de más en la versión normal.</p>
+  </div>
+</div>
+
+<!-- INFO SCREEN -->
+<div id="info-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>ℹ️ Info app</h1>
+  </div>
+  <div style="padding:16px;background:#f0f0f0;min-height:100vh">
+    <div style="background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 6px rgba(0,0,0,.08);text-align:center">
+      <svg class="profile-logo" width="64" height="64" viewBox="0 0 64 64" fill="none" style="margin-bottom:12px">
+        <circle cx="32" cy="32" r="30" fill="#CC0000" stroke="white" stroke-width="3"/>
+        <rect x="2" y="29" width="60" height="6" fill="white"/>
+        <circle cx="32" cy="32" r="10" fill="white" stroke="#CC0000" stroke-width="3"/>
+        <circle cx="32" cy="32" r="5" fill="#CC0000" stroke="white" stroke-width="2"/>
+      </svg>
+      <h1 style="font-size:24px;font-weight:800;margin-bottom:8px;color:#222">PokeBestBCN</h1>
+      <p style="color:#666;margin-bottom:16px;font-size:14px">Tu app para gestionar equipos de incursión, Dynamax, Megaenergía y Legacy</p>
+      <p style="font-size:13px;color:#888">Versión 93 · Datos de Dittobase</p>
+      <hr style="margin:16px 0;border-color:#e0e0e0">
+      <p style="font-size:12px;color:#888">Desarrollado para la comunidad de Pokémon GO</p>
     </div>
-    <p style="font-size:12px;color:#555;line-height:1.6">La diferencia entre un Pokémon con IVs perfectos y uno con IVs bajos es <b>prácticamente irrelevante en raids</b>. Para atacantes Mega, Shadow o Dinamax con mucho ataque base, un IV de ataque 10 vs 15 supone menos del 2% de daño extra. <b>Es mucho más importante tener el Pokémon correcto que tener el hundo perfecto</b>. No descartes un buen atacante por tener IVs imperfectos.</p>
+  </div>
+</div>
+
+<!-- OBJETIVO SCREEN -->
+<div id="objetivo-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>🎯 Pokémon Objetivo</h1>
+  </div>
+  <div style="padding:12px;background:#f0f0f0;min-height:100vh">
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px">🎯 Tus objetivos de captura</p>
+      <div id="objetivo-list" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div>
+      <button class="btn-secondary btn-add-community" onclick="addObjetivo()" style="margin-top:12px;width:100%">
+        <span class="btn-icon">+</span> Añadir objetivo
+      </button>
+    </div>
   </div>
 </div>
 
 <!-- DIARIAS SCREEN -->
 <div id="diarias-screen" class="screen">
-  <div class="app-header"><button class="back-btn" onclick="backToHome()">←</button><h1>📋 Tareas Diarias</h1></div>
-  <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:20px">
-    <div class="diarias-section">
-      <div class="diarias-section-header casa">🏠 Desde Casa</div>
-      <div class="diarias-item"><div class="diarias-item-title">⭐ Captura diaria / Girar PokéParada <span class="diff diff-easy">Fácil · 1 min</span></div><div class="diarias-item-body">Activa la racha de polvos estelares. Solo necesitas capturar 1 Pokémon o girar 1 PokéParada al día.</div></div>
-      <div class="diarias-item"><div class="diarias-item-title">🎁 Abrir regalos <span class="diff diff-easy">Fácil · 4 min</span></div><div class="diarias-item-body">20 diarios, 40+ en eventos — dan polvos estelares extra.<ul><li>Salta la animación haciendo clicks rápidos.</li><li>Activa <b>"Abrir regalos con mochila llena"</b> para obtener solo polvos sin llenar el inventario.</li></ul></div></div>
-      <div class="diarias-item"><div class="diarias-item-title">🎈 Globo del Team GO Rocket <span class="diff diff-easy">Fácil · 3 min</span></div><div class="diarias-item-body">Aparece a las <b>00:00 · 06:00 · 12:00 · 18:00</b>. Lucha contra ellos para conseguir Pokémon oscuros.</div></div>
-      <div class="diarias-item"><div class="diarias-item-title">🛍️ Pack diario gratuito <span class="diff diff-easy">Fácil · 1 min</span></div><div class="diarias-item-body">Normalmente basura, pero puede contener pases de incursión premium, MTs, ataques cargados...<div class="diarias-tip">💡 Si por la mañana es basura, <b>no lo reclames</b>. Vuelve a mirar a las 18:00+, puede cambiar. Si por la noche sigue siendo basura, reclámalos para que salga uno nuevo al día siguiente.</div></div></div>
-      <div class="diarias-item"><div class="diarias-item-title">🤝 Corazones con tu compañero <span class="diff diff-easy">Fácil · 2 min</span></div><div class="diarias-item-body">Sube un nivel extra por encima del máximo (50+1), haciéndolo más fuerte en raids.<div class="diarias-tip">💡 Puedes cambiar de compañero hasta <b>20 veces al día</b>. Haz compañeros a tus mejores atacantes de raids.</div></div></div>
-      <div class="diarias-item"><div class="diarias-item-title">⚔️ Combates PvP <span class="diff diff-hard">Difícil · 40 min</span></div><div class="diarias-item-body">Mayor fuente de polvos estelares, caramelos raros y MTs de ataques cargados y rápidos.<ul><li>Solo puedes hacer <b>5 rondas de 5 combates</b> al día.</li><li>En <b>Rango 20</b> se añaden los legendarios en rotación actual a la pool de recompensas.</li></ul></div></div>
-      <div class="diarias-item"><div class="diarias-item-title">🔄 Intercambios diarios <span class="diff diff-medium">Media · 60 min</span></div><div class="diarias-item-body">Hasta 100 intercambios diarios con otra persona.<ul><li>Obtienes caramelos extra del Pokémon enviado — mejor que recapturarlo.</li><li>Suele dar <b>1 caramelo XL garantizado</b> + caramelos normales.</li><li>Gana hasta <b>100 XL + 300 caramelos normales</b> al día.</li><li>Probabilidad de intercambios <b>Lucky</b> (IVs garantizados altos).</li></ul></div></div>
-      <div class="diarias-item"><div class="diarias-item-title">📱 Organiza tus Pokémon</div><div class="diarias-item-body">Esta app te ayuda: en <b>Pokémon Objetivo</b> tienes el filtro de los que necesitas para pegar directamente en Pokémon GO.</div></div>
-    </div>
-    <div class="diarias-section">
-      <div class="diarias-section-header calle">🚶 Al Salir a Caminar</div>
-      <div class="diarias-item"><div class="diarias-item-title">🏟️ Pase de incursión diario gratuito</div><div class="diarias-item-body">Gástalo y consigue el nuevo en cualquier gimnasio. ¡No te quedes sin él!</div></div>
-      <div class="diarias-item"><div class="diarias-item-title">🌀 Incienso diario gratuito</div><div class="diarias-item-body">Úsalo para conseguir las <b>aves legendarias de Galar</b>: Articuno, Zapdos y Moltres de Galar.</div></div>
-      <div class="diarias-item"><div class="diarias-item-title">🗺️ Misión de PokéParada diaria</div><div class="diarias-item-body">Completa una misión al día. Cada <b>7 días</b> recibes un encuentro con un Pokémon raro o legendario garantizado.<div class="diarias-tip">💡 Ten siempre una <b>misión de mapeo sin completar</b> encima (ocupa el 4º hueco y no cuenta) — fuerza a las demás PokéParadas a mostrar su misión oculta.</div></div></div>
-      <div class="diarias-item"><div class="diarias-item-title">🏅 Reclama gimnasios</div><div class="diarias-item-body">Defiende gimnasios para acumular <b>PokéMonedas</b> gratis (máx 50 al día).</div></div>
-      <div class="diarias-item"><div class="diarias-item-title">🥚 Pon huevos a incubar</div><div class="diarias-item-body">Aprovecha el camino para incubar huevos. Prioriza los de 12km (huevos rojos) por sus recompensas.</div></div>
-      <div class="diarias-item"><div class="diarias-item-title">🚀 Lucha contra el Team Rocket</div><div class="diarias-item-body">Los líderes y el jefe dan los <b>mejores Pokémon oscuros del juego</b>. Prioriza siempre a Sierra, Arlo, Cliff y Giovanni.</div></div>
-      <div class="diarias-item"><div class="diarias-item-title">🛤️ Haz rutas</div><div class="diarias-item-body">Dan células de Zygarde, corazón extra con tu compañero y caramelos raros.<div class="diarias-tip">💡 El <b>día 7 de racha</b> de rutas da recompensas masivas: MTs, grandes cantidades de polvo estelar y más.</div></div></div>
-      <div class="diarias-item"><div class="diarias-item-title">✨ Misiones de megaenergía en PokéParadas</div><div class="diarias-item-body">Son las misiones más valiosas. Busca activamente las que den megaenergía de Pokémon.<div class="diarias-tip">💡 <b>No cojas una PokéParada nueva sin tener hueco</b> para misiones, podrías perder una de megaenergía.</div></div></div>
-      <div class="diarias-item"><div class="diarias-item-title">👥 Misiones de grupo <span class="diff diff-medium">Media · 10 min</span></div><div class="diarias-item-body">Si sales con alguien, podéis formar grupos para conseguir misiones de grupo extra con posibilidad de megaenergía de ciertos Pokémon.<div class="diarias-tip">💡 Podéis rehacer el grupo hasta conseguir una misión de megaenergía. De media tarda unos 10 min.</div></div></div>
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>📋 Diarias</h1>
+  </div>
+  <div style="padding:12px;background:#f0f0f0;min-height:100vh">
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px">☑️ Tareas diarias</p>
+      <div id="diarias-list" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div>
+      <button class="btn-secondary btn-add-community" onclick="addDiaria()" style="margin-top:12px;width:100%">
+        <span class="btn-icon">+</span> Añadir tarea
+      </button>
     </div>
   </div>
 </div>
 
-<!-- LEGACY SCREEN -->
+<!-- LEGACY ATTACKS SCREEN -->
 <div id="legacy-screen" class="screen">
-  <div class="app-header"><button class="back-btn" onclick="backToHome()">←</button><h1>⭐ Ataques Legacy</h1></div>
-  <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <div class="lg-card"><div class="lg-title">¿Cómo se obtienen?</div><div class="lg-text">Hay dos formas principales:<br><br><b>🎉 En eventos (gratis):</b> evolucionando al Pokémon base hasta su última etapa, o capturándolo en incursiones/salvaje durante las horas del evento.<br><br><b>💳 En cualquier momento (de pago):</b> usando una <b>MT Élite</b> (rápida o cargada). Son objetos raros que se consiguen al final de las temporadas PvP (Rango 19+) o en packs de la tienda.</div></div>
-    <div class="lg-card"><div class="lg-title">📅 Legacy de este año (Ene-May 2026)</div><div id="lg-thisyear"></div></div>
-    <div class="lg-card"><div class="lg-title">🔜 Confirmados y próximos (Verano 2026)</div><div id="lg-upcoming"></div></div>
-    <div class="lg-card"><div class="lg-title">⚠️ Regla de oro del día del evento</div><div class="lg-text">Para que el juego te dé el ataque Legacy al evolucionar (sin gastar MT Élite):</div><div class="lg-warn"><b>⏰ Ventana horaria:</b> evoluciona durante las 3 h del evento y hasta 4-5 h después. Un minuto tarde = ataque normal.</div><div class="lg-warn"><b>📡 Cuidado con el GPS:</b> si pierde la señal justo al evolucionar, el servidor no sabrá que estás en el evento y te dará ataque común.</div><div class="lg-warn"><b>🚫 Sin Frustración:</b> si es un Pokémon Oscuro, no puede tener Frustración o bloqueará el Legacy. Quítasela antes en un evento del Team GO Rocket.</div></div>
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>⭐ Ataques Legacy</h1>
+  </div>
+  <div style="padding:12px;background:#f0f0f0;min-height:100vh">
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px">🔍 Buscar ataques Legacy</p>
+      <input type="text" id="legacy-attack-search" placeholder="Escribe nombre del ataque..." style="width:100%;padding:12px;border:2px solid #ddd;border-radius:8px;font-size:14px;margin-top:8px" oninput="filterLegacyAttacks(this.value)">
+    </div>
+    <div id="legacy-attack-list" style="display:flex;flex-direction:column;gap:8px"></div>
   </div>
 </div>
 
 <!-- POKEPARADAS SCREEN -->
 <div id="pokeparadas-screen" class="screen">
-  <div class="app-header"><button class="back-btn" onclick="backToHome()">←</button><h1>🎁 Poképaradas!</h1></div>
-  <p style="text-align:center;font-size:10.5px;color:#888;padding:10px 14px 0">Temporada: <b style="color:#c2185b">Memories in Motion</b> · 📌 fija tus misiones favoritas arriba</p>
-  <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <div class="pp-pinned-section" id="pp-pinned-section" style="display:none"><div class="pp-pinned-title">📌 Fijadas</div><div id="pp-pinned-list"></div></div>
-    <div id="pp-categories"></div>
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>🎁 Poképaradas</h1>
+  </div>
+  <div style="padding:12px;background:#f0f0f0;min-height:100vh">
+    <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px">📍 Misiones de Poképarada</p>
+      <div id="pokeparadas-list" style="margin-top:8px;display:flex;flex-direction:column;gap:8px"></div>
+      <button class="btn-secondary btn-add-community" onclick="addPokeparada()" style="margin-top:12px;width:100%">
+        <span class="btn-icon">+</span> Añadir misión
+      </button>
+    </div>
   </div>
 </div>
 
 <!-- NOVEDADES SCREEN -->
 <div id="novedades-screen" class="screen">
-  <div class="app-header"><button class="back-btn" onclick="backToHome()">←</button><h1>🆕 Novedades</h1></div>
-  <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v93</b></p>
-    <div class="nov-version nov-item-current"><div class="nov-version-head"><span class="nov-version-num">v93 · actual</span><span class="nov-version-tag">Correcciones varias + Perfil</span></div><div class="nov-list"><div
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>🆕 Novedades</h1>
+  </div>
+  <div style="padding:16px;background:#f0f0f0;min-height:100vh">
+    <div style="background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+      <h2 style="font-size:16px;font-weight:800;margin-bottom:16px;color:#222">📝 Historial de versiones</h2>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="padding:12px;background:#f8f8f8;border-radius:8px;border-left:4px solid #CC0000">
+          <p style="font-weight:800;color:#222">v93 - Actual</p>
+          <p style="font-size:13px;color:#666;margin-top:4px">Sistema de comunidades rediseñado, login global, perfiles por comunidad</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div> <!-- /#app -->
+</body>
+</html>

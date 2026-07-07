@@ -99,6 +99,91 @@ body.dark .profile-stat{color:#aaa!important}
 body.dark .del-btn{background:#3a1a1a!important;border-color:#ff6b6b!important;color:#ff6b6b!important}
 body.dark .del-btn:hover{background:#ff6b6b!important;color:#121212!important}
 
+/* GLOBAL LOGIN / REGISTER */
+.login-container,.login-container{padding:20px 16px 40px}
+.login-header{text-align:center;margin-bottom:24px}
+.login-logo{margin:0 auto 16px}
+.login-header h1{font-size:24px;font-weight:800;color:#222;margin-bottom:4px}
+body.dark .login-header h1{color:#fff}
+.login-subtitle{font-size:14px;color:#666;margin:0}
+body.dark .login-subtitle{color:#aaa}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:13px;font-weight:700;color:#222;margin-bottom:6px}
+body.dark .form-group label{color:#fff}
+.form-group input{width:100%;padding:14px 16px;border:2px solid #ddd;border-radius:12px;font-size:16px;background:#fff!important;color:#222!important;transition:border-color .15s,box-shadow .15s}
+.form-group input:focus{outline:none;border-color:#CC0000;box-shadow:0 0 0 3px rgba(204,0,0,.15)}
+body.dark .form-group input{background:#1e1e1e!important;border-color:#444!important;color:#eee!important}
+body.dark .form-group input:focus{box-shadow:0 0 0 3px rgba(204,0,0,.3)}
+.checkbox-group{display:flex;align-items:center;gap:8px}
+.checkbox-group input[type="checkbox"]{width:20px;height:20px;accent-color:#CC0000}
+.checkbox-group label{font-size:14px;font-weight:500;color:#444;margin:0;cursor:pointer}
+body.dark .checkbox-group label{color:#ddd}
+.form-hint{font-size:11px;color:#888;margin-top:4px}
+body.dark .form-hint{color:#777}
+.btn-primary{width:100%;padding:14px 24px;background:#CC0000;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:transform .1s,background .1s}
+.btn-primary:active{transform:scale(.98);background:#b30000}
+.btn-lg{padding:16px 24px;font-size:17px}
+.btn-secondary{width:100%;padding:14px 24px;background:#fff;color:#333;border:2px solid #e0e0e0;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:transform .1s,border-color .1s}
+.btn-secondary:active{transform:scale(.98);border-color:#CC0000}
+body.dark .btn-secondary{background:#1e1e1e;color:#eee;border-color:#444}
+.btn-ghost{padding:10px 18px;border:2px solid #ddd;background:#fff;border-radius:10px;font-size:13px;font-weight:700;color:#666;cursor:pointer;transition:all .15s}
+.btn-ghost:hover{border-color:#CC0000;color:#CC0000;background:#fff5f5}
+body.dark .btn-ghost{background:#1e1e1e;border-color:#444;color:#aaa}
+body.dark .btn-ghost:hover{border-color:#ff6b6b;color:#ff6b6b;background:#2a1a1a}
+.form-actions{display:flex;gap:8px;justify-content:flex-end}
+.link-btn{background:none;border:none;color:#CC0000;font-weight:700;font-size:14px;cursor:pointer;padding:0}
+.link-btn:hover{text-decoration:underline}
+.login-footer{text-align:center;margin-top:20px;font-size:13px;color:#666}
+body.dark .login-footer{color:#aaa}
+
+/* COMMUNITY SELECTION */
+.community-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding:0 4px}
+.community-header h2{font-size:18px;font-weight:800;color:#222}
+body.dark .community-header h2{color:#fff}
+.profiles-count{font-size:12px;color:#888;background:#f0f0f0;padding:4px 10px;border-radius:20px}
+body.dark .profiles-count{background:#2a2a2a;color:#aaa}
+.community-list{display:flex;flex-direction:column;gap:10px}
+.community-card{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#fff;border:1px solid #e0e0e0;border-radius:12px;transition:box-shadow .15s,border-color .15s}
+.community-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);border-color:#CC0000}
+body.dark .community-card{background:#1e1e1e;border-color:#333}
+body.dark .community-card:hover{border-color:#ff6b6b;box-shadow:0 4px 16px rgba(204,0,0,.2)}
+.community-card-info{flex:1;min-width:0}
+.community-card-name{font-size:16px;font-weight:700;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.dark .community-card-name{color:#fff}
+.community-card-meta{font-size:12px;color:#888;margin-top:3px}
+body.dark .community-card-meta{color:#aaa}
+.community-card-actions{display:flex;gap:8px;flex-shrink:0}
+.btn-enter{padding:8px 16px;background:#CC0000;color:#fff;border:none;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer}
+.btn-enter:active{transform:scale(.96);background:#b30000}
+.btn-join{padding:8px 16px;background:#fff;color:#CC0000;border:2px solid #CC0000;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer}
+.btn-join:active{transform:scale(.96);background:#fff5f5}
+body.dark .btn-join{background:#1e1e1e;color:#ff6b6b;border-color:#ff6b6b}
+body.dark .btn-join:active{background:#2a1a1a}
+.community-actions{margin-top:16px}
+.btn-add-community-actions{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;background:#fff;border:2px dashed #ddd;border-radius:12px;color:#666;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s}
+.btnmunity:hover{border-color:#CC0000;color:#CC0000;background:#fff5f5}
+body.dark .btn-add-community{background:#1e1e1e;border-color:#444;color:#888}
+body.dark .btn-add-community:hover{border-color:#ff6b6b;color:#ff6b6b;background:#2a1a1a}
+.btn-icon{font-size:20px;line-height:1}
+
+/* COMMUNITY FORM */
+.community-form{margin-top:16px;animation:slideDown .2s ease}
+.community-form h3{font-size:16px;font-weight:700;color:#222;margin-bottom:16px}
+body.dark .community-form h3{color:#fff}
+
+/* COMMUNITY HEADER */
+.community-members-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#fff;border-bottom:1px solid #e0e0e0}
+body.dark .community-members-header{background:#1e1e1e;border-color:#333}
+.community-members-title{display:flex;align-items:center;gap:12px}
+.community-members-title h2{font-size:16px;font-weight:700;color:#222;margin:0}
+body.dark .community-members-title h2{color:#fff}
+.community-members-actions{display:flex;gap:8px}
+
+/* COMMUNITY FORM */
+.community-form .form-group{margin-bottom:16px}
+.community-form h3{font-size:16px;font-weight:700;color:#222;margin-bottom:16px}
+body.dark .community-form h3{color:#fff}
+
 /* ADD PROFILE FORM */
 .add-profile-section{margin-top:20px;padding-top:16px;border-top:1px solid #e0e0e0}
 body.dark .add-profile-section{border-color:#333}

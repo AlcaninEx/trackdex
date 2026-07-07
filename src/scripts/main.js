@@ -23,3 +23,6 @@ if (document.readyState === 'loading') {
 
 // Make init available globally for debugging
 window.init = init;
+
+// Debug: log when main.js runs
+console.log('✅ main.js loaded and running');

@@ -1,8 +1,8 @@
 // Main App entry point - exports init function for main.js to call
-// NEW ARCHITECTURE: Community-first
+// NEW ARCHITECTURE: Global user -> Communities -> Profiles per community
 import { loadAllData } from './data-loader.js';
-import { loadFromFirebase, load, loadCommunityList } from './storage.js';
-import { showCommunitySelection, showMainApp, showCommunityLogin, showCommunityRegister } from './profile.js';
+import { loadFromFirebase, loadCommunityList, initGlobalAuth } from './storage.js';
+import { showCommunitySelection, showGlobalLogin, showMainApp } from './profile.js';
 import { show, ST } from './helpers.js';
 
 // Initialize dark mode from localStorage
@@ -25,23 +25,26 @@ export async function init() {
     document.getElementById('profile-screen').style.display = 'block';
     window.scrollTo(0, 0);
 
+    // Initialize global auth (loads remembered user)
+    initGlobalAuth();
+
     // Load data FIRST (needed for countType, albumPks, etc.)
     await loadAllData();
 
-    // Load community list and try to restore session
+    // Load community list and try to restore session from Firebase
     const firebaseLoaded = await loadFromFirebase();
     if (!firebaseLoaded) {
       load(); // fallback to localStorage (loads community list)
     }
 
     // Check if we have a valid session to restore
-    if (ST.isLoggedIn && ST.currentCommunityId && ST.currentUserId) {
+    if (ST.authState === 'logged_in' && ST.currentCommunityId && ST.globalUserId) {
       // Try to restore the community session
       try {
         const community = ST.communities.find(c => c.id === ST.currentCommunityId);
         if (community) {
           await loadFromFirebase(); // This will restore the full session
-          if (ST.isLoggedIn && ST.currentCommunityId === ST.currentCommunityId) {
+          if (ST.authState === 'logged_in' && ST.currentCommunityId === ST.currentCommunityId) {
             showMainApp();
             show('profile-screen');
             window.scrollTo(0, 0);
@@ -53,16 +56,25 @@ export async function init() {
       }
     }
 
-    // No valid session - show community selection
-    showCommunitySelection();
-    show('profile-screen');
+    // Check if we have a global user (remember me)
+    if (ST.globalUserId) {
+      // Show community selection
+      showCommunitySelection();
+      show('community-selection-screen');
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    // No global user - show global login
+    showGlobalLogin();
+    show('global-login-screen');
     window.scrollTo(0, 0);
   } catch (e) {
     console.error('Boot error:', e);
     // Fallback
     load();
-    showCommunitySelection();
-    show('profile-screen');
+    showGlobalLogin();
+    show('global-login-screen');
     window.scrollTo(0, 0);
   }
 }

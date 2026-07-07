@@ -1,6 +1,6 @@
 // Firebase module - handles all Firestore operations
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc, query, where, onSnapshot, connectFirestoreEmulator } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, collection, getDocs, getDoc, doc, setDoc, deleteDoc, query, where, onSnapshot, connectFirestoreEmulator } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 // Firebase config
 const firebaseConfig = {
@@ -29,6 +29,7 @@ if (window.location.hostname === 'localhost' || window.location.hostname === '12
 // Collection references
 const communitiesCol = collection(db, 'communities');
 const configCol = collection(db, 'config');
+const globalUsersCol = collection(db, 'globalUsers');
 
 // Simple delay utility for rate limiting
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -87,7 +88,7 @@ export async function fbDeleteCommunity(communityId) {
   });
 }
 
-export async function fbCreateCommunity(communityId, password, ownerId, displayName) {
+export async function fbCreateCommunity(communityId, password, ownerId, ownerAlias, communityDisplayName) {
   return withRetry(async () => {
     const communityRef = doc(communitiesCol, communityId);
     try {
@@ -100,9 +101,10 @@ export async function fbCreateCommunity(communityId, password, ownerId, displayN
         id: communityId,
         password: password,
         ownerId: ownerId,
+        displayName: communityDisplayName,
         members: {
           [ownerId]: {
-            displayName: displayName || ownerId,
+            alias: ownerAlias,
             joinedAt: Date.now(),
             isOwner: true
           }
@@ -324,5 +326,40 @@ export async function fbSaveMegaConfig(config) {
     await setDoc(doc(configCol, 'megaRotation'), config);
   } catch (e) {
     console.warn('Mega config save error:', e.code);
+  }
+}
+
+// ============ GLOBAL USERS ============
+
+export async function fbLoadGlobalUser(userId) {
+  try {
+    const docRef = doc(globalUsersCol, userId);
+    const snap = await getDoc(docRef);
+    if (!snap.exists()) return null;
+    return { userId: snap.id, ...snap.data() };
+  } catch (e) {
+    console.warn('Firebase load global user error:', e.code);
+    return null;
+  }
+}
+
+export async function fbSaveGlobalUser(userId, data) {
+  try {
+    const docRef = doc(globalUsersCol, userId);
+    await setDoc(docRef, data);
+  } catch (e) {
+    console.warn('Firebase save global user error:', e.code);
+    throw e;
+  }
+}
+
+export async function fbVerifyGlobalPassword(userId, password) {
+  try {
+    const user = await fbLoadGlobalUser(userId);
+    if (!user) return { valid: false, error: 'Usuario no encontrado' };
+    return { valid: user.password === password };
+  } catch (e) {
+    console.warn('Firebase verify global password error:', e.code);
+    return { valid: false, error: e.message };
   }
 }
