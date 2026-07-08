@@ -503,6 +503,15 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
         <button class="home-btn-small" onclick="showCommunitySelection()">🔄 Cambiar comunidad</button>
       </div>
 
+      <!-- BIG BUTTON: Mis Pokemons -->
+      <button class="home-btn-big" style="margin-top:10px" onclick="goToTypes()">
+        <div style="font-size:18px;font-weight:800">⚔️ Mis Pokemons</div>
+        <div style="font-size:13px;opacity:.85;margin-top:6px"><span id="hm-raid-count">0</span>/102 Pokémon Incursiones</div>
+        <div class="home-prog-bar"><div class="home-prog-fill" id="hm-raid-bar" style="width:0%"></div></div>
+        <div style="font-size:12px;opacity:.75;margin-top:6px"><span id="hm-dmax-count">0</span>/51 Pokémon Dynamax</div>
+        <div class="home-prog-bar" style="background:rgba(255,255,255,.2)"><div class="home-prog-fill" style="width:0%;background:rgba(255,255,255,.7)" id="hm-dmax-bar"></div></div>
+      </button>
+
       <!-- RANKINGS BUTTON -->
       <button onclick="goToFireRanking()" style="width:100%;margin-top:10px;background:linear-gradient(135deg,#7B1FA2,#AB47BC);color:#fff;border:none;border-radius:14px;padding:14px 16px;cursor:pointer;text-align:center;box-shadow:0 4px 12px rgba(123,31,162,.35);transition:transform .1s;display:flex;align-items:center;justify-content:center;gap:10px;font-size:16px;font-weight:800" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''">
         <span style="font-size:22px">&#x1F451;</span>
@@ -510,25 +519,16 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
         <span style="font-size:12px;font-weight:600;opacity:.85;background:rgba(255,255,255,.2);border-radius:20px;padding:2px 10px">Top 50 por tipo</span>
       </button>
 
-      <!-- BIG BUTTON: Equipos por Tipos -->
-      <button class="home-btn-big" style="margin-top:10px" onclick="goToTypes()">
-        <div style="font-size:18px;font-weight:800">⚔️ Equipos por Tipos</div>
-        <div style="font-size:13px;opacity:.85;margin-top:6px"><span id="hm-raid-count">0</span>/102 Pokémon Incursiones</div>
-        <div class="home-prog-bar"><div class="home-prog-fill" id="hm-raid-bar" style="width:0%"></div></div>
-        <div style="font-size:12px;opacity:.75;margin-top:6px"><span id="hm-dmax-count">0</span>/51 Pokémon Dynamax</div>
-        <div class="home-prog-bar" style="background:rgba(255,255,255,.2)"><div class="home-prog-fill" style="width:0%;background:rgba(255,255,255,.7)" id="hm-dmax-bar"></div></div>
-      </button>
-
       <!-- SMALL BUTTONS ROW 1 -->
       <button class="home-btn-small" style="width:100%;margin-top:10px;font-size:15px" onclick="showTypeChart()">
-        🔥 Eficacia de Tipos (Calculadora)
+        🔥 Calculadora de Tipos
       </button>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
         <button class="home-btn-small" onclick="showMegaCandy()">
-          🍬 Guía Megaenergía
+          🍬 Megas
         </button>
         <button class="home-btn-small" onclick="showLegacyGuide()">
-          ⭐ Guía Pokémon Legacy
+          ⭐ Legacy
         </button>
       </div>
 
@@ -546,14 +546,11 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
         <button class="home-btn-small" onclick="openDiarias()" style="grid-column:1/-1;background:#e8f5e9;border-color:#2e7d32;color:#1b5e20">
           📋 Diarias
         </button>
-        <button class="home-btn-small" onclick="openLegacy()" style="grid-column:1/-1;background:#e0f2f1;border-color:#00838f;color:#00695c">
-          ⭐ Ataques Legacy
-        </button>
         <button class="home-btn-small" onclick="openPokeparadas()" style="grid-column:1/-1;background:#fce4ec;border-color:#c2185b;color:#880e4f">
           🎁 Poképaradas!
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v93
+          🆕 Novedades · v0.940
         </button>
       </div>
 
@@ -658,7 +655,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="megaguide-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="show('profile-screen');document.getElementById('home-menu').style.display='block'">←</button>
-    <h1>🍬 Guía Megaenergía</h1>
+    <h1>🍬 Megas</h1>
   </div>
   <div style="padding:12px;background:#f0f0f0;min-height:100vh">
 
@@ -1167,10 +1164,10 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v93</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.940</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v93 · actual</span><span class="nov-version-tag">Correcciones varias + Perfil</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.940 · actual</span><span class="nov-version-tag">Correcciones varias + Perfil</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🐛</span><span>Corregido: el contador "Equipos por Tipos" sumaba el doble (los Pokémon Dynamax se contaban también como incursiones).</span></div>
         <div class="nov-item"><span>🐛</span><span>Corregido: el DPS mostrado en "Mis Pokémon" ya no se queda desactualizado tras una actualización de rankings — ahora lee siempre el valor actual.</span></div>
@@ -2195,7 +2192,7 @@ async function showMegaCandy() {
   show('megaguide-screen');
   // Mostrar barra dev solo si el perfil actual es desarrollador
   const devBar = document.getElementById('mega-dev-bar');
-  if (devBar) devBar.style.display = (ST.cur === 'Alejandro') ? 'block' : 'none';
+  if (devBar) devBar.style.display = isAdminUser(ST.globalUserId) ? 'block' : 'none';
   // Cargar config compartida desde Firebase
   const cfg = await fbLoadMegaConfig();
   if (cfg) _megaRotation = {raids: cfg.raids||[], activeNow: cfg.activeNow||[], rotation: cfg.rotation||[], missions: cfg.missions||[]};
@@ -4276,7 +4273,6 @@ function renderPokeparadas() {
   }).join('');
 }
 function openPokeparadas() {
-  if (!ST.cur) { showToast('Selecciona un entrenador primero'); return; }
   renderPokeparadas();
   document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
   document.getElementById('pokeparadas-screen').style.display = 'block';
@@ -4917,14 +4913,21 @@ function showMembers(){
 }
 function renderMembers(){
   const el = document.getElementById('profiles-list');
-  const back = '<button class="btn-enter" style="width:100%;margin-bottom:12px" onclick="backToHome()">← Volver</button>';
-  if(!ST.profiles.length){ el.innerHTML = back+'<p style="color:#aaa;text-align:center;padding:20px">Aún no hay miembros</p>'; return; }
-  el.innerHTML = back + ST.profiles.map((p,i)=>{
-    const ini = p.name.substring(0,2).toUpperCase();
-    const oc = countOwnedDesired(p);
-    const isMe = p.name === ST.cur;
-    const act = isMe ? 'backToHome()' : 'viewProfileIdx('+i+')';
-    return '<div class="profile-row"><div class="avatar">'+ini+'</div><div class="profile-info" onclick="'+act+'"><div class="profile-name">'+p.name+(isMe?' <span style="color:#2e7d32;font-size:11px;font-weight:700">(tú)</span>':'')+'</div><div class="profile-stat">'+oc.owned+'/'+oc.total+' Pokémon deseados</div></div><div class="profile-actions"><button class="view-btn" onclick="'+act+'">'+(isMe?'Inicio':'Ver')+'</button></div></div>';
+  const back = '<button class="btn-enter" style="width:100%;margin-bottom:12px" onclick="backToHome()">← Volver al inicio</button>';
+  const members = (ST.currentCommunity && ST.currentCommunity.members) ? Object.entries(ST.currentCommunity.members) : [];
+  if(!members.length){ el.innerHTML = back+'<p style="color:#aaa;text-align:center;padding:20px">Aún no hay miembros</p>'; return; }
+  el.innerHTML = back + members.map(([uid, m])=>{
+    const alias = (m && m.alias) ? m.alias : uid;
+    const idx = ST.profiles.findIndex(p=>p.name===alias);
+    const prof = idx>=0 ? ST.profiles[idx] : null;
+    const oc = prof ? countOwnedDesired(prof) : {owned:0,total:0};
+    const isMe = uid === ST.globalUserId;
+    const ini = alias.substring(0,2).toUpperCase();
+    const owner = (m && m.isOwner) ? ' <span style="color:#CC0000;font-size:11px;font-weight:700">(admin com.)</span>' : '';
+    const meTag = isMe ? ' <span style="color:#2e7d32;font-size:11px;font-weight:700">(tú)</span>' : '';
+    const act = isMe ? 'backToHome()' : (idx>=0 ? 'viewProfileIdx('+idx+')' : "showToast('Este miembro aún no ha creado su equipo')");
+    const btn = isMe ? 'Inicio' : 'Ver';
+    return '<div class="profile-row"><div class="avatar">'+ini+'</div><div class="profile-info" onclick="'+act+'"><div class="profile-name">'+alias+meTag+owner+'</div><div class="profile-stat">'+oc.owned+'/'+oc.total+' Pokémon deseados</div></div><div class="profile-actions"><button class="view-btn" onclick="'+act+'">'+btn+'</button></div></div>';
   }).join('');
 }
 

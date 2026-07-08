@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokebestbcn-v99';
+const CACHE_NAME = 'pokebestbcn-v101';
 const ASSETS = [
   '/',
   '/index.html',
@@ -47,4 +47,4 @@ self.addEventListener('fetch', e => {
   
   // Everything else - cache first
   e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
-});
+})
