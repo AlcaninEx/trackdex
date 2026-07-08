@@ -497,11 +497,8 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <!-- MAIN MENU (hidden until profile selected) -->
     <div id="home-menu" style="display:none;padding:12px;display:none">
 
-      <!-- COMMUNITY ROW -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <button class="home-btn-small" onclick="showMembers()">👥 Miembros</button>
-        <button class="home-btn-small" onclick="showCommunitySelection()">🔄 Cambiar comunidad</button>
-      </div>
+      <!-- TIPS WINDOW -->
+      <div id="home-tips" onclick="nextTip()" style="background:linear-gradient(135deg,#1565c0,#42a5f5);color:#fff;border-radius:14px;padding:14px 16px;cursor:pointer;box-shadow:0 4px 12px rgba(21,101,192,.3);min-height:70px"></div>
 
       <!-- BIG BUTTON: Mis Pokemons -->
       <button class="home-btn-big" style="margin-top:10px" onclick="goToTypes()">
@@ -534,12 +531,6 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 
       <!-- SMALL BUTTONS ROW 2 -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
-        <button class="home-btn-small" onclick="openGuia()">
-          📖 Guía
-        </button>
-        <button class="home-btn-small" onclick="openInfo()">
-          ℹ️ Info
-        </button>
         <button class="home-btn-small" onclick="openObjetivo()" style="grid-column:1/-1;background:#fff3e0;border-color:#FF6F00;color:#E65100">
           🎯 Pokémon Objetivo
         </button>
@@ -1094,8 +1085,8 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
 
-    <div class="lg-card">
-      <div class="lg-title">¿Cómo se obtienen?</div>
+    <div class="lg-card" id="lg-howto">
+      <div class="lg-title">¿Cómo se obtienen? <label style="float:right;font-size:12px;font-weight:600;color:#888;cursor:pointer;white-space:nowrap"><input type="checkbox" onchange="markRead('legacyHowto', this.checked)" style="vertical-align:middle"> leído</label></div>
       <div class="lg-text">
         Hay dos formas principales:<br><br>
         <b>🎉 En eventos (gratis):</b> evolucionando al Pokémon base hasta su última etapa, o capturándolo en incursiones/salvaje durante las horas del evento.<br><br>
@@ -1149,6 +1140,18 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
     <p style="text-align:center;font-size:13px;color:#888;padding:14px 14px 0">Entrenador: <b id="perfil-name-label" style="color:#37474f"></b></p>
 
+    <div class="perfil-card">
+      <p style="font-size:13px;font-weight:800;color:#37474f;margin-bottom:8px">🏘️ Comunidad</p>
+      <p style="font-size:14px;color:#555;margin-bottom:10px">Estás en <b id="perfil-community-name">—</b></p>
+      <button class="perfil-danger-btn" style="color:#00695c;border-color:#00838f" onclick="showCommunitySelection()">🔄 Cambiar comunidad</button>
+      <button class="perfil-danger-btn" style="color:#5e35b1;border-color:#5e35b1" onclick="showMembers()">👥 Miembros de la Comunidad</button>
+      <button class="perfil-danger-btn" style="color:#1565c0;border-color:#1565c0" onclick="showCopyProfile()">📋 Copiar perfil de otra comunidad</button>
+    </div>
+    <div class="perfil-card">
+      <p style="font-size:13px;font-weight:800;color:#37474f;margin-bottom:8px">ℹ️ Aplicación</p>
+      <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="openInfo()">ℹ️ Info App</button>
+      <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="restoreReads()">♻️ Restaurar información leída</button>
+    </div>
     <div class="perfil-card">
       <p style="font-size:13px;font-weight:800;color:#c62828;margin-bottom:10px">⚠️ Zona de peligro</p>
       <button class="perfil-danger-btn" onclick="confirmDeleteRaidTeam()">🗑️ Borrar todos tus Pokémon de Incursión</button>
@@ -2249,6 +2252,7 @@ function openLegacy() {
   }
   document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
   document.getElementById('legacy-screen').style.display = 'block';
+  { const _lh=document.getElementById('lg-howto'); if(_lh) _lh.style.display = isRead('legacyHowto')?'none':'block'; }
   document.getElementById('home-menu').style.display = 'none';
   window.scrollTo(0, 0);
 }
@@ -4294,6 +4298,7 @@ function closePokeparadas() {
 function openPerfilScreen() {
   if (!ST.cur) { showToast('Selecciona un entrenador primero'); return; }
   document.getElementById('perfil-name-label').textContent = ST.cur;
+  { const _cn=document.getElementById('perfil-community-name'); if(_cn) _cn.textContent = (ST.currentCommunity && (ST.currentCommunity.displayName||ST.currentCommunity.id)) || '—'; }
   document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
   document.getElementById('perfil-screen').style.display = 'block';
   document.getElementById('home-menu').style.display = 'none';
@@ -4717,7 +4722,106 @@ function closeObjetivo() {
   window.scrollTo(0, 0);
 }
 
+// ── BOTÓN ATRÁS DEL MÓVIL ─────────────────────────────────────────────────────
+function _visibleScreen(){
+  const list = document.querySelectorAll('.screen');
+  for(const s of list){ if(s.style.display==='block') return s.id; }
+  return null;
+}
+// Devuelve true si navegó dentro de la app; false si estamos en el punto de salida (login)
+function appBack(){
+  // Modales primero
+  const info = document.getElementById('modal-info');
+  if(info && info.style.display==='flex'){ info.style.display='none'; return true; }
+  const guia = document.getElementById('modal-guia');
+  if(guia && guia.style.display==='flex'){
+    if(!isRead('welcome')) return true; // guía de bienvenida: no se cierra con atrás
+    guia.style.display='none'; return true;
+  }
+  const id = _visibleScreen();
+  if(id==='global-login-screen') return false;           // salir/minimizar
+  if(id==='global-register-screen'){ showGlobalLogin(); return true; }
+  if(id==='community-selection-screen'){ globalLogout(); return true; }
+  if(id==='community-join-screen'){ showCommunitySelection(); return true; }
+  if(id==='profile-screen'){
+    const sec = document.getElementById('home-profile-section');
+    if(sec && sec.style.display!=='none'){ backToHome(); return true; } // vista miembros -> inicio
+    globalLogout(); return true;                          // pantalla principal -> logout
+  }
+  // Cualquier otra sub-pantalla -> volver al inicio
+  if(id){ backToHome(); return true; }
+  return true;
+}
+window.addEventListener('popstate', function(){
+  const handled = appBack();
+  if(handled){ history.pushState({app:1}, ''); }
+});
+try { history.pushState({app:1}, ''); } catch(e){}
+
 // ── BOOT ──────────────────────────────────────────────────────────────────────
+// ── TIPS / LECTURA / BIENVENIDA ───────────────────────────────────────────────
+const APP_TIPS = [
+  {i:'⭐', t:'Ataque Legacy', x:`Movimiento especial que ya no se aprende normalmente. Solo se obtuvo en eventos pasados (Días de la Comunidad). Para enseñárselo ahora hace falta una <b>MT Élite</b>, muy escasa.`},
+  {i:'👤', t:'Shadow / Oscuro', x:`Pokémon capturado al derrotar al Team GO Rocket o en <b>Incursiones Oscuras</b>. Tienen <b>+20% Ataque</b> pero <b>-20% Defensa</b>. Los más poderosos en raids si aguantan.`},
+  {i:'🔴', t:'Mega Evolución', x:`Forma temporal potenciada. Las <b>piedras Mega</b> se consiguen en Mega Incursiones, misiones o raramente en PokéParadas. Potencian a los aliados del mismo tipo en raid.`},
+  {i:'🎯', t:'Misión especial', x:`Pokémon obtenido completando una <b>Investigación Especial</b> o misión temporal. Suelen ser únicos o muy difíciles de conseguir de otra forma.`},
+  {i:'📊', t:'DPS (Daño Por Segundo)', x:`Mide el daño sostenido en raids. Valores de referencia a nivel 40 con IVs perfectos (15/15/15). Fuente: Dittobase 2026.`},
+  {i:'🧬', t:'IVs (Individual Values)', x:`Estadísticas de cada Pokémon: <b>Ataque, Defensa y Vida</b>, de 0 a 15. Un 15/15/15 es "hundo" (perfecto). En raids el Ataque es lo más importante.`},
+];
+let _tipIdx = 0, _tipTimer = null;
+function renderTip(){
+  const el = document.getElementById('home-tips'); if(!el) return;
+  const t = APP_TIPS[((_tipIdx % APP_TIPS.length) + APP_TIPS.length) % APP_TIPS.length];
+  el.innerHTML = '<div style="font-size:11px;font-weight:700;opacity:.85;margin-bottom:4px">💡 CONSEJO</div>'
+    + '<div style="font-size:15px;font-weight:800;margin-bottom:4px">'+t.i+' '+t.t+'</div>'
+    + '<div style="font-size:12.5px;line-height:1.5;opacity:.95">'+t.x+'</div>'
+    + '<div style="font-size:10px;opacity:.8;text-align:right;margin-top:6px">'+(((_tipIdx % APP_TIPS.length)+APP_TIPS.length)%APP_TIPS.length + 1)+'/'+APP_TIPS.length+' · toca para otro</div>';
+}
+function startTips(){ if(_tipTimer) clearInterval(_tipTimer); _tipTimer = setInterval(()=>{ _tipIdx++; renderTip(); }, 10000); }
+function nextTip(){ _tipIdx++; renderTip(); startTips(); }
+function initTips(){ renderTip(); startTips(); }
+
+function readState(){ try{ return JSON.parse(localStorage.getItem('pokeBCN_read')||'{}'); }catch(e){ return {}; } }
+function isRead(k){ return !!readState()[k]; }
+function setRead(k,v){ const o=readState(); if(v) o[k]=true; else delete o[k]; try{ localStorage.setItem('pokeBCN_read', JSON.stringify(o)); }catch(e){} }
+function markRead(k,v){
+  setRead(k,v);
+  if(k==='legacyHowto'){ const e=document.getElementById('lg-howto'); if(e) e.style.display = v ? 'none' : 'block'; }
+}
+function restoreReads(){ try{ localStorage.removeItem('pokeBCN_read'); }catch(e){} showToast('♻️ Información restaurada'); }
+
+function showCopyProfile(){
+  const others = (ST.communities||[]).filter(c=> c.members && c.members[ST.globalUserId] && c.id !== ST.currentCommunityId);
+  if(!others.length){ alert('Aún no perteneces a otras comunidades'); return; }
+  const lines = others.map(c=> '• '+(c.displayName||c.id)+'  (como '+ (c.members[ST.globalUserId].alias||ST.globalUserId) +')').join('\n');
+  alert('Perteneces también a estas comunidades:\n\n'+lines+'\n\n(La copia de equipos entre comunidades llegará pronto.)');
+}
+
+function maybeShowWelcome(){
+  if(isRead('welcome')) return;
+  const modal = document.getElementById('modal-guia');
+  if(!modal) return;
+  const box = modal.querySelector('.modal-box');
+  const x = modal.querySelector('.modal-close');
+  if(x) x.style.display = 'none';
+  modal.onclick = null;
+  let btn = document.getElementById('welcome-close-btn');
+  if(!btn){ btn = document.createElement('button'); btn.id='welcome-close-btn'; box.appendChild(btn); }
+  btn.style.cssText = 'display:block;width:100%;margin-top:16px;padding:13px;border:none;border-radius:10px;font-size:16px;font-weight:800;color:#fff;background:#CC0000;cursor:not-allowed;opacity:.55';
+  btn.disabled = true;
+  modal.style.display = 'flex';
+  let n = 6; btn.textContent = 'Cerrar ('+n+')';
+  const iv = setInterval(()=>{
+    n--;
+    if(n<=0){
+      clearInterval(iv);
+      btn.textContent = 'Entendido, cerrar';
+      btn.disabled = false; btn.style.cursor='pointer'; btn.style.opacity='1';
+      btn.onclick = ()=>{ setRead('welcome', true); modal.style.display='none'; if(x) x.style.display=''; };
+    } else { btn.textContent = 'Cerrar ('+n+')'; }
+  }, 1000);
+}
+
 // ── COMMUNITY / AUTH LAYER ────────────────────────────────────────────────────
 Object.assign(ST, { globalUserId:null, globalUserPassword:null, communities:[], currentCommunityId:null, currentCommunity:null, myAlias:null, _pendingJoinId:null });
 
@@ -4877,7 +4981,7 @@ async function enterCommunity(cid){
   if(!mem){ openCommunityJoin(cid); return; }
   ST.currentCommunityId = cid;
   ST.currentCommunity = c;
-  ST.myAlias = mem.alias;
+  ST.myAlias = mem.alias || ST.globalUserId;
   const profs = await fbLoadProfiles();
   ST.profiles = (profs || []).sort((a,b)=>a.name.localeCompare(b.name));
   if(!gp(ST.myAlias)){ goc(ST.myAlias); await fbSave(ST.myAlias, {pk:{}, album:null, custom:null}); }
@@ -4887,6 +4991,8 @@ async function enterCommunity(cid){
   document.getElementById('trainer-name-bar').textContent = '👋 '+ST.myAlias;
   show('profile-screen');
   updateHomeMenu();
+  initTips();
+  maybeShowWelcome();
   window.scrollTo(0,0);
 }
 
