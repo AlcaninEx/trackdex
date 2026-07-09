@@ -4889,6 +4889,8 @@ function maybeShowWelcome(){
 
 // ── GOFEST LEGENDARY TRACKER ──────────────────────────────────────────────────
 (function(){
+  { const _app=document.getElementById('app'), _scr=document.getElementById('legendary-screen');
+    if(_app && _scr && _scr.parentElement!==_app) _app.appendChild(_scr); }
   const P = [
    ["Articuno",144],["Zapdos",145],["Moltres",146],
    ["Raikou",243],["Entei",244],["Suicune",245],["Lugia",249],["Ho-Oh",250],
