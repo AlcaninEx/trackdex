@@ -4929,9 +4929,9 @@ function maybeShowWelcome(){
   try{ const raw=JSON.parse(localStorage.getItem(KEY))||{}; state=raw.state||{}; days=raw.days||{}; }catch(e){}
   let mode=null, query="";
   function save(){ try{ localStorage.setItem(KEY, JSON.stringify({state,days})); }catch(e){} }
-  const art=id=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
-  const spr=id=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
-  const home=id=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${id}.png`;
+  const art=id=>`https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/other/official-artwork/${id}.png`;
+  const spr=id=>`https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/${id}.png`;
+  const home=id=>`https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/other/home/${id}.png`;
 
   const main=document.getElementById("lt-main");
   const grids={}, empties={}, cards={};
@@ -4945,13 +4945,18 @@ function maybeShowWelcome(){
   function imgHtml(id){
     return `<img loading="lazy" src="${art(id)}" alt="" onerror="var s=this.step||0;this.step=s+1;if(s===0){this.src='${spr(id)}';}else if(s===1){this.src='${home(id)}';}else{this.style.display='none';this.nextElementSibling.style.display='flex';}"><div class="lt-imgph">❔</div>`;
   }
-  P.forEach(p=>{
-    const key=p[0];
-    const c=document.createElement("div"); c.className="lt-card"; c.dataset.key=key;
-    c.innerHTML=`${imgHtml(p[1])}<div class="lt-nm">${key}</div><span class="lt-pill"></span><span class="lt-daytag lt-hidden"></span>`;
-    c.onclick=()=>onClick(key);
-    cards[key]=c;
-  });
+  let _built=false;
+  function build(){
+    if(_built) return; _built=true;
+    P.forEach(p=>{
+      const key=p[0];
+      const c=document.createElement("div"); c.className="lt-card"; c.dataset.key=key;
+      c.innerHTML=`${imgHtml(p[1])}<div class="lt-nm">${key}</div><span class="lt-pill"></span><span class="lt-daytag lt-hidden"></span>`;
+      c.onclick=()=>onClick(key);
+      cards[key]=c;
+    });
+    ltRender();
+  }
   function onClick(key){
     if(mode==="unob"){ if(state[key]==="unob") delete state[key]; else state[key]="unob"; }
     else if(mode==="sabado"){ days[key]=(days[key]==="sabado")?undefined:"sabado"; if(!days[key])delete days[key]; }
@@ -4995,9 +5000,9 @@ function maybeShowWelcome(){
     document.getElementById("lt-footinfo").innerHTML=`📅 Sábado: <b style="color:#eef0ff">${nSat}</b> · Domingo: <b style="color:#eef0ff">${nSun}</b>`;
   }
   document.getElementById("lt-modehint").textContent=HINTS["null"];
-  ltRender();
 
   window.openGoFest=function(){
+    build();
     document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
     document.getElementById('legendary-screen').style.display='block';
     var hm=document.getElementById('home-menu'); if(hm) hm.style.display='none';
