@@ -540,6 +540,9 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
         <button class="home-btn-small" onclick="openPokeparadas()" style="grid-column:1/-1;background:#fce4ec;border-color:#c2185b;color:#880e4f">
           🎁 Poképaradas!
         </button>
+        <button class="home-btn-small" onclick="openGoFest()" style="grid-column:1/-1;background:#e3f2fd;border-color:#1565c0;color:#0d47a1">
+          🏆 GoFest Legendary Tracker
+        </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
           🆕 Novedades · v0.940
         </button>
@@ -1468,6 +1471,68 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
   </div></div>
 
 
+<!-- ═══════════ GOFEST LEGENDARY TRACKER ═══════════ -->
+<style>
+#lt-root{--ltbg:#0f1220;--ltcard:#1a1e33;--ltcard2:#22274a;--lttext:#eef0ff;--ltmuted:#8b90b5;--ltpend:#3a4066;--ltgot:#22c55e;--ltprio:#e11d48;--ltunob:#4b5563;--ltsat:#3b82f6;--ltsun:#a855f7;background:var(--ltbg);color:var(--lttext);min-height:100%;padding:12px 14px 40px;}
+#lt-root .lt-bar{height:8px;background:var(--ltpend);border-radius:99px;overflow:hidden;margin-bottom:8px;}
+#lt-root .lt-bar>div{height:100%;background:linear-gradient(90deg,#16a34a,#22c55e);width:0;transition:width .3s;}
+#lt-root .lt-stats{font-size:.8rem;color:var(--ltmuted);margin-bottom:8px;}
+#lt-root .lt-stats b{color:var(--lttext);}
+#lt-root .lt-modes{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px;}
+#lt-root .lt-modebtn{border:1px solid #2e3563;background:var(--ltcard);color:var(--ltmuted);border-radius:99px;padding:7px 13px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .15s;}
+#lt-root .lt-modebtn.active{color:#fff;border-color:transparent;}
+#lt-root .lt-modebtn.lt-mUnob.active{background:var(--ltunob);}
+#lt-root .lt-modebtn.lt-mSat.active{background:var(--ltsat);}
+#lt-root .lt-modebtn.lt-mSun.active{background:var(--ltsun);}
+#lt-root #lt-search{flex:1;min-width:120px;background:var(--ltcard);border:1px solid #2e3563;border-radius:99px;padding:7px 12px;color:var(--lttext);font-size:.85rem;outline:none;}
+#lt-root .lt-modehint{font-size:.72rem;color:var(--ltmuted);min-height:1em;margin-bottom:6px;}
+#lt-root h2{font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ltmuted);margin:18px 4px 8px;display:flex;align-items:center;gap:8px;}
+#lt-root h2 .lt-cnt{background:var(--ltcard2);border-radius:99px;padding:1px 9px;font-size:.72rem;color:var(--ltmuted);}
+#lt-root .lt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;}
+#lt-root .lt-card{background:var(--ltcard);border:1px solid #2a2f56;border-radius:14px;padding:10px 8px 8px;text-align:center;cursor:pointer;user-select:none;position:relative;transition:transform .08s,border-color .2s,background .2s;}
+#lt-root .lt-card:active{transform:scale(.96);}
+#lt-root .lt-card img{width:72px;height:72px;object-fit:contain;pointer-events:none;}
+#lt-root .lt-imgph{width:72px;height:72px;display:none;align-items:center;justify-content:center;font-size:2rem;color:var(--ltmuted);margin:0 auto;}
+#lt-root .lt-nm{font-size:.8rem;font-weight:600;line-height:1.2;margin:4px 0 6px;min-height:2.4em;display:flex;align-items:center;justify-content:center;color:var(--lttext);}
+#lt-root .lt-pill{display:inline-block;font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--ltpend);color:#c3c8ef;}
+#lt-root .lt-card.lt-got{background:#12291c;border-color:var(--ltgot);}
+#lt-root .lt-card.lt-got .lt-pill{background:var(--ltgot);color:#052e13;}
+#lt-root .lt-card.lt-got::after{content:'✓';position:absolute;top:6px;right:8px;color:var(--ltgot);font-weight:800;}
+#lt-root .lt-card.lt-prio{background:#2d1220;border-color:var(--ltprio);}
+#lt-root .lt-card.lt-prio .lt-pill{background:var(--ltprio);color:#fff;}
+#lt-root .lt-card.lt-prio::after{content:'★';position:absolute;top:6px;right:8px;color:var(--ltprio);}
+#lt-root .lt-card.lt-unob{background:#20242e;border-color:var(--ltunob);opacity:.75;}
+#lt-root .lt-card.lt-unob .lt-pill{background:var(--ltunob);color:#e5e7eb;}
+#lt-root .lt-card.lt-unob img{filter:grayscale(1);}
+#lt-root .lt-card.lt-unob::after{content:'🚫';position:absolute;top:6px;right:8px;font-size:.75rem;}
+#lt-root .lt-daytag{position:absolute;top:6px;left:6px;font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:99px;color:#fff;}
+#lt-root .lt-daytag.lt-sat{background:var(--ltsat);}
+#lt-root .lt-daytag.lt-sun{background:var(--ltsun);}
+#lt-root .lt-empty{color:var(--ltmuted);text-align:center;padding:14px 0;font-size:.85rem;}
+#lt-root .lt-foot{margin-top:22px;padding-top:12px;border-top:1px solid #262b4d;display:flex;justify-content:space-between;align-items:center;font-size:.72rem;color:var(--ltmuted);gap:10px;}
+#lt-root .lt-foot button{background:none;border:1px solid #2e3563;color:var(--ltmuted);border-radius:8px;padding:5px 10px;font-size:.72rem;cursor:pointer;}
+#lt-root .lt-hidden{display:none!important;}
+</style>
+<div id="legendary-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>🏆 GoFest Legendary Tracker</h1>
+  </div>
+  <div id="lt-root">
+    <div class="lt-bar"><div id="lt-prog"></div></div>
+    <div class="lt-stats" id="lt-stats"></div>
+    <div class="lt-modes">
+      <button class="lt-modebtn lt-mUnob" data-mode="unob">🚫 No conseguibles</button>
+      <button class="lt-modebtn lt-mSat" data-mode="sabado">📅 Sábado</button>
+      <button class="lt-modebtn lt-mSun" data-mode="domingo">📅 Domingo</button>
+      <input id="lt-search" type="search" placeholder="Buscar…">
+    </div>
+    <div class="lt-modehint" id="lt-modehint"></div>
+    <div id="lt-main"></div>
+    <div class="lt-foot"><span id="lt-footinfo"></span><button id="lt-reset">Reiniciar</button></div>
+  </div>
+</div>
+<!-- ═══════════ END GOFEST TRACKER ═══════════ -->
 <script>
 // ── FIREBASE SETUP ───────────────────────────────────────────────────────────
 const firebaseConfig = {
@@ -4821,6 +4886,124 @@ function maybeShowWelcome(){
     } else { btn.textContent = 'Cerrar ('+n+')'; }
   }, 1000);
 }
+
+// ── GOFEST LEGENDARY TRACKER ──────────────────────────────────────────────────
+(function(){
+  const P = [
+   ["Articuno",144],["Zapdos",145],["Moltres",146],
+   ["Raikou",243],["Entei",244],["Suicune",245],["Lugia",249],["Ho-Oh",250],
+   ["Regirock",377],["Regice",378],["Registeel",379],["Latias",380],["Latios",381],
+   ["Kyogre",382],["Groudon",383],["Rayquaza",384],
+   ["Deoxys (Normal)",386],["Deoxys (Attack)",10001],["Deoxys (Defense)",10002],["Deoxys (Speed)",10003],
+   ["Uxie",480],["Mesprit",481],["Azelf",482],
+   ["Dialga",483],["Dialga (Origin)",10245],["Palkia",484],["Palkia (Origin)",10246],
+   ["Heatran",485],["Regigigas",486],
+   ["Giratina (Altered)",487],["Giratina (Origin)",10007],
+   ["Cresselia",488],["Darkrai",491],
+   ["Cobalion",638],["Terrakion",639],["Virizion",640],
+   ["Tornadus (Incarnate)",641],["Tornadus (Therian)",10019],
+   ["Thundurus (Incarnate)",642],["Thundurus (Therian)",10020],
+   ["Reshiram",643],["Zekrom",644],
+   ["Landorus (Incarnate)",645],["Landorus (Therian)",10021],
+   ["Kyurem",646],["Kyurem (Black)",10022],["Kyurem (White)",10023],
+   ["Genesect",649],
+   ["Xerneas",716],["Yveltal",717],
+   ["Tapu Koko",785],["Tapu Lele",786],["Tapu Bulu",787],["Tapu Fini",788],
+   ["Solgaleo",791],["Lunala",792],
+   ["Nihilego",793],["Buzzwole",794],["Pheromosa",795],["Xurkitree",796],
+   ["Celesteela",797],["Kartana",798],["Guzzlord",799],
+   ["Necrozma",800],["Necrozma (Dusk Mane)",10155],["Necrozma (Dawn Wings)",10156],["Stakataka",805],["Blacephalon",806],
+   ["Zacian (Hero)",888],["Zamazenta (Hero)",889],
+   ["Regieleki",894],["Regidrago",895],
+   ["Enamorus (Incarnate)",905],["Enamorus (Therian)",10249]
+  ];
+  const KEY = "pogo-legendary-tracker-2026";
+  const CATS = [
+    {id:"prio", title:"★ Prioridad",   label:"Prioritario"},
+    {id:"pend", title:"No conseguidos", label:"No conseguido"},
+    {id:"got",  title:"Conseguidos",    label:"Conseguido"},
+    {id:"unob", title:"No obtenible",   label:"No obtenible"},
+  ];
+  const CATLABEL={}; CATS.forEach(c=>CATLABEL[c.id]=c.label);
+  let state={}, days={};
+  try{ const raw=JSON.parse(localStorage.getItem(KEY))||{}; state=raw.state||{}; days=raw.days||{}; }catch(e){}
+  let mode=null, query="";
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify({state,days})); }catch(e){} }
+  const art=id=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+  const spr=id=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+  const home=id=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${id}.png`;
+
+  const main=document.getElementById("lt-main");
+  const grids={}, empties={}, cards={};
+  CATS.forEach(c=>{
+    const sec=document.createElement("section"); sec.dataset.cat=c.id;
+    const hh=document.createElement("h2"); hh.innerHTML=`${c.title} <span class="lt-cnt" id="lt-cnt-${c.id}">0</span>`; sec.appendChild(hh);
+    const grid=document.createElement("div"); grid.className="lt-grid"; grid.id="lt-grid-"+c.id; sec.appendChild(grid);
+    const em=document.createElement("div"); em.className="lt-empty"; em.textContent="—"; sec.appendChild(em);
+    main.appendChild(sec); grids[c.id]=grid; empties[c.id]=em;
+  });
+  function imgHtml(id){
+    return `<img loading="lazy" src="${art(id)}" alt="" onerror="var s=this.step||0;this.step=s+1;if(s===0){this.src='${spr(id)}';}else if(s===1){this.src='${home(id)}';}else{this.style.display='none';this.nextElementSibling.style.display='flex';}"><div class="lt-imgph">❔</div>`;
+  }
+  P.forEach(p=>{
+    const key=p[0];
+    const c=document.createElement("div"); c.className="lt-card"; c.dataset.key=key;
+    c.innerHTML=`${imgHtml(p[1])}<div class="lt-nm">${key}</div><span class="lt-pill"></span><span class="lt-daytag lt-hidden"></span>`;
+    c.onclick=()=>onClick(key);
+    cards[key]=c;
+  });
+  function onClick(key){
+    if(mode==="unob"){ if(state[key]==="unob") delete state[key]; else state[key]="unob"; }
+    else if(mode==="sabado"){ days[key]=(days[key]==="sabado")?undefined:"sabado"; if(!days[key])delete days[key]; }
+    else if(mode==="domingo"){ days[key]=(days[key]==="domingo")?undefined:"domingo"; if(!days[key])delete days[key]; }
+    else { const cur=state[key]||"pend"; const cyc=["pend","got","prio"]; const nx=cyc[(cyc.indexOf(cur)+1)%cyc.length]; if(nx==="pend")delete state[key]; else state[key]=nx; }
+    save(); ltRender();
+  }
+  const HINTS={ "null":"Toca un Pokémon: No conseguidos → Conseguidos → ★ Prioridad", unob:"🚫 Modo No obtenible: toca para marcar/desmarcar como no obtenible", sabado:"📅 Modo Sábado: toca para poner/quitar la etiqueta Sábado (no lo mueve)", domingo:"📅 Modo Domingo: toca para poner/quitar la etiqueta Domingo (no lo mueve)" };
+  document.querySelectorAll("#lt-root .lt-modebtn").forEach(b=>b.onclick=()=>{
+    const m=b.dataset.mode; mode=(mode===m)?null:m;
+    document.querySelectorAll("#lt-root .lt-modebtn").forEach(x=>x.classList.toggle("active", x.dataset.mode===mode));
+    document.getElementById("lt-modehint").textContent=HINTS[mode||"null"];
+  });
+  document.getElementById("lt-search").oninput=e=>{ query=e.target.value.toLowerCase(); ltRender(); };
+  document.getElementById("lt-reset").onclick=()=>{ if(confirm("¿Borrar todo el progreso del tracker?")){ state={}; days={}; save(); ltRender(); } };
+
+  function ltRender(){
+    const counts={prio:0,pend:0,got:0,unob:0};
+    P.forEach(p=>{
+      const key=p[0]; const cat=state[key]||"pend"; counts[cat]++;
+      const c=cards[key]; grids[cat].appendChild(c);
+      c.classList.toggle("lt-got", cat==="got");
+      c.classList.toggle("lt-prio", cat==="prio");
+      c.classList.toggle("lt-unob", cat==="unob");
+      c.querySelector(".lt-pill").textContent=CATLABEL[cat];
+      const dt=c.querySelector(".lt-daytag"); const d=days[key];
+      if(d){ dt.classList.remove("lt-hidden"); dt.classList.toggle("lt-sat", d==="sabado"); dt.classList.toggle("lt-sun", d==="domingo"); dt.textContent=d==="sabado"?"SÁB":"DOM"; }
+      else { dt.classList.add("lt-hidden"); dt.classList.remove("lt-sat","lt-sun"); }
+      c.classList.toggle("lt-hidden", !key.toLowerCase().includes(query));
+    });
+    CATS.forEach(cat=>{
+      document.getElementById("lt-cnt-"+cat.id).textContent=counts[cat.id];
+      const vis=grids[cat.id].querySelector(".lt-card:not(.lt-hidden)");
+      empties[cat.id].classList.toggle("lt-hidden", !!vis);
+      empties[cat.id].textContent=counts[cat.id]?"":"—";
+    });
+    const total=P.length;
+    document.getElementById("lt-prog").style.width=(counts.got/total*100)+"%";
+    document.getElementById("lt-stats").innerHTML=`<b>${counts.got}</b>/${total} conseguidos · <b>${counts.prio}</b> prioritarios · <b>${counts.pend}</b> por conseguir · <b>${counts.unob}</b> no obtenibles`;
+    const nSat=Object.values(days).filter(d=>d==="sabado").length, nSun=Object.values(days).filter(d=>d==="domingo").length;
+    document.getElementById("lt-footinfo").innerHTML=`📅 Sábado: <b style="color:#eef0ff">${nSat}</b> · Domingo: <b style="color:#eef0ff">${nSun}</b>`;
+  }
+  document.getElementById("lt-modehint").textContent=HINTS["null"];
+  ltRender();
+
+  window.openGoFest=function(){
+    document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
+    document.getElementById('legendary-screen').style.display='block';
+    var hm=document.getElementById('home-menu'); if(hm) hm.style.display='none';
+    window.scrollTo(0,0);
+  };
+})();
 
 // ── COMMUNITY / AUTH LAYER ────────────────────────────────────────────────────
 Object.assign(ST, { globalUserId:null, globalUserPassword:null, communities:[], currentCommunityId:null, currentCommunity:null, myAlias:null, _pendingJoinId:null });
