@@ -559,7 +559,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           🏆 Trackers
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.955
+          🆕 Novedades · v0.956
         </button>
       </div>
 
@@ -1253,10 +1253,18 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.955</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.956</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.955 · actual</span><span class="nov-version-tag">Sprites HD en Objetivo</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.956 · actual</span><span class="nov-version-tag">Cadenas evolutivas y distintivos</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🧬</span><span>Las cadenas evolutivas ahora se muestran completas en ambas direcciones: al ampliar una pre-evolución (como en Pokémon Objetivo) también verás sus evoluciones futuras.</span></div>
+        <div class="nov-item"><span>🔥</span><span>Nueva llama morada con degradado para los Pokémon Oscuros, y nuevo distintivo Mega (hélice naranja/azul) sobre los Megas, en Mis Pokémon y Mejores IVs.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.955</span><span class="nov-version-tag">Sprites HD en Objetivo</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🖼️</span><span>Pokémon Objetivo estrena las imágenes en alta calidad (artwork oficial), las mismas que en Rankings y Mis Pokémon, tanto en las tarjetas como en el popup de caramelos.</span></div>
         <div class="nov-item"><span>🔍</span><span>Recuerda: dentro del popup de caramelos, toca la imagen para verla en grande con su cadena evolutiva.</span></div>
@@ -3059,8 +3067,13 @@ function renderMain() {
   }).join('');
 }
 
-function evoH(evo,img,shadow) {
-  const sb=shadow?`<img src="shadow_icon.png" class="shadow-badge" alt="">`:'';
+function pkBadge(shadow,mega){
+  if(shadow) return `<img src="badge_shadow.svg" class="shadow-badge" alt="Oscuro" title="Oscuro">`;
+  if(mega) return `<img src="badge_mega.svg" class="shadow-badge" alt="Mega" title="Mega">`;
+  return '';
+}
+function evoH(evo,img,shadow,mega) {
+  const sb=pkBadge(shadow,mega);
   if(!evo||evo.length<=1)return`<div class="final-wrap">${sb}<img class="final-img" src="${si(img)}" onerror="this.style.opacity=.1"></div>`;
   return`<div class="evo-chain"><img class="evo-sm" src="${si(evo[0])}" onerror="this.style.opacity=.1"><span class="evo-arr">▶</span><div class="final-wrap">${sb}<img class="final-img" src="${si(img)}" style="width:40px;height:40px" onerror="this.style.opacity=.1"></div></div>`;
 }
@@ -3085,6 +3098,7 @@ function renderAlbum() {
     const realDps=baseDps*(bs2[0]+ia)/(bs2[0]+15);
     const dd=realDps; const bw=Math.round((realDps/maxD)*100);
     const isOpen=ST.expanded===pk.id; const isShadow=pk.tags.includes('shadow');
+    const isMegaPk=pk.tags.includes('mega')||/^(mega|primal) /i.test(pk.n||'');
     const tH=renderBadges(inferTags(pk.name||pk.n||'',pk.fast&&pk.fast.endsWith('*'),pk.charge&&pk.charge.endsWith('*'),pk.tags||[]));
     const fd=pk.fast.replace('*',''); const cd=pk.charge.replace('*','');
     const fl=pk.fast.endsWith('*'); const cl=pk.charge.endsWith('*');
@@ -3099,7 +3113,7 @@ function renderAlbum() {
     const editF=`${ownedToggle}${maxToggle}<div class="fr" style="margin-top:4px"><div class="fl">DPS con tus IVs</div><p style="font-size:18px;font-weight:700;color:#222"><span id="dps-real-${pk.id}">${dd.toFixed(2)}</span> <span style="font-size:12px;color:#888;font-weight:400">/ Max ${baseDps.toFixed(2)}</span></p></div><div class="fr"><div class="fl">IVs</div><div class="iv-grid"><div class="iv-col"><div class="iv-lbl">Ataque</div><div class="iv-val" id="ia-${pk.id}">${ia}<span style="font-size:10px;color:#888;font-weight:400"> (${pctA}%)</span></div><input type="range" min="0" max="15" value="${ia}" oninput="updIV('${pk.id}','a',this.value)"></div><div class="iv-col"><div class="iv-lbl">Defensa</div><div class="iv-val" id="id-${pk.id}">${id2}<span style="font-size:10px;color:#888;font-weight:400"> (${pctD}%)</span></div><input type="range" min="0" max="15" value="${id2}" oninput="updIV('${pk.id}','d',this.value)"></div><div class="iv-col"><div class="iv-lbl">Vida</div><div class="iv-val" id="ih-${pk.id}">${ih}<span style="font-size:10px;color:#888;font-weight:400"> (${pctH}%)</span></div><input type="range" min="0" max="15" value="${ih}" oninput="updIV('${pk.id}','h',this.value)"></div></div></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
     const viewF=`<div class="fr"><div class="fl">DPS con sus IVs</div><p style="font-size:18px;font-weight:700;color:#222"><span id="dps-real-${pk.id}">${dd.toFixed(2)}</span> <span style="font-size:12px;color:#888;font-weight:400">/ Max ${baseDps.toFixed(2)}</span></p></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
     const removeBtn=!isV?(pk.isCustom?`<button class="album-remove" onclick="event.stopPropagation();removeRankEntry('${pk.id}','${ST.type}')">✕</button>`:`<button class="album-remove" onclick="event.stopPropagation();removeFromAlbum('${pk.id}')">✕</button>`):'';
-    const evoDisplay=pk.isCustom?`<div class="final-wrap"><img class="final-img" src="${si(pk.img)}" onerror="this.style.opacity=.1"></div>`:evoH(pk.evo,pk.img,isShadow);
+    const evoDisplay=pk.isCustom?`<div class="final-wrap">${pkBadge(isShadow,isMegaPk)}<img class="final-img" src="${si(pk.img)}" onerror="this.style.opacity=.1"></div>`:evoH(pk.evo,pk.img,isShadow,isMegaPk);
     const _pkOwned=!!(pp0&&pp0.pk[pk.id]&&pp0.pk[pk.id].owned);
     const _pkMaxed=!!(pp0&&pp0.pk[pk.id]&&pp0.pk[pk.id].maxed);
     const tickHtml=`<div class="pk-ticks" title="${_pkMaxed?'Al máximo':_pkOwned?'Lo tienes':'Pendiente'}"><span class="pk-tick${_pkOwned?' on':''}">✓</span><span class="pk-tick${_pkMaxed?' on':''}">✓</span></div>`;
@@ -5042,7 +5056,7 @@ function renderBestIvs(){
       </div>`;
     return `<div class="pk-card" style="background:${t.color};${x.noIv?'opacity:.5;':''}">
       <div class="pk-top" onclick="togBivCard('${x.id}')">
-        <div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(x.img)}" onerror="this.style.opacity=.1"></div></div>
+        <div style="flex-shrink:0"><div class="final-wrap">${pkBadge(/\(shadow\)/i.test(x.name)||/^shadow /i.test(x.name),/^(mega|primal) /i.test(x.name))}<img class="final-img" src="${si(x.img)}" onerror="this.style.opacity=.1"></div></div>
         <div class="pk-info"><div class="pk-name">${x.name.replace(' (Shadow)','')}</div><div style="font-size:10px;color:rgba(255,255,255,.8);font-weight:600">${t.name||''}${x.noIv?' · sin IVs':''}</div></div>
         <div style="display:flex;gap:7px;font-weight:800;color:#fff;font-size:17px;flex-shrink:0;margin-right:8px;text-shadow:0 1px 2px rgba(0,0,0,.35)">
           <span title="Ataque" id="biv-top-a-${x.id}">${x.iv.a}</span><span title="Defensa" id="biv-top-d-${x.id}">${x.iv.d}</span><span title="Vida" id="biv-top-h-${x.id}">${x.iv.h}</span>
@@ -5752,22 +5766,31 @@ function maybeShowWelcome(){
     window.scrollTo(0,0);
   };
   // ── Popup con cadena evolutiva (PokeAPI en vivo + caché) ──
-  const EVO_KEY='evo-cache-v1';
+  const EVO_KEY='evo-cache-v2';
   let evoCache={}; try{evoCache=JSON.parse(localStorage.getItem(EVO_KEY))||{};}catch(e){}
+  try{localStorage.removeItem('evo-cache-v1');}catch(e){}
   const ART='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
   const cap=s=>s? s.charAt(0).toUpperCase()+s.slice(1) : '';
   const idFromUrl=u=>parseInt(u.split('/').filter(Boolean).pop());
   async function getEvoChain(pid){
     if(evoCache[pid]) return evoCache[pid];
     const pj=await (await fetch('https://pokeapi.co/api/v2/pokemon/'+pid+'/')).json();
-    let sid=idFromUrl(pj.species.url);
-    const chain=[]; let cur=sid;
-    while(cur){
-      const sj=await (await fetch('https://pokeapi.co/api/v2/pokemon-species/'+cur+'/')).json();
-      chain.unshift({id:cur,name:cap(sj.name)});
-      cur=sj.evolves_from_species ? idFromUrl(sj.evolves_from_species.url) : null;
+    const sid=idFromUrl(pj.species.url);
+    const sj=await (await fetch('https://pokeapi.co/api/v2/pokemon-species/'+sid+'/')).json();
+    const ej=await (await fetch(sj.evolution_chain.url)).json();
+    // Camino lineal: raíz → sid → primera rama descendente
+    const node2item=n=>({id:idFromUrl(n.species.url),name:cap(n.species.name)});
+    function pathTo(node,target,acc){
+      const cur=[...acc,node];
+      if(idFromUrl(node.species.url)===target) return cur;
+      for(const ch of (node.evolves_to||[])){ const r=pathTo(ch,target,cur); if(r) return r; }
+      return null;
     }
-    const res={sid:sid,chain:chain};
+    let path=pathTo(ej.chain,sid,[])||[ej.chain];
+    // Continuar desde sid hacia adelante (primera rama)
+    let last=path[path.length-1];
+    while(last.evolves_to&&last.evolves_to.length){ last=last.evolves_to[0]; path.push(last); }
+    const res={sid:sid,chain:path.map(node2item)};
     evoCache[pid]=res;
     try{localStorage.setItem(EVO_KEY,JSON.stringify(evoCache));}catch(e){}
     return res;
