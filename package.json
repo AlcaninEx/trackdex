@@ -1,22 +1,22 @@
 {
-  "name": "pokebestbcn",
+  "name": "trackdex",
   "version": "1.0.0",
-  "description": "",
+  "description": "TrackDex — álbum y planificador de equipos para incursiones",
   "main": "sw.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlcaninEx/pokebestbcn.git"
+    "url": "git+https://github.com/AlcaninEx/trackdex.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/AlcaninEx/pokebestbcn/issues"
+    "url": "https://github.com/AlcaninEx/trackdex/issues"
   },
-  "homepage": "https://github.com/AlcaninEx/pokebestbcn#readme",
+  "homepage": "https://github.com/AlcaninEx/trackdex#readme",
   "dependencies": {
     "playwright": "^1.61.1"
   }

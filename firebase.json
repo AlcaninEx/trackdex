@@ -1,12 +1,57 @@
 {
-  "hosting": {
-    "public": ".",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
+  "firestore": {
+    "rules": "firestore.rules"
   },
+  "hosting": [
+    {
+      "site": "trackdex",
+      "public": ".",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**",
+        "node_modules/**",
+        ".firebase/**",
+        "test-*.js",
+        "test-results/**",
+        "*.backup.html",
+        "package.json",
+        "package-lock.json",
+        "firestore.rules"
+      ],
+      "headers": [
+        { "source": "/sw.js", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
+        { "source": "/index.html", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
+        { "source": "/", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
+        { "source": "/manifest.json", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
+        { "source": "**/*.@(png|jpg|jpeg|svg|ico)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }] }
+      ]
+    },
+    {
+      "site": "pokebestbcn",
+      "public": ".",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**",
+        "node_modules/**",
+        ".firebase/**",
+        "test-*.js",
+        "test-results/**",
+        "*.backup.html",
+        "package.json",
+        "package-lock.json",
+        "firestore.rules"
+      ],
+      "headers": [
+        { "source": "/sw.js", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
+        { "source": "/index.html", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
+        { "source": "/", "headers": [{ "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }] },
+        { "source": "/manifest.json", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
+        { "source": "**/*.@(png|jpg|jpeg|svg|ico)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }] }
+      ]
+    }
+  ],
   "emulators": {
     "firestore": {
       "port": 8080

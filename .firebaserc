@@ -2,6 +2,17 @@
   "projects": {
     "default": "pokebestbcn"
   },
-  "targets": {},
+  "targets": {
+    "pokebestbcn": {
+      "hosting": {
+        "trackdex": [
+          "trackdex"
+        ],
+        "pokebestbcn": [
+          "pokebestbcn"
+        ]
+      }
+    }
+  },
   "etags": {}
 }

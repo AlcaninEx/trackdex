@@ -1,8 +1,51 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /profiles/{profileName} {
-      allow read, write: if true;
+
+    // ── Helpers ────────────────────────────────────────────────────────────
+    function authed() { return request.auth != null; }
+    // nombre de usuario a partir del email interno usuario@users.trackdex.app
+    function uname() { return request.auth.token.email.split('@')[0]; }
+    function isAdmin() { return authed() && request.auth.token.email == 'xelark@users.trackdex.app'; }
+
+    // ── Cuentas globales ───────────────────────────────────────────────────
+    match /globalUsers/{userId} {
+      // "get" abierto: necesario para el chequeo de registro y la migración de
+      // cuentas antiguas (que aún guardan password). Cerrar cuando todos migren.
+      allow get: if true;
+      allow list: if isAdmin(); // para la copia de seguridad del admin
+      allow create, update: if authed() && (uname() == userId || isAdmin());
+      // cada usuario puede borrar su propia cuenta (RGPD), y el admin cualquiera
+      allow delete: if authed() && (uname() == userId || isAdmin());
+    }
+
+    // ── Comunidades ────────────────────────────────────────────────────────
+    match /communities/{cid} {
+      allow read: if authed();
+      allow create: if authed() && request.resource.data.ownerId == uname();
+      // unirse / editar escriben el doc completo; requiere sesión iniciada
+      allow update: if authed();
+      // borrar: solo el creador o el admin
+      allow delete: if authed() && (resource.data.ownerId == uname() || isAdmin());
+
+      // Perfiles (equipos) dentro de cada comunidad
+      match /profiles/{profileName} {
+        allow read: if authed();
+        // escribir solo si eres miembro de esa comunidad
+        allow write: if authed()
+          && get(/databases/$(database)/documents/communities/$(cid)).data.members[uname()] != null;
+      }
+    }
+
+    // ── Configuración global (rotación de Megas, etc.) ─────────────────────
+    match /config/{doc} {
+      allow read: if authed();
+      allow write: if isAdmin();
+    }
+
+    // ── Todo lo demás: cerrado ─────────────────────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

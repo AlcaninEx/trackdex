@@ -1,9 +1,9 @@
 {
-  "name": "PokeBestBCN",
-  "short_name": "PokeBestBCN",
+  "name": "TrackDex",
+  "short_name": "TrackDex",
   "description": "Álbum de los mejores pokémon attackers para raids",
-  "start_url": "/pokebestbcn/index.html",
-  "scope": "/pokebestbcn/",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#f0f0f0",
   "theme_color": "#CC0000",

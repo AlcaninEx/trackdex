@@ -9,12 +9,13 @@
 <meta name="theme-color" content="#CC0000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="PokeBestBCN">
+<meta name="apple-mobile-web-app-title" content="TrackDex">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>PokeBestBCN</title>
+<title>TrackDex</title>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:#f0f0f0!important;color:#222!important;-webkit-tap-highlight-color:transparent;transition:background .3s,color .3s}
@@ -92,7 +93,7 @@ body.dark .add-btn{background:#333!important;color:#eee!important}
 .bar-row{display:flex;align-items:center;gap:6px}
 .bar-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.7);width:14px;text-align:right;flex-shrink:0}
 /* DETAIL */
-.tabs{display:flex;border-bottom:2px solid #e0e0e0;background:#fff!important}
+.tabs{display:flex;border-bottom:2px solid #e0e0e0;background:#fff!important;position:sticky;top:var(--st-hdr,48px);z-index:19}
 .tab{flex:1;padding:11px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;color:#888!important;border-bottom:3px solid transparent;background:#fff!important;border-top:none;border-left:none;border-right:none}
 .tab.active{color:#CC0000!important;border-bottom-color:#CC0000!important}
 /* ALBUM */
@@ -113,7 +114,14 @@ body.dark .add-btn{background:#333!important;color:#eee!important}
 .home-prog-fill{height:100%;border-radius:3px;background:rgba(255,255,255,.9);transition:width .4s}
 body.dark .home-btn-small{background:#1e1e1e;color:#eee;border-color:#444}
 body.dark .home-btn-big{box-shadow:0 4px 12px rgba(0,0,0,.4)}
-.album-subtabs{display:flex;border-bottom:2px solid #e0e0e0;background:#fff}
+.album-subtabs{display:flex;border-bottom:2px solid #e0e0e0;background:#fff;position:sticky;top:var(--st-strip,132px);z-index:17}
+.team-btn{min-width:26px;height:26px;border-radius:8px;border:1.5px solid rgba(255,255,255,.55);background:rgba(255,255,255,.15);color:#fff;font-size:12px;font-weight:800;cursor:pointer;padding:0 6px}
+.team-btn.on{background:#fff;color:#222;border-color:#fff}
+.team-btn.team-add{border-style:dashed}
+.obj-team-btn{border:1.5px solid #1565c0;background:#fff;color:#1565c0;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer}
+.obj-team-btn.on{background:#1565c0;color:#fff}
+.rank-hide-btn{border:1.5px solid #b78908;background:#fff;color:#795548;border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer}
+.rank-hide-btn.on{background:#795548;border-color:#795548;color:#fff;text-decoration:line-through}
 .album-subtab{flex:1;padding:9px;text-align:center;font-size:12px;font-weight:700;cursor:pointer;color:#888;border-bottom:3px solid transparent;background:#fff;border-top:none;border-left:none;border-right:none}
 .album-subtab.active{color:#CC0000;border-bottom-color:#CC0000}
 .empty-slot{border-radius:12px;overflow:hidden;margin-bottom:10px;border:2px dashed #ccc;background:#f8f8f8;display:flex;align-items:center;justify-content:center;padding:14px 12px;gap:10px;opacity:.7}
@@ -217,7 +225,7 @@ body.dark .rank-row.ours{background:color-mix(in srgb,var(--tc) 18%,#1e1e1e)!imp
 #toast.toast-warn{background:#CC0000}
 #toast.toast-ok{background:#2e7d32}
 
-#type-nav-strip{display:flex;flex-wrap:wrap;gap:5px;padding:7px 10px 6px;background:#fff;border-bottom:2px solid #e0e0e0;position:sticky;top:0;z-index:20}
+#type-nav-strip{display:flex;flex-wrap:wrap;gap:5px;padding:7px 10px 6px;background:#fff;border-bottom:2px solid #e0e0e0;position:sticky;top:var(--st-tabs,90px);z-index:18}
 .tn-btn{flex:0 0 auto;border:none;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;color:#fff;opacity:.55;transition:opacity .15s,transform .12s}
 .tn-btn.active{opacity:1;transform:scale(1.08)}
 body.dark #type-nav-strip{background:#1e1e1e;border-color:#333}
@@ -393,15 +401,19 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
   <div style="max-width:420px;margin:0 auto;padding:24px 16px">
     <div style="text-align:center;margin-bottom:24px">
       <svg width="56" height="56" viewBox="0 0 64 64" fill="none" style="margin-bottom:8px"><circle cx="32" cy="32" r="30" fill="#CC0000" stroke="white" stroke-width="3"/><rect x="2" y="29" width="60" height="6" fill="white"/><circle cx="32" cy="32" r="10" fill="white" stroke="#CC0000" stroke-width="3"/><circle cx="32" cy="32" r="5" fill="#CC0000" stroke="white" stroke-width="2"/></svg>
-      <div style="font-size:24px;font-weight:800;color:#CC0000">PokeBestBCN</div>
+      <div style="font-size:24px;font-weight:800;color:#CC0000">TrackDex</div>
       <div style="font-size:13px;color:#888;margin-top:4px">Inicia sesión con tu cuenta</div>
     </div>
     <div class="auth-card">
       <label class="auth-label">Usuario</label>
       <input id="gl-user" class="auth-input" type="text" autocomplete="username" placeholder="tu usuario" onkeydown="if(event.key==='Enter')doGlobalLogin()">
       <label class="auth-label">Contraseña</label>
-      <input id="gl-pass" class="auth-input" type="password" autocomplete="current-password" placeholder="tu contraseña" onkeydown="if(event.key==='Enter')doGlobalLogin()">
+      <div style="position:relative">
+        <input id="gl-pass" class="auth-input" type="password" autocomplete="current-password" placeholder="tu contraseña" style="padding-right:44px" onkeydown="if(event.key==='Enter')doGlobalLogin()">
+        <button type="button" onclick="togglePassVis('gl-pass',this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:18px;cursor:pointer;padding:4px">👁️</button>
+      </div>
       <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#666;margin:10px 0"><input id="gl-remember" type="checkbox" checked> Recordarme en este dispositivo</label>
+      <p style="font-size:10px;color:#999;line-height:1.5;margin-top:14px;text-align:center">TrackDex es una aplicación de fans sin ánimo de lucro, no afiliada a Nintendo, Niantic, The Pokémon Company ni Game Freak.<br>Pokémon y todos los nombres e imágenes relacionados son marcas de sus respectivos propietarios.<br><a href="#" onclick="openPrivacy();return false" style="color:#5e35b1;font-weight:700">Política de privacidad</a></p>
       <button class="auth-btn" onclick="doGlobalLogin()">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px">¿No tienes cuenta? <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700">Crear cuenta</a></p>
     </div>
@@ -419,7 +431,10 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <label class="auth-label">Usuario</label>
       <input id="gr-user" class="auth-input" type="text" placeholder="letras, números, - o _" onkeydown="if(event.key==='Enter')doGlobalRegister()">
       <label class="auth-label">Contraseña</label>
-      <input id="gr-pass" class="auth-input" type="password" placeholder="mínimo 4 caracteres" onkeydown="if(event.key==='Enter')doGlobalRegister()">
+      <div style="position:relative">
+        <input id="gr-pass" class="auth-input" type="password" placeholder="mínimo 6 caracteres" style="padding-right:44px" onkeydown="if(event.key==='Enter')doGlobalRegister()">
+        <button type="button" onclick="togglePassVis('gr-pass',this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:18px;cursor:pointer;padding:4px">👁️</button>
+      </div>
       <label class="auth-label">Repite la contraseña</label>
       <input id="gr-pass2" class="auth-input" type="password" placeholder="repite la contraseña" onkeydown="if(event.key==='Enter')doGlobalRegister()">
       <button class="auth-btn" onclick="doGlobalRegister()">Crear cuenta</button>
@@ -479,10 +494,9 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <div style="background:#CC0000;padding:16px;display:flex;align-items:center;gap:12px">
       <svg width="36" height="36" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#CC0000" stroke="white" stroke-width="3"/><rect x="2" y="29" width="60" height="6" fill="white"/><circle cx="32" cy="32" r="10" fill="white" stroke="#CC0000" stroke-width="3"/><circle cx="32" cy="32" r="5" fill="#CC0000" stroke="white" stroke-width="2"/></svg>
       <div style="flex:1">
-        <div style="color:#fff;font-size:20px;font-weight:800">PokeBestBCN</div>
+        <div style="color:#fff;font-size:20px;font-weight:800">TrackDex</div>
         <div style="color:rgba(255,255,255,.8);font-size:12px;cursor:pointer;text-decoration:underline" id="trainer-name-bar" onclick="openPerfilScreen()">Selecciona tu entrenador</div>
       </div>
-      <button onclick="toggleDark()" id="dark-btn-home" style="background:none;border:none;cursor:pointer;font-size:22px;padding:4px" title="Modo oscuro">🌙</button>
       <button onclick="goProfiles()" style="background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);border-radius:50%;width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0" title="Cambiar usuario">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
       </button>
@@ -540,11 +554,11 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
         <button class="home-btn-small" onclick="openPokeparadas()" style="grid-column:1/-1;background:#fce4ec;border-color:#c2185b;color:#880e4f">
           🎁 Poképaradas!
         </button>
-        <button class="home-btn-small" onclick="openGoFest()" style="grid-column:1/-1;background:#e3f2fd;border-color:#1565c0;color:#0d47a1">
-          🏆 GoFest Legendary Tracker
+        <button class="home-btn-small" onclick="openTrackerHub()" style="grid-column:1/-1;background:#e3f2fd;border-color:#1565c0;color:#0d47a1">
+          🏆 Trackers
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.940
+          🆕 Novedades · v0.951
         </button>
       </div>
 
@@ -556,24 +570,84 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="main-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="backToHome()">←</button>
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#CC0000" stroke="white" stroke-width="1.5"/><rect x="2" y="10.5" width="20" height="3" fill="white"/><circle cx="12" cy="12" r="3.5" fill="white" stroke="#CC0000" stroke-width="1.5"/></svg>
-    <h1>PokeBestBCN</h1>
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7" stroke="white" stroke-width="2"/><line x1="12" y1="1.5" x2="12" y2="4.5" stroke="white" stroke-width="2"/><line x1="12" y1="19.5" x2="12" y2="22.5" stroke="white" stroke-width="2"/><line x1="1.5" y1="12" x2="4.5" y2="12" stroke="white" stroke-width="2"/><line x1="19.5" y1="12" x2="22.5" y2="12" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="2.4" fill="white"/></svg>
+    <h1 style="line-height:1.15">TrackDex<span style="display:block;font-size:11px;font-weight:400;opacity:.9">Entrenador: <b id="uname"></b></span></h1>
   </div>
   <div class="user-bar">
-    <div class="user-bar-txt">Entrenador: <b id="uname"></b></div>
-    <div class="user-bar-right">
-      <button class="guia-btn" id="dark-btn" onclick="toggleDark()" title="Modo oscuro">🌙</button>
-      
-    </div>
+    <button class="guia-btn" style="font-weight:800;color:#5e35b1;border-color:#5e35b1" onclick="openBestIvs()">📈 Mejores IVs</button>
+    <div class="user-bar-right"></div>
   </div>
   <div class="types-grid" id="types-grid"></div>
+</div>
+
+<!-- MEJORES IVS -->
+<div id="bestivs-screen" class="screen">
+  <div class="app-header" style="position:sticky;top:0;z-index:40">
+    <button class="back-btn" onclick="show('main-screen');renderMain()">←</button>
+    <h1 style="flex:1">📈 Mejores IVs</h1>
+    <button class="filtro-info-btn" onclick="toggleBivInfo(true)">i</button>
+  </div>
+  <div class="tabs" style="position:static">
+    <button class="tab active" id="biv-tab-raid" onclick="switchBivTab('raid')">⚔️ Incursión</button>
+    <button class="tab" id="biv-tab-dmax" onclick="switchBivTab('dmax')">⚡ Dinamax</button>
+  </div>
+  <div style="background:#fff;border-bottom:1px solid #e0e0e0;padding:8px 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <select id="biv-order" onchange="renderBestIvs()" style="padding:6px 10px;border-radius:8px;border:1.5px solid #5e35b1;font-size:12px;font-weight:700;color:#4527a0;background:#fff">
+        <option value="peores" selected>Peores primero</option>
+        <option value="mejores">Mejores primero</option>
+        <option value="sinivs">Sin IVs asignados</option>
+      </select>
+      <select id="biv-team" onchange="renderBestIvs()" style="padding:6px 10px;border-radius:8px;border:1.5px solid #5e35b1;font-size:12px;font-weight:700;color:#4527a0;background:#fff">
+        <option value="all">Todos</option>
+      </select>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+      <button onclick="toggleBivWeights(true)" style="padding:6px 12px;border-radius:8px;border:1.5px solid #5e35b1;font-size:12px;font-weight:700;color:#fff;background:#5e35b1;cursor:pointer">⚖️ Valores IVs</button>
+      <div id="biv-count" style="font-size:12px;font-weight:800;color:#555;padding-bottom:4px"></div>
+    </div>
+  </div>
+  <div id="biv-list" style="padding:12px;background:#f0f0f0;min-height:70vh"></div>
+  <div id="biv-weights-pop" onclick="toggleBivWeights(false)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:center;justify-content:center">
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:20px;max-width:340px;width:90%;max-height:80vh;overflow-y:auto">
+      <h3 style="margin:0 0 4px;font-size:16px;color:#4527a0">⚖️ Valores IVs</h3>
+      <p style="font-size:12px;color:#666;margin-bottom:12px">Ajusta el peso de cada IV para ordenar la lista.</p>
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <button onclick="setBivPreset('default')" style="flex:1;padding:8px;border:1.5px solid #5e35b1;background:#fff;color:#4527a0;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">Por defecto</button>
+        <button onclick="setBivPreset('extremo')" style="flex:1;padding:8px;border:1.5px solid #d32f2f;background:#fff;color:#d32f2f;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">Extremo</button>
+      </div>
+      <div style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#333;margin-bottom:4px"><span>⚔️ Ataque</span><span id="bivw-val-a">100</span></div>
+        <input id="bivw-a" type="range" min="-100" max="100" value="100" style="width:100%" oninput="bivWeightInput('a',this.value)">
+      </div>
+      <div style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#333;margin-bottom:4px"><span>🛡️ Defensa</span><span id="bivw-val-d">20</span></div>
+        <input id="bivw-d" type="range" min="-100" max="100" value="20" style="width:100%" oninput="bivWeightInput('d',this.value)">
+      </div>
+      <div style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#333;margin-bottom:4px"><span>❤️ Vida</span><span id="bivw-val-h">30</span></div>
+        <input id="bivw-h" type="range" min="-100" max="100" value="30" style="width:100%" oninput="bivWeightInput('h',this.value)">
+      </div>
+      <button onclick="toggleBivWeights(false)" style="width:100%;padding:10px;background:#5e35b1;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">Cerrar</button>
+    </div>
+  </div>
+  <div id="biv-info-pop" onclick="toggleBivInfo(false)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:center;justify-content:center">
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:20px;max-width:340px;width:90%;max-height:80vh;overflow-y:auto">
+      <h3 style="margin:0 0 10px;font-size:16px;color:#4527a0">📈 ¿Cómo se ordena esta lista?</h3>
+      <p style="font-size:12.5px;line-height:1.6;color:#333;margin-bottom:10px">Cada Pokémon obtenido se puntúa con sus IVs ponderados por su importancia en raids:<br><b>Ataque ×100 · Defensa ×20 · Vida ×30</b> (ajustables con el botón "⚖️ Valores IVs")</p>
+      <p style="font-size:12px;line-height:1.6;color:#555;margin-bottom:8px"><b>⚔️ Ataque (100):</b> el rey absoluto. Un punto extra puede alcanzar un "breakpoint" (umbral donde el daño redondea hacia arriba), acumulando una diferencia masiva durante toda la batalla.</p>
+      <p style="font-size:12px;line-height:1.6;color:#555;margin-bottom:8px"><b>🛡️ Defensa (20):</b> doble filo — a menos daño recibido, más lento cargas energía. A veces un IV bajo de defensa es imperceptible o incluso óptimo.</p>
+      <p style="font-size:12px;line-height:1.6;color:#555;margin-bottom:8px"><b>❤️ Vida (35):</b> recibir daño genera energía para tu cargado. Más vida = aguantar un golpe más y soltar un último ataque cargado.</p>
+      <p style="font-size:12px;line-height:1.6;color:#333;margin-bottom:12px">En resumen: un 15/10/10 (At/Def/Vida) es mucho más útil que un 10/15/15. <b>Busca el 15 en Ataque por encima de todo.</b> Usa "Peores primero" para saber cuáles priorizar cambiar o subir (incluso con caramelos raros).</p>
+      <button onclick="toggleBivInfo(false)" style="width:100%;padding:10px;background:#5e35b1;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">Entendido</button>
+    </div>
+  </div>
 </div>
 
 <!-- DETAIL -->
 <div id="detail-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="goBack()">←</button>
-      <button class="guia-btn" id="dark-btn2" onclick="toggleDark()" title="Modo oscuro" style="font-size:14px;padding:4px 8px">🌙</button>
     <h1 id="detail-title"></h1>
   </div>
   <div class="tabs">
@@ -868,7 +942,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     </div>
 
     <p style="font-size:13px;color:#444;line-height:1.6;margin-bottom:14px">
-      <b>PokeBestBCN</b> es un álbum personal para saber qué Pokémon tienes y cuáles te faltan de los <b>mejores atacantes por tipo</b> en incursiones. El objetivo es ayudarte a <b>invertir tus polvos de forma eficiente</b> y saber qué Pokémon vale la pena subir.
+      <b>TrackDex</b> es un álbum personal para saber qué Pokémon tienes y cuáles te faltan de los <b>mejores atacantes por tipo</b> en incursiones. El objetivo es ayudarte a <b>invertir tus polvos de forma eficiente</b> y saber qué Pokémon vale la pena subir.
     </p>
 
     <div style="border-top:1px solid #eee;padding-top:12px;margin-bottom:4px">
@@ -1154,11 +1228,19 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <p style="font-size:13px;font-weight:800;color:#37474f;margin-bottom:8px">ℹ️ Aplicación</p>
       <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="openInfo()">ℹ️ Info App</button>
       <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="restoreReads()">♻️ Restaurar información leída</button>
+      <button class="perfil-danger-btn" style="color:#5e35b1;border-color:#5e35b1" onclick="renameTeamPrompt()">✏️ Cambiar nombres de tus equipos</button>
+      <button class="perfil-danger-btn" style="color:#00695c;border-color:#00838f" onclick="changePasswordPrompt()">🔑 Cambiar contraseña</button>
+      <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="openPrivacy()">🔒 Política de privacidad</button>
+      <button class="perfil-danger-btn" id="perfil-backup" style="display:none;color:#1565c0;border-color:#1565c0" onclick="exportBackup()">⬇️ Copia de seguridad (admin)</button>
+      <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="showToast('🌙 Modo oscuro: en desarrollo, próximamente')">🌙 Modo oscuro (próximamente)</button>
     </div>
     <div class="perfil-card">
       <p style="font-size:13px;font-weight:800;color:#c62828;margin-bottom:10px">⚠️ Zona de peligro</p>
+      <button class="perfil-danger-btn" onclick="deleteTeamPrompt()">🗑️ Borrar un equipo de Pokémon (2, 3 o 4)</button>
       <button class="perfil-danger-btn" onclick="confirmDeleteRaidTeam()">🗑️ Borrar todos tus Pokémon de Incursión</button>
       <button class="perfil-danger-btn" onclick="confirmDeleteDmaxTeam()">🗑️ Borrar todos tus Pokémon Dynamax</button>
+      <button class="perfil-danger-btn" onclick="deleteAccountPrompt()">☠️ Borrar mi cuenta y todos mis datos</button>
+      <button class="perfil-danger-btn" id="perfil-del-community" style="display:none;background:#c62828;color:#fff" onclick="deleteCurrentCommunity()">💥 Borrar esta comunidad (eres el creador)</button>
     </div>
   </div>
 </div>
@@ -1170,10 +1252,124 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.940</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.951</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.940 · actual</span><span class="nov-version-tag">Correcciones varias + Perfil</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.951 · actual</span><span class="nov-version-tag">Identidad TrackDex</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🎯</span><span>Nuevo icono propio de TrackDex (visor de rastreo en violeta) para la app instalada, y nuevo logo en la cabecera. Reinstala el acceso directo para ver el icono nuevo.</span></div>
+        <div class="nov-item"><span>💾</span><span>Copia de seguridad completa de la base de datos descargable en un clic (solo administrador, desde Perfil).</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.950</span><span class="nov-version-tag">Privacidad y cuentas</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🔒</span><span>Política de privacidad disponible en la pantalla de acceso y en Perfil, con el descargo legal de la app.</span></div>
+        <div class="nov-item"><span>☠️</span><span>Nueva opción en Perfil para borrar tu cuenta y todos tus datos de forma permanente (perfiles, equipos y membresías en todas las comunidades).</span></div>
+        <div class="nov-item"><span>🔑</span><span>Cambiar contraseña desde Perfil y botón 👁️ para mostrar/ocultar la contraseña en el acceso y el registro.</span></div>
+        <div class="nov-item"><span>🛡️</span><span>Reglas de seguridad del servidor: solo miembros de una comunidad pueden ver y editar sus datos, y solo el creador (o el admin) puede borrarla.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.949</span><span class="nov-version-tag">Cuentas más seguras</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🔐</span><span>Las cuentas ahora usan el sistema seguro de Firebase Authentication: tu contraseña ya no se guarda ni viaja en texto plano. Tu cuenta actual se actualiza sola la primera vez que entres (si tu contraseña tenía menos de 6 caracteres, te pedirá una nueva).</span></div>
+        <div class="nov-item"><span>🏷️</span><span>Este es el primer paso del plan para abrir TrackDex al público.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.948</span><span class="nov-version-tag">Mejores IVs</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>📈</span><span>Nueva pantalla "Mejores IVs" (botón en Mis Pokémon): todos tus Pokémon obtenidos de todos los equipos en una lista con sus IVs a la vista, coloreados por tipo, para ver de un vistazo cuáles priorizar cambiar o subir (incluso con caramelos raros).</span></div>
+        <div class="nov-item"><span>🧮</span><span>Orden por importancia en raids: Ataque ×100, Vida ×35, Defensa ×20 ("Peores primero" por defecto; también "Mejores" y "Sin IVs asignados"). Botón ℹ️ con la explicación. Filtro por equipo y pestañas Incursión/Dinamax.</span></div>
+        <div class="nov-item"><span>👻</span><span>Los obtenidos sin IVs asignados (0/0/0) aparecen desvanecidos al final, ordenados por tipo. Tocar la imagen amplía con su cadena evolutiva; tocar la carta la despliega para asignar IVs ahí mismo.</span></div>
+        <div class="nov-item"><span>⚡</span><span>Las cartas Dynamax de Mis Pokémon ahora también tienen sliders de IVs.</span></div>
+        <div class="nov-item"><span>🎨</span><span>El nombre del entrenador sube a la cabecera roja de Mis Pokémon; su antiguo sitio lo ocupa el botón "Mejores IVs".</span></div>
+        <div class="nov-item"><span>✏️</span><span>Perfil: nueva opción para cambiar el nombre de tus equipos (2–4) y, en la zona de peligro, borrar un equipo entero. El Equipo 1 (Deseado) nunca se puede borrar; los Pokémon compartidos con otros equipos se conservan.</span></div>
+        <div class="nov-item"><span>📌</span><span>Mejores IVs: la cabecera con el botón de volver queda fija al hacer scroll, y las explicaciones del botón ℹ️ siguen el orden real de los IVs (Ataque · Defensa · Vida).</span></div>
+        <div class="nov-item"><span>🔍</span><span>Pokémon Objetivo: tocar la imagen dentro del popup de caramelos la amplía con su cadena evolutiva.</span></div>
+        <div class="nov-item"><span>🌙</span><span>Modo oscuro retirado temporalmente (quedaba a medias en varias pantallas); el botón queda en Perfil a la espera de desarrollarlo bien.</span></div>
+        <div class="nov-item"><span>🏷️</span><span>La app pasa a llamarse <b>TrackDex</b>. Mismo enlace, mismos datos — si tienes el icono instalado, reinstálalo para ver el nombre nuevo.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.947</span><span class="nov-version-tag">Equipos múltiples</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>⚔️</span><span>Equipos múltiples en "Mis Pokémon" (Incursión y Dynamax): botones 1, 2… y "+" para crear hasta 4 equipos por entrenador, con nombre propio. El Equipo 1 es siempre el Deseado. "En propiedad" cuenta el equipo actual.</span></div>
+        <div class="nov-item"><span>🔗</span><span>Si añades un Pokémon que ya está en otro equipo, se comparte el mismo registro: IVs, "obtenido" y "al máximo" comunes. Quitarlo de un equipo no lo borra de los demás.</span></div>
+        <div class="nov-item"><span>🎯</span><span>Pokémon Objetivo: nuevos botones "Todos" (por defecto), "Solo Deseados" y desplegable "Elige…" con tus equipos con nombre, para calcular los objetivos y filtros según el equipo elegido.</span></div>
+        <div class="nov-item"><span>🏘️</span><span>El creador de una comunidad ahora puede borrarla (desde su Perfil o desde la lista de comunidades), además del admin.</span></div>
+        <div class="nov-item"><span>🤝</span><span>El selector "Comerciando con…" del filtro Viernes ya solo muestra miembros reales de la comunidad (fuera cuentas huérfanas con ids raros).</span></div>
+        <div class="nov-item"><span>🧹</span><span>Eliminado el "&dynamax" automático del filtro Viernes: Pokémon GO no soporta mezclar "&" dentro de un término con comas, por lo que rompía el resto del filtro. El botón "Quitar dinamax" (global) sigue disponible.</span></div>
+        <div class="nov-item"><span>💡</span><span>Dos consejos nuevos en la ventana de consejos del inicio.</span></div>
+        <div class="nov-item"><span>🙈</span><span>Ranking DPS: botones fijos "Ocultar: Megas / Oscuros / Legacy" para filtrar el ranking a tu gusto (se recuerda tu elección). Sustituyen al aviso que solo aparecía si ya tenías un Mega.</span></div>
+        <div class="nov-item"><span>🛠️</span><span>Con el Modo Desarrollador de Megas activo, tocar las imágenes vuelve a editar la rotación en lugar de abrir el popup de imagen.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.946</span><span class="nov-version-tag">Pikachu Celebration 2</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>⚡</span><span>Tracker Pikachu Skins: añadidas las 8 skins salvajes de Celebration 2 (15–18 jul): Holiday Attire, Santa Hat, Polka Dot Party Hat, Pyrite Crown, Winter Carnival, Winter Beanie, Flying (globos multicolor) y Quartz Crown. Los 3 Dapper salen en ambas celebrations.</span></div>
+        <div class="nov-item"><span>📋</span><span>Añadida la investigación de campo de Celebration 2: gorros de Akari, Brendan, Dawn, Ethan, Lucas y Rei (Captura 10 Pikachu) y Gracidea Pikachu (Captura 15). May's Bow repite en ambas celebrations.</span></div>
+        <div class="nov-item"><span>🎫</span><span>Nueva sección GO Pass con sus skins exclusivas: Shaymin Scarf (r27), Pop Star (r29) y Rock Star (r30). Meloetta Hat y Gracidea también salen en el pass (r19 y r23).</span></div>
+        <div class="nov-item"><span>🖼️</span><span>Todas las skins con imagen, incluida Holiday Attire.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.945</span><span class="nov-version-tag">Rankings actualizados + menús fijos</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>📊</span><span>Rankings DPS actualizados: los 17 tipos con los 50 mejores de cada uno (movesets, eDPS y orden nuevos).</span></div>
+        <div class="nov-item"><span>⭐</span><span>Marcas Legacy revisadas y reasignadas: ataques de Community Day y MT Élite (Blast Burn, Hydro Cannon, Frenzy Plant, Psystrike, Meteor Beam, Sacred Sword…) correctamente etiquetados en las 850 entradas.</span></div>
+        <div class="nov-item"><span>📌</span><span>En "Mis Pokémon", las pestañas Mis Pokémon/Ranking DPS, la tira de tipos e Incursión/Dynamax ahora quedan fijas arriba al hacer scroll, igual que en Rankings.</span></div>
+        <div class="nov-item"><span>🔄</span><span>Los Pokémon guardados en "Mis Pokémon" ahora se actualizan solos cuando cambian los rankings: moveset, DPS y marcas Legacy siempre al día, conservando tus IVs, "obtenido" y "al máximo". Ya no hace falta quitarlos y volverlos a añadir.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.944</span><span class="nov-version-tag">Correcciones de datos</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🥊</span><span>Blaziken (Lucha): Aura Sphere ya no aparece marcado como Legacy (normal, Shadow y Mega).</span></div>
+        <div class="nov-item"><span>⚡</span><span>La familia de Elekid (Elekid, Electabuzz, Electivire) ahora cuenta como Dynamax en el filtro inteligente.</span></div>
+        <div class="nov-item"><span>🗑️</span><span>Eliminado WCS Shirt Pikachu del tracker de Pikachu Skins: no existe en este evento.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.943</span><span class="nov-version-tag">Popup con cadena evolutiva</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🔍</span><span>Toca la imagen de cualquier Pokémon en la app (rankings, equipos, megas, legacy…) para verlo en grande.</span></div>
+        <div class="nov-item"><span>🧬</span><span>Si tiene evoluciones anteriores, aparecen en pequeño encima; tócalas para ampliarlas e intercambiar cuál se ve en grande.</span></div>
+        <div class="nov-item"><span>🖼️</span><span>El tracker de Pikachu Skins estrena las imágenes reales de las 26 skins, también en el popup.</span></div>
+        <div class="nov-item"><span>ℹ️</span><span>Pokémon Objetivo mantiene su ventana propia (sin cambios). Las cadenas evolutivas se consultan a PokeAPI y se guardan en caché en tu dispositivo.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.942</span><span class="nov-version-tag">Etiquetas rápidas + popup</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🏷️</span><span>Nuevo sistema de marcado en los trackers: barra fija arriba con las etiquetas Conseguido, Later, Prioritario y No Obtenible. Selecciona una y toca los Pokémon para marcarlos (tocar de nuevo la quita).</span></div>
+        <div class="nov-item"><span>🔍</span><span>Sin etiqueta seleccionada, tocar un Pokémon abre su imagen en grande.</span></div>
+        <div class="nov-item"><span>⏳</span><span>El tracker de Legendarios estrena categoría "Later" y el de Pikachu la categoría "No obtenible".</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.941</span><span class="nov-version-tag">Hub de Trackers + Pikachu Skins</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🏆</span><span>Nuevo hub de Trackers: el botón "GoFest Legendary Tracker" ahora es "Trackers" y abre un menú con todos los trackers disponibles.</span></div>
+        <div class="nov-item"><span>⚡</span><span>Nuevo tracker "Pikachu Skins Event" (Celebration 1 · 13–15 jul): 26 skins de Pikachu agrupadas por método de obtención — Salvaje, Raids 1★ e Investigación de campo — con el método indicado en cada carta.</span></div>
+        <div class="nov-item"><span>📝</span><span>Cada tracker guarda su progreso por separado; el de Legendarios conserva todo lo que ya tenías marcado.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.940</span><span class="nov-version-tag">Correcciones varias + Perfil</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🐛</span><span>Corregido: el contador "Equipos por Tipos" sumaba el doble (los Pokémon Dynamax se contaban también como incursiones).</span></div>
         <div class="nov-item"><span>🐛</span><span>Corregido: el DPS mostrado en "Mis Pokémon" ya no se queda desactualizado tras una actualización de rankings — ahora lee siempre el valor actual.</span></div>
@@ -1395,11 +1591,18 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     </div>
   </div>
   <button onclick="openFiltro()" style="display:block;width:100%;padding:13px;background:#1565c0;color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.3px">🛠️ Crea tu filtro para Pokémon GO</button>
+  <div id="obj-team-bar" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:8px 14px;background:#fff;border-bottom:1px solid #e0e0e0">
+    <button class="obj-team-btn on" id="objtm-all" onclick="setObjTeamMode('all')">Todos</button>
+    <button class="obj-team-btn" id="objtm-des" onclick="setObjTeamMode('des')">Solo Deseados</button>
+    <select id="objtm-sel" onchange="if(this.value)setObjTeamMode(this.value)" style="padding:5px 8px;border-radius:20px;border:1.5px solid #1565c0;font-size:12px;font-weight:700;color:#1565c0;background:#fff">
+      <option value="">Elige…</option>
+    </select>
+  </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch"><div class="obj-grid" id="obj-grid"></div></div>
   <!-- POPUP POKEMON OBJETIVO -->
   <div id="obj-popup" onclick="closeObjPopup()" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.65);z-index:400;align-items:center;justify-content:center">
     <div onclick="event.stopPropagation()" style="background:#fff;border-radius:20px;padding:24px 20px;max-width:280px;width:90%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.35)">
-      <img id="obj-popup-img" src="" style="width:110px;height:110px;object-fit:contain;cursor:pointer" onclick="closeObjPopup()">
+      <img id="obj-popup-img" src="" style="width:110px;height:110px;object-fit:contain;cursor:pointer" title="Ver en grande" onclick="event.stopPropagation();objZoomCur()">
       <div id="obj-popup-name" style="font-size:18px;font-weight:800;color:#222;margin:8px 0 4px"></div>
       <div id="obj-popup-count" style="font-size:13px;color:#888;margin-bottom:12px"></div>
       <div style="background:#f5f5f5;border-radius:12px;padding:12px 14px;text-align:left;font-size:12px;line-height:1.9">
@@ -1512,19 +1715,29 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 #lt-root .lt-foot{margin-top:22px;padding-top:12px;border-top:1px solid #262b4d;display:flex;justify-content:space-between;align-items:center;font-size:.72rem;color:var(--ltmuted);gap:10px;}
 #lt-root .lt-foot button{background:none;border:1px solid #2e3563;color:var(--ltmuted);border-radius:8px;padding:5px 10px;font-size:.72rem;cursor:pointer;}
 #lt-root .lt-hidden{display:none!important;}
+#lt-root .lt-sticky{position:sticky;top:0;z-index:30;background:var(--ltbg);padding:8px 0;margin-bottom:0;}
+#lt-root .lt-modebtn.lt-mGot.active{background:var(--ltgot);color:#052e13;}
+#lt-root .lt-modebtn.lt-mLater.active{background:#f59e0b;color:#3b2503;}
+#lt-root .lt-modebtn.lt-mPrio.active{background:var(--ltprio);}
+#lt-root .lt-card.lt-later{background:#2b2213;border-color:#f59e0b;}
+#lt-root .lt-card.lt-later .lt-pill{background:#f59e0b;color:#3b2503;}
+#lt-root .lt-card.lt-later::after{content:'⏳';position:absolute;top:6px;right:8px;font-size:.75rem;}
 </style>
 <div id="legendary-screen" class="screen">
   <div class="app-header">
-    <button class="back-btn" onclick="backToHome()">←</button>
+    <button class="back-btn" onclick="openTrackerHub()">←</button>
     <h1>🏆 GoFest Legendary Tracker</h1>
   </div>
   <div id="lt-root">
     <div class="lt-bar"><div id="lt-prog"></div></div>
     <div class="lt-stats" id="lt-stats"></div>
-    <div class="lt-modes">
-      <button class="lt-modebtn lt-mUnob" data-mode="unob">🚫 No conseguibles</button>
-      <button class="lt-modebtn lt-mSat" data-mode="sabado">📅 Sábado</button>
-      <button class="lt-modebtn lt-mSun" data-mode="domingo">📅 Domingo</button>
+    <div class="lt-modes lt-sticky">
+      <button class="lt-modebtn lt-mGot" data-mode="got">✅ Conseguido</button>
+      <button class="lt-modebtn lt-mLater" data-mode="later">⏳ Later</button>
+      <button class="lt-modebtn lt-mPrio" data-mode="prio">★ Prioritario</button>
+      <button class="lt-modebtn lt-mUnob" data-mode="unob">🚫 No Obtenible</button>
+      <button class="lt-modebtn lt-mSat" data-mode="sabado">📅 Sáb</button>
+      <button class="lt-modebtn lt-mSun" data-mode="domingo">📅 Dom</button>
       <input id="lt-search" type="search" placeholder="Buscar…">
     </div>
     <div class="lt-modehint" id="lt-modehint"></div>
@@ -1533,6 +1746,114 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
   </div>
 </div>
 <!-- ═══════════ END GOFEST TRACKER ═══════════ -->
+
+<!-- ═══════════ TRACKER HUB ═══════════ -->
+<div id="tracker-hub-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="backToHome()">←</button>
+    <h1>🏆 Trackers</h1>
+  </div>
+  <div style="padding:18px 16px;display:flex;flex-direction:column;gap:12px;max-width:520px;margin:0 auto">
+    <button class="home-btn-small" onclick="openGoFest()" style="background:#e3f2fd;border-color:#1565c0;color:#0d47a1;padding:16px;font-size:15px;text-align:left">
+      🐉 Legendarios<br><span style="font-size:11px;font-weight:400;opacity:.75">Raids 5★ — GO Fest y repeticiones</span>
+    </button>
+    <button class="home-btn-small" onclick="openPikaSkins()" style="background:#fffde7;border-color:#f9a825;color:#795500;padding:16px;font-size:15px;text-align:left">
+      ⚡ Pikachu Skins Event<br><span style="font-size:11px;font-weight:400;opacity:.75">Special Anniversary Celebration · 13–20 jul · 3 celebrations</span>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════ PIKACHU SKINS TRACKER ═══════════ -->
+<style>
+#pk-root{--pkbg:#0f1220;--pkcard:#1a1e33;--pkcard2:#22274a;--pktext:#eef0ff;--pkmuted:#8b90b5;--pkpend:#3a4066;--pkgot:#22c55e;--pklater:#f59e0b;--pkprio:#e11d48;background:var(--pkbg);color:var(--pktext);min-height:100%;padding:12px 14px 40px;}
+#pk-root .pk-bar{height:8px;background:var(--pkpend);border-radius:99px;overflow:hidden;margin-bottom:8px;}
+#pk-root .pk-bar>div{height:100%;background:linear-gradient(90deg,#16a34a,#22c55e);width:0;transition:width .3s;}
+#pk-root .pk-stats{font-size:.8rem;color:var(--pkmuted);margin-bottom:8px;}
+#pk-root .pk-stats b{color:var(--pktext);}
+#pk-root .pk-modes{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:6px;}
+#pk-root #pk-search{flex:1;min-width:120px;background:var(--pkcard);border:1px solid #2e3563;border-radius:99px;padding:7px 12px;color:var(--pktext);font-size:.85rem;outline:none;}
+#pk-root .pk-hint{font-size:.72rem;color:var(--pkmuted);margin-bottom:6px;}
+#pk-root h2{font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;color:var(--pkmuted);margin:18px 4px 8px;display:flex;align-items:center;gap:8px;}
+#pk-root h2 .pk-cnt{background:var(--pkcard2);border-radius:99px;padding:1px 9px;font-size:.72rem;color:var(--pkmuted);}
+#pk-root .pk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;}
+#pk-root .pk-card{background:var(--pkcard);border:1px solid #2a2f56;border-radius:14px;padding:10px 8px 8px;text-align:center;cursor:pointer;user-select:none;position:relative;transition:transform .08s,border-color .2s,background .2s;}
+#pk-root .pk-card:active{transform:scale(.96);}
+#pk-root .pk-emo{font-size:2.2rem;line-height:56px;height:56px;display:block;}
+#pk-root .pk-nm{font-size:.8rem;font-weight:600;line-height:1.2;margin:2px 0;min-height:2.4em;display:flex;align-items:center;justify-content:center;color:var(--pktext);}
+#pk-root .pk-how{font-size:.63rem;color:var(--pkmuted);margin-bottom:6px;}
+#pk-root .pk-pill{display:inline-block;font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--pkpend);color:#c3c8ef;}
+#pk-root .pk-card.pk-got{background:#12291c;border-color:var(--pkgot);}
+#pk-root .pk-card.pk-got .pk-pill{background:var(--pkgot);color:#052e13;}
+#pk-root .pk-card.pk-got::after{content:'✓';position:absolute;top:6px;right:8px;color:var(--pkgot);font-weight:800;}
+#pk-root .pk-card.pk-later{background:#2b2213;border-color:var(--pklater);}
+#pk-root .pk-card.pk-later .pk-pill{background:var(--pklater);color:#3b2503;}
+#pk-root .pk-card.pk-later::after{content:'⏳';position:absolute;top:6px;right:8px;font-size:.75rem;}
+#pk-root .pk-card.pk-prio{background:#2d1220;border-color:var(--pkprio);}
+#pk-root .pk-card.pk-prio .pk-pill{background:var(--pkprio);color:#fff;}
+#pk-root .pk-card.pk-prio::after{content:'★';position:absolute;top:6px;right:8px;color:var(--pkprio);}
+#pk-root .pk-empty{color:var(--pkmuted);text-align:center;padding:14px 0;font-size:.85rem;}
+#pk-root .pk-foot{margin-top:22px;padding-top:12px;border-top:1px solid #262b4d;display:flex;justify-content:flex-end;}
+#pk-root .pk-foot button{background:none;border:1px solid #2e3563;color:var(--pkmuted);border-radius:8px;padding:5px 10px;font-size:.72rem;cursor:pointer;}
+#pk-root .pk-hidden{display:none!important;}
+#pk-root .pk-modebtn{border:1px solid #2e3563;background:var(--pkcard);color:var(--pkmuted);border-radius:99px;padding:7px 13px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .15s;}
+#pk-root .pk-modebtn.active{color:#fff;border-color:transparent;}
+#pk-root .pk-modebtn.pk-mGot.active{background:var(--pkgot);color:#052e13;}
+#pk-root .pk-modebtn.pk-mLater.active{background:var(--pklater);color:#3b2503;}
+#pk-root .pk-modebtn.pk-mPrio.active{background:var(--pkprio);}
+#pk-root .pk-modebtn.pk-mUnob.active{background:#4b5563;}
+#pk-root .pk-sticky{position:sticky;top:0;z-index:30;background:var(--pkbg);padding:8px 0;}
+#pk-root .pk-card.pk-unob{background:#20242e;border-color:#4b5563;opacity:.75;}
+#pk-root .pk-card.pk-unob .pk-pill{background:#4b5563;color:#e5e7eb;}
+#pk-root .pk-card.pk-unob::after{content:'🚫';position:absolute;top:6px;right:8px;font-size:.75rem;}
+#pk-root .pk-card img{width:72px;height:72px;object-fit:contain;pointer-events:none;}
+</style>
+<div id="pikachu-screen" class="screen">
+  <div class="app-header">
+    <button class="back-btn" onclick="openTrackerHub()">←</button>
+    <h1>⚡ Pikachu Skins Event</h1>
+  </div>
+  <div id="pk-root">
+    <div class="pk-bar"><div id="pk-prog"></div></div>
+    <div class="pk-stats" id="pk-stats"></div>
+    <div class="pk-modes pk-sticky">
+      <button class="pk-modebtn pk-mGot" data-mode="got">✅ Conseguido</button>
+      <button class="pk-modebtn pk-mLater" data-mode="later">⏳ Later</button>
+      <button class="pk-modebtn pk-mPrio" data-mode="prio">★ Prioritario</button>
+      <button class="pk-modebtn pk-mUnob" data-mode="unob">🚫 No Obtenible</button>
+      <input id="pk-search" type="search" placeholder="Buscar…">
+    </div>
+    <div class="pk-hint" id="pk-hint"></div>
+    <div id="pk-main"></div>
+    <div class="pk-foot"><button id="pk-reset">Reiniciar</button></div>
+  </div>
+</div>
+<!-- Política de privacidad -->
+<div id="privacy-pop" onclick="closePrivacy()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:600;align-items:center;justify-content:center">
+  <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:20px;max-width:420px;width:92%;max-height:85vh;overflow-y:auto">
+    <h3 style="margin:0 0 10px;font-size:16px;color:#222">🔒 Política de privacidad — TrackDex</h3>
+    <div style="font-size:12px;line-height:1.65;color:#444">
+      <p style="margin-bottom:8px"><b>Responsable:</b> el desarrollador de TrackDex. Contacto: <a href="mailto:xelark92@gmail.com">xelark92@gmail.com</a>.</p>
+      <p style="margin-bottom:8px"><b>Qué datos guardamos:</b> tu nombre de usuario, tu alias en cada comunidad y los datos de juego que tú introduces (equipos, Pokémon, IVs, progreso de caramelos). Tu contraseña la gestiona Firebase Authentication (Google) de forma cifrada; nosotros nunca la vemos ni la almacenamos. No pedimos email real, nombre, ubicación ni ningún otro dato personal.</p>
+      <p style="margin-bottom:8px"><b>Para qué:</b> exclusivamente para que la app funcione — sincronizar tus equipos entre dispositivos y compartirlos con tu comunidad. No hay publicidad, no se venden ni ceden datos a terceros, no hay analítica comercial.</p>
+      <p style="margin-bottom:8px"><b>Dónde:</b> en Firebase (Google Cloud), que actúa como encargado del tratamiento conforme a sus términos y al RGPD.</p>
+      <p style="margin-bottom:8px"><b>Quién ve tus datos:</b> los miembros de las comunidades a las que te unes pueden ver tu alias y tus equipos (es la función de la app). Nadie más.</p>
+      <p style="margin-bottom:8px"><b>Tus derechos:</b> puedes cambiar tu contraseña y borrar tu cuenta con todos tus datos en cualquier momento desde Perfil → "Borrar mi cuenta". Para cualquier otra petición (acceso, rectificación), escríbenos al contacto de arriba.</p>
+      <p style="margin-bottom:0;color:#888;font-size:11px">TrackDex es una aplicación de fans sin ánimo de lucro, no afiliada a Nintendo, Niantic, The Pokémon Company ni Game Freak. Pokémon y todos los nombres e imágenes relacionados son marcas registradas de sus respectivos propietarios y se usan con fines informativos al amparo del uso legítimo.</p>
+    </div>
+    <button onclick="closePrivacy()" style="width:100%;padding:10px;background:#5e35b1;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer;margin-top:12px">Cerrar</button>
+  </div>
+</div>
+<!-- Popup imagen grande (compartido por los trackers) -->
+<div id="poke-popup" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.78);align-items:center;justify-content:center;cursor:pointer">
+  <div id="poke-popup-card" style="background:#1a1e33;border:1px solid #2e3563;border-radius:18px;padding:16px 22px 20px;max-width:90vw;text-align:center;cursor:default">
+    <div id="poke-popup-chain" style="display:none;align-items:center;justify-content:center;gap:6px;margin-bottom:8px;min-height:64px;flex-wrap:wrap"></div>
+    <img id="poke-popup-img" style="width:min(65vw,300px);height:auto" alt="">
+    <div id="poke-popup-emo" style="font-size:6rem;line-height:1.2;display:none">⚡</div>
+    <div id="poke-popup-name" style="color:#eef0ff;font-weight:700;margin-top:10px;font-size:1rem"></div>
+    <div style="color:#8b90b5;font-size:.7rem;margin-top:4px">Toca fuera para cerrar</div>
+  </div>
+</div>
+<!-- ═══════════ END PIKACHU SKINS TRACKER ═══════════ -->
 <script>
 // ── FIREBASE SETUP ───────────────────────────────────────────────────────────
 const firebaseConfig = {
@@ -1611,7 +1932,7 @@ const RANKINGS={
   electric:[{n:'Zeraora',dps:23.37,fast:'Cambio Voltio',fastL:false,charge:'Puños Plasma',chargeL:true,img:'807'},{n:'Shadow Raikou',dps:22.91,fast:'Thunder Shock',fastL:false,charge:'Wild Charge',chargeL:false,img:'243'},{n:'Xurkitree',dps:22.15,fast:'Thunder Shock',fastL:false,charge:'Chispazo',chargeL:false,img:'796'},{n:'Mega Manectric',dps:21.77,fast:'Thunder Fang',fastL:false,charge:'Wild Charge',chargeL:false,img:'10055'},{n:'Zekrom',dps:21.65,fast:'Charge Beam',fastL:false,charge:'Wild Charge',chargeL:false,img:'644'},{n:'Shadow Zapdos',dps:21.55,fast:'Thunder Shock',fastL:false,charge:'Thunderbolt',chargeL:false,img:'145'},{n:'Shadow Electivire',dps:20.98,fast:'Thunder Shock',fastL:false,charge:'Wild Charge',chargeL:false,img:'466'},{n:'Shadow Magnezone',dps:20.51,fast:'Cambio Voltio',fastL:false,charge:'Wild Charge',chargeL:false,img:'462'},{n:'Raikou',dps:19.89,fast:'Thunder Shock',fastL:false,charge:'Wild Charge',chargeL:false,img:'243'},{n:'Thundurus Therian',dps:19.74,fast:'Cambio Voltio',fastL:false,charge:'Thunderbolt',chargeL:false,img:'10020'},{n:'Mega Ampharos',dps:19.3,fast:'Cambio Voltio',fastL:false,charge:'Puño Trueno',chargeL:false,img:'10045'},{n:'Shadow Thundurus Incarnate',dps:19.2,fast:'Thunder Shock',fastL:false,charge:'Puño Trueno',chargeL:false,img:'642'},{n:'Shadow Luxray',dps:18.93,fast:'Chispazo',fastL:false,charge:'Wild Charge',chargeL:false,img:'405'},{n:'Shadow Vikavolt',dps:18.93,fast:'Cambio Voltio',fastL:false,charge:'Chispazo',chargeL:false,img:'738'},{n:'Electivire',dps:18.92,fast:'Thunder Shock',fastL:false,charge:'Wild Charge',chargeL:false,img:'466'},{n:'Regieleki',dps:18.92,fast:'Thunder Shock',fastL:false,charge:'Thunder Cage',chargeL:false,img:'894'},{n:'Zapdos',dps:18.77,fast:'Thunder Shock',fastL:false,charge:'Thunderbolt',chargeL:false,img:'145'},{n:'Magnezone',dps:18.24,fast:'Cambio Voltio',fastL:false,charge:'Wild Charge',chargeL:false,img:'462'},{n:'Shadow Arcanine',dps:17.63,fast:'Thunder Fang',fastL:false,charge:'Wild Charge',chargeL:false,img:'59'},{n:'Luxray',dps:17.08,fast:'Chispazo',fastL:false,charge:'Wild Charge',chargeL:false,img:'405'},{n:'Tapu Koko',dps:16.91,fast:'Cambio Voltio',fastL:false,charge:'Thunderbolt',chargeL:false,img:'785'},{n:'Thundurus Incarnate',dps:16.89,fast:'Thunder Shock',fastL:false,charge:'Puño Trueno',chargeL:false,img:'642'},{n:'Vikavolt',dps:16.79,fast:'Cambio Voltio',fastL:false,charge:'Chispazo',chargeL:false,img:'738'},{n:'Shadow Regigigas',dps:16.67,fast:'Hidden Power Electric',fastL:false,charge:'Thunder',chargeL:false,img:'486'},{n:'Alolan Golem',dps:16.63,fast:'Cambio Voltio',fastL:false,charge:'Wild Charge',chargeL:false,img:'10111'},{n:'Pawmot',dps:16.37,fast:'Thunder Shock',fastL:false,charge:'Wild Charge',chargeL:false,img:'923'},{n:'Jolteon',dps:16.04,fast:'Thunder Shock',fastL:false,charge:'Thunderbolt',chargeL:false,img:'135'},{n:'Shadow Manectric',dps:15.79,fast:'Thunder Fang',fastL:false,charge:'Wild Charge',chargeL:false,img:'310'},{n:'Shadow Zebstrika',dps:15.71,fast:'Chispazo',fastL:false,charge:'Wild Charge',chargeL:false,img:'523'},{n:'Shadow Ampharos',dps:15.66,fast:'Cambio Voltio',fastL:false,charge:'Puño Trueno',chargeL:false,img:'181'},{n:'Shadow Heliolisk',dps:15.58,fast:'Cambio Voltio',fastL:false,charge:'Thunderbolt',chargeL:false,img:'695'},{n:'Toxtricity Amped',dps:15.5,fast:'Chispazo',fastL:false,charge:'Wild Charge',chargeL:false,img:'849'},{n:'Toxtricity Low Key',dps:15.5,fast:'Chispazo',fastL:false,charge:'Wild Charge',chargeL:false,img:'10184'},{n:'Arcanine',dps:15.46,fast:'Thunder Fang',fastL:false,charge:'Wild Charge',chargeL:false,img:'59'},{n:'Shadow Magneton',dps:15.4,fast:'Thunder Shock',fastL:false,charge:'Chispazo',chargeL:false,img:'82'},{n:'Melmetal',dps:15.16,fast:'Thunder Shock',fastL:false,charge:'Thunderbolt',chargeL:false,img:'809'},{n:'Eelektross',dps:14.9,fast:'Cambio Voltio',fastL:false,charge:'Thunderbolt',chargeL:false,img:'604'},{n:'Manectric',dps:14.81,fast:'Thunder Fang',fastL:false,charge:'Wild Charge',chargeL:false,img:'310'},{n:'Mew',dps:14.73,fast:'Cambio Voltio',fastL:false,charge:'Wild Charge',chargeL:false,img:'151'},{n:'Regigigas',dps:14.66,fast:'Hidden Power Electric',fastL:false,charge:'Thunder',chargeL:false,img:'486'},{n:'Shadow Electabuzz',dps:14.59,fast:'Thunder Shock',fastL:false,charge:'Thunderbolt',chargeL:false,img:'125'},{n:'Zebstrika',dps:14.55,fast:'Chispazo',fastL:false,charge:'Wild Charge',chargeL:false,img:'523'},{n:'Alolan Raichu',dps:14.18,fast:'Thunder Shock',fastL:false,charge:'Wild Charge',chargeL:false,img:'10100'},{n:'Rotom Frost',dps:14.17,fast:'Thunder Shock',fastL:false,charge:'Thunderbolt',chargeL:false,img:'10010'},{n:'Rotom Heat',dps:14.17,fast:'Thunder Shock',fastL:false,charge:'Thunderbolt',chargeL:false,img:'10008'},{n:'Rotom Mow',dps:14.17,fast:'Thunder Shock',fastL:false,charge:'Thunderbolt',chargeL:false,img:'10012'},{n:'Rotom Wash',dps:14.17,fast:'Thunder Shock',fastL:false,charge:'Thunderbolt',chargeL:false,img:'10009'},{n:'Kilowattrel',dps:14.14,fast:'Thunder Shock',fastL:false,charge:'Thunderbolt',chargeL:false,img:'941'},{n:'Bellibolt',dps:14.14,fast:'Thunder Shock',fastL:false,charge:'Chispazo',chargeL:false,img:'939'},{n:'Heliolisk',dps:14.06,fast:'Cambio Voltio',fastL:false,charge:'Thunderbolt',chargeL:false,img:'695'}],
   grass:[{n:'Mega Sceptile',dps:25.55,fast:'Bullet Seed',fastL:false,charge:'Frenzy Plant',chargeL:true,img:'10065'},{n:'Mega Venusaur',dps:23.11,fast:'Vine Whip',fastL:false,charge:'Frenzy Plant',chargeL:true,img:'10033'},{n:'Shaymin Sky',dps:22.51,fast:'Magical Leaf',fastL:false,charge:'Grass Knot',chargeL:false,img:'10006'},{n:'Shadow Chesnaught',dps:22.33,fast:'Vine Whip',fastL:false,charge:'Frenzy Plant',chargeL:true,img:'652'},{n:'Zarude',dps:22.26,fast:'Vine Whip',fastL:false,charge:'Power Whip',chargeL:false,img:'893'},{n:'Kartana',dps:22.16,fast:'Razor Leaf',fastL:false,charge:'Leaf Blade',chargeL:false,img:'798'},{n:'Shadow Tangrowth',dps:21.71,fast:'Vine Whip',fastL:false,charge:'Power Whip',chargeL:false,img:'465'},{n:'Shadow Venusaur',dps:21.15,fast:'Vine Whip',fastL:false,charge:'Frenzy Plant',chargeL:true,img:'3'},{n:'Rillaboom',dps:21.1,fast:'Razor Leaf',fastL:false,charge:'Frenzy Plant',chargeL:true,img:'812'},{n:'Mega Victreebel',dps:21.05,fast:'Magical Leaf',fastL:false,charge:'Leaf Blade',chargeL:false,img:'71'},{n:'Shadow Torterra',dps:20.86,fast:'Razor Leaf',fastL:false,charge:'Frenzy Plant',chargeL:true,img:'389'},{n:'Shadow Sceptile',dps:19.36,fast:'Bullet Seed',fastL:false,charge:'Frenzy Plant',chargeL:true,img:'254'},{n:'Chesnaught',dps:19.33,fast:'Vine Whip',fastL:false,charge:'Frenzy Plant',chargeL:true,img:'652'},{n:'Tapu Bulu',dps:19.04,fast:'Bullet Seed',fastL:false,charge:'Grass Knot',chargeL:false,img:'787'},{n:'Shaymin',dps:19.02,fast:'Magical Leaf',fastL:false,charge:'Grass Knot',chargeL:false,img:'492'},{n:'Meowscarada',dps:18.86,fast:'Leafage',fastL:false,charge:'Frenzy Plant',chargeL:true,img:'908'},{n:'Tangrowth',dps:18.8,fast:'Vine Whip',fastL:false,charge:'Power Whip',chargeL:false,img:'465'},{n:'Roserade',dps:18.68,fast:'Magical Leaf',fastL:false,charge:'Grass Knot',chargeL:false,img:'407'},{n:'Decidueye',dps:18.57,fast:'Magical Leaf',fastL:false,charge:'Frenzy Plant',chargeL:true,img:'724'},{n:'Venusaur',dps:18.5,fast:'Vine Whip',fastL:false,charge:'Frenzy Plant',chargeL:true,img:'3'},{n:'Shadow Meganium',dps:18.48,fast:'Vine Whip',fastL:false,charge:'Frenzy Plant',chargeL:true,img:'154'},{n:'Torterra',dps:18.32,fast:'Razor Leaf',fastL:false,charge:'Frenzy Plant',chargeL:true,img:'389'},{n:'Tsareena',dps:18.22,fast:'Magical Leaf',fastL:false,charge:'Grass Knot',chargeL:false,img:'763'},{n:'Shadow Alolan Exeggutor',dps:18.22,fast:'Bullet Seed',fastL:false,charge:'Seed Bomb',chargeL:false,img:'10114'},{n:'Shadow Exeggutor',dps:18.12,fast:'Bullet Seed',fastL:false,charge:'Seed Bomb',chargeL:false,img:'103'},{n:'Sceptile',dps:17.6,fast:'Bullet Seed',fastL:false,charge:'Frenzy Plant',chargeL:true,img:'254'},{n:'Shadow Serperior',dps:17.46,fast:'Vine Whip',fastL:false,charge:'Frenzy Plant',chargeL:true,img:'497'},{n:'Gogoat',dps:17.25,fast:'Vine Whip',fastL:false,charge:'Leaf Blade',chargeL:false,img:'673'},{n:'Celebi',dps:17.21,fast:'Magical Leaf',fastL:false,charge:'Leaf Storm',chargeL:false,img:'251'},{n:'Shadow Victreebel',dps:17.19,fast:'Magical Leaf',fastL:false,charge:'Leaf Blade',chargeL:false,img:'71'},{n:'Apex Shadow Ho-Oh',dps:17.02,fast:'Hidden Power Grass',fastL:false,charge:'Solar Beam',chargeL:true,img:'250'},{n:'Shadow Ho-Oh',dps:17.02,fast:'Hidden Power Grass',fastL:false,charge:'Solar Beam',chargeL:true,img:'250'},{n:'Mega Abomasnow',dps:16.87,fast:'Leafage',fastL:false,charge:'Energy Ball',chargeL:false,img:'10060'},{n:'Leafeon',dps:16.83,fast:'Razor Leaf',fastL:false,charge:'Leaf Blade',chargeL:false,img:'470'},{n:'Arboliva',dps:16.53,fast:'Magical Leaf',fastL:false,charge:'Seed Bomb',chargeL:false,img:'930'},{n:'Shadow Tangela',dps:16.48,fast:'Vine Whip',fastL:false,charge:'Grass Knot',chargeL:false,img:'114'},{n:'Shadow Shiftry',dps:16.32,fast:'Razor Leaf',fastL:false,charge:'Leaf Blade',chargeL:false,img:'275'},{n:'Meganium',dps:16.11,fast:'Vine Whip',fastL:false,charge:'Frenzy Plant',chargeL:true,img:'154'},{n:'Exeggutor',dps:16.11,fast:'Bullet Seed',fastL:false,charge:'Seed Bomb',chargeL:false,img:'103'},{n:'Alolan Exeggutor',dps:15.99,fast:'Bullet Seed',fastL:false,charge:'Seed Bomb',chargeL:false,img:'10114'},{n:'Hydrapple',dps:15.97,fast:'Bullet Seed',fastL:false,charge:'Seed Bomb',chargeL:false,img:'1019'},{n:'Simisage',dps:15.9,fast:'Vine Whip',fastL:false,charge:'Grass Knot',chargeL:false,img:'512'},{n:'Hisuian Decidueye',dps:15.9,fast:'Magical Leaf',fastL:false,charge:'Trailblaze',chargeL:false,img:'10244'},{n:'Leavanny',dps:15.65,fast:'Razor Leaf',fastL:false,charge:'Leaf Blade',chargeL:false,img:'542'},{n:'Shadow Bellossom',dps:15.59,fast:'Magical Leaf',fastL:false,charge:'Leaf Blade',chargeL:false,img:'182'},{n:'Breloom',dps:15.48,fast:'Bullet Seed',fastL:false,charge:'Grass Knot',chargeL:false,img:'286'},{n:'Victreebel',dps:15.41,fast:'Magical Leaf',fastL:false,charge:'Leaf Blade',chargeL:false,img:'71'},{n:'Serperior',dps:15.27,fast:'Vine Whip',fastL:false,charge:'Frenzy Plant',chargeL:true,img:'497'},{n:'Sinistcha',dps:15.01,fast:'Magical Leaf',fastL:false,charge:'Energy Ball',chargeL:false,img:'1013'},{n:'Sinistcha Masterpiece',dps:15.01,fast:'Magical Leaf',fastL:false,charge:'Energy Ball',chargeL:false,img:'1013'}],
   ice:[{n:'Kyurem White',dps:30.63,fast:'Ice Fang',fastL:false,charge:'Ice Burn',chargeL:true,img:'10023'},{n:'Shadow Mamoswine',dps:23.27,fast:'Powder Snow',fastL:false,charge:'Avalanche',chargeL:false,img:'473'},{n:'Baxcalibur',dps:21.34,fast:'Ice Fang',fastL:false,charge:'Avalanche',chargeL:false,img:'998'},{n:'Shadow Weavile',dps:20.97,fast:'Ice Shard',fastL:false,charge:'Triple Axel',chargeL:false,img:'461'},{n:'Mega Abomasnow',dps:20.93,fast:'Powder Snow',fastL:false,charge:'Weather Ball Ice',chargeL:false,img:'10060'},{n:'Mamoswine',dps:20.7,fast:'Powder Snow',fastL:false,charge:'Avalanche',chargeL:false,img:'473'},{n:'Shadow Aurorus',dps:20.65,fast:'Frost Breath',fastL:false,charge:'Weather Ball Ice',chargeL:false,img:'699'},{n:'Galarian Darmanitan Standard',dps:20.24,fast:'Ice Fang',fastL:false,charge:'Avalanche',chargeL:false,img:'10177'},{n:'Mega Glalie',dps:20.16,fast:'Frost Breath',fastL:false,charge:'Avalanche',chargeL:false,img:'10074'},{n:'Shadow Articuno',dps:19.77,fast:'Frost Breath',fastL:false,charge:'Triple Axel',chargeL:false,img:'144'},{n:'Cetitan',dps:19.42,fast:'Ice Shard',fastL:false,charge:'Avalanche',chargeL:false,img:'974'},{n:'Glaceon',dps:19.02,fast:'Frost Breath',fastL:false,charge:'Avalanche',chargeL:false,img:'471'},{n:'Weavile',dps:18.8,fast:'Ice Shard',fastL:false,charge:'Triple Axel',chargeL:false,img:'461'},{n:'Aurorus',dps:17.72,fast:'Frost Breath',fastL:false,charge:'Weather Ball Ice',chargeL:false,img:'699'},{n:'Shadow Walrein',dps:17.71,fast:'Frost Breath',fastL:false,charge:'Icicle Spear',chargeL:false,img:'365'},{n:'Avalugg',dps:17.56,fast:'Ice Fang',fastL:false,charge:'Avalanche',chargeL:false,img:'713'},{n:'Shadow Abomasnow',dps:17.46,fast:'Powder Snow',fastL:false,charge:'Weather Ball Ice',chargeL:false,img:'460'},{n:'Vanilluxe',dps:17.31,fast:'Frost Breath',fastL:false,charge:'Avalanche',chargeL:false,img:'584'},{n:'Mr. Rime',dps:17.3,fast:'Ice Shard',fastL:false,charge:'Triple Axel',chargeL:false,img:'866'},{n:'Shadow Regice',dps:17.09,fast:'Frost Breath',fastL:false,charge:'Blizzard',chargeL:false,img:'378'},{n:'Shadow Lapras',dps:17.0,fast:'Frost Breath',fastL:false,charge:'Ice Beam',chargeL:false,img:'131'},{n:'Shadow Cloyster',dps:16.98,fast:'Frost Breath',fastL:false,charge:'Avalanche',chargeL:false,img:'91'},{n:'Articuno',dps:16.91,fast:'Frost Breath',fastL:false,charge:'Triple Axel',chargeL:false,img:'144'},{n:'Shadow Piloswine',dps:16.74,fast:'Ice Shard',fastL:false,charge:'Avalanche',chargeL:false,img:'221'},{n:'Hisuian Avalugg',dps:16.33,fast:'Powder Snow',fastL:false,charge:'Blizzard',chargeL:false,img:'10243'},{n:'Cryogonal',dps:16.33,fast:'Frost Breath',fastL:false,charge:'Triple Axel',chargeL:false,img:'615'},{n:'Jynx',dps:16.13,fast:'Frost Breath',fastL:false,charge:'Avalanche',chargeL:false,img:'124'},{n:'Beartic',dps:16.13,fast:'Powder Snow',fastL:false,charge:'Ice Punch',chargeL:false,img:'614'},{n:'Frosmoth',dps:15.79,fast:'Powder Snow',fastL:false,charge:'Ice Beam',chargeL:false,img:'873'},{n:'Shadow Porygon Z',dps:15.6,fast:'Hidden Power Ice',fastL:false,charge:'Blizzard',chargeL:false,img:'474'},{n:'Abomasnow',dps:15.38,fast:'Powder Snow',fastL:false,charge:'Weather Ball Ice',chargeL:false,img:'460'},{n:'Shadow Feraligatr',dps:15.28,fast:'Ice Fang',fastL:false,charge:'Ice Beam',chargeL:true,img:'160'},{n:'Walrein',dps:15.23,fast:'Frost Breath',fastL:false,charge:'Icicle Spear',chargeL:false,img:'365'},{n:'Cloyster',dps:15.05,fast:'Frost Breath',fastL:false,charge:'Avalanche',chargeL:false,img:'91'},{n:'Piloswine',dps:15.0,fast:'Ice Shard',fastL:false,charge:'Avalanche',chargeL:false,img:'221'},{n:'Shadow Glalie',dps:14.98,fast:'Frost Breath',fastL:false,charge:'Avalanche',chargeL:false,img:'362'},{n:'Shadow Suicune',dps:14.79,fast:'Ice Fang',fastL:false,charge:'Ice Beam',chargeL:false,img:'245'},{n:'Regice',dps:14.75,fast:'Frost Breath',fastL:false,charge:'Blizzard',chargeL:false,img:'378'},{n:'Mew',dps:14.71,fast:'Frost Breath',fastL:false,charge:'Ice Beam',chargeL:false,img:'151'},{n:'Alolan Ninetales',dps:14.61,fast:'Powder Snow',fastL:false,charge:'Weather Ball Ice',chargeL:false,img:'10104'},{n:'Lapras',dps:14.55,fast:'Frost Breath',fastL:false,charge:'Ice Beam',chargeL:false,img:'131'},{n:'Porygon Z',dps:14.38,fast:'Hidden Power Ice',fastL:false,charge:'Blizzard',chargeL:false,img:'474'},{n:'Shadow Froslass',dps:14.12,fast:'Powder Snow',fastL:false,charge:'Triple Axel',chargeL:false,img:'478'},{n:'Shadow Sneasel',dps:13.97,fast:'Ice Shard',fastL:false,charge:'Triple Axel',chargeL:false,img:'215'},{n:'Shadow Starmie',dps:13.82,fast:'Hidden Power Ice',fastL:false,charge:'Ice Beam',chargeL:false,img:'121'},{n:'Arctibax',dps:13.45,fast:'Ice Fang',fastL:false,charge:'Avalanche',chargeL:false,img:'996'},{n:'Feraligatr',dps:13.36,fast:'Ice Fang',fastL:false,charge:'Ice Beam',chargeL:true,img:'160'},{n:'Glalie',dps:13.3,fast:'Frost Breath',fastL:false,charge:'Avalanche',chargeL:false,img:'362'},{n:'Sneasel',dps:13.11,fast:'Ice Shard',fastL:false,charge:'Triple Axel',chargeL:false,img:'215'},{n:'Froslass',dps:12.74,fast:'Powder Snow',fastL:false,charge:'Triple Axel',chargeL:false,img:'478'}],
-  fighting:[{n:'Mega Blaziken',dps:30.5,fast:'Maquinación',fastL:false,charge:'Aura Sphere',chargeL:true,img:'10050'},{n:'Mega Lucario',dps:30.34,fast:'Force Palm',fastL:true,charge:'Aura Sphere',chargeL:false,img:'10059'},{n:'Keldeo Resolute',dps:28.32,fast:'Low Kick',fastL:false,charge:'Secret Sword',chargeL:false,img:'10024'},{n:'Mega Heracross',dps:24.48,fast:'Maquinación',fastL:false,charge:'Upper Hand',chargeL:false,img:'10047'},{n:'Shadow Conkeldurr',dps:24.31,fast:'Force Palm',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'534'},{n:'Terrakion',dps:24.2,fast:'Double Kick',fastL:false,charge:'Sacred Sword',chargeL:false,img:'639'},{n:'Shadow Blaziken',dps:23.53,fast:'Maquinación',fastL:false,charge:'Aura Sphere',chargeL:true,img:'257'},{n:'Keldeo Ordinary',dps:22.95,fast:'Low Kick',fastL:false,charge:'Sacred Sword',chargeL:false,img:'647'},{n:'Lucario',dps:22.2,fast:'Force Palm',fastL:true,charge:'Aura Sphere',chargeL:false,img:'448'},{n:'Shadow Hariyama',dps:21.67,fast:'Force Palm',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'297'},{n:'Urshifu Rapid Strike',dps:21.55,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'10191'},{n:'Urshifu Single Strike',dps:21.55,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'892'},{n:'Shadow Machamp',dps:21.45,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'68'},{n:'Blaziken',dps:21.28,fast:'Maquinación',fastL:false,charge:'Aura Sphere',chargeL:true,img:'257'},{n:'Conkeldurr',dps:21.17,fast:'Force Palm',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'534'},{n:'Mega Gallade',dps:20.61,fast:'Low Kick',fastL:false,charge:'Close Combat',chargeL:false,img:'10068'},{n:'Mega Falinks',dps:20.18,fast:'Maquinación',fastL:false,charge:'Superpower',chargeL:false,img:'870'},{n:'Mega Alakazam',dps:20.07,fast:'Maquinación',fastL:false,charge:'Focus Blast',chargeL:false,img:'10037'},{n:'Shadow Bewear',dps:19.63,fast:'Low Kick',fastL:false,charge:'Superpower',chargeL:false,img:'760'},{n:'Mega Lopunny',dps:19.21,fast:'Double Kick',fastL:false,charge:'Focus Blast',chargeL:false,img:'10088'},{n:'Marshadow',dps:19.14,fast:'Maquinación',fastL:false,charge:'Close Combat',chargeL:false,img:'802'},{n:'Shadow Annihilape',dps:19.01,fast:'Maquinación',fastL:false,charge:'Close Combat',chargeL:false,img:'979'},{n:'Hariyama',dps:18.92,fast:'Force Palm',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'297'},{n:'Cobalion',dps:18.9,fast:'Double Kick',fastL:false,charge:'Sacred Sword',chargeL:false,img:'638'},{n:'Virizion',dps:18.9,fast:'Double Kick',fastL:false,charge:'Sacred Sword',chargeL:false,img:'640'},{n:'Machamp',dps:18.85,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'68'},{n:'Buzzwole',dps:18.8,fast:'Maquinación',fastL:false,charge:'Superpower',chargeL:false,img:'794'},{n:'Shadow Regigigas',dps:18.58,fast:'Hidden Power Fighting',fastL:false,charge:'Focus Blast',chargeL:false,img:'486'},{n:'Galarian Zapdos',dps:18.11,fast:'Maquinación',fastL:false,charge:'Close Combat',chargeL:false,img:'10170'},{n:'Shadow Poliwrath',dps:17.9,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'186'},{n:'Hawlucha',dps:17.78,fast:'Low Kick',fastL:false,charge:'Flying Press',chargeL:false,img:'701'},{n:'Togekiss',dps:17.71,fast:'Hidden Power Fighting',fastL:false,charge:'Aura Sphere',chargeL:false,img:'468'},{n:'Shadow Toxicroak',dps:17.6,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'454'},{n:'Shadow Chesnaught',dps:17.59,fast:'Low Kick',fastL:false,charge:'Superpower',chargeL:true,img:'652'},{n:'Mega Pinsir',dps:17.52,fast:'Rock Smash',fastL:false,charge:'Superpower',chargeL:false,img:'10040'},{n:'Breloom',dps:17.4,fast:'Force Palm',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'286'},{n:'Passimian',dps:17.3,fast:'Maquinación',fastL:false,charge:'Superpower',chargeL:false,img:'766'},{n:'Bewear',dps:17.12,fast:'Low Kick',fastL:false,charge:'Superpower',chargeL:false,img:'760'},{n:'Heracross',dps:16.93,fast:'Maquinación',fastL:false,charge:'Upper Hand',chargeL:false,img:'214'},{n:'Shadow Emboar',dps:16.75,fast:'Low Kick',fastL:false,charge:'Focus Blast',chargeL:true,img:'500'},{n:'Shadow Sneasler',dps:16.62,fast:'Rock Smash',fastL:false,charge:'Close Combat',chargeL:false,img:'903'},{n:'Annihilape',dps:16.58,fast:'Maquinación',fastL:false,charge:'Close Combat',chargeL:false,img:'979'},{n:'Regigigas',dps:16.46,fast:'Hidden Power Fighting',fastL:false,charge:'Focus Blast',chargeL:false,img:'486'},{n:'Shadow Sawk',dps:16.33,fast:'Low Kick',fastL:false,charge:'Brick Break',chargeL:false,img:'539'},{n:'Shadow Gallade',dps:16.28,fast:'Low Kick',fastL:false,charge:'Close Combat',chargeL:false,img:'475'},{n:'Toxicroak',dps:16.04,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'454'},{n:'Sirfetchd',dps:15.81,fast:'Maquinación',fastL:false,charge:'Close Combat',chargeL:false,img:'865'},{n:'Mienshao',dps:15.57,fast:'Force Palm',fastL:false,charge:'Brick Break',chargeL:false,img:'620'},{n:'Mega Medicham',dps:15.57,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'10054'},{n:'Poliwrath',dps:15.54,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'62'}],
+  fighting:[{n:'Mega Blaziken',dps:30.5,fast:'Maquinación',fastL:false,charge:'Aura Sphere',chargeL:false,img:'10050'},{n:'Mega Lucario',dps:30.34,fast:'Force Palm',fastL:true,charge:'Aura Sphere',chargeL:false,img:'10059'},{n:'Keldeo Resolute',dps:28.32,fast:'Low Kick',fastL:false,charge:'Secret Sword',chargeL:false,img:'10024'},{n:'Mega Heracross',dps:24.48,fast:'Maquinación',fastL:false,charge:'Upper Hand',chargeL:false,img:'10047'},{n:'Shadow Conkeldurr',dps:24.31,fast:'Force Palm',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'534'},{n:'Terrakion',dps:24.2,fast:'Double Kick',fastL:false,charge:'Sacred Sword',chargeL:false,img:'639'},{n:'Shadow Blaziken',dps:23.53,fast:'Maquinación',fastL:false,charge:'Aura Sphere',chargeL:false,img:'257'},{n:'Keldeo Ordinary',dps:22.95,fast:'Low Kick',fastL:false,charge:'Sacred Sword',chargeL:false,img:'647'},{n:'Lucario',dps:22.2,fast:'Force Palm',fastL:true,charge:'Aura Sphere',chargeL:false,img:'448'},{n:'Shadow Hariyama',dps:21.67,fast:'Force Palm',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'297'},{n:'Urshifu Rapid Strike',dps:21.55,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'10191'},{n:'Urshifu Single Strike',dps:21.55,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'892'},{n:'Shadow Machamp',dps:21.45,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'68'},{n:'Blaziken',dps:21.28,fast:'Maquinación',fastL:false,charge:'Aura Sphere',chargeL:false,img:'257'},{n:'Conkeldurr',dps:21.17,fast:'Force Palm',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'534'},{n:'Mega Gallade',dps:20.61,fast:'Low Kick',fastL:false,charge:'Close Combat',chargeL:false,img:'10068'},{n:'Mega Falinks',dps:20.18,fast:'Maquinación',fastL:false,charge:'Superpower',chargeL:false,img:'870'},{n:'Mega Alakazam',dps:20.07,fast:'Maquinación',fastL:false,charge:'Focus Blast',chargeL:false,img:'10037'},{n:'Shadow Bewear',dps:19.63,fast:'Low Kick',fastL:false,charge:'Superpower',chargeL:false,img:'760'},{n:'Mega Lopunny',dps:19.21,fast:'Double Kick',fastL:false,charge:'Focus Blast',chargeL:false,img:'10088'},{n:'Marshadow',dps:19.14,fast:'Maquinación',fastL:false,charge:'Close Combat',chargeL:false,img:'802'},{n:'Shadow Annihilape',dps:19.01,fast:'Maquinación',fastL:false,charge:'Close Combat',chargeL:false,img:'979'},{n:'Hariyama',dps:18.92,fast:'Force Palm',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'297'},{n:'Cobalion',dps:18.9,fast:'Double Kick',fastL:false,charge:'Sacred Sword',chargeL:false,img:'638'},{n:'Virizion',dps:18.9,fast:'Double Kick',fastL:false,charge:'Sacred Sword',chargeL:false,img:'640'},{n:'Machamp',dps:18.85,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'68'},{n:'Buzzwole',dps:18.8,fast:'Maquinación',fastL:false,charge:'Superpower',chargeL:false,img:'794'},{n:'Shadow Regigigas',dps:18.58,fast:'Hidden Power Fighting',fastL:false,charge:'Focus Blast',chargeL:false,img:'486'},{n:'Galarian Zapdos',dps:18.11,fast:'Maquinación',fastL:false,charge:'Close Combat',chargeL:false,img:'10170'},{n:'Shadow Poliwrath',dps:17.9,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'186'},{n:'Hawlucha',dps:17.78,fast:'Low Kick',fastL:false,charge:'Flying Press',chargeL:false,img:'701'},{n:'Togekiss',dps:17.71,fast:'Hidden Power Fighting',fastL:false,charge:'Aura Sphere',chargeL:false,img:'468'},{n:'Shadow Toxicroak',dps:17.6,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'454'},{n:'Shadow Chesnaught',dps:17.59,fast:'Low Kick',fastL:false,charge:'Superpower',chargeL:true,img:'652'},{n:'Mega Pinsir',dps:17.52,fast:'Rock Smash',fastL:false,charge:'Superpower',chargeL:false,img:'10040'},{n:'Breloom',dps:17.4,fast:'Force Palm',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'286'},{n:'Passimian',dps:17.3,fast:'Maquinación',fastL:false,charge:'Superpower',chargeL:false,img:'766'},{n:'Bewear',dps:17.12,fast:'Low Kick',fastL:false,charge:'Superpower',chargeL:false,img:'760'},{n:'Heracross',dps:16.93,fast:'Maquinación',fastL:false,charge:'Upper Hand',chargeL:false,img:'214'},{n:'Shadow Emboar',dps:16.75,fast:'Low Kick',fastL:false,charge:'Focus Blast',chargeL:true,img:'500'},{n:'Shadow Sneasler',dps:16.62,fast:'Rock Smash',fastL:false,charge:'Close Combat',chargeL:false,img:'903'},{n:'Annihilape',dps:16.58,fast:'Maquinación',fastL:false,charge:'Close Combat',chargeL:false,img:'979'},{n:'Regigigas',dps:16.46,fast:'Hidden Power Fighting',fastL:false,charge:'Focus Blast',chargeL:false,img:'486'},{n:'Shadow Sawk',dps:16.33,fast:'Low Kick',fastL:false,charge:'Brick Break',chargeL:false,img:'539'},{n:'Shadow Gallade',dps:16.28,fast:'Low Kick',fastL:false,charge:'Close Combat',chargeL:false,img:'475'},{n:'Toxicroak',dps:16.04,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'454'},{n:'Sirfetchd',dps:15.81,fast:'Maquinación',fastL:false,charge:'Close Combat',chargeL:false,img:'865'},{n:'Mienshao',dps:15.57,fast:'Force Palm',fastL:false,charge:'Brick Break',chargeL:false,img:'620'},{n:'Mega Medicham',dps:15.57,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'10054'},{n:'Poliwrath',dps:15.54,fast:'Maquinación',fastL:false,charge:'Dynamic Punch',chargeL:false,img:'62'}],
   poison:[{n:'Eternatus',dps:24.85,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'890'},{n:'Nihilego',dps:21.97,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'793'},{n:'Mega Beedrill',dps:21.36,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'10090'},{n:'Mega Victreebel',dps:20.38,fast:'Acid',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'71'},{n:'Naganadel',dps:20.03,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'804'},{n:'Roserade',dps:18.4,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'407'},{n:'Overqwil',dps:18.08,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'904'},{n:'Shadow Toxicroak',dps:17.64,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'454'},{n:'Shadow Vileplume',dps:17.12,fast:'Acid',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'45'},{n:'Shadow Scolipede',dps:17.05,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'545'},{n:'Shadow Skuntank',dps:17.02,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'435'},{n:'Shadow Alolan Muk',dps:16.94,fast:'Poison Jab',fastL:false,charge:'Gunk Shot',chargeL:false,img:'10113'},{n:'Shadow Muk',dps:16.94,fast:'Poison Jab',fastL:false,charge:'Gunk Shot',chargeL:false,img:'89'},{n:'Revavroom',dps:16.44,fast:'Poison Jab',fastL:false,charge:'Gunk Shot',chargeL:false,img:'966'},{n:'Shadow Victreebel',dps:16.42,fast:'Acid',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'71'},{n:'Toxicroak',dps:16.07,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'454'},{n:'Shadow Drapion',dps:15.68,fast:'Poison Sting',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'452'},{n:'Scolipede',dps:15.4,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'545'},{n:'Vileplume',dps:15.37,fast:'Acid',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'45'},{n:'Galarian Slowbro',dps:15.33,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'10165'},{n:'Skuntank',dps:15.22,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'435'},{n:'Muk',dps:15.04,fast:'Poison Jab',fastL:false,charge:'Gunk Shot',chargeL:false,img:'89'},{n:'Alolan Muk',dps:15.04,fast:'Poison Jab',fastL:false,charge:'Gunk Shot',chargeL:false,img:'10113'},{n:'Victreebel',dps:15.01,fast:'Acid',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'71'},{n:'Shadow Nidoking',dps:14.8,fast:'Poison Jab',fastL:false,charge:'Sludge Wave',chargeL:false,img:'34'},{n:'Grafaiai',dps:14.53,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'945'},{n:'Shadow Nidoqueen',dps:14.2,fast:'Poison Jab',fastL:false,charge:'Sludge Wave',chargeL:false,img:'31'},{n:'Drapion',dps:13.93,fast:'Poison Sting',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'452'},{n:'Dragalge',dps:13.77,fast:'Acid',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'691'},{n:'Hisuian Qwilfish',dps:13.64,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'10234'},{n:'Shadow Tentacruel',dps:13.62,fast:'Poison Jab',fastL:false,charge:'Sludge Wave',chargeL:false,img:'73'},{n:'Nidoking',dps:13.36,fast:'Poison Jab',fastL:false,charge:'Sludge Wave',chargeL:false,img:'34'},{n:'Salazzle',dps:13.03,fast:'Poison Jab',fastL:false,charge:'Sludge Wave',chargeL:false,img:'758'},{n:'Shadow Beedrill',dps:12.64,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'15'},{n:'Nidoqueen',dps:12.63,fast:'Poison Jab',fastL:false,charge:'Sludge Wave',chargeL:false,img:'31'},{n:'Galarian Slowking',dps:12.61,fast:'Acid',fastL:false,charge:'Sludge Wave',chargeL:false,img:'10172'},{n:'Tentacruel',dps:11.95,fast:'Poison Jab',fastL:false,charge:'Sludge Wave',chargeL:false,img:'73'},{n:'Beedrill',dps:11.9,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'15'},{n:'Roselia',dps:11.74,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'315'},{n:'Clodsire',dps:11.32,fast:'Poison Sting',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'980'},{n:'Toxtricity Amped',dps:11.27,fast:'Poison Jab',fastL:false,charge:'Acid Spray',chargeL:false,img:'849'},{n:'Toxtricity Low Key',dps:11.27,fast:'Poison Jab',fastL:false,charge:'Acid Spray',chargeL:false,img:'10184'},{n:'Seviper',dps:11.01,fast:'Poison Jab',fastL:false,charge:'Poison Fang',chargeL:false,img:'336'},{n:'Shadow Gloom',dps:10.88,fast:'Acid',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'44'},{n:'Poipole',dps:10.6,fast:'Poison Jab',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'803'},{n:'Shadow Arbok',dps:10.49,fast:'Acid',fastL:false,charge:'Gunk Shot',chargeL:false,img:'24'},{n:'Gloom',dps:10.23,fast:'Acid',fastL:false,charge:'Sludge Bomb',chargeL:false,img:'44'},{n:'Arbok',dps:9.97,fast:'Acid',fastL:false,charge:'Gunk Shot',chargeL:false,img:'24'},{n:'Shadow Qwilfish',dps:9.45,fast:'Poison Sting',fastL:false,charge:'Sludge Wave',chargeL:false,img:'211'},{n:'Ariados',dps:9.28,fast:'Poison Sting',fastL:false,charge:'Cross Poison',chargeL:false,img:'168'}],
   ground:[{n:'Primal Groudon',dps:28.5,fast:'Mud Shot',fastL:false,charge:'Precipice Blades',chargeL:true,img:'10078'},{n:'Mega Garchomp',dps:27.01,fast:'Mud Shot',fastL:false,charge:'Earth Power',chargeL:true,img:'10058'},{n:'Shadow Garchomp',dps:24.22,fast:'Mud Shot',fastL:false,charge:'Earth Power',chargeL:true,img:'445'},{n:'Shadow Groudon',dps:23.87,fast:'Mud Shot',fastL:false,charge:'Precipice Blades',chargeL:true,img:'383'},{n:'Shadow Rhyperior',dps:22.74,fast:'Mud Slap',fastL:false,charge:'Drill Run',chargeL:false,img:'464'},{n:'Shadow Landorus Incarnate',dps:22.44,fast:'Mud Shot',fastL:false,charge:'Earth Power',chargeL:false,img:'645'},{n:'Shadow Excadrill',dps:22.15,fast:'Mud Slap',fastL:false,charge:'Scorching Sands',chargeL:false,img:'530'},{n:'Landorus Therian',dps:21.63,fast:'Mud Shot',fastL:false,charge:'Sandsear Storm',chargeL:false,img:'10021'},{n:'Groudon',dps:20.94,fast:'Mud Shot',fastL:false,charge:'Precipice Blades',chargeL:true,img:'383'},{n:'Garchomp',dps:20.81,fast:'Mud Shot',fastL:false,charge:'Earth Power',chargeL:false,img:'445'},{n:'Shadow Mamoswine',dps:20.51,fast:'Mud Slap',fastL:false,charge:'High Horsepower',chargeL:false,img:'473'},{n:'Mega Swampert',dps:20.13,fast:'Mud Shot',fastL:false,charge:'Earthquake',chargeL:true,img:'10064'},{n:'Landorus Incarnate',dps:19.84,fast:'Mud Shot',fastL:false,charge:'Earth Power',chargeL:false,img:'645'},{n:'Excadrill',dps:19.81,fast:'Mud Slap',fastL:false,charge:'Scorching Sands',chargeL:false,img:'530'},{n:'Shadow Hippowdon',dps:19.71,fast:'Sand Attack',fastL:false,charge:'Earth Power',chargeL:false,img:'450'},{n:'Rhyperior',dps:19.48,fast:'Mud Slap',fastL:false,charge:'Drill Run',chargeL:false,img:'464'},{n:'Shadow Golurk',dps:19.21,fast:'Mud Slap',fastL:false,charge:'Earth Power',chargeL:false,img:'623'},{n:'Shadow Rhydon',dps:18.61,fast:'Mud Slap',fastL:false,charge:'Earthquake',chargeL:false,img:'112'},{n:'Mamoswine',dps:18.43,fast:'Mud Slap',fastL:false,charge:'High Horsepower',chargeL:false,img:'473'},{n:'Shadow Flygon',dps:17.74,fast:'Sand Attack',fastL:false,charge:'Earth Power',chargeL:false,img:'330'},{n:'Shadow Donphan',dps:17.53,fast:'Mud Slap',fastL:false,charge:'Earthquake',chargeL:false,img:'232'},{n:'Shadow Torterra',dps:17.17,fast:'Mud Slap',fastL:false,charge:'Earthquake',chargeL:true,img:'389'},{n:'Shadow Golem',dps:17.16,fast:'Mud Slap',fastL:false,charge:'Earthquake',chargeL:false,img:'76'},{n:'Golurk',dps:16.97,fast:'Mud Slap',fastL:false,charge:'Earth Power',chargeL:false,img:'623'},{n:'Hippowdon',dps:16.96,fast:'Sand Attack',fastL:false,charge:'Earth Power',chargeL:false,img:'450'},{n:'Rhydon',dps:16.57,fast:'Mud Slap',fastL:false,charge:'Earthquake',chargeL:false,img:'112'},{n:'Shadow Nidoqueen',dps:16.46,fast:'Mud Slap',fastL:false,charge:'Earth Power',chargeL:false,img:'31'},{n:'Apex Shadow Ho-Oh',dps:16.38,fast:'Hidden Power Ground',fastL:false,charge:'Earthquake',chargeL:true,img:'250'},{n:'Shadow Ho-Oh',dps:16.38,fast:'Hidden Power Ground',fastL:false,charge:'Earthquake',chargeL:true,img:'250'},{n:'Shadow Swampert',dps:16.24,fast:'Mud Shot',fastL:false,charge:'Earthquake',chargeL:true,img:'260'},{n:'Krookodile',dps:16.13,fast:'Mud Slap',fastL:false,charge:'Earthquake',chargeL:false,img:'553'},{n:'Mega Kangaskhan',dps:15.9,fast:'Mud Slap',fastL:false,charge:'Earthquake',chargeL:false,img:'10039'},{n:'Mudsdale',dps:15.82,fast:'Mud Slap',fastL:false,charge:'Earthquake',chargeL:false,img:'750'},{n:'Sandaconda',dps:15.72,fast:'Mud Slap',fastL:false,charge:'Earth Power',chargeL:false,img:'844'},{n:'Flygon',dps:15.66,fast:'Sand Attack',fastL:false,charge:'Earth Power',chargeL:false,img:'330'},{n:'Donphan',dps:15.66,fast:'Mud Slap',fastL:false,charge:'Earthquake',chargeL:false,img:'232'},{n:'Shadow Sandslash',dps:15.61,fast:'Sand Attack',fastL:false,charge:'Scorching Sands',chargeL:false,img:'28'},{n:'Shadow Gliscor',dps:15.21,fast:'Sand Attack',fastL:false,charge:'Earthquake',chargeL:false,img:'472'},{n:'Golem',dps:15.19,fast:'Mud Slap',fastL:false,charge:'Earthquake',chargeL:false,img:'76'},{n:'Torterra',dps:15.11,fast:'Mud Slap',fastL:false,charge:'Earthquake',chargeL:true,img:'389'},{n:'Seismitoad',dps:14.66,fast:'Mud Shot',fastL:false,charge:'Earth Power',chargeL:false,img:'537'},{n:'Swampert',dps:14.47,fast:'Mud Shot',fastL:false,charge:'Earthquake',chargeL:true,img:'260'},{n:'Nidoqueen',dps:14.38,fast:'Mud Slap',fastL:false,charge:'Earth Power',chargeL:false,img:'31'},{n:'Shadow Alolan Golem',dps:14.34,fast:'Mud Slap',fastL:false,charge:'Earthquake',chargeL:false,img:'10111'},{n:'Ho-Oh',dps:14.25,fast:'Hidden Power Ground',fastL:false,charge:'Earthquake',chargeL:true,img:'250'},{n:'Palossand',dps:14.19,fast:'Sand Attack',fastL:false,charge:'Earth Power',chargeL:false,img:'769'},{n:'Sandslash',dps:13.93,fast:'Sand Attack',fastL:false,charge:'Scorching Sands',chargeL:false,img:'28'},{n:'Gastrodon East Sea',dps:13.88,fast:'Mud Slap',fastL:false,charge:'Earth Power',chargeL:false,img:'422'},{n:'Gastrodon West Sea',dps:13.88,fast:'Mud Slap',fastL:false,charge:'Earth Power',chargeL:false,img:'422'},{n:'Gliscor',dps:13.62,fast:'Sand Attack',fastL:false,charge:'Earthquake',chargeL:false,img:'472'}],
   flying:[{n:'Mega Rayquaza',dps:39.9,fast:'Tajo Aéreo',fastL:false,charge:'Dragon Ascent',chargeL:true,img:'10079'},{n:'Rayquaza',dps:29.02,fast:'Tajo Aéreo',fastL:false,charge:'Dragon Ascent',chargeL:true,img:'384'},{n:'Shadow Moltres',dps:27.35,fast:'Ataque Ala',fastL:false,charge:'Fly',chargeL:false,img:'146'},{n:'Yveltal',dps:24.89,fast:'Gust',fastL:false,charge:'Oblivion Wing',chargeL:false,img:'717'},{n:'Shadow Toucannon',dps:24.04,fast:'Peck',fastL:true,charge:'Beak Blast',chargeL:false,img:'733'},{n:'Moltres',dps:23.88,fast:'Ataque Ala',fastL:false,charge:'Fly',chargeL:false,img:'146'},{n:'Shadow Staraptor',dps:23.23,fast:'Gust',fastL:true,charge:'Fly',chargeL:true,img:'398'},{n:'Mega Skarmory',dps:22.87,fast:'Tajo Aéreo',fastL:false,charge:'Ataque Aéreo',chargeL:true,img:'227'},{n:'Apex Shadow Ho-Oh',dps:22.73,fast:'Hidden Power Flying',fastL:false,charge:'Brave Bird',chargeL:true,img:'250'},{n:'Shadow Ho-Oh',dps:22.73,fast:'Hidden Power Flying',fastL:false,charge:'Brave Bird',chargeL:true,img:'250'},{n:'Mega Pidgeot',dps:22.52,fast:'Gust',fastL:true,charge:'Brave Bird',chargeL:false,img:'10073'},{n:'Toucannon',dps:22.14,fast:'Peck',fastL:true,charge:'Beak Blast',chargeL:false,img:'733'},{n:'Braviary',dps:21.57,fast:'Tajo Aéreo',fastL:false,charge:'Fly',chargeL:true,img:'628'},{n:'Staraptor',dps:20.95,fast:'Gust',fastL:true,charge:'Fly',chargeL:true,img:'398'},{n:'Mega Charizard Y',dps:20.83,fast:'Tajo Aéreo',fastL:false,charge:'Air Cutter',chargeL:true,img:'10035'},{n:'Galarian Moltres',dps:20.22,fast:'Ataque Ala',fastL:false,charge:'Fly',chargeL:true,img:'10171'},{n:'Hisuian Braviary',dps:20.02,fast:'Tajo Aéreo',fastL:false,charge:'Fly',chargeL:true,img:'10240'},{n:'Ho-Oh',dps:19.99,fast:'Hidden Power Flying',fastL:false,charge:'Brave Bird',chargeL:true,img:'250'},{n:'Shadow Unfezant',dps:19.92,fast:'Tajo Aéreo',fastL:false,charge:'Ataque Aéreo',chargeL:false,img:'521'},{n:'Tornadus Therian',dps:19.78,fast:'Gust',fastL:false,charge:'Bleakwind Storm',chargeL:false,img:'10019'},{n:'Shadow Tornadus Incarnate',dps:19.54,fast:'Tajo Aéreo',fastL:false,charge:'Tornado',chargeL:false,img:'641'},{n:'Shadow Honchkrow',dps:19.25,fast:'Peck',fastL:false,charge:'Ataque Aéreo',chargeL:false,img:'430'},{n:'Unfezant',dps:18.12,fast:'Tajo Aéreo',fastL:false,charge:'Ataque Aéreo',chargeL:false,img:'521'},{n:'Honchkrow',dps:18.12,fast:'Peck',fastL:false,charge:'Ataque Aéreo',chargeL:false,img:'430'},{n:'Bombirdier',dps:17.59,fast:'Ataque Ala',fastL:false,charge:'Fly',chargeL:true,img:'1010'},{n:'Tornadus Incarnate',dps:17.57,fast:'Tajo Aéreo',fastL:false,charge:'Tornado',chargeL:false,img:'641'},{n:'Shadow Corviknight',dps:17.39,fast:'Tajo Aéreo',fastL:false,charge:'Ataque Aéreo',chargeL:true,img:'823'},{n:'Shadow Talonflame',dps:17.05,fast:'Peck',fastL:false,charge:'Fly',chargeL:true,img:'663'},{n:'Kartana',dps:17.02,fast:'Tajo Aéreo',fastL:false,charge:'Aerial Ace',chargeL:false,img:'798'},{n:'Shadow Scyther',dps:16.98,fast:'Tajo Aéreo',fastL:false,charge:'Aerial Ace',chargeL:false,img:'123'},{n:'Togekiss',dps:16.64,fast:'Tajo Aéreo',fastL:false,charge:'Aerial Ace',chargeL:false,img:'468'},{n:'Shadow Swanna',dps:16.51,fast:'Gust',fastL:false,charge:'Fly',chargeL:true,img:'581'},{n:'Flamigo',dps:16.5,fast:'Ataque Ala',fastL:false,charge:'Brave Bird',chargeL:false,img:'973'},{n:'Shadow Charizard',dps:16.42,fast:'Tajo Aéreo',fastL:false,charge:'Air Cutter',chargeL:true,img:'6'},{n:'Shadow Noivern',dps:16.25,fast:'Tajo Aéreo',fastL:false,charge:'Tornado',chargeL:false,img:'715'},{n:'Mega Altaria',dps:15.82,fast:'Peck',fastL:false,charge:'Ataque Aéreo',chargeL:false,img:'10067'},{n:'Yanmega',dps:15.8,fast:'Ataque Ala',fastL:false,charge:'Aerial Ace',chargeL:false,img:'469'},{n:'Shadow Gliscor',dps:15.42,fast:'Ataque Ala',fastL:false,charge:'Aerial Ace',chargeL:false,img:'472'},{n:'Swanna',dps:15.4,fast:'Gust',fastL:false,charge:'Fly',chargeL:true,img:'581'},{n:'Talonflame',dps:15.34,fast:'Peck',fastL:false,charge:'Fly',chargeL:true,img:'663'},{n:'Mega Charizard X',dps:15.16,fast:'Tajo Aéreo',fastL:false,charge:'Air Cutter',chargeL:true,img:'10034'},{n:'Shadow Noctowl',dps:15.14,fast:'Ataque Ala',fastL:false,charge:'Ataque Aéreo',chargeL:true,img:'164'},{n:'Dodrio',dps:15.13,fast:'Peck',fastL:false,charge:'Drill Peck',chargeL:false,img:'85'},{n:'Corviknight',dps:15.05,fast:'Tajo Aéreo',fastL:false,charge:'Ataque Aéreo',chargeL:false,img:'823'},{n:'Shadow Crobat',dps:14.93,fast:'Tajo Aéreo',fastL:false,charge:'Air Cutter',chargeL:false,img:'169'},{n:'Scyther',dps:14.93,fast:'Tajo Aéreo',fastL:false,charge:'Aerial Ace',chargeL:false,img:'123'},{n:'Shadow Skarmory',dps:14.78,fast:'Tajo Aéreo',fastL:false,charge:'Ataque Aéreo',chargeL:false,img:'227'},{n:'Shadow Pidgeot',dps:14.47,fast:'Gust',fastL:true,charge:'Brave Bird',chargeL:false,img:'18'},{n:'Noivern',dps:14.43,fast:'Tajo Aéreo',fastL:false,charge:'Tornado',chargeL:false,img:'715'},{n:'Charizard',dps:14.37,fast:'Tajo Aéreo',fastL:false,charge:'Air Cutter',chargeL:true,img:'6'}],
@@ -1655,6 +1976,7 @@ const DMAX_NAMES=new Set([
   "kabuto","kabutops","snorlax","articuno","zapdos","moltres",
   "espeon","umbreon","shuckle","hitmontop","blissey",
   "raikou","entei","suicune","lugia","ho-oh",
+  "elekid","electabuzz","electivire",
   "ralts","kirlia","gardevoir","sableye","wailmer","wailord",
   "spheal","sealeo","walrein","beldum","metang","metagross",
   "regirock","regice","registeel","latias","latios",
@@ -1866,7 +2188,9 @@ function save() {
       custom: p.custom || null,
       candyProgress: p.candyProgress || {},
       tradeAnyDay: p.tradeAnyDay || {},
-      ppPinned: p.ppPinned || {}
+      ppPinned: p.ppPinned || {},
+      teamNames: p.teamNames || {},
+      teamAssign: p.teamAssign || {}
     });
   }, 500);
 }
@@ -1877,6 +2201,40 @@ function load() {
 function gp(n) { return ST.profiles.find(p=>p.name===n); }
 function goc(n) { let p=gp(n); if(!p){p={name:n,pk:{}};ST.profiles.push(p);} return p; }
 
+// ── EQUIPOS MÚLTIPLES (1 = Deseado, hasta 4) ─────────────────────────────────
+if(!ST.curTeam) ST.curTeam = 1;
+function teamAssignOf(p,id){ const a=p&&p.teamAssign&&p.teamAssign[id]; return (Array.isArray(a)&&a.length)?a:[1]; }
+function entryInTeam(p,id,team){ return teamAssignOf(p,id).includes(team); }
+function teamList(p){
+  const nums=new Set([1]);
+  if(p&&p.teamNames) Object.keys(p.teamNames).forEach(k=>{const n=parseInt(k); if(n>=2&&n<=4) nums.add(n);});
+  if(p&&p.teamAssign) Object.values(p.teamAssign).forEach(a=>(a||[]).forEach(n=>{ if(n>=2&&n<=4) nums.add(n); }));
+  return [...nums].sort((a,b)=>a-b);
+}
+function teamName(p,n){ return n===1 ? 'Deseado' : ((p&&p.teamNames&&p.teamNames[n]) || ('Equipo '+n)); }
+function ensureValidTeam(p){ if(!teamList(p).includes(ST.curTeam)) ST.curTeam=1; }
+function switchTeam(n){ ST.curTeam=n; ST.expanded=null; renderAlbum(); renderAlbumDmax(); }
+function createTeam(){
+  if(!ST.cur||ST.view) return;
+  const p=goc(ST.cur);
+  const nums=teamList(p);
+  if(nums.length>=4){ showToast('Máximo 4 equipos'); return; }
+  const n=Math.max(...nums)+1;
+  const name=prompt('Dale un nombre a este equipo:');
+  if(name===null) return;
+  p.teamNames=p.teamNames||{};
+  p.teamNames[n]=(name.trim()||('Equipo '+n));
+  ST.curTeam=n;
+  save(); renderAlbum(); renderAlbumDmax();
+}
+function teamBarHtml(p){
+  const isV=!!ST.view;
+  const nums=teamList(p);
+  let h=nums.map(n=>`<button class="team-btn${ST.curTeam===n?' on':''}" title="${teamName(p,n)}" onclick="event.stopPropagation();switchTeam(${n})">${n}</button>`).join('');
+  if(!isV&&nums.length<4) h+=`<button class="team-btn team-add" title="Crear equipo" onclick="event.stopPropagation();createTeam()">+</button>`;
+  return `<div style="display:flex;align-items:center;gap:6px">${h}<span style="font-size:11px;font-weight:700;color:#fff;opacity:.9">${teamName(p,ST.curTeam)}</span></div>`;
+}
+
 function defaultAlbum() {
   return {}; // No defaults — user builds their own team
 }
@@ -1886,13 +2244,16 @@ function getAlbum(n) {
   if(p.album===undefined||p.album===null)return defaultAlbum();
   return p.album;
 }
-function getCurrentDpsForName(name, type) {
-  // Busca el DPS ACTUAL en RANKINGS por nombre, para que las actualizaciones de rankings
-  // se reflejen aunque el Pokémon ya esté guardado en el equipo (en vez de usar un snapshot viejo).
+function getLiveRankRow(name, type) {
+  // Busca la entrada ACTUAL en RANKINGS por nombre, para que las actualizaciones de rankings
+  // (DPS, moveset, marcas Legacy) se reflejen en Pokémon ya guardados en el equipo.
   const rows = RANKINGS[type];
   if (!rows) return null;
   const cleanName = name.replace(' (Shadow)','').trim();
-  const row = rows.find(r => r.n === cleanName);
+  return rows.find(r => r.n === cleanName) || null;
+}
+function getCurrentDpsForName(name, type) {
+  const row = getLiveRankRow(name, type);
   return row ? row.dps : null;
 }
 function albumPks(n,type) {
@@ -1901,19 +2262,33 @@ function albumPks(n,type) {
   // PD entries in album
   // Get PD entries in album that are NOT overridden by custom
   const customIds=new Set(p&&p.custom?Object.keys(p.custom):[]);
-  const pdPks=PD.filter(pk=>pk.type===type&&a[pk.id]&&!customIds.has(pk.id)&&!pk.id.includes('-dmax-'));
+  const _team=ST.curTeam||1;
+  const pdPks=PD.filter(pk=>pk.type===type&&a[pk.id]&&!customIds.has(pk.id)&&!pk.id.includes('-dmax-')&&entryInTeam(p,pk.id,_team))
+    .map(pk=>{
+      // Datos en vivo también para entradas PD antiguas (si aparecen en el ranking actual)
+      const live=getLiveRankRow(pk.name,type);
+      if(!live) return pk;
+      const lf=live.fast+(live.fastL?'*':''), lc=live.charge+(live.chargeL?'*':'');
+      return Object.assign({},pk,{dps:live.dps,fast:lf,charge:lc,tags:inferTags(pk.name,!!live.fastL,!!live.chargeL,(pk.tags||[]).filter(t=>t!=='legacy'))});
+    });
   // Custom entries in album
   const customPks=[];
   if(p&&p.custom){
     Object.entries(p.custom).forEach(([id,d])=>{
-      if(d.type===type&&a[id]===true&&!id.includes('-dmax-')&&!d.isDmax){
+      if(d.type===type&&a[id]===true&&!id.includes('-dmax-')&&!d.isDmax&&entryInTeam(p,id,_team)){
         // If this is a copy of a PD entry, use PD data for evo/tags
         const pdRef=d.pdRef?PD.find(x=>x.id===d.pdRef):null;
-        const liveDps=getCurrentDpsForName(d.n, type);
+        const live=getLiveRankRow(d.n, type);
+        // Moveset, Legacy y DPS siempre en vivo desde el ranking actual; si el Pokémon
+        // ya no aparece en el ranking se conserva el snapshot guardado.
+        const fast=live?live.fast+(live.fastL?'*':''):d.fast;
+        const charge=live?live.charge+(live.chargeL?'*':''):d.charge;
+        const baseTags=(pdRef?pdRef.tags:(d.tags||[])).filter(t=>t!=='legacy');
         customPks.push({
-          id, name:d.n, type:d.type, img:d.img||( pdRef?pdRef.img:''),
-          dps:(liveDps!==null?liveDps:d.dps), fast:d.fast, charge:d.charge,
-          tags:pdRef?pdRef.tags:(d.tags||inferTags(d.n,d.fast&&d.fast.endsWith('*'),d.charge&&d.charge.endsWith('*'),[])), evo:pdRef?pdRef.evo:null, isCustom:true
+          id, name:d.n, type:d.type, img:d.img||(live?live.img:'')||(pdRef?pdRef.img:''),
+          dps:(live?live.dps:d.dps), fast, charge,
+          tags:inferTags(d.n,fast&&fast.endsWith('*'),charge&&charge.endsWith('*'),baseTags),
+          evo:pdRef?pdRef.evo:null, isCustom:true
         });
       }
     });
@@ -2361,7 +2736,7 @@ function goBack() { ST.expanded=null; show('main-screen'); renderMain(); }
 
 let _toastTimer=null;
 function showToast(msg,type='warn'){const el=document.getElementById('toast');if(!el)return;el.textContent=msg;el.className='show toast-'+type;if(_toastTimer)clearTimeout(_toastTimer);_toastTimer=setTimeout(()=>{el.className='';},3200);}
-function hasMegaInTeam(p,type){if(!p||!p.album)return false;for(const id in p.album){if(p.album[id]!==true)continue;let tags=[];if(p.custom&&p.custom[id]){const d=p.custom[id];if((d.type||type)!==type)continue;const pdRef=d.pdRef?PD.find(x=>x.id===d.pdRef):null;tags=pdRef?pdRef.tags:(d.tags||inferTags(d.n,false,false,[]));}else{const pd=PD.find(x=>x.id===id);if(!pd||pd.type!==type)continue;tags=pd.tags||[];}if(tags.includes('mega'))return true;}return false;}
+function hasMegaInTeam(p,type){if(!p||!p.album)return false;for(const id in p.album){if(p.album[id]!==true)continue;if(!entryInTeam(p,id,ST.curTeam||1))continue;let tags=[];if(p.custom&&p.custom[id]){const d=p.custom[id];if((d.type||type)!==type)continue;const pdRef=d.pdRef?PD.find(x=>x.id===d.pdRef):null;tags=pdRef?pdRef.tags:(d.tags||inferTags(d.n,false,false,[]));}else{const pd=PD.find(x=>x.id===id);if(!pd||pd.type!==type)continue;tags=pd.tags||[];}if(tags.includes('mega'))return true;}return false;}
 function addFromRanking(id) {
   if(!ST.cur)return;
   const data=(window._rankCache&&window._rankCache[id])||{};
@@ -2372,21 +2747,33 @@ function addFromRanking(id) {
   // Count current entries for this type (dmax and raid are separate slots)
   const _pdE2=PD.find(x=>x.id===id);
   const isDmaxEntry=id.includes('-dmax-');
+  const _team=ST.curTeam||1;
   if(isDmaxEntry){
-    const dmaxCount=Object.keys(p.album).filter(k=>p.album[k]===true&&k.startsWith(type+'-dmax-')).length;
-    if(dmaxCount>=6){showToast('Ya tienes 6 Pokémon Dynamax en este tipo\nElimina uno primero ⚡');return;}
+    const dmaxCount=Object.keys(p.album).filter(k=>p.album[k]===true&&k.startsWith(type+'-dmax-')&&entryInTeam(p,k,_team)).length;
+    if(dmaxCount>=6){showToast('Ya tienes 6 Pokémon Dynamax en este equipo\nElimina uno primero ⚡');return;}
     if(dmaxCount===3){showToast('⚠️ El equipo óptimo Dynamax es de 3 Pokémon');}// warn at 3 but allow up to 6
   } else {
-    const typeCount=countAlbumForType(p, type);
-    if(typeCount>=6){showToast('Ya tienes 6 Pokémon en este tipo\nElimina uno primero ⚔️');return;}
+    const typeCount=countAlbumForType(p, type, _team);
+    if(typeCount>=6){showToast('Ya tienes 6 Pokémon en este equipo\nElimina uno primero ⚔️');return;}
   }
   const _isMega2=(_pdE2&&_pdE2.tags&&_pdE2.tags.includes('mega'))||(data.n&&(data.n.toLowerCase().startsWith('mega ')||data.n.toLowerCase().startsWith('primal ')));
   if(_isMega2&&hasMegaInTeam(p,type)){showToast('Solo un Mega por equipo\nSustituye el actual primero 🔴');return;}
+  // Si este Pokémon ya existe en otro equipo, compartir el mismo registro (IVs/estados comunes)
+  const _shared=Object.keys(p.album).find(k=>p.album[k]===true&&(k===id||k.startsWith(id+'-'))&&!entryInTeam(p,k,_team));
+  if(_shared){
+    p.teamAssign=p.teamAssign||{};
+    p.teamAssign[_shared]=[...teamAssignOf(p,_shared),_team];
+    save(); renderAlbum(); renderAlbumDmax(); renderRanking(); renderMain();
+    showToast('Añadido al equipo '+teamName(p,_team)+' (compartido con otro equipo)');
+    return;
+  }
   // Generate unique id for this copy (allow multiple copies)
   let newId=id;
   let n=1;
   while(p.album[newId]===true){newId=id+'-'+n;n++;}
   p.album[newId]=true;
+  p.teamAssign=p.teamAssign||{};
+  p.teamAssign[newId]=[_team];
   // Store data (use PD data if available, else rank cache)
   const pdEntry=isDmaxEntry?null:PD.find(x=>x.id===id);
   if(pdEntry){
@@ -2402,7 +2789,7 @@ function addFromRanking(id) {
   save(); renderAlbum(); renderRanking(); renderMain();
   // Toast con huecos restantes
   if(isDmaxEntry){
-    const dmaxNow=Object.keys(p.album).filter(k=>p.album[k]===true&&k.startsWith(type+'-dmax-')).length;
+    const dmaxNow=Object.keys(p.album).filter(k=>p.album[k]===true&&k.startsWith(type+'-dmax-')&&entryInTeam(p,k,_team)).length;
     const dmaxLeft=6-dmaxNow;
     showToast(dmaxLeft===0?'⚡ Equipo Dynamax completo ('+dmaxNow+'/6)':'⚡ Añadido · '+dmaxLeft+' hueco'+(dmaxLeft===1?'':'s')+' libre'+(dmaxLeft===1?'':'s')+' ('+dmaxNow+'/6)');
   } else {
@@ -2418,16 +2805,28 @@ function removeRankEntry(id, type) {
   if(!ST.cur)return;
   const p=goc(ST.cur);
   if(p.album===undefined||p.album===null) p.album=Object.assign({},defaultAlbum());
+  // Si pertenece a varios equipos, solo se quita del equipo actual
+  const teams=teamAssignOf(p,id);
+  if(teams.length>1){
+    p.teamAssign=p.teamAssign||{};
+    p.teamAssign[id]=teams.filter(t=>t!==(ST.curTeam||1));
+    ST.expanded=null; save(); renderAlbum(); renderRanking(); renderMain();
+    showToast('Quitado de este equipo (sigue en otros)');
+    return;
+  }
   delete p.album[id];
   if(p.custom) delete p.custom[id];
+  if(p.teamAssign) delete p.teamAssign[id];
   ST.expanded=null; save(); renderAlbum(); renderRanking(); renderMain();
 }
-function countAlbumForType(p, type) {
+function countAlbumForType(p, type, team) {
   if(!p || !p.album) return 0;
+  if(team===undefined) team=ST.curTeam||1;
   let count = 0;
   for (const id in p.album) {
     if (p.album[id] !== true) continue;
     if (id.includes('-dmax-')) continue; // dmax slots are counted separately
+    if (!entryInTeam(p,id,team)) continue; // límite de 6 por equipo
     let pkType = null;
     if (p.custom && p.custom[id]) {
       pkType = p.custom[id].type;
@@ -2447,16 +2846,33 @@ function addToAlbum(pkId) {
   if(p.album===undefined||p.album===null) p.album=Object.assign({},defaultAlbum());
   // Count how many are currently in album for this type
   const currentCount=countAlbumForType(p, pk.type);
-  if(currentCount>=6){showToast('Ya tienes 6 Pokémon en este tipo\nElimina uno primero ⚔️');return;}
+  if(currentCount>=6){showToast('Ya tienes 6 Pokémon en este equipo\nElimina uno primero ⚔️');return;}
   if(pk.tags&&pk.tags.includes('mega')&&hasMegaInTeam(p,pk.type)){showToast('Solo un Mega por equipo\nSustituye el actual primero 🔴');return;}
-  p.album[pkId]=true; save(); renderAlbum(); renderRanking(); renderMain();
+  const _t=ST.curTeam||1;
+  if(p.album[pkId]===true){
+    // ya existe en otro equipo: compartirlo
+    if(!entryInTeam(p,pkId,_t)){ p.teamAssign=p.teamAssign||{}; p.teamAssign[pkId]=[...teamAssignOf(p,pkId),_t]; }
+  } else {
+    p.album[pkId]=true;
+    p.teamAssign=p.teamAssign||{}; p.teamAssign[pkId]=[_t];
+  }
+  save(); renderAlbum(); renderRanking(); renderMain();
 }
 function removeFromAlbum(pkId) {
   if(!ST.cur)return;
   const p=goc(ST.cur);
   if(!p.album)p.album={};
+  const teams=teamAssignOf(p,pkId);
+  if(teams.length>1){
+    p.teamAssign=p.teamAssign||{};
+    p.teamAssign[pkId]=teams.filter(t=>t!==(ST.curTeam||1));
+    ST.expanded=null; save(); renderAlbum(); renderRanking(); renderMain();
+    showToast('Quitado de este equipo (sigue en otros)');
+    return;
+  }
   delete p.album[pkId];
   if(p.custom) delete p.custom[pkId];
+  if(p.teamAssign) delete p.teamAssign[pkId];
   ST.expanded=null; save(); renderAlbum(); renderRanking(); renderMain();
 }
 function togOwned(id,v) {
@@ -2565,8 +2981,8 @@ function openType(k) {
   renderAlbum(); renderRanking(); show('detail-screen'); renderTypeNav();
 }
 function toggleDark() {
-  const d=document.body.classList.toggle('dark'); localStorage.setItem('darkMode',d?'1':'0');
-  document.querySelectorAll('#dark-btn,#dark-btn2,#dark-btn-home').forEach(b=>{if(b)b.textContent=d?'☀️':'🌙';});
+  // Modo oscuro desactivado temporalmente (pendiente de desarrollo)
+  showToast('🌙 Modo oscuro: en desarrollo, próximamente');
 }
 function openGuia(){document.getElementById('modal-guia').style.display='flex';}
 function closeGuiaBtn(){document.getElementById('modal-guia').style.display='none';}
@@ -2622,11 +3038,11 @@ function renderTypeNav(){const strip=document.getElementById('type-nav-strip');i
 function navToType(key){ST.type=key;ST.expanded=null;const t=TM[key];if(t)document.getElementById('detail-title').innerHTML='<span style="display:inline-flex;align-items:center;gap:6px;color:#fff"><span style="width:20px;height:20px;display:inline-flex;align-items:center">'+t.icon+'</span>'+t.name+'</span>';renderTypeNav();renderAlbum();renderRanking();renderAlbumDmax();if(ST.rankTab==='dmax')renderDmaxRanking();renderMain();}
 function renderAlbum() {
   const profile=ST.view||ST.cur; const isV=!!ST.view; const t=TM[ST.type];
-  const pks=albumPks(profile,ST.type); const maxD=Math.max(...pks.map(p=>p.dps),1);
-  // Team header
   const pp0=gp(profile);
+  ensureValidTeam(pp0);
+  const pks=albumPks(profile,ST.type); const maxD=Math.max(...pks.map(p=>p.dps),1);
   const ownedCount=pks.filter(pk=>pp0&&pp0.pk[pk.id]&&pp0.pk[pk.id].owned).length;
-  const teamHeader=`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 14px 6px;background:rgba(0,0,0,.18);border-bottom:1px solid rgba(255,255,255,.15)"><span style="font-size:12px;font-weight:700;color:#fff">Equipo deseado</span><span style="font-size:12px;font-weight:700;color:#fff">En propiedad <span id="album-owned-count">${ownedCount}/6</span></span></div>`;
+  const teamHeader=`<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 14px 6px;background:rgba(0,0,0,.18);border-bottom:1px solid rgba(255,255,255,.15)">${teamBarHtml(pp0)}<span style="font-size:12px;font-weight:700;color:#fff;flex-shrink:0">En propiedad <span id="album-owned-count">${ownedCount}/6</span></span></div>`;
   const empty=Array(Math.max(0,6-pks.length)).fill('<div class="empty-slot"><div class="empty-slot-icon">❓</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Necesitas equipo de 6 para incursiones</div></div>').join('');
   document.getElementById('album-list').innerHTML=teamHeader+pks.map(pk=>{
     const pp=gp(profile); const pd=(pp&&pp.pk[pk.id])||{};
@@ -2664,7 +3080,11 @@ function renderAlbumDmax() {
   const el=document.getElementById('album-list-dmax');
   if(!rows.length){el.innerHTML='<p style="text-align:center;padding:20px;color:#aaa">Sin datos Dynamax.</p>';return;}
   const p2=gp(ST.view||ST.cur);
-  const userDmaxIds=p2&&p2.album?Object.keys(p2.album).filter(id=>p2.album[id]===true&&id.startsWith(ST.type+'-dmax-')):[];
+  ensureValidTeam(p2);
+  const dmaxOwnedIds=p2&&p2.album?Object.keys(p2.album).filter(id=>p2.album[id]===true&&id.startsWith(ST.type+'-dmax-')&&entryInTeam(p2,id,ST.curTeam||1)):[];
+  const dmaxOwnedCount=dmaxOwnedIds.filter(id=>p2&&p2.pk&&p2.pk[id]&&p2.pk[id].owned).length;
+  const dmaxTeamHeader=`<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 14px 6px;background:rgba(0,0,0,.35)">${teamBarHtml(p2)}<span style="font-size:12px;font-weight:700;color:#fff;flex-shrink:0">En propiedad ${dmaxOwnedCount}/6</span></div>`;
+  const userDmaxIds=dmaxOwnedIds;
   // Build slots: one entry per album id (supports duplicates of same pokemon)
   const slots=[];
   userDmaxIds.forEach(albumId=>{
@@ -2680,14 +3100,20 @@ function renderAlbumDmax() {
   const dmaxMax=6;
   const emptyDmax=Array(Math.max(0,dmaxMax-slots.length)).fill('<div class="empty-slot"><div class="empty-slot-icon">⚡</div><div class="empty-slot-txt"><b>Slot vacío</b><br>Máx recomendado: 3</div></div>').join('');
   const dmaxWarn=slots.length>3?'<div style="padding:6px 14px;background:#fff3e0;border-bottom:1px solid #ffe082;font-size:11px;color:#e65100;font-weight:600">⚠️ El equipo óptimo Dynamax es de 3. Tienes '+slots.length+'.</div>':'';
-  if(!slots.length){el.innerHTML=emptyDmax;return;}
+  if(!slots.length){el.innerHTML=dmaxTeamHeader+emptyDmax;return;}
   const isG=r=>r.charge.startsWith('G-Max')||['Drum Solo','Vine Lash','Cannonade','Hydrosnipe','Foam Burst','Fireball','Wildfire','Stun Shock','Befuddle','Terror','Snooze','Resonance','Chi Strike','Behemoth'].some(x=>r.charge.includes(x));
   const removeBtn=!isV?`<button class="album-remove" onclick="event.stopPropagation();removeDmaxEntry('{AID}')">✕</button>`:'';
-  el.innerHTML=dmaxWarn+slots.map(({r,albumId})=>{
+  el.innerHTML=dmaxTeamHeader+dmaxWarn+slots.map(({r,albumId})=>{
     const rb=!isV?`<button class="album-remove" onclick="event.stopPropagation();removeDmaxEntry('${albumId}')">✕</button>`:'';
     const pdd=(p2&&p2.pk&&p2.pk[albumId])||{};
     const dIsO=pdd.owned||false; const dIsMax=pdd.maxed||false;
-    const dToggles=!isV?`<div style="padding:8px 12px;background:rgba(255,255,255,.92)">
+    const dIa=pdd.ivAtk||0, dId=pdd.ivDef||0, dIh=pdd.ivHp||0;
+    const dIvBlock=!isV?`<div style="padding:8px 12px 0;background:rgba(255,255,255,.92)"><div class="fr"><div class="fl">IVs</div><div class="iv-grid">
+      <div class="iv-col"><div class="iv-lbl">Ataque</div><div class="iv-val" id="ia-${albumId}">${dIa}</div><input type="range" min="0" max="15" value="${dIa}" oninput="updIV('${albumId}','a',this.value)"></div>
+      <div class="iv-col"><div class="iv-lbl">Defensa</div><div class="iv-val" id="id-${albumId}">${dId}</div><input type="range" min="0" max="15" value="${dId}" oninput="updIV('${albumId}','d',this.value)"></div>
+      <div class="iv-col"><div class="iv-lbl">Vida</div><div class="iv-val" id="ih-${albumId}">${dIh}</div><input type="range" min="0" max="15" value="${dIh}" oninput="updIV('${albumId}','h',this.value)"></div>
+    </div></div></div>`:'';
+    const dToggles=!isV?dIvBlock+`<div style="padding:8px 12px;background:rgba(255,255,255,.92)">
       <div class="tr" style="margin-bottom:6px;padding:6px 10px;background:${dIsO?'#e8f5e9':'#f5f5f5'};border-radius:8px;border:1.5px solid ${dIsO?'#43a047':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${dIsO?'#2e7d32':'#555'}">${dIsO?'✅ Obtenido':'¿Lo tienes?'}</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${dIsO?'checked':''} onchange="togOwned('${albumId}',this.checked)"><span class="sl"></span></label></div>
       <div class="tr" style="padding:6px 10px;background:${dIsMax?'#fff8e1':'#f5f5f5'};border-radius:8px;border:1.5px solid ${dIsMax?'#ffb300':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${dIsMax?'#e65100':'#555'}">${dIsMax?'⭐ Al máximo':'¿Lo tengo al máximo?'}</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${dIsMax?'checked':''} onchange="togMaxed('${albumId}',this.checked)"><span class="sl"></span></label></div>
     </div>`:'';
@@ -2701,8 +3127,17 @@ function removeDmaxEntry(albumId) {
   if(!ST.cur)return;
   const p=goc(ST.cur);
   if(!p.album)return;
+  const teams=teamAssignOf(p,albumId);
+  if(teams.length>1){
+    p.teamAssign=p.teamAssign||{};
+    p.teamAssign[albumId]=teams.filter(t=>t!==(ST.curTeam||1));
+    save(); renderAlbumDmax(); renderMain();
+    showToast('Quitado de este equipo (sigue en otros)');
+    return;
+  }
   delete p.album[albumId];
   if(p.custom) delete p.custom[albumId];
+  if(p.teamAssign) delete p.teamAssign[albumId];
   save(); renderAlbumDmax(); renderMain();
 }
 
@@ -2764,10 +3199,11 @@ function renderBadges(tags){
     return'';
   }).join('');
 }
-// ── MEGA FILTER STATE (per type) ────────────────────────────────────────────
-if(!window._megaFilter) window._megaFilter = {};
-function toggleMegaFilter(type) {
-  window._megaFilter[type] = !window._megaFilter[type];
+// ── FILTROS FIJOS DEL RANKING (ocultar Megas / Oscuros / Legacy) ─────────────
+window._rankHide = (function(){ try { return JSON.parse(localStorage.getItem('pbcn_rankHide'))||{}; } catch(e){ return {}; } })();
+function toggleRankHide(k) {
+  window._rankHide[k] = !window._rankHide[k];
+  try { localStorage.setItem('pbcn_rankHide', JSON.stringify(window._rankHide)); } catch(e){}
   renderRanking();
 }
 
@@ -2805,21 +3241,21 @@ function renderRanking() {
   // Order fixed: RANKINGS defines the canonical order; extra pokémon appended at end sorted by DPS
   const rankExtra=combined.slice(rawRank.length);rankExtra.sort((a,b)=>b.dps-a.dps);
   const fixedCombined=[...rawRank.map(r=>combined.find(c=>(c.aid&&r.aid&&c.aid===r.aid)||c.n===r.n)||r),...rankExtra];
-  // ── MEGA TOGGLE ──────────────────────────────────────────────────────────
-  const pp4=gp(profile);
-  const hasMegaTeam=hasMegaInTeam(pp4,ST.type);
-  const megaFilterOn=!!window._megaFilter[ST.type];
-  // Render toggle header
-  const toggleId='mega-toggle-'+ST.type;
-  const toggleHtml=hasMegaTeam?`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 14px 4px;background:#fff8e1;border-bottom:1px solid #ffe082"><span style="font-size:11px;color:#795548;font-weight:600">🔴 Tienes un Mega — ocultar Megas del ranking</span><label class="sw" style="flex-shrink:0"><input type="checkbox" ${megaFilterOn?'checked':''} onchange="toggleMegaFilter('${ST.type}')"><span class="sl"></span></label></div>`:'';
+  // ── FILTROS FIJOS: ocultar Megas / Oscuros / Legacy ──────────────────────
+  const _rh=window._rankHide||{};
+  const _rhBtn=(k,label)=>`<button class="rank-hide-btn${_rh[k]?' on':''}" onclick="toggleRankHide('${k}')">${label}</button>`;
+  const toggleHtml=`<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:6px 14px;background:#fff8e1;border-bottom:1px solid #ffe082"><span style="font-size:11px;color:#795548;font-weight:700">Ocultar:</span>${_rhBtn('mega','🔴 Megas')}${_rhBtn('shadow','👤 Oscuros')}${_rhBtn('legacy','⭐ Legacy')}</div>`;
   document.getElementById('rank-mega-toggle').innerHTML=toggleHtml;
-  // Apply filter
-  const filtered=megaFilterOn&&hasMegaTeam
+  // Apply filters
+  const filtered=(_rh.mega||_rh.shadow||_rh.legacy)
     ? fixedCombined.filter(r=>{
         const rid2=r.aid||(ST.type+'-ext-'+r.n.toLowerCase().replace(/[^a-z0-9]/g,'-'));
         const _pe=PD.find(x=>x.id===rid2);
         const tags=inferTags(r.n,r.fastL,r.chargeL,_pe?_pe.tags:[]);
-        return !tags.includes('mega');
+        if(_rh.mega && tags.includes('mega')) return false;
+        if(_rh.shadow && tags.includes('shadow')) return false;
+        if(_rh.legacy && (r.fastL||r.chargeL)) return false;
+        return true;
       })
     : fixedCombined;
   const vis=filtered.slice(0,50); const maxD=vis.length?Math.max(...vis.map(v=>v.dps)):1;
@@ -4118,8 +4554,13 @@ function buildObjetivoData(profileName) {
 
   // Group album entries by evolution. Each entry tracks if it is maxed/owned.
   const byEvo = {};
+  const _mode = ST.objTeamMode || 'all';
   for (const id in p.album) {
     if (p.album[id] !== true) continue;
+    if (_mode !== 'all') {
+      const _wantTeam = _mode === 'des' ? 1 : parseInt(_mode);
+      if (!entryInTeam(p, id, _wantTeam)) continue;
+    }
     const isDmaxSlot = id.includes('-dmax-');
     const pkName = getPkName(id, p);
     if (!pkName) continue;
@@ -4359,11 +4800,195 @@ function closePokeparadas() {
 }
 
 
+// Ampliar el Pokémon del popup de Objetivo (imagen grande + cadena evolutiva)
+function objZoomCur(){
+  const img=document.getElementById('obj-popup-img');
+  const m=(img&&img.src||'').match(/pokemon\/(\d+)\.png/);
+  const nameEl=document.getElementById('obj-popup-name');
+  const name=nameEl?nameEl.textContent:'';
+  if(m&&window.showPokePopup) showPokePopup(name, img.src, parseInt(m[1]));
+}
+
+// ── GESTIÓN DE EQUIPOS (renombrar / borrar) ──────────────────────────────────
+function renameTeamPrompt(){
+  if(!ST.cur){ showToast('Selecciona un entrenador primero'); return; }
+  const p=goc(ST.cur);
+  const nums=teamList(p).filter(n=>n!==1);
+  if(!nums.length){ showToast('No tienes equipos extra que renombrar\n(El Equipo 1 siempre es "Deseado")'); return; }
+  const v=prompt('¿Qué equipo quieres renombrar?\n\n'+nums.map(n=>n+' = '+teamName(p,n)).join('\n')+'\n\nEscribe el número:');
+  if(v===null) return;
+  const n=parseInt(v);
+  if(!nums.includes(n)){ showToast('Equipo no válido'); return; }
+  const name=prompt('Nuevo nombre para el equipo '+n+':', teamName(p,n));
+  if(name===null) return;
+  p.teamNames=p.teamNames||{};
+  p.teamNames[n]=name.trim()||('Equipo '+n);
+  save(); showToast('Equipo '+n+' renombrado a "'+p.teamNames[n]+'" ✏️');
+}
+function deleteTeamPrompt(){
+  if(!ST.cur){ showToast('Selecciona un entrenador primero'); return; }
+  const p=goc(ST.cur);
+  const nums=teamList(p).filter(n=>n!==1);
+  if(!nums.length){ showToast('No tienes equipos extra\n(El Equipo 1 · Deseado nunca se puede borrar)'); return; }
+  const v=prompt('¿Qué equipo quieres borrar?\n(El Equipo 1 · Deseado nunca se puede borrar)\n\n'+nums.map(n=>n+' = '+teamName(p,n)).join('\n')+'\n\nEscribe el número:');
+  if(v===null) return;
+  const n=parseInt(v);
+  if(!nums.includes(n)){ showToast('Equipo no válido'); return; }
+  if(!confirm('¿Borrar el equipo "'+teamName(p,n)+'"?\n\nLos Pokémon que SOLO estén en este equipo se eliminarán de Mis Pokémon (los compartidos con otros equipos se conservan).')) return;
+  Object.keys(p.album||{}).forEach(id=>{
+    if(p.album[id]!==true) return;
+    const t=teamAssignOf(p,id);
+    if(!t.includes(n)) return;
+    const rest=t.filter(x=>x!==n);
+    if(rest.length){ p.teamAssign=p.teamAssign||{}; p.teamAssign[id]=rest; }
+    else { delete p.album[id]; if(p.custom) delete p.custom[id]; if(p.teamAssign) delete p.teamAssign[id]; }
+  });
+  if(p.teamNames) delete p.teamNames[n];
+  if(ST.curTeam===n) ST.curTeam=1;
+  save();
+  try{ renderMain(); }catch(e){}
+  showToast('Equipo borrado 🗑️');
+}
+
+// ── MEJORES IVS ──────────────────────────────────────────────────────────────
+function toggleBivInfo(on){ const el=document.getElementById('biv-info-pop'); if(el) el.style.display=on?'flex':'none'; }
+const BIV_PRESETS={default:{a:100,d:20,h:30},extremo:{a:100,d:-10,h:20}};
+function getBivWeights(){
+  try{ const w=JSON.parse(localStorage.getItem('bivWeights')); if(w&&typeof w.a==='number'&&typeof w.d==='number'&&typeof w.h==='number') return w; }catch(e){}
+  return {...BIV_PRESETS.default};
+}
+function saveBivWeights(w){ localStorage.setItem('bivWeights',JSON.stringify(w)); }
+function toggleBivWeights(on){
+  const el=document.getElementById('biv-weights-pop'); if(!el) return;
+  if(on){ const w=getBivWeights(); ['a','d','h'].forEach(k=>{ document.getElementById('bivw-'+k).value=w[k]; document.getElementById('bivw-val-'+k).textContent=w[k]; }); }
+  el.style.display=on?'flex':'none';
+}
+function bivWeightInput(k,v){
+  const w=getBivWeights(); w[k]=parseInt(v)||0; saveBivWeights(w);
+  document.getElementById('bivw-val-'+k).textContent=w[k];
+  renderBestIvs();
+}
+function setBivPreset(name){
+  const w={...BIV_PRESETS[name]}; saveBivWeights(w);
+  ['a','d','h'].forEach(k=>{ document.getElementById('bivw-'+k).value=w[k]; document.getElementById('bivw-val-'+k).textContent=w[k]; });
+  renderBestIvs();
+}
+function bivScore(iv){ const w=getBivWeights(); return iv.a*w.a + iv.h*w.h + iv.d*w.d; }
+function openBestIvs(){
+  if(!ST.cur){ showToast('Selecciona un entrenador primero'); return; }
+  ST.bivTab = ST.bivTab || 'raid';
+  ST.bivExpanded = null;
+  const p=gp(ST.cur);
+  const sel=document.getElementById('biv-team');
+  sel.innerHTML='<option value="all">Todos</option>'+teamList(p).map(n=>`<option value="${n}">${n===1?'Equipo 1 · Deseado':('Equipo '+n+' · '+teamName(p,n))}</option>`).join('');
+  document.getElementById('biv-tab-raid').classList.toggle('active',ST.bivTab==='raid');
+  document.getElementById('biv-tab-dmax').classList.toggle('active',ST.bivTab==='dmax');
+  document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
+  document.getElementById('bestivs-screen').style.display='block';
+  var hm=document.getElementById('home-menu'); if(hm) hm.style.display='none';
+  renderBestIvs();
+  window.scrollTo(0,0);
+}
+function switchBivTab(t){
+  ST.bivTab=t; ST.bivExpanded=null;
+  document.getElementById('biv-tab-raid').classList.toggle('active',t==='raid');
+  document.getElementById('biv-tab-dmax').classList.toggle('active',t==='dmax');
+  renderBestIvs();
+}
+function buildBivData(){
+  const p=gp(ST.cur); if(!p||!p.album) return {rows:[],total:0};
+  const tab=ST.bivTab||'raid';
+  const teamMode=(document.getElementById('biv-team')||{}).value||'all';
+  const typeOrder=Object.keys(TM);
+  const rows=[]; let total=0;
+  for(const id in p.album){
+    if(p.album[id]!==true) continue;
+    const isD=id.includes('-dmax-');
+    if((tab==='raid')===isD) continue;
+    if(teamMode!=='all' && !entryInTeam(p,id,parseInt(teamMode))) continue;
+    total++;
+    const pk=(p.pk&&p.pk[id])||{};
+    if(!pk.owned) continue;
+    let name='',img='',type='',dps=0;
+    if(p.custom&&p.custom[id]){
+      const d=p.custom[id]; name=d.n; img=d.img||''; type=d.type; dps=d.dps||0;
+      if(!isD){ const live=getLiveRankRow(d.n,type); if(live){ dps=live.dps; img=img||live.img; } }
+    } else if(isD){
+      type=id.split('-dmax-')[0];
+      const r=(DMAX[type]||[]).find(r=>{ const did=type+'-dmax-'+r.n.toLowerCase().replace(/[^a-z0-9]/g,'-'); return id===did||id.startsWith(did+'-'); });
+      if(!r) continue;
+      name=r.n.replace(/^[GD]-/,''); img=r.img; dps=r.dps;
+    } else {
+      const pd=PD.find(x=>x.id===id); if(!pd) continue;
+      name=pd.name; img=pd.img; type=pd.type; dps=pd.dps;
+    }
+    if(isD&&!type) type=id.split('-dmax-')[0];
+    const iv={a:pk.ivAtk||0,d:pk.ivDef||0,h:pk.ivHp||0};
+    rows.push({id,name,img,type,dps,iv,score:bivScore(iv),noIv:(iv.a+iv.d+iv.h)===0,ti:Math.max(0,typeOrder.indexOf(type))});
+  }
+  return {rows,total};
+}
+function togBivCard(id){ ST.bivExpanded=(ST.bivExpanded===id)?null:id; renderBestIvs(); }
+function bivUpdIV(id,s,v){
+  updIV(id,s,v); // guarda y actualiza también las cartas del álbum si existen
+  const n=parseInt(v);
+  const el=document.getElementById('biv-v-'+s+'-'+id); if(el) el.textContent=n;
+  const top=document.getElementById('biv-top-'+s+'-'+id); if(top) top.textContent=n;
+}
+function bivTogOwned(id,v){ togOwned(id,v); renderBestIvs(); }
+function bivTogMaxed(id,v){ togMaxed(id,v); renderBestIvs(); }
+function renderBestIvs(){
+  const {rows,total}=buildBivData();
+  const order=(document.getElementById('biv-order')||{}).value||'peores';
+  const byTeamOrder=(a,b)=> a.ti-b.ti || b.dps-a.dps || a.name.localeCompare(b.name);
+  const valued=rows.filter(x=>!x.noIv), blank=rows.filter(x=>x.noIv);
+  valued.sort(order==='mejores' ? ((a,b)=>b.score-a.score||byTeamOrder(a,b)) : ((a,b)=>a.score-b.score||byTeamOrder(a,b)));
+  blank.sort(byTeamOrder);
+  const list = order==='sinivs' ? [...blank,...valued] : [...valued,...blank];
+  document.getElementById('biv-count').textContent = rows.length+'/'+total+' obtenidos';
+  const el=document.getElementById('biv-list');
+  if(!list.length){
+    el.innerHTML='<p style="text-align:center;padding:40px 16px;color:#aaa;font-size:13px">No hay Pokémon marcados como "Obtenido" en este ámbito.<br><br>Marca tus Pokémon en "Mis Pokémon" y aparecerán aquí.</p>';
+    return;
+  }
+  el.innerHTML=list.map(x=>{
+    const t=TM[x.type]||{color:'#78909c',name:x.type};
+    const open=ST.bivExpanded===x.id;
+    const p=gp(ST.cur); const pk=(p&&p.pk&&p.pk[x.id])||{};
+    const editor=`
+      <div style="background:#fff;border-radius:10px;padding:10px 12px;margin:0 8px 8px">
+        <div class="fr"><div class="fl">IVs</div>
+          <div class="iv-grid">
+            <div class="iv-col"><div class="iv-lbl">Ataque</div><div class="iv-val"><span id="biv-v-a-${x.id}">${x.iv.a}</span></div><input type="range" min="0" max="15" value="${x.iv.a}" oninput="bivUpdIV('${x.id}','a',this.value)"></div>
+            <div class="iv-col"><div class="iv-lbl">Defensa</div><div class="iv-val"><span id="biv-v-d-${x.id}">${x.iv.d}</span></div><input type="range" min="0" max="15" value="${x.iv.d}" oninput="bivUpdIV('${x.id}','d',this.value)"></div>
+            <div class="iv-col"><div class="iv-lbl">Vida</div><div class="iv-val"><span id="biv-v-h-${x.id}">${x.iv.h}</span></div><input type="range" min="0" max="15" value="${x.iv.h}" oninput="bivUpdIV('${x.id}','h',this.value)"></div>
+          </div>
+        </div>
+        <div class="tr" style="margin-top:8px;padding:8px 12px;background:${pk.owned?'#e8f5e9':'#f5f5f5'};border-radius:8px;border:1.5px solid ${pk.owned?'#43a047':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${pk.owned?'#2e7d32':'#555'}">✅ Obtenido</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${pk.owned?'checked':''} onchange="bivTogOwned('${x.id}',this.checked)"><span class="sl"></span></label></div>
+        <div class="tr" style="margin-top:6px;padding:8px 12px;background:${pk.maxed?'#fff8e1':'#f5f5f5'};border-radius:8px;border:1.5px solid ${pk.maxed?'#ffb300':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${pk.maxed?'#e65100':'#555'}">⭐ Al máximo</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${pk.maxed?'checked':''} onchange="bivTogMaxed('${x.id}',this.checked)"><span class="sl"></span></label></div>
+      </div>`;
+    return `<div class="pk-card" style="background:${t.color};${x.noIv?'opacity:.5;':''}">
+      <div class="pk-top" onclick="togBivCard('${x.id}')">
+        <div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(x.img)}" onerror="this.style.opacity=.1"></div></div>
+        <div class="pk-info"><div class="pk-name">${x.name.replace(' (Shadow)','')}</div><div style="font-size:10px;color:rgba(255,255,255,.8);font-weight:600">${t.name||''}${x.noIv?' · sin IVs':''}</div></div>
+        <div style="display:flex;gap:7px;font-weight:800;color:#fff;font-size:17px;flex-shrink:0;margin-right:8px;text-shadow:0 1px 2px rgba(0,0,0,.35)">
+          <span title="Ataque" id="biv-top-a-${x.id}">${x.iv.a}</span><span title="Defensa" id="biv-top-d-${x.id}">${x.iv.d}</span><span title="Vida" id="biv-top-h-${x.id}">${x.iv.h}</span>
+        </div>
+      </div>
+      <div class="pk-body${open?' open':''}">${open?editor:''}</div>
+    </div>`;
+  }).join('')+'<p style="text-align:center;color:#9e9e9e;font-size:12px;padding:16px 10px 8px">Marca más Pokémon como obtenidos para que aparezcan aquí.</p>';
+}
+
 // ── PANTALLA PERFIL ──────────────────────────────────────────────────────────
 function openPerfilScreen() {
   if (!ST.cur) { showToast('Selecciona un entrenador primero'); return; }
   document.getElementById('perfil-name-label').textContent = ST.cur;
   { const _cn=document.getElementById('perfil-community-name'); if(_cn) _cn.textContent = (ST.currentCommunity && (ST.currentCommunity.displayName||ST.currentCommunity.id)) || '—'; }
+  { const _db=document.getElementById('perfil-del-community');
+    if(_db){ const c=ST.currentCommunity; _db.style.display = (c && (isAdminUser(ST.globalUserId) || c.ownerId===ST.globalUserId)) ? 'block' : 'none'; } }
+  { const _bk=document.getElementById('perfil-backup');
+    if(_bk) _bk.style.display = isAdminUser(ST.globalUserId) ? 'block' : 'none'; }
   document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
   document.getElementById('perfil-screen').style.display = 'block';
   document.getElementById('home-menu').style.display = 'none';
@@ -4442,11 +5067,9 @@ function buildBaseFilterFromData(data, cat) {
     .map(d => {
       const eng = (POKEDEX[d.id] && POKEDEX[d.id].en) || ENG_NAMES[d.id];
       if (!eng) return null;
-      let block = '+' + eng;
-      if (d.hasDmaxCapability) {
-        block += (cat === 'viernes') ? '&dynamax' : '&!dynamax';
-      }
-      return block;
+      // Nota: se eliminó el "&dynamax"/"&!dynamax" por familia — Pokémon GO no soporta
+      // mezclar & dentro de un término OR ("+a&b,+c" no funciona como (a&b) o c).
+      return '+' + eng;
     })
     .filter(Boolean)
     .join(',');
@@ -4522,7 +5145,9 @@ function saveTradeWith(name) {
 }
 
 function populateTradeWithSelects(selectedName) {
-  const names = (ST.profiles || []).map(p => p.name).filter(n => n !== ST.cur);
+  // Solo miembros reales de la comunidad (evita perfiles huérfanos con ids raros)
+  const memberAliases = new Set(Object.values((ST.currentCommunity && ST.currentCommunity.members) || {}).map(m => String(m.alias)));
+  const names = (ST.profiles || []).map(p => p.name).filter(n => n !== ST.cur && memberAliases.has(n));
   const optsHtml = '<option value="">Selecciona un entrenador...</option>' +
     names.map(n => `<option value="${n}"${n===selectedName?' selected':''}>${n}</option>`).join('');
   const selInitial = document.getElementById('filtro-trade-with-select-initial');
@@ -4599,8 +5224,29 @@ function toggleObjInfo() {
   label.textContent = isOpen ? '+Info ▾' : '-Info ▴';
 }
 
+function setObjTeamMode(m) {
+  ST.objTeamMode = m;
+  const isNum = m !== 'all' && m !== 'des';
+  const bAll = document.getElementById('objtm-all'), bDes = document.getElementById('objtm-des'), sel = document.getElementById('objtm-sel');
+  if (bAll) bAll.classList.toggle('on', m === 'all');
+  if (bDes) bDes.classList.toggle('on', m === 'des');
+  if (sel) { sel.classList.toggle('on', isNum); if (!isNum) sel.value = ''; }
+  openObjetivo();
+}
+function populateObjTeamSelect() {
+  const sel = document.getElementById('objtm-sel'); if (!sel) return;
+  const p = gp(ST.cur);
+  const extra = teamList(p).filter(n => n !== 1);
+  const cur = ST.objTeamMode || 'all';
+  sel.innerHTML = '<option value="">Elige…</option>'
+    + '<option value="all"' + (cur === 'all' ? ' selected' : '') + '>Todos</option>'
+    + '<option value="des"' + (cur === 'des' ? ' selected' : '') + '>Solo Deseados</option>'
+    + extra.map(n => '<option value="' + n + '"' + (String(cur) === String(n) ? ' selected' : '') + '>' + teamName(p, n) + '</option>').join('');
+  if (cur === 'all' || cur === 'des') sel.value = '';
+}
 function openObjetivo() {
   if (!ST.cur) { showToast('Selecciona un entrenador primero'); return; }
+  populateObjTeamSelect();
   const data = buildObjetivoData(ST.cur);
   const bar = document.getElementById('obj-trainer-bar');
   const grid = document.getElementById('obj-grid');
@@ -4832,6 +5478,8 @@ const APP_TIPS = [
   {i:'🎯', t:'Misión especial', x:`Pokémon obtenido completando una <b>Investigación Especial</b> o misión temporal. Suelen ser únicos o muy difíciles de conseguir de otra forma.`},
   {i:'📊', t:'DPS (Daño Por Segundo)', x:`Mide el daño sostenido en raids. Valores de referencia a nivel 40 con IVs perfectos (15/15/15). Fuente: Dittobase 2026.`},
   {i:'🧬', t:'IVs (Individual Values)', x:`Estadísticas de cada Pokémon: <b>Ataque, Defensa y Vida</b>, de 0 a 15. Un 15/15/15 es "hundo" (perfecto). En raids el Ataque es lo más importante.`},
+  {i:'👥', t:'Equipos de la comunidad', x:`Puedes ver los equipos de otros miembros de tu comunidad desde <b>Perfil &gt; Miembros de la Comunidad</b>.`},
+  {i:'🎯', t:'Completa tus equipos', x:`Completa tus equipos de Pokémon <b>Deseados</b> y añade información sobre si <b>tienes la base o al máximo</b> para tener un mejor filtro automáticamente.`},
 ];
 let _tipIdx = 0, _tipTimer = null;
 function renderTip(){
@@ -4923,6 +5571,7 @@ function maybeShowWelcome(){
   const CATS = [
     {id:"prio", title:"★ Prioridad",   label:"Prioritario"},
     {id:"pend", title:"No conseguidos", label:"No conseguido"},
+    {id:"later",title:"⏳ Later",       label:"Later"},
     {id:"got",  title:"Conseguidos",    label:"Conseguido"},
     {id:"unob", title:"No obtenible",   label:"No obtenible"},
   ];
@@ -4960,13 +5609,16 @@ function maybeShowWelcome(){
     ltRender();
   }
   function onClick(key){
-    if(mode==="unob"){ if(state[key]==="unob") delete state[key]; else state[key]="unob"; }
-    else if(mode==="sabado"){ days[key]=(days[key]==="sabado")?undefined:"sabado"; if(!days[key])delete days[key]; }
-    else if(mode==="domingo"){ days[key]=(days[key]==="domingo")?undefined:"domingo"; if(!days[key])delete days[key]; }
-    else { const cur=state[key]||"pend"; const cyc=["pend","got","prio"]; const nx=cyc[(cyc.indexOf(cur)+1)%cyc.length]; if(nx==="pend")delete state[key]; else state[key]=nx; }
+    if(!mode){
+      const rec=P.find(x=>x[0]===key);
+      if(window.showPokePopup) showPokePopup(key, rec?art(rec[1]):null, rec?rec[1]:null);
+      return;
+    }
+    if(mode==="sabado"||mode==="domingo"){ days[key]=(days[key]===mode)?undefined:mode; if(!days[key])delete days[key]; }
+    else { if(state[key]===mode) delete state[key]; else state[key]=mode; }
     save(); ltRender();
   }
-  const HINTS={ "null":"Toca un Pokémon: No conseguidos → Conseguidos → ★ Prioridad", unob:"🚫 Modo No obtenible: toca para marcar/desmarcar como no obtenible", sabado:"📅 Modo Sábado: toca para poner/quitar la etiqueta Sábado (no lo mueve)", domingo:"📅 Modo Domingo: toca para poner/quitar la etiqueta Domingo (no lo mueve)" };
+  const HINTS={ "null":"Sin etiqueta seleccionada: toca un Pokémon para verlo en grande. Selecciona una etiqueta arriba para marcar.", got:"✅ Toca un Pokémon para marcar/desmarcar Conseguido", later:"⏳ Toca un Pokémon para marcar/desmarcar Later", prio:"★ Toca un Pokémon para marcar/desmarcar Prioritario", unob:"🚫 Toca un Pokémon para marcar/desmarcar No Obtenible", sabado:"📅 Etiqueta Sábado: toca para poner/quitar (no lo mueve)", domingo:"📅 Etiqueta Domingo: toca para poner/quitar (no lo mueve)" };
   document.querySelectorAll("#lt-root .lt-modebtn").forEach(b=>b.onclick=()=>{
     const m=b.dataset.mode; mode=(mode===m)?null:m;
     document.querySelectorAll("#lt-root .lt-modebtn").forEach(x=>x.classList.toggle("active", x.dataset.mode===mode));
@@ -4976,12 +5628,13 @@ function maybeShowWelcome(){
   document.getElementById("lt-reset").onclick=()=>{ if(confirm("¿Borrar todo el progreso del tracker?")){ state={}; days={}; save(); ltRender(); } };
 
   function ltRender(){
-    const counts={prio:0,pend:0,got:0,unob:0};
+    const counts={prio:0,pend:0,later:0,got:0,unob:0};
     P.forEach(p=>{
       const key=p[0]; const cat=state[key]||"pend"; counts[cat]++;
       const c=cards[key]; grids[cat].appendChild(c);
       c.classList.toggle("lt-got", cat==="got");
       c.classList.toggle("lt-prio", cat==="prio");
+      c.classList.toggle("lt-later", cat==="later");
       c.classList.toggle("lt-unob", cat==="unob");
       c.querySelector(".lt-pill").textContent=CATLABEL[cat];
       const dt=c.querySelector(".lt-daytag"); const d=days[key];
@@ -4997,7 +5650,7 @@ function maybeShowWelcome(){
     });
     const total=P.length;
     document.getElementById("lt-prog").style.width=(counts.got/total*100)+"%";
-    document.getElementById("lt-stats").innerHTML=`<b>${counts.got}</b>/${total} conseguidos · <b>${counts.prio}</b> prioritarios · <b>${counts.pend}</b> por conseguir · <b>${counts.unob}</b> no obtenibles`;
+    document.getElementById("lt-stats").innerHTML=`<b>${counts.got}</b>/${total} conseguidos · <b>${counts.prio}</b> prioritarios · <b>${counts.pend}</b> por conseguir · <b>${counts.later}</b> later · <b>${counts.unob}</b> no obtenibles`;
     const nSat=Object.values(days).filter(d=>d==="sabado").length, nSun=Object.values(days).filter(d=>d==="domingo").length;
     document.getElementById("lt-footinfo").innerHTML=`📅 Sábado: <b style="color:#eef0ff">${nSat}</b> · Domingo: <b style="color:#eef0ff">${nSun}</b>`;
   }
@@ -5012,11 +5665,292 @@ function maybeShowWelcome(){
   };
 })();
 
+// ── TRACKER HUB ───────────────────────────────────────────────────────────────
+(function(){
+  const _app=document.getElementById('app');
+  ['tracker-hub-screen','pikachu-screen'].forEach(id=>{
+    const s=document.getElementById(id);
+    if(_app && s && s.parentElement!==_app) _app.appendChild(s);
+  });
+  window.openTrackerHub=function(){
+    document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
+    document.getElementById('tracker-hub-screen').style.display='block';
+    var hm=document.getElementById('home-menu'); if(hm) hm.style.display='none';
+    window.scrollTo(0,0);
+  };
+  // ── Popup con cadena evolutiva (PokeAPI en vivo + caché) ──
+  const EVO_KEY='evo-cache-v1';
+  let evoCache={}; try{evoCache=JSON.parse(localStorage.getItem(EVO_KEY))||{};}catch(e){}
+  const ART='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
+  const cap=s=>s? s.charAt(0).toUpperCase()+s.slice(1) : '';
+  const idFromUrl=u=>parseInt(u.split('/').filter(Boolean).pop());
+  async function getEvoChain(pid){
+    if(evoCache[pid]) return evoCache[pid];
+    const pj=await (await fetch('https://pokeapi.co/api/v2/pokemon/'+pid+'/')).json();
+    let sid=idFromUrl(pj.species.url);
+    const chain=[]; let cur=sid;
+    while(cur){
+      const sj=await (await fetch('https://pokeapi.co/api/v2/pokemon-species/'+cur+'/')).json();
+      chain.unshift({id:cur,name:cap(sj.name)});
+      cur=sj.evolves_from_species ? idFromUrl(sj.evolves_from_species.url) : null;
+    }
+    const res={sid:sid,chain:chain};
+    evoCache[pid]=res;
+    try{localStorage.setItem(EVO_KEY,JSON.stringify(evoCache));}catch(e){}
+    return res;
+  }
+  let ppToken=0;
+  function ppSetBig(name,url){
+    const img=document.getElementById('poke-popup-img');
+    const emo=document.getElementById('poke-popup-emo');
+    document.getElementById('poke-popup-name').textContent=name;
+    if(url){
+      img.style.display='inline'; emo.style.display='none';
+      img.onerror=()=>{ img.style.display='none'; emo.style.display='block'; };
+      img.src=url;
+    } else { img.removeAttribute('src'); img.style.display='none'; emo.style.display='block'; }
+  }
+  function ppRenderChain(items,curIdx){
+    const row=document.getElementById('poke-popup-chain');
+    if(items.length<=1){ row.style.display='none'; row.innerHTML=''; return; }
+    row.innerHTML=''; row.style.display='flex';
+    items.forEach((it,i)=>{
+      if(i>0){ const a=document.createElement('span'); a.textContent='→'; a.style.cssText='color:#8b90b5;font-weight:700'; row.appendChild(a); }
+      if(i===curIdx){ const d=document.createElement('span'); d.textContent='⬤'; d.style.cssText='color:#3b4bcf;font-size:1.1rem'; d.title=it.name; row.appendChild(d); return; }
+      const t=document.createElement('img');
+      t.src=it.url; t.alt=it.name; t.title=it.name;
+      t.style.cssText='width:56px;height:56px;object-fit:contain;cursor:pointer;background:#22274a;border:1px solid #2e3563;border-radius:12px;padding:3px';
+      t.onclick=e=>{ e.stopPropagation(); ppSetBig(it.name,it.url); ppRenderChain(items,i); };
+      row.appendChild(t);
+    });
+  }
+  window.showPokePopup=function(name,url,pid){
+    const pp=document.getElementById('poke-popup');
+    const row=document.getElementById('poke-popup-chain');
+    row.style.display='none'; row.innerHTML='';
+    ppSetBig(name,url);
+    pp.style.display='flex';
+    if(!pid) return;
+    const tok=++ppToken;
+    getEvoChain(pid).then(res=>{
+      if(tok!==ppToken || pp.style.display==='none') return;
+      const items=res.chain.map(c=>({id:c.id,name:c.name,url:ART+c.id+'.png'}));
+      const curIdx=items.findIndex(c=>c.id===res.sid);
+      if(curIdx>=0){ items[curIdx]={id:res.sid,name:name||items[curIdx].name,url:url||items[curIdx].url}; }
+      ppRenderChain(items,curIdx);
+      if(!name && curIdx>=0) document.getElementById('poke-popup-name').textContent=items[curIdx].name;
+    }).catch(()=>{});
+  };
+  const _pp=document.getElementById('poke-popup');
+  if(_pp){
+    _pp.onclick=()=>{ _pp.style.display='none'; };
+    document.getElementById('poke-popup-card').onclick=e=>e.stopPropagation();
+  }
+  // Delegación global: tocar la imagen de un Pokémon en cualquier parte la amplía
+  document.addEventListener('click',function(ev){
+    const img=ev.target && ev.target.closest ? ev.target.closest('img') : null;
+    if(!img) return;
+    if(img.closest('#poke-popup')) return;
+    if(img.classList.contains('obj-img') || img.closest('[id^="obj-"]')) return; // Pokémon Objetivo: su propio popup
+    if(window._megaDevMode && img.closest('#megaguide-screen')) return; // Modo desarrollador de Megas: dejar pasar el clic para editar
+    const m=(img.src||'').match(/sprites\/pokemon\/(?:other\/(?:official-artwork|home)\/)?(\d+)\.png/);
+    if(!m) return;
+    ev.preventDefault(); ev.stopPropagation();
+    showPokePopup(img.alt||'', img.src, parseInt(m[1]));
+  },true);
+})();
+
+// ── PIKACHU SKINS TRACKER ─────────────────────────────────────────────────────
+(function(){
+  // [nombre, grupo, método]
+  const SK = [
+   ["Witch Hat Pikachu","Salvaje","🌿 Salvaje"],
+   ["Halloween Pikachu","Salvaje","🌿 Salvaje"],
+   ["Trick or Treat Pikachu","Salvaje","🌿 Salvaje"],
+   ["Pikachu (sombrero morado)","Salvaje","🌿 Salvaje"],
+   ["Pikachu (gorro de fiesta)","Salvaje","🌿 Salvaje"],
+   ["Summer Style Pikachu","Salvaje","🌿 Salvaje"],
+   ["Malachite Crown Pikachu","Salvaje","🌿 Salvaje"],
+   ["Aquamarine Crown Pikachu","Salvaje","🌿 Salvaje"],
+   ["Dapper Pikachu (red accents)","Salvaje","🌿 Salvaje · C1 y C2"],
+   ["Dapper Pikachu (blue accents)","Salvaje","🌿 Salvaje · C1 y C2"],
+   ["Dapper Pikachu (yellow accents)","Salvaje","🌿 Salvaje · C1 y C2"],
+   ["Holiday Attire Pikachu","Salvaje C2","🌿 Salvaje · C2"],
+   ["Santa Hat Pikachu","Salvaje C2","🌿 Salvaje · C2"],
+   ["Polka Dot Party Hat Pikachu","Salvaje C2","🌿 Salvaje · C2"],
+   ["Pyrite Crown Pikachu","Salvaje C2","🌿 Salvaje · C2"],
+   ["Winter Carnival Pikachu","Salvaje C2","🌿 Salvaje · C2"],
+   ["Winter Beanie Pikachu","Salvaje C2","🌿 Salvaje · C2"],
+   ["Flying Pikachu (Multicolored Balloons)","Salvaje C2","🌿 Salvaje · C2"],
+   ["Quartz Crown Pikachu","Salvaje C2","🌿 Salvaje · C2"],
+   ["Formal Pikachu (red accents)","Raids 1★","⚔️ Raid 1★"],
+   ["Formal Pikachu (yellow accents)","Raids 1★","⚔️ Raid 1★"],
+   ["Formal Pikachu (blue accents)","Raids 1★","⚔️ Raid 1★"],
+   ["Safari Hat Pikachu","Raids 1★","⚔️ Raid 1★"],
+   ["Amethyst Crown Pikachu","Raids 1★","⚔️ Raid 1★"],
+   ["World Championships 2023 Pikachu","Raids 1★","⚔️ Raid 1★"],
+   ["Pikachu (varsity jacket)","Raids 1★","⚔️ Raid · 📋 Gana 3 raids"],
+   ["World Championships 2022 Pikachu","Raids 1★","⚔️ Raid · 📋 Gana 3 raids"],
+   ["World Championships 2024 Pikachu","Raids 1★","⚔️ Raid · 📋 Gana 3 raids"],
+   ["Leaf's Hat Pikachu","Investigación","📋 Captura 10 Pikachu · C1"],
+   ["Lyra's Hat Pikachu","Investigación","📋 Captura 10 Pikachu · C1"],
+   ["May's Bow Pikachu","Investigación","📋 Captura 10 Pikachu · C1 y C2"],
+   ["Red's Hat Pikachu","Investigación","📋 Captura 10 Pikachu · C1"],
+   ["Meloetta Hat Pikachu","Investigación","📋 Captura 15 Pikachu · C1 · 🎫 Pass r19"],
+   ["Akari's Kerchief Pikachu","Investigación","📋 Captura 10 Pikachu · C2"],
+   ["Brendan's Hat Pikachu","Investigación","📋 Captura 10 Pikachu · C2"],
+   ["Dawn's Hat Pikachu","Investigación","📋 Captura 10 Pikachu · C2"],
+   ["Ethan's Hat Pikachu","Investigación","📋 Captura 10 Pikachu · C2"],
+   ["Lucas's Hat Pikachu","Investigación","📋 Captura 10 Pikachu · C2"],
+   ["Rei's Cap Pikachu","Investigación","📋 Captura 10 Pikachu · C2"],
+   ["Gracidea Pikachu","Investigación","📋 Captura 15 Pikachu · C2 · 🎫 Pass r23"],
+   ["Shaymin Scarf Pikachu","GO Pass","🎫 GO Pass · rango 27"],
+   ["Pop Star Pikachu","GO Pass","🎫 GO Pass · rango 29"],
+   ["Rock Star Pikachu","GO Pass","🎫 GO Pass · rango 30"]
+  ];
+  const KEY="pogo-pikachu-skins-2026";
+  // Imágenes de skins (CDN LeekDuck). Si falta o falla la URL, se muestra ⚡
+  const LD=n=>`https://cdn.leekduck.com/assets/img/pokemon_icons/${n}`;
+  const IMG={
+    "Witch Hat Pikachu": LD("pokemon_icon_025_00_04.png"),
+    "Halloween Pikachu": LD("pm25.cHALLOWEEN_2021_NOEVOLVE.icon.png"),
+    "Trick or Treat Pikachu": LD("pm25.cFALL_2023_NOEVOLVE.icon.png"),
+    "Pikachu (sombrero morado)": LD("pokemon_icon_025_00_28.png"),
+    "Pikachu (gorro de fiesta)": LD("pokemon_icon_025_00_02.png"),
+    "Summer Style Pikachu": LD("pokemon_icon_025_00_05.png"),
+    "Malachite Crown Pikachu": LD("pm25.fSUMMER_2023_A.icon.png"),
+    "Aquamarine Crown Pikachu": LD("pm25.fSUMMER_2023_B.icon.png"),
+    "Amethyst Crown Pikachu": LD("pm25.fSUMMER_2023_E.icon.png"),
+    "Dapper Pikachu (red accents)": LD("pm25.fGOFEST_2025_GOGGLES_RED.icon.png"),
+    "Dapper Pikachu (blue accents)": LD("pm25.fGOFEST_2025_GOGGLES_BLUE.icon.png"),
+    "Dapper Pikachu (yellow accents)": LD("pm25.fGOFEST_2025_GOGGLES_YELLOW.icon.png"),
+    "Formal Pikachu (red accents)": LD("pm25.fGOFEST_2025_MONOCLE_RED.icon.png"),
+    "Formal Pikachu (yellow accents)": LD("pm25.fGOFEST_2025_MONOCLE_YELLOW.icon.png"),
+    "Formal Pikachu (blue accents)": LD("pm25.fGOFEST_2025_MONOCLE_BLUE.icon.png"),
+    "Safari Hat Pikachu": LD("pokemon_icon_025_00_13.png"),
+    "Pikachu (varsity jacket)": LD("pm25.fWCS_2025.icon.png"),
+    "World Championships 2022 Pikachu": LD("pm25.fWCS_2022.icon.png"),
+    "World Championships 2023 Pikachu": LD("pm25.fWCS_2023.icon.png"),
+    "World Championships 2024 Pikachu": LD("pm25.fWCS_2024.icon.png"),
+    "Leaf's Hat Pikachu": LD("pm25.fGOTOUR_2026_A_02.icon.png"),
+    "Lyra's Hat Pikachu": LD("pm25.fGOTOUR_2026_B_02.icon.png"),
+    "May's Bow Pikachu": LD("pm25.cGOTOUR_2023_BANDANA_NOEVOLVE.icon.png"),
+    "Red's Hat Pikachu": LD("pm25.fGOTOUR_2026_A.icon.png"),
+    "Meloetta Hat Pikachu": LD("pokemon_icon_025_01_47.png"),
+    "Santa Hat Pikachu": LD("pokemon_icon_025_00_01.png"),
+    "Polka Dot Party Hat Pikachu": LD("pokemon_icon_025_00_11.png"),
+    "Winter Carnival Pikachu": LD("pm25.fWINTER_2020.icon.png"),
+    "Winter Beanie Pikachu": LD("pokemon_icon_025_00_08.png"),
+    "Holiday Attire Pikachu": LD("pm25.cHOLIDAY_2023.icon.png"),
+    "Flying Pikachu (Multicolored Balloons)": LD("pm25.fCOSTUME_2020.icon.png"),
+    "Akari's Kerchief Pikachu": LD("pm25.fGOTOUR_2024_B_02.icon.png"),
+    "Brendan's Hat Pikachu": LD("pm25.cGOTOUR_2023_HAT.icon.png"),
+    "Dawn's Hat Pikachu": LD("pm25.fGOTOUR_2024_A_02.icon.png"),
+    "Ethan's Hat Pikachu": LD("pm25.fGOTOUR_2026_B.icon.png"),
+    "Lucas's Hat Pikachu": LD("pm25.fGOTOUR_2024_A.icon.png"),
+    "Rei's Cap Pikachu": LD("pm25.fGOTOUR_2024_B.icon.png"),
+    "Gracidea Pikachu": LD("pm25.cGOFEST_2022_NOEVOLVE.icon.png"),
+    "Shaymin Scarf Pikachu": LD("pm25.fGOFEST_2022.icon.png"),
+    "Pop Star Pikachu": LD("pokemon_icon_pm0025_00_pgo_popstar.png"),
+    "Rock Star Pikachu": LD("pokemon_icon_pm0025_00_pgo_rockstar.png"),
+    "Quartz Crown Pikachu": LD("pm25.fSUMMER_2023_C.icon.png"),
+    "Pyrite Crown Pikachu": LD("pm25.fSUMMER_2023_D.icon.png")
+  };
+  const SECS=[
+    {id:"prio", title:"★ Prioridad"},
+    {id:"Salvaje", title:"🌿 Salvaje · Celebration 1 (13–15 jul)"},
+    {id:"Salvaje C2", title:"🌿 Salvaje · Celebration 2 (15–18 jul)"},
+    {id:"Raids 1★", title:"⚔️ Raids 1★"},
+    {id:"Investigación", title:"📋 Investigación de campo"},
+    {id:"GO Pass", title:"🎫 GO Pass"},
+    {id:"done", title:"✓ Completados"},
+    {id:"unob", title:"🚫 No obtenible"}
+  ];
+  const LABEL={pend:"Pendiente",got:"Conseguido",later:"Later",prio:"Prioritario",unob:"No obtenible"};
+  let state={}, query="", mode=null;
+  try{ state=JSON.parse(localStorage.getItem(KEY))||{}; }catch(e){}
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+
+  const main=document.getElementById("pk-main");
+  const grids={}, empties={}, cards={};
+  SECS.forEach(s=>{
+    const sec=document.createElement("section");
+    const hh=document.createElement("h2"); hh.innerHTML=`${s.title} <span class="pk-cnt" id="pk-cnt-${s.id}">0</span>`; sec.appendChild(hh);
+    const grid=document.createElement("div"); grid.className="pk-grid"; sec.appendChild(grid);
+    const em=document.createElement("div"); em.className="pk-empty"; em.textContent="—"; sec.appendChild(em);
+    main.appendChild(sec); grids[s.id]=grid; empties[s.id]=em;
+  });
+  let _built=false;
+  function build(){
+    if(_built) return; _built=true;
+    SK.forEach(p=>{
+      const key=p[0];
+      const c=document.createElement("div"); c.className="pk-card"; c.dataset.key=key;
+      const imgHtml = IMG[key]
+        ? `<img loading="lazy" src="${IMG[key]}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="pk-emo" style="display:none">⚡</span>`
+        : `<span class="pk-emo">⚡</span>`;
+      c.innerHTML=`${imgHtml}<div class="pk-nm">${key}</div><div class="pk-how">${p[2]}</div><span class="pk-pill"></span>`;
+      c.onclick=()=>{
+        if(!mode){ if(window.showPokePopup) showPokePopup(key, IMG[key]||null); return; }
+        if(state[key]===mode) delete state[key]; else state[key]=mode;
+        save(); pkRender();
+      };
+      cards[key]=c;
+    });
+    pkRender();
+  }
+  const PKHINTS={ "null":"Sin etiqueta seleccionada: toca una skin para verla en grande. Selecciona una etiqueta arriba para marcar.", got:"✅ Toca una skin para marcar/desmarcar Conseguido", later:"⏳ Toca una skin para marcar/desmarcar Later", prio:"★ Toca una skin para marcar/desmarcar Prioritario", unob:"🚫 Toca una skin para marcar/desmarcar No Obtenible" };
+  document.querySelectorAll("#pk-root .pk-modebtn").forEach(b=>b.onclick=()=>{
+    const m=b.dataset.mode; mode=(mode===m)?null:m;
+    document.querySelectorAll("#pk-root .pk-modebtn").forEach(x=>x.classList.toggle("active", x.dataset.mode===mode));
+    document.getElementById("pk-hint").textContent=PKHINTS[mode||"null"];
+  });
+  document.getElementById("pk-hint").textContent=PKHINTS["null"];
+  document.getElementById("pk-search").oninput=e=>{ query=e.target.value.toLowerCase(); pkRender(); };
+  document.getElementById("pk-reset").onclick=()=>{ if(confirm("¿Borrar todo el progreso de Pikachu Skins?")){ state={}; save(); pkRender(); } };
+
+  function pkRender(){
+    const counts={pend:0,got:0,later:0,prio:0,unob:0};
+    const secCount={}; SECS.forEach(s=>secCount[s.id]=0);
+    SK.forEach(p=>{
+      const key=p[0]; const st=state[key]||"pend"; counts[st]++;
+      const g = st==="prio" ? "prio" : st==="got" ? "done" : st==="unob" ? "unob" : p[1];
+      secCount[g]++;
+      const c=cards[key]; grids[g].appendChild(c);
+      c.classList.toggle("pk-got", st==="got");
+      c.classList.toggle("pk-later", st==="later");
+      c.classList.toggle("pk-prio", st==="prio");
+      c.classList.toggle("pk-unob", st==="unob");
+      c.querySelector(".pk-pill").textContent=LABEL[st];
+      c.classList.toggle("pk-hidden", !key.toLowerCase().includes(query));
+    });
+    SECS.forEach(s=>{
+      document.getElementById("pk-cnt-"+s.id).textContent=secCount[s.id];
+      const vis=grids[s.id].querySelector(".pk-card:not(.pk-hidden)");
+      empties[s.id].classList.toggle("pk-hidden", !!vis);
+      empties[s.id].textContent=secCount[s.id]?"":"—";
+    });
+    const total=SK.length;
+    document.getElementById("pk-prog").style.width=(counts.got/total*100)+"%";
+    document.getElementById("pk-stats").innerHTML=`<b>${counts.got}</b>/${total} conseguidas · <b>${counts.prio}</b> prioritarias · <b>${counts.pend}</b> por cazar · <b>${counts.later}</b> later · <b>${counts.unob}</b> no obtenibles`;
+  }
+  window.openPikaSkins=function(){
+    build();
+    document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
+    document.getElementById('pikachu-screen').style.display='block';
+    var hm=document.getElementById('home-menu'); if(hm) hm.style.display='none';
+    window.scrollTo(0,0);
+  };
+})();
+
 // ── COMMUNITY / AUTH LAYER ────────────────────────────────────────────────────
 Object.assign(ST, { globalUserId:null, globalUserPassword:null, communities:[], currentCommunityId:null, currentCommunity:null, myAlias:null, _pendingJoinId:null });
 
-const ADMIN_USERS = { xelark: '1025346879' };
+const ADMIN_USERS = { xelark: true }; // la verificación real es por cuenta de Firebase Auth
 function isAdminUser(id){ return !!(id && ADMIN_USERS[String(id).toLowerCase()]); }
+const auth = firebase.auth();
+const AUTH_SUFFIX = '@users.trackdex.app';
+const uEmail = id => id + AUTH_SUFFIX;
 
 async function fbLoadGlobalUser(id){
   try { const s = await db.collection('globalUsers').doc(id).get(); return s.exists ? {userId:s.id, ...s.data()} : null; }
@@ -5031,7 +5965,90 @@ async function fbLoadCommunities(){
   catch(e){ console.warn('load communities', e.code); return []; }
 }
 
-function showGlobalLogin(){ show('global-login-screen'); document.getElementById('gl-user').value = ST.globalUserId || ''; document.getElementById('gl-pass').value=''; }
+async function exportBackup(){
+  if(!isAdminUser(ST.globalUserId)){ showToast('Solo el administrador puede exportar'); return; }
+  showToast('Generando copia de seguridad… ⏳');
+  try{
+    const out={ exportedAt:new Date().toISOString(), communities:{}, globalUsers:{} };
+    const cs=await db.collection('communities').get();
+    for(const doc of cs.docs){
+      const c={ ...doc.data(), profiles:{} };
+      const ps=await db.collection('communities').doc(doc.id).collection('profiles').get();
+      ps.docs.forEach(p=>{ c.profiles[p.id]=p.data(); });
+      out.communities[doc.id]=c;
+    }
+    try{ const gs=await db.collection('globalUsers').get(); gs.docs.forEach(g=>{ out.globalUsers[g.id]=g.data(); }); }catch(e){}
+    const blob=new Blob([JSON.stringify(out,null,1)],{type:'application/json'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='trackdex-backup-'+new Date().toISOString().slice(0,10)+'.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(a.href);
+    showToast('Copia descargada ✅');
+  }catch(e){ showToast('Error al exportar: '+(e.message||e)); }
+}
+function openPrivacy(){ const el=document.getElementById('privacy-pop'); if(el) el.style.display='flex'; }
+function closePrivacy(){ const el=document.getElementById('privacy-pop'); if(el) el.style.display='none'; }
+async function deleteAccountPrompt(){
+  const user = auth.currentUser;
+  if(!user){ showToast('Inicia sesión primero'); return; }
+  if(!confirm('¿Borrar tu cuenta y TODOS tus datos (perfiles, equipos, IVs, progreso) de forma permanente?\n\nEsta acción no se puede deshacer.')) return;
+  const cur = prompt('Por seguridad, escribe tu contraseña:'); if(cur===null) return;
+  try {
+    const cred = firebase.auth.EmailAuthProvider.credential(user.email, cur);
+    await user.reauthenticateWithCredential(cred);
+  } catch(e){ showToast('Contraseña incorrecta'); return; }
+  const id = ST.globalUserId;
+  try {
+    // Borrar perfiles y membresías en todas las comunidades
+    const comms = await fbLoadCommunities();
+    for(const c of comms){
+      if(c.members && c.members[id]){
+        const alias = c.members[id].alias;
+        try { await db.collection('communities').doc(c.id).collection('profiles').doc(alias).delete(); } catch(e){}
+        delete c.members[id];
+        try { await db.collection('communities').doc(c.id).set(c); } catch(e){}
+      }
+    }
+    try { await db.collection('globalUsers').doc(id).delete(); } catch(e){}
+    try { localStorage.removeItem('pokeBCN_globalUser'); localStorage.removeItem('pokeBCN'); } catch(e){}
+    await user.delete();
+  } catch(e){ showToast('Error al borrar: '+(e.message||e)); return; }
+  showToast('Cuenta eliminada. ¡Hasta pronto! 👋');
+  globalLogout();
+}
+function togglePassVis(inputId, btn){
+  const inp = document.getElementById(inputId); if(!inp) return;
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.textContent = show ? '🙈' : '👁️';
+}
+async function changePasswordPrompt(){
+  const user = auth.currentUser;
+  if(!user){ showToast('Inicia sesión primero'); return; }
+  const cur = prompt('Tu contraseña ACTUAL:'); if(cur===null) return;
+  const nue = prompt('Nueva contraseña (mínimo 6 caracteres):'); if(nue===null) return;
+  if(nue.length < 6){ showToast('Contraseña mínimo 6 caracteres'); return; }
+  const nue2 = prompt('Repite la nueva contraseña:'); if(nue2===null) return;
+  if(nue !== nue2){ showToast('Las contraseñas no coinciden'); return; }
+  try {
+    const cred = firebase.auth.EmailAuthProvider.credential(user.email, cur);
+    await user.reauthenticateWithCredential(cred);
+    await user.updatePassword(nue);
+    showToast('Contraseña cambiada ✅');
+  } catch(e){
+    if(e.code==='auth/wrong-password'||e.code==='auth/invalid-credential'||e.code==='auth/invalid-login-credentials'){ showToast('La contraseña actual no es correcta'); }
+    else if(e.code==='auth/too-many-requests'){ showToast('Demasiados intentos. Espera unos minutos ⏳'); }
+    else { showToast('Error: '+(e.message||e)); }
+  }
+}
+function showGlobalLogin(){
+  show('global-login-screen');
+  let prefill = ST.globalUserId || '';
+  if(!prefill){ try{ const s=JSON.parse(localStorage.getItem('pokeBCN_globalUser')||'null'); if(s&&s.userId) prefill=s.userId; }catch(e){} }
+  document.getElementById('gl-user').value = prefill;
+  document.getElementById('gl-pass').value='';
+}
 function showGlobalRegister(){ show('global-register-screen'); document.getElementById('gr-user').value=''; document.getElementById('gr-pass').value=''; document.getElementById('gr-pass2').value=''; }
 
 async function doGlobalLogin(){
@@ -5040,17 +6057,42 @@ async function doGlobalLogin(){
   const remember = document.getElementById('gl-remember').checked;
   if(!id){ showToast('Escribe tu usuario'); return; }
   if(!pass){ showToast('Escribe tu contraseña'); return; }
-  if(ADMIN_USERS[id]){
-    if(ADMIN_USERS[id] !== pass){ showToast('Usuario o contraseña incorrectos'); return; }
-    await fbSaveGlobalUser(id, {password:pass, isAdmin:true, createdAt:Date.now()});
-  } else {
-    const user = await fbLoadGlobalUser(id);
-    if(!user){ showToast('Usuario no encontrado'); return; }
-    if(user.password !== pass){ showToast('Usuario o contraseña incorrectos'); return; }
+  try {
+    await auth.setPersistence(remember ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION);
+    await auth.signInWithEmailAndPassword(uEmail(id), pass);
+  } catch(e) {
+    const maybeNoAccount = ['auth/user-not-found','auth/invalid-credential','auth/invalid-login-credentials','auth/wrong-password'].includes(e.code);
+    if(maybeNoAccount){
+      // ── Migración de cuenta antigua (contraseña en Firestore) ──
+      // Nota: Firebase ya no distingue "usuario no existe" de "contraseña mal"
+      // (protección anti-enumeración), así que intentamos migrar en ambos casos.
+      const user = await fbLoadGlobalUser(id);
+      if(!user || user.password === undefined || user.password !== pass){
+        showToast('Usuario o contraseña incorrectos'); return;
+      }
+      let newPass = pass;
+      if(pass.length < 6){
+        newPass = prompt('Estamos mejorando la seguridad de las cuentas.\nTu contraseña actual es demasiado corta para el nuevo sistema.\n\nElige una NUEVA contraseña (mínimo 6 caracteres):') || '';
+        if(newPass.length < 6){ showToast('Contraseña mínimo 6 caracteres'); return; }
+      }
+      try { await auth.createUserWithEmailAndPassword(uEmail(id), newPass); }
+      catch(e2){
+        showToast(e2.code==='auth/email-already-in-use'
+          ? 'Usuario o contraseña incorrectos' // la cuenta ya está migrada con otra contraseña
+          : 'Error al actualizar la cuenta: '+(e2.message||e2));
+        return;
+      }
+      // Eliminar la contraseña en texto plano de Firestore
+      try { await db.collection('globalUsers').doc(id).set({ uid: auth.currentUser.uid, createdAt: user.createdAt||Date.now(), migratedAt: Date.now() }); } catch(e3){}
+      if(newPass !== pass) showToast('Contraseña actualizada ✅ Usa la nueva a partir de ahora');
+    } else if(e.code === 'auth/too-many-requests'){
+      showToast('Demasiados intentos. Espera unos minutos e inténtalo de nuevo ⏳'); return;
+    } else {
+      showToast('Error al iniciar sesión: '+(e.message||e)); return;
+    }
   }
-  ST.globalUserId = id; ST.globalUserPassword = pass;
-  if(remember){ try{ localStorage.setItem('pokeBCN_globalUser', JSON.stringify({userId:id, password:pass})); }catch(e){} }
-  else { try{ localStorage.removeItem('pokeBCN_globalUser'); }catch(e){} }
+  ST.globalUserId = id;
+  try{ localStorage.setItem('pokeBCN_globalUser', JSON.stringify({userId:id})); }catch(e){}
   showToast('¡Bienvenido, '+id+'! 🎉');
   showCommunitySelection();
 }
@@ -5061,20 +6103,28 @@ async function doGlobalRegister(){
   const pass2 = document.getElementById('gr-pass2').value;
   if(!id){ showToast('Escribe un usuario'); return; }
   if(!/^[a-z0-9_-]+$/.test(id)){ showToast('Solo letras, números, - y _'); return; }
-  if(pass.length < 4){ showToast('Contraseña mínimo 4 caracteres'); return; }
+  if(pass.length < 6){ showToast('Contraseña mínimo 6 caracteres'); return; }
   if(pass !== pass2){ showToast('Las contraseñas no coinciden'); return; }
   const existing = await fbLoadGlobalUser(id);
-  if(existing){ showToast('Ese usuario ya existe'); return; }
-  await fbSaveGlobalUser(id, {password:pass, createdAt:Date.now()});
-  ST.globalUserId = id; ST.globalUserPassword = pass;
-  try{ localStorage.setItem('pokeBCN_globalUser', JSON.stringify({userId:id, password:pass})); }catch(e){}
+  // Solo bloquea si es una cuenta ANTIGUA sin migrar (con contraseña guardada).
+  // Si el doc existe pero sin password, la verdad la tiene Auth: si la cuenta fue
+  // borrada de Auth, se permite re-registrar (docs huérfanos).
+  if(existing && existing.password !== undefined){ showToast('Ese usuario ya existe'); return; }
+  try { await auth.createUserWithEmailAndPassword(uEmail(id), pass); }
+  catch(e){
+    showToast(e.code==='auth/email-already-in-use' ? 'Ese usuario ya existe' : 'Error: '+(e.message||e));
+    return;
+  }
+  await fbSaveGlobalUser(id, { uid: auth.currentUser.uid, createdAt: Date.now() });
+  ST.globalUserId = id;
+  try{ localStorage.setItem('pokeBCN_globalUser', JSON.stringify({userId:id})); }catch(e){}
   showToast('¡Cuenta creada! Bienvenido, '+id+' 🎉');
   showCommunitySelection();
 }
 
 function globalLogout(){
   ST.globalUserId=null; ST.globalUserPassword=null; ST.currentCommunityId=null; ST.currentCommunity=null; ST.myAlias=null; ST.profiles=[]; ST.cur=null; ST.view=null;
-  try{ localStorage.removeItem('pokeBCN_globalUser'); }catch(e){}
+  try{ auth.signOut(); }catch(e){}
   showGlobalLogin();
 }
 
@@ -5111,7 +6161,7 @@ function renderCommunityList(){
       + (isMember
           ? '<button class="btn-enter" onclick="event.stopPropagation();enterCommunity(\'' + c.id + '\')">Entrar</button>'
           : '<button class="btn-join" onclick="event.stopPropagation();openCommunityJoin(\'' + c.id + '\')">Unirse</button>')
-      + (isAdmin ? '<button class="btn-admin-del" title="Borrar comunidad (admin)" onclick="event.stopPropagation();adminDeleteCommunity(\'' + c.id + '\')">🗑️</button>' : '')
+      + ((isAdmin || c.ownerId===ST.globalUserId) ? '<button class="btn-admin-del" title="Borrar comunidad" onclick="event.stopPropagation();adminDeleteCommunity(\'' + c.id + '\')">🗑️</button>' : '')
       + '</div></div>';
   }).join('');
 }
@@ -5187,8 +6237,10 @@ async function enterCommunity(cid){
 }
 
 async function adminDeleteCommunity(cid){
-  if(!isAdminUser(ST.globalUserId)){ showToast('Solo el administrador puede borrar comunidades'); return; }
-  const c = ST.communities.find(x=>x.id===cid);
+  const c0 = ST.communities.find(x=>x.id===cid);
+  const isOwner = !!(c0 && c0.ownerId === ST.globalUserId);
+  if(!isAdminUser(ST.globalUserId) && !isOwner){ showToast('Solo el creador de la comunidad (o el admin) puede borrarla'); return; }
+  const c = c0;
   const name = c ? (c.displayName||c.id) : cid;
   if(!confirm('¿Borrar la comunidad "'+name+'"?\n\nEs permanente y no se puede deshacer.')) return;
   try {
@@ -5199,6 +6251,20 @@ async function adminDeleteCommunity(cid){
   } catch(e){ showToast('Error al borrar: '+(e.message||e)); }
 }
 
+async function deleteCurrentCommunity(){
+  const c = ST.currentCommunity;
+  if(!c){ showToast('No estás en ninguna comunidad'); return; }
+  if(!isAdminUser(ST.globalUserId) && c.ownerId !== ST.globalUserId){ showToast('Solo el creador de la comunidad (o el admin) puede borrarla'); return; }
+  const name = c.displayName||c.id;
+  if(!confirm('¿Borrar la comunidad "'+name+'"?\n\nSe perderán los perfiles y equipos de TODOS sus miembros. Es permanente.')) return;
+  if(!confirm('Última confirmación: ¿seguro que quieres borrar "'+name+'" para siempre?')) return;
+  try {
+    await db.collection('communities').doc(c.id).delete();
+    ST.communities = ST.communities.filter(x=>x.id!==c.id);
+    showToast('Comunidad "'+name+'" borrada');
+    showCommunitySelection();
+  } catch(e){ showToast('Error al borrar: '+(e.message||e)); }
+}
 function showMembers(){
   document.getElementById('home-menu').style.display='none';
   document.getElementById('home-profile-section').style.display='';
@@ -5228,25 +6294,70 @@ function renderMembers(){
 }
 
 
-if(localStorage.getItem('darkMode')==='1'){
-  document.body.classList.add('dark');
-  document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('#dark-btn,#dark-btn2,#dark-btn-home').forEach(b=>{if(b)b.textContent='☀️';});});
-}
+// Modo oscuro desactivado temporalmente — no se aplica aunque estuviera guardado
+try{ document.body.classList.remove('dark'); }catch(e){}
 if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').then(reg=>{
+      // Buscar actualizaciones al abrir, al volver a la app y cada 30 min
+      reg.update().catch(()=>{});
+      setInterval(()=>reg.update().catch(()=>{}), 30*60*1000);
+      document.addEventListener('visibilitychange',()=>{
+        if(document.visibilityState==='visible') reg.update().catch(()=>{});
+      });
+    }).catch(()=>{});
+    // Cuando el SW nuevo toma el control, recargar una vez para aplicar la versión
+    let _swRefreshed=false;
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{
+      if(_swRefreshed) return; _swRefreshed=true; location.reload();
+    });
+  });
 }
-// DOM ready — restaurar sesion global y enrutar a login o seleccion de comunidad
-(async () => {
+// DOM ready — la sesión la gestiona Firebase Auth; enrutar a login o comunidades
+(() => {
+  // Limpieza: si quedaba una contraseña guardada del sistema antiguo, eliminarla
   try {
-    const saved = localStorage.getItem('pokeBCN_globalUser');
-    if(saved){
-      const u = JSON.parse(saved);
-      ST.globalUserId = u.userId;
-      ST.globalUserPassword = u.password;
+    const saved = JSON.parse(localStorage.getItem('pokeBCN_globalUser')||'null');
+    if(saved && saved.password){ localStorage.setItem('pokeBCN_globalUser', JSON.stringify({userId:saved.userId})); }
+  } catch(e){}
+  let _authBooted = false;
+  auth.onAuthStateChanged(user => {
+    if(_authBooted) return; _authBooted = true;
+    if(user && user.email && user.email.endsWith(AUTH_SUFFIX)){
+      ST.globalUserId = user.email.slice(0, -AUTH_SUFFIX.length);
+      showCommunitySelection();
+    } else {
+      showGlobalLogin();
     }
-  } catch(e){ }
-  if(ST.globalUserId){ showCommunitySelection(); }
-  else { showGlobalLogin(); }
+  });
+})();
+</script>
+<script src="rankings-data.js"></script>
+<script>
+// Rankings actualizados (rankings-data.js) — sobrescribe los datos embebidos
+if(window.RANKINGS_V2 && typeof RANKINGS!=='undefined'){
+  Object.keys(RANKINGS_V2).forEach(k=>{
+    if(!RANKINGS[k]) return;
+    RANKINGS[k].length=0;
+    RANKINGS_V2[k].forEach(e=>RANKINGS[k].push({n:e[0],dps:e[1],fast:e[2],fastL:!!e[3],charge:e[4],chargeL:!!e[5],img:e[6]}));
+  });
+}
+// Offsets dinámicos para menús fijos en Mis Pokémon (tabs + tipos + subtabs)
+(function(){
+  function upd(){
+    var scr=document.getElementById('detail-screen'); if(!scr) return;
+    var hdr=scr.querySelector('.app-header'), tabs=scr.querySelector('.tabs'), strip=document.getElementById('type-nav-strip');
+    var h=hdr?hdr.offsetHeight:0, t=tabs?tabs.offsetHeight:0, s=strip?strip.offsetHeight:0;
+    if(!h&&!t) return; // pantalla oculta, no tocar
+    var r=document.documentElement.style;
+    r.setProperty('--st-hdr',h+'px');
+    r.setProperty('--st-tabs',(h+t)+'px');
+    r.setProperty('--st-strip',(h+t+s)+'px');
+  }
+  window.addEventListener('load',upd);
+  window.addEventListener('resize',upd);
+  new MutationObserver(upd).observe(document.body,{childList:true,subtree:true});
+  upd();
 })();
 </script>
 </body>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokebestbcn-v106';
+const CACHE_NAME = 'trackdex-v119';
 const ASSETS = [
   '/',
   '/index.html',
