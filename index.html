@@ -559,7 +559,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           🏆 Trackers
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.958
+          🆕 Novedades · v0.959
         </button>
       </div>
 
@@ -934,6 +934,32 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
   </div>
 </div>
 
+<!-- MODAL BIENVENIDA -->
+<div id="modal-welcome" class="modal-overlay" style="display:none;z-index:600">
+  <div class="modal-box" style="max-width:360px;text-align:center">
+    <h3 style="font-size:20px;color:#CC0000;margin-bottom:12px">👋 ¡Bienvenido a TrackDex!</h3>
+    <p style="font-size:13.5px;color:#444;line-height:1.7;text-align:left;margin-bottom:6px">Esta app te ayuda a <b>mejorar tus equipos Pokémon para incursiones</b>: lleva el control de cuáles tienes y cuáles te faltan, crea automáticamente <b>filtros para intercambiar con tus amigos</b> y ten siempre a la vista qué Pokémon necesitas priorizar… entre muchas otras cosas.</p>
+    <p style="font-size:13.5px;color:#444;line-height:1.7;text-align:left">Ve a tu <b>Perfil</b> y toca <b>«📖 Guía TrackDex»</b> para descubrir todo lo que puedes hacer.</p>
+    <button id="welcome-close-btn" disabled style="display:block;width:100%;margin-top:16px;padding:13px;border:none;border-radius:10px;font-size:16px;font-weight:800;color:#fff;background:#CC0000;cursor:not-allowed;opacity:.55">Cerrar (6)</button>
+  </div>
+</div>
+
+<!-- MODAL GUIA TRACKDEX -->
+<div id="modal-guia" class="modal-overlay" style="display:none" onclick="document.getElementById('modal-guia').style.display='none'">
+  <div class="modal-box" style="max-width:390px" onclick="event.stopPropagation()">
+    <div class="modal-title"><span>📖 Guía TrackDex</span><button class="modal-close" onclick="document.getElementById('modal-guia').style.display='none'">✕</button></div>
+    <p style="font-size:12px;color:#888;margin-bottom:12px">Toca cada función para saber qué hace. Las marcadas con ✅ ya las conoces.</p>
+    <div id="guia-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
+  </div>
+</div>
+<div id="modal-guia-item" class="modal-overlay" style="display:none;z-index:550" onclick="closeGuiaItem()">
+  <div class="modal-box" style="max-width:340px" onclick="event.stopPropagation()">
+    <h3 id="guia-item-title" style="font-size:17px;color:#CC0000;margin-bottom:10px"></h3>
+    <p id="guia-item-desc" style="font-size:13px;color:#444;line-height:1.7;margin-bottom:14px"></p>
+    <button onclick="closeGuiaItem()" style="width:100%;padding:11px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">✅ Entendido</button>
+  </div>
+</div>
+
 <!-- MODAL INFO -->
 <div id="modal-info" class="modal-overlay" style="display:none" onclick="closeInfo(event)">
   <div class="modal-box" style="max-width:390px">
@@ -1227,7 +1253,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     </div>
     <div class="perfil-card">
       <p style="font-size:13px;font-weight:800;color:#37474f;margin-bottom:8px">ℹ️ Aplicación</p>
-      <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="openInfo()">ℹ️ Info App</button>
+      <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="openGuia()">📖 Guía TrackDex</button>
       <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="restoreReads()">♻️ Restaurar información leída</button>
       <button class="perfil-danger-btn" style="color:#5e35b1;border-color:#5e35b1" onclick="renameTeamPrompt()">✏️ Cambiar nombres de tus equipos</button>
       <button class="perfil-danger-btn" style="color:#00695c;border-color:#00838f" onclick="changePasswordPrompt()">🔑 Cambiar contraseña</button>
@@ -1253,10 +1279,18 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.958</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.959</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.958 · actual</span><span class="nov-version-tag">Familias evolutivas completas</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.959 · actual</span><span class="nov-version-tag">Guía TrackDex</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>📖</span><span>Nueva "Guía TrackDex" en Perfil (sustituye a "Info App"): todas las funciones de la app en botones con su explicación. Al leer cada una se marca con ✅ para que sepas cuáles te quedan por descubrir.</span></div>
+        <div class="nov-item"><span>👋</span><span>Mensaje de bienvenida renovado: más corto y directo, y te señala la Guía TrackDex para empezar.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.958</span><span class="nov-version-tag">Familias evolutivas completas</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🧬</span><span>El popup de imagen ahora muestra la familia evolutiva al completo: en familias con ramas (Eevee, Ralts, Wurmple…) verás todas las formas como miniaturas y podrás saltar a cualquiera de ellas.</span></div>
       </div>
@@ -5610,27 +5644,56 @@ function showCopyProfile(){
 
 function maybeShowWelcome(){
   if(isRead('welcome')) return;
-  const modal = document.getElementById('modal-info');
-  if(!modal) return;
-  const box = modal.querySelector('.modal-box');
-  const x = modal.querySelector('.modal-close');
-  if(x) x.style.display = 'none';
-  modal.onclick = null;
-  let btn = document.getElementById('welcome-close-btn');
-  if(!btn){ btn = document.createElement('button'); btn.id='welcome-close-btn'; box.appendChild(btn); }
-  btn.style.cssText = 'display:block;width:100%;margin-top:16px;padding:13px;border:none;border-radius:10px;font-size:16px;font-weight:800;color:#fff;background:#CC0000;cursor:not-allowed;opacity:.55';
-  btn.disabled = true;
+  const modal = document.getElementById('modal-welcome');
+  const btn = document.getElementById('welcome-close-btn');
+  if(!modal||!btn) return;
   modal.style.display = 'flex';
-  let n = 6; btn.textContent = 'Cerrar ('+n+')';
+  let n = 6; btn.textContent = 'Cerrar ('+n+')'; btn.disabled = true;
   const iv = setInterval(()=>{
     n--;
     if(n<=0){
       clearInterval(iv);
       btn.textContent = 'Entendido, cerrar';
       btn.disabled = false; btn.style.cursor='pointer'; btn.style.opacity='1';
-      btn.onclick = ()=>{ setRead('welcome', true); modal.style.display='none'; if(x) x.style.display=''; };
+      btn.onclick = ()=>{ setRead('welcome', true); modal.style.display='none'; };
     } else { btn.textContent = 'Cerrar ('+n+')'; }
   }, 1000);
+}
+
+// ── GUÍA TRACKDEX (Perfil) ───────────────────────────────────────────────────
+const GUIA_ITEMS=[
+  {k:'mispoke',ic:'⚔️',n:'Mis Pokémon',d:'El corazón de la app: tus equipos por tipo (hasta 4 por entrenador, Incursión y Dynamax). Marca cada Pokémon como Obtenido o Al máximo, asígnale sus IVs con las barras y controla tu progreso con las barras de cada tipo en la pantalla principal.'},
+  {k:'rankings',ic:'👑',n:'Rankings DPS',d:'El top 50 de atacantes de cada tipo ordenado por DPS efectivo, con sus mejores ataques y marcas de Legacy, Shadow y Mega. Desde aquí añades Pokémon a tus equipos con el botón +. Puedes ocultar Megas, Oscuros o Legacy si no los usas.'},
+  {k:'bestivs',ic:'📈',n:'Mejores IVs',d:'Todos tus Pokémon obtenidos en una sola lista, puntuados por la calidad de sus IVs. Configura el peso de Ataque/Defensa/Vida con "Valores IVs", compara un ejemplar nuevo con el botón "Comparar" y usa "Peores primero" para saber cuál cambiar o subir.'},
+  {k:'objetivo',ic:'🎯',n:'Pokémon Objetivo',d:'Te dice qué pre-evoluciones capturar y cuántos caramelos (normales y XL) te faltan para completar tus equipos, con barras de progreso que se sincronizan entre dispositivos. Genera un filtro listo para copiar en Pokémon GO.'},
+  {k:'calc',ic:'🔥',n:'Calculadora de Tipos',d:'Eficacia de tipos atacando y defendiendo: elige 1 o 2 tipos y ve al instante contra qué haces daño súper eficaz y qué te resiste. Imprescindible antes de una incursión difícil.'},
+  {k:'filtro',ic:'🛠️',n:'Crea tu filtro',d:'Filtros personalizados para el buscador de Pokémon GO: el filtro "Resto de días" (solo caramelos) y el filtro "Viernes" (buscar buena base para intercambios), que se adapta automáticamente a la persona con la que comercias.'},
+  {k:'megas',ic:'🍬',n:'Megas',d:'La rotación de Megaincursiones del mes, cómo conseguir megaenergía en Poképaradas y misiones, la regla de oro del compañero y la tabla de niveles Mega con sus costes y tiempos de espera.'},
+  {k:'diarias',ic:'📋',n:'Diarias',d:'Checklist de tareas diarias ordenadas por esfuerzo y recompensa: racha de captura, regalos, globo Rocket, PvP, intercambios… tanto desde casa como al salir a caminar.'},
+  {k:'pokeparadas',ic:'🎁',n:'Poképaradas!',d:'Las misiones de investigación de campo de la temporada actual con sus Pokémon de recompensa. Fija arriba tus favoritas para no perderlas de vista.'},
+  {k:'legacy',ic:'⭐',n:'Legacy',d:'Qué son los ataques Legacy, cómo conseguirlos gratis en eventos (y las reglas del día del evento para no fastidiarla) y el calendario de Días de la Comunidad del año.'},
+  {k:'trackers',ic:'🏆',n:'Trackers',d:'Seguimiento de eventos especiales: legendarios de GO Fest y skins de Pikachu. Etiqueta cada uno como Conseguido, Prioritario, Later o No obtenible.'},
+  {k:'perfil',ic:'👤',n:'Perfil',d:'Tu cuenta y tu comunidad: cambia de comunidad, ve sus miembros, renombra tus equipos, cambia la contraseña, haz limpieza de equipos y gestiona tus datos (incluido borrar tu cuenta).'}
+];
+let _guiaCur=null;
+function renderGuia(){
+  const g=document.getElementById('guia-grid'); if(!g) return;
+  g.innerHTML=GUIA_ITEMS.map((it,i)=>{
+    const done=isRead('guia_'+it.k);
+    return `<button onclick="openGuiaItem(${i})" style="display:flex;align-items:center;gap:6px;padding:11px 10px;border:1.5px solid ${done?'#43a047':'#ccc'};background:${done?'#e8f5e9':'#fff'};border-radius:10px;font-size:12.5px;font-weight:700;color:#333;cursor:pointer;text-align:left">${it.ic} ${it.n}${done?' <span style="margin-left:auto">✅</span>':''}</button>`;
+  }).join('');
+}
+function openGuia(){ renderGuia(); document.getElementById('modal-guia').style.display='flex'; }
+function openGuiaItem(i){
+  _guiaCur=i; const it=GUIA_ITEMS[i];
+  document.getElementById('guia-item-title').textContent=it.ic+' '+it.n;
+  document.getElementById('guia-item-desc').textContent=it.d;
+  document.getElementById('modal-guia-item').style.display='flex';
+}
+function closeGuiaItem(){
+  if(_guiaCur!==null){ setRead('guia_'+GUIA_ITEMS[_guiaCur].k,true); _guiaCur=null; }
+  document.getElementById('modal-guia-item').style.display='none';
+  renderGuia();
 }
 
 // ── GOFEST LEGENDARY TRACKER ──────────────────────────────────────────────────
