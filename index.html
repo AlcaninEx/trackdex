@@ -12,6 +12,7 @@
 <meta name="apple-mobile-web-app-title" content="TrackDex">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" type="image/png" href="icon-192.png">
 <title>TrackDex</title>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -400,7 +401,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="global-login-screen" class="screen">
   <div style="max-width:420px;margin:0 auto;padding:24px 16px">
     <div style="text-align:center;margin-bottom:24px">
-      <svg width="56" height="56" viewBox="0 0 64 64" fill="none" style="margin-bottom:8px"><circle cx="32" cy="32" r="30" fill="#CC0000" stroke="white" stroke-width="3"/><rect x="2" y="29" width="60" height="6" fill="white"/><circle cx="32" cy="32" r="10" fill="white" stroke="#CC0000" stroke-width="3"/><circle cx="32" cy="32" r="5" fill="#CC0000" stroke="white" stroke-width="2"/></svg>
+      <svg width="56" height="56" viewBox="0 0 64 64" fill="none" style="margin-bottom:8px"><rect width="64" height="64" rx="14" fill="#5e35b1"/><circle cx="32" cy="32" r="16" stroke="white" stroke-width="4"/><line x1="32" y1="6" x2="32" y2="13" stroke="white" stroke-width="4" stroke-linecap="round"/><line x1="32" y1="51" x2="32" y2="58" stroke="white" stroke-width="4" stroke-linecap="round"/><line x1="6" y1="32" x2="13" y2="32" stroke="white" stroke-width="4" stroke-linecap="round"/><line x1="51" y1="32" x2="58" y2="32" stroke="white" stroke-width="4" stroke-linecap="round"/><circle cx="32" cy="32" r="6" fill="white"/><circle cx="41" cy="24" r="2.5" fill="white"/></svg>
       <div style="font-size:24px;font-weight:800;color:#CC0000">TrackDex</div>
       <div style="font-size:13px;color:#888;margin-top:4px">Inicia sesión con tu cuenta</div>
     </div>
@@ -492,7 +493,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
   <div id="profile-screen-inner">
     <!-- HEADER -->
     <div style="background:#CC0000;padding:16px;display:flex;align-items:center;gap:12px">
-      <svg width="36" height="36" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="#CC0000" stroke="white" stroke-width="3"/><rect x="2" y="29" width="60" height="6" fill="white"/><circle cx="32" cy="32" r="10" fill="white" stroke="#CC0000" stroke-width="3"/><circle cx="32" cy="32" r="5" fill="#CC0000" stroke="white" stroke-width="2"/></svg>
+      <svg width="36" height="36" viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="14" fill="#5e35b1"/><circle cx="32" cy="32" r="16" stroke="white" stroke-width="4"/><line x1="32" y1="6" x2="32" y2="13" stroke="white" stroke-width="4" stroke-linecap="round"/><line x1="32" y1="51" x2="32" y2="58" stroke="white" stroke-width="4" stroke-linecap="round"/><line x1="6" y1="32" x2="13" y2="32" stroke="white" stroke-width="4" stroke-linecap="round"/><line x1="51" y1="32" x2="58" y2="32" stroke="white" stroke-width="4" stroke-linecap="round"/><circle cx="32" cy="32" r="6" fill="white"/><circle cx="41" cy="24" r="2.5" fill="white"/></svg>
       <div style="flex:1">
         <div style="color:#fff;font-size:20px;font-weight:800">TrackDex</div>
         <div style="color:rgba(255,255,255,.8);font-size:12px;cursor:pointer;text-decoration:underline" id="trainer-name-bar" onclick="openPerfilScreen()">Selecciona tu entrenador</div>
@@ -558,7 +559,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           🏆 Trackers
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.953
+          🆕 Novedades · v0.954
         </button>
       </div>
 
@@ -1252,10 +1253,18 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.953</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.954</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.953 · actual</span><span class="nov-version-tag">Comparador de IVs</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.954 · actual</span><span class="nov-version-tag">Adiós Pokéballs</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🎯</span><span>Los logos de Pokéball del acceso y de la selección de entrenador se sustituyen por el visor violeta de TrackDex, completando la identidad propia de la app.</span></div>
+        <div class="nov-item"><span>🌐</span><span>La pestaña del navegador ahora también muestra el icono de TrackDex. ¡Y estrenamos dominio: trackdex.app!</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.953</span><span class="nov-version-tag">Comparador de IVs</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>⚖️</span><span>Nuevo botón "Comparar" al desplegar un Pokémon en Mejores IVs: mueve tres barras con los IVs de otro ejemplar y te dice al instante si es mejor o peor en porcentaje, usando tus Valores IVs actuales (15/15/15 = 100%).</span></div>
       </div>
