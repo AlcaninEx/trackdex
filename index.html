@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.964</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.965</p>
   </div>
 </div>
 
@@ -564,7 +564,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           🏘️ Comunidad
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.964
+          🆕 Novedades · v0.965
         </button>
       </div>
 
@@ -580,7 +580,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1 style="line-height:1.15">TrackDex<span style="display:block;font-size:11px;font-weight:400;opacity:.9">Entrenador: <b id="uname"></b></span></h1>
   </div>
   <div class="user-bar">
-    <button class="guia-btn" style="font-weight:800;color:#5e35b1;border-color:#5e35b1" onclick="openBestIvs()">📈 Mejores IVs</button>
+    <button class="guia-btn" style="font-weight:800;color:#5e35b1;border-color:#5e35b1" onclick="openBestIvs()">📈 Tracker IVs</button>
     <div class="user-bar-right"></div>
   </div>
   <div class="types-grid" id="types-grid"></div>
@@ -590,7 +590,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="bestivs-screen" class="screen">
   <div class="app-header" style="position:sticky;top:0;z-index:40">
     <button class="back-btn" onclick="show('main-screen');renderMain()">←</button>
-    <h1 style="flex:1">📈 Mejores IVs</h1>
+    <h1 style="flex:1">📈 Tracker IVs</h1>
     <button class="filtro-info-btn" onclick="toggleBivInfo(true)">i</button>
   </div>
   <div class="tabs" style="position:static">
@@ -603,11 +603,14 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
         <option value="peores" selected>Peores primero</option>
         <option value="mejores">Mejores primero</option>
         <option value="sinivs">Sin IVs asignados</option>
+        <option value="noobt">No obtenidos</option>
       </select>
       <select id="biv-team" onchange="renderBestIvs()" style="padding:6px 10px;border-radius:8px;border:1.5px solid #5e35b1;font-size:12px;font-weight:700;color:#4527a0;background:#fff">
         <option value="all">Todos</option>
       </select>
       <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#4527a0;cursor:pointer"><input type="checkbox" id="biv-byteam" onchange="renderBestIvs()"> 🗂️ Por equipos (tipos)</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#4527a0;cursor:pointer"><input type="checkbox" id="biv-hideshadow" onchange="bivSaveHide();renderBestIvs()"> 🙈 Ocultar Oscuros</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#4527a0;cursor:pointer"><input type="checkbox" id="biv-hidelegend" onchange="bivSaveHide();renderBestIvs()"> 🙈 Ocultar Legendarios</label>
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
       <button onclick="toggleBivWeights(true)" style="padding:6px 12px;border-radius:8px;border:1.5px solid #5e35b1;font-size:12px;font-weight:700;color:#fff;background:#5e35b1;cursor:pointer">⚖️ Valores IVs</button>
@@ -1306,10 +1309,19 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.964</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.965</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.964 · actual</span><span class="nov-version-tag">Fichas vinculadas</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.965 · actual</span><span class="nov-version-tag">Tracker IVs</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>📈</span><span>"Mejores IVs" pasa a llamarse "Tracker IVs", con nuevas opciones: orden "No obtenidos", casillas para ocultar Oscuros y Legendarios (se recuerdan), y "Por equipos (tipos)" ahora integra también los sin IVs y no obtenidos dentro de cada tipo.</span></div>
+        <div class="nov-item"><span>💡</span><span>Al desplegar un Pokémon apagado (sin IVs o no obtenido) se ilumina mientras lo editas; si lo dejas a 0/0/0 vuelve a apagarse al cerrar.</span></div>
+        <div class="nov-item"><span>❓</span><span>Al marcar como Obtenido un Pokémon que también tiene ficha Dinamax, la app pregunta si es el mismo ejemplar: si dices que no, se guardan como fichas separadas.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.964</span><span class="nov-version-tag">Fichas vinculadas</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🔗</span><span>El mismo Pokémon en Incursión y Dynamax (p. ej. Mega Gengar y G-Gengar) ahora comparte IVs, "Obtenido" y "Al máximo": cambia uno y se sincroniza el otro. Los Shadow no se vinculan porque son otro ejemplar.</span></div>
       </div>
@@ -3055,10 +3067,11 @@ function pkSpeciesKey(p,id){
 }
 function linkedIds(p,id){
   if(!p) return [id];
+  if(p.pk&&p.pk[id]&&p.pk[id].noLink) return [id];
   const key=pkSpeciesKey(p,id);
   if(!key||key==='sh:') return [id];
   const pool=new Set([...Object.keys(p.pk||{}),...Object.keys(p.album||{})]);
-  return [...pool].filter(x=>pkSpeciesKey(p,x)===key);
+  return [...pool].filter(x=>pkSpeciesKey(p,x)===key && !(p.pk&&p.pk[x]&&p.pk[x].noLink));
 }
 function syncLinked(p,id,fields){
   linkedIds(p,id).forEach(x=>{
@@ -3068,7 +3081,14 @@ function syncLinked(p,id,fields){
   });
 }
 function togOwned(id,v) {
-  const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={}; p.pk[id].owned=v;
+  const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={};
+  if(v && !String(id).includes('-dmax-') && p.pk[id].noLink===undefined){
+    const twins=linkedIds(p,id).filter(x=>x!==id&&String(x).includes('-dmax-'));
+    if(twins.length){
+      p.pk[id].noLink=!confirm('¿Este ejemplar es Dinamax?\n\n✅ Aceptar = Sí, es el mismo que tu ficha Dinamax (compartirán IVs y marcas)\n❌ Cancelar = No, es otro ejemplar aparte');
+    }
+  }
+  p.pk[id].owned=v;
   syncLinked(p,id,{owned:v, ...(v?{}:{maxed:false})});
   // Si se desactiva "lo tengo", también se desactiva "al máximo"
   if(!v && p.pk[id].maxed) p.pk[id].maxed=false;
@@ -5059,6 +5079,19 @@ function deleteTeamPrompt(){
 // ── MEJORES IVS ──────────────────────────────────────────────────────────────
 function toggleBivInfo(on){ const el=document.getElementById('biv-info-pop'); if(el) el.style.display=on?'flex':'none'; }
 const BIV_PRESETS={default:{a:100,d:20,h:30},extremo:{a:100,d:-10,h:20}};
+const BIV_LEGENDS=new Set(['articuno','zapdos','moltres','mewtwo','mew','raikou','entei','suicune','lugia','hooh','celebi','regirock','regice','registeel','latias','latios','kyogre','groudon','rayquaza','jirachi','deoxys','deoxysnormal','deoxysattack','deoxysdefense','deoxysspeed','uxie','mesprit','azelf','dialga','palkia','heatran','regigigas','giratina','cresselia','phione','manaphy','darkrai','shaymin','arceus','victini','cobalion','terrakion','virizion','tornadus','thundurus','reshiram','zekrom','landorus','kyurem','keldeo','meloetta','genesect','xerneas','yveltal','zygarde','diancie','hoopa','hoopaunbound','volcanion','tapukoko','tapulele','tapubulu','tapufini','cosmog','cosmoem','solgaleo','lunala','nihilego','buzzwole','pheromosa','xurkitree','celesteela','kartana','guzzlord','necrozma','magearna','marshadow','poipole','naganadel','stakataka','blacephalon','zeraora','meltan','melmetal','zacian','zamazenta','eternatus','kubfu','urshifu','zarude','regieleki','regidrago','glastrier','spectrier','calyrex','enamorus','wochien','chienpao','tinglu','chiyu','koraidon','miraidon','okidogi','munkidori','fezandipiti','ogerpon','terapagos','pecharunt']);
+function bivSaveHide(){
+  try{
+    localStorage.setItem('bivHideShadow',(document.getElementById('biv-hideshadow')||{}).checked?'1':'');
+    localStorage.setItem('bivHideLegend',(document.getElementById('biv-hidelegend')||{}).checked?'1':'');
+  }catch(e){}
+}
+function bivLoadHide(){
+  try{
+    const s=document.getElementById('biv-hideshadow'); if(s) s.checked=localStorage.getItem('bivHideShadow')==='1';
+    const l=document.getElementById('biv-hidelegend'); if(l) l.checked=localStorage.getItem('bivHideLegend')==='1';
+  }catch(e){}
+}
 function getBivWeights(){
   try{ const w=JSON.parse(localStorage.getItem('bivWeights')); if(w&&typeof w.a==='number'&&typeof w.d==='number'&&typeof w.h==='number') return w; }catch(e){}
   return {...BIV_PRESETS.default};
@@ -5089,6 +5122,7 @@ function openBestIvs(){
   sel.innerHTML='<option value="all">Todos</option>'+teamList(p).map(n=>`<option value="${n}">${n===1?'Equipo 1 · Deseado':('Equipo '+n+' · '+teamName(p,n))}</option>`).join('');
   document.getElementById('biv-tab-raid').classList.toggle('active',ST.bivTab==='raid');
   document.getElementById('biv-tab-dmax').classList.toggle('active',ST.bivTab==='dmax');
+  bivLoadHide();
   document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
   document.getElementById('bestivs-screen').style.display='block';
   var hm=document.getElementById('home-menu'); if(hm) hm.style.display='none';
@@ -5172,18 +5206,24 @@ function bivUpdIV(id,s,v){
 function bivTogOwned(id,v){ togOwned(id,v); renderBestIvs(); }
 function bivTogMaxed(id,v){ togMaxed(id,v); renderBestIvs(); }
 function renderBestIvs(){
-  const {rows,total}=buildBivData();
+  const {rows:rows0,total}=buildBivData();
   const order=(document.getElementById('biv-order')||{}).value||'peores';
   const byTeams=!!(document.getElementById('biv-byteam')||{}).checked;
+  const hideSh=!!(document.getElementById('biv-hideshadow')||{}).checked;
+  const hideLg=!!(document.getElementById('biv-hidelegend')||{}).checked;
+  const rows=rows0.filter(x=>{
+    if(hideSh && (/\(shadow\)/i.test(x.name)||/^shadow /i.test(x.name))) return false;
+    if(hideLg && BIV_LEGENDS.has(x.name.toLowerCase().replace(/\s*\(shadow\)/,'').replace(/^shadow\s+/,'').replace(/^(mega|primal)\s+/,'').replace(/^[gd]-/,'').replace(/\s+(x|y)$/,'').replace(/[^a-z0-9]/g,''))) return false;
+    return true;
+  });
   const byTeamOrder=(a,b)=> a.ti-b.ti || b.dps-a.dps || a.name.localeCompare(b.name);
-  const wrapT=cmp=> byTeams ? ((a,b)=> a.ti-b.ti || cmp(a,b)) : cmp;
-  const ownedRows=rows.filter(x=>x.owned), notOwned=rows.filter(x=>!x.owned);
-  const valued=ownedRows.filter(x=>!x.noIv), blank=ownedRows.filter(x=>x.noIv);
-  valued.sort(wrapT(order==='mejores' ? ((a,b)=>b.score-a.score||byTeamOrder(a,b)) : ((a,b)=>a.score-b.score||byTeamOrder(a,b))));
-  blank.sort(byTeamOrder);
-  notOwned.sort(byTeamOrder);
-  const list = (order==='sinivs' ? [...blank,...valued] : [...valued,...blank]).concat(notOwned);
-  document.getElementById('biv-count').textContent = ownedRows.length+'/'+total+' obtenidos';
+  const cmpScore = order==='mejores' ? ((a,b)=>b.score-a.score||byTeamOrder(a,b)) : ((a,b)=>a.score-b.score||byTeamOrder(a,b));
+  const rankOf=x=> !x.owned ? (order==='noobt'?-1:2) : (x.noIv ? (order==='sinivs'?-1:1) : 0);
+  const cmpInner=(a,b)=> (rankOf(a)===0 && rankOf(b)===0) ? cmpScore(a,b) : byTeamOrder(a,b);
+  const list=[...rows].sort(byTeams
+    ? ((a,b)=> a.ti-b.ti || rankOf(a)-rankOf(b) || cmpInner(a,b))
+    : ((a,b)=> rankOf(a)-rankOf(b) || cmpInner(a,b)));
+  document.getElementById('biv-count').textContent = rows.filter(x=>x.owned).length+'/'+total+' obtenidos';
   const el=document.getElementById('biv-list');
   if(!list.length){
     el.innerHTML='<p style="text-align:center;padding:40px 16px;color:#aaa;font-size:13px">No hay Pokémon marcados como "Obtenido" en este ámbito.<br><br>Marca tus Pokémon en "Mis Pokémon" y aparecerán aquí.</p>';
@@ -5218,7 +5258,7 @@ function renderBestIvs(){
         <div class="tr" style="margin-top:8px;padding:8px 12px;background:${pk.owned?'#e8f5e9':'#f5f5f5'};border-radius:8px;border:1.5px solid ${pk.owned?'#43a047':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${pk.owned?'#2e7d32':'#555'}">✅ Obtenido</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${pk.owned?'checked':''} onchange="bivTogOwned('${x.id}',this.checked)"><span class="sl"></span></label></div>
         <div class="tr" style="margin-top:6px;padding:8px 12px;background:${pk.maxed?'#fff8e1':'#f5f5f5'};border-radius:8px;border:1.5px solid ${pk.maxed?'#ffb300':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${pk.maxed?'#e65100':'#555'}">⭐ Al máximo</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${pk.maxed?'checked':''} onchange="bivTogMaxed('${x.id}',this.checked)"><span class="sl"></span></label></div>
       </div>`;
-    return `<div class="pk-card" style="background:${t.color};${!x.owned?'filter:grayscale(1);opacity:.55;':(x.noIv?'opacity:.5;':'')}">
+    return `<div class="pk-card" style="background:${t.color};${open?'':(!x.owned?'filter:grayscale(1);opacity:.55;':(x.noIv?'opacity:.5;':''))}">
       <div class="pk-top" onclick="togBivCard('${x.id}')">
         <div style="flex-shrink:0"><div class="final-wrap">${pkBadge(/\(shadow\)/i.test(x.name)||/^shadow /i.test(x.name),/^(mega|primal) /i.test(x.name))}<img class="final-img" src="${si(x.img)}" onerror="this.style.opacity=.1"></div></div>
         <div class="pk-info"><div class="pk-name">${x.name.replace(' (Shadow)','')}</div><div style="font-size:10px;color:rgba(255,255,255,.8);font-weight:600">${t.name||''}${!x.owned?' · no obtenido':(x.noIv?' · sin IVs':'')}</div></div>
@@ -5781,7 +5821,7 @@ function maybeShowWelcome(){
 const GUIA_ITEMS=[
   {k:'mispoke',ic:'⚔️',n:'Mis Pokémon',d:'El corazón de la app: tus equipos por tipo (hasta 4 por entrenador, Incursión y Dynamax). Marca cada Pokémon como Obtenido o Al máximo, asígnale sus IVs con las barras y controla tu progreso con las barras de cada tipo en la pantalla principal.'},
   {k:'rankings',ic:'👑',n:'Rankings DPS',d:'El top 50 de atacantes de cada tipo ordenado por DPS efectivo, con sus mejores ataques y marcas de Legacy, Shadow y Mega. Desde aquí añades Pokémon a tus equipos con el botón +. Puedes ocultar Megas, Oscuros o Legacy si no los usas.'},
-  {k:'bestivs',ic:'📈',n:'Mejores IVs',d:'Todos tus Pokémon obtenidos en una sola lista, puntuados por la calidad de sus IVs. Configura el peso de Ataque/Defensa/Vida con "Valores IVs", compara un ejemplar nuevo con el botón "Comparar" y usa "Peores primero" para saber cuál cambiar o subir.'},
+  {k:'bestivs',ic:'📈',n:'Tracker IVs',d:'Todos tus Pokémon en una sola lista, puntuados por la calidad de sus IVs (los no obtenidos, en blanco y negro al final). Configura el peso de Ataque/Defensa/Vida con "Valores IVs", compara un ejemplar nuevo con "Comparar" y usa "Peores primero" para saber cuál cambiar o subir.'},
   {k:'objetivo',ic:'🎯',n:'Pokémon Objetivo',d:'Te dice qué pre-evoluciones capturar y cuántos caramelos (normales y XL) te faltan para completar tus equipos, con barras de progreso que se sincronizan entre dispositivos. Genera un filtro listo para copiar en Pokémon GO.'},
   {k:'calc',ic:'🔥',n:'Calculadora de Tipos',d:'Eficacia de tipos atacando y defendiendo: elige 1 o 2 tipos y ve al instante contra qué haces daño súper eficaz y qué te resiste. Imprescindible antes de una incursión difícil.'},
   {k:'filtro',ic:'🛠️',n:'Crea tu filtro',d:'Filtros personalizados para el buscador de Pokémon GO: el filtro "Resto de días" (solo caramelos) y el filtro "Viernes" (buscar buena base para intercambios), que se adapta automáticamente a la persona con la que comercias.'},
