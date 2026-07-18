@@ -559,7 +559,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           🏆 Trackers
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.954
+          🆕 Novedades · v0.955
         </button>
       </div>
 
@@ -1253,10 +1253,17 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.954</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.955</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.954 · actual</span><span class="nov-version-tag">Adiós Pokéballs</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.955 · actual</span><span class="nov-version-tag">Sprites HD en Objetivo</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🖼️</span><span>Pokémon Objetivo estrena las imágenes en alta calidad (artwork oficial), las mismas que en Rankings y Mis Pokémon, tanto en las tarjetas como en el popup de caramelos.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.954</span><span class="nov-version-tag">Adiós Pokéballs</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🎯</span><span>Los logos de Pokéball del acceso y de la selección de entrenador se sustituyen por el visor violeta de TrackDex, completando la identidad propia de la app.</span></div>
         <div class="nov-item"><span>🌐</span><span>La pestaña del navegador ahora también muestra el icono de TrackDex. ¡Y estrenamos dominio: trackdex.app!</span></div>
@@ -5320,7 +5327,7 @@ function openObjetivo() {
     grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:#aaa;font-size:14px">No tienes Pokémon en ningún equipo deseado aún.<br><br>Añade Pokémon a tus equipos primero.</div>';
   } else {
     grid.innerHTML = data.map((d,i) => {
-      const imgUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + d.id + '.png';
+      const imgUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/' + d.id + '.png';
       if (d.done) {
         // Completado: check verde, sin badge de cantidad, imagen atenuada
         return '<div class="obj-card obj-done" onclick="openObjPopup(' + i + ')" style="cursor:pointer;opacity:.55">' +
@@ -5383,7 +5390,7 @@ function _copyFallback(text) {
 function openObjPopup(idx) {
   const d = window._objData && window._objData[idx];
   if (!d) return;
-  const imgUrlTop = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + d.id + '.png';
+  const imgUrlTop = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/' + d.id + '.png';
   if (d.done) {
     // Completado: solo sprite grande + check, sin info de caramelos
     document.getElementById('obj-popup-img').src = imgUrlTop;
