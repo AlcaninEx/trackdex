@@ -1,4 +1,4 @@
-const CACHE_NAME = 'trackdex-v132';
+const CACHE_NAME = 'trackdex-v133';
 const ASSETS = [
   '/',
   '/index.html',

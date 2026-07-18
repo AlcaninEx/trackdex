@@ -28,6 +28,23 @@ service cloud.firestore {
       // borrar: solo el creador o el admin
       allow delete: if authed() && (resource.data.ownerId == uname() || isAdmin());
 
+      // Chat de la comunidad
+      match /messages/{mid} {
+        allow read: if authed()
+          && get(/databases/$(database)/documents/communities/$(cid)).data.members[uname()] != null;
+        allow create: if authed()
+          && get(/databases/$(database)/documents/communities/$(cid)).data.members[uname()] != null
+          && request.resource.data.uid == uname()
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 300;
+        // borrar: el autor, el dueño de la comunidad o el admin
+        allow delete: if authed()
+          && (resource.data.uid == uname()
+              || get(/databases/$(database)/documents/communities/$(cid)).data.ownerId == uname()
+              || isAdmin());
+      }
+
       // Perfiles (equipos) dentro de cada comunidad
       match /profiles/{profileName} {
         allow read: if authed();
