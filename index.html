@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.963</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.964</p>
   </div>
 </div>
 
@@ -564,7 +564,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           🏘️ Comunidad
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.963
+          🆕 Novedades · v0.964
         </button>
       </div>
 
@@ -1306,10 +1306,17 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.963</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.964</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.963 · actual</span><span class="nov-version-tag">Pokémon Objetivo afinado</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.964 · actual</span><span class="nov-version-tag">Fichas vinculadas</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🔗</span><span>El mismo Pokémon en Incursión y Dynamax (p. ej. Mega Gengar y G-Gengar) ahora comparte IVs, "Obtenido" y "Al máximo": cambia uno y se sincroniza el otro. Los Shadow no se vinculan porque son otro ejemplar.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.963</span><span class="nov-version-tag">Pokémon Objetivo afinado</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🍬</span><span>Nuevo orden por caramelos restantes ponderados: 1 caramelo normal = 1 punto, 1 XL = 10 puntos. Los XL ya no se muestran en las tarjetas — toca el Pokémon para ver su detalle.</span></div>
         <div class="nov-item"><span>⌨️</span><span>Ahora puedes escribir la cantidad exacta de caramelos y XL que tienes (además de la barra), perfecto para totales grandes como 3600.</span></div>
@@ -3030,8 +3037,39 @@ function removeFromAlbum(pkId) {
   if(p.teamAssign) delete p.teamAssign[pkId];
   ST.expanded=null; save(); renderAlbum(); renderRanking(); renderMain();
 }
+// ── VÍNCULO ENTRE FICHAS DE LA MISMA ESPECIE (Mega ↔ Dynamax ↔ normal) ──────
+// El mismo Pokémon físico puede aparecer como entrada de incursión y de Dynamax.
+// Comparten IVs/obtenido/al máximo. Los Shadow son otro Pokémon: no se vinculan.
+function pkSpeciesKey(p,id){
+  let name='';
+  if(p&&p.custom&&p.custom[id]) name=p.custom[id].n||'';
+  else if(String(id).includes('-dmax-')) name=String(id).split('-dmax-')[1]||'';
+  else { const e=PD.find(x=>x.id===id); name=e?e.name:String(id); }
+  const shadow=/shadow|oscuro/i.test(name);
+  name=name.toLowerCase()
+    .replace(/\s*\(shadow\)/,'').replace(/^shadow\s+/,'')
+    .replace(/^(mega|primal)\s+/,'').replace(/^[gd]-/,'')
+    .replace(/\s+(x|y)$/,'')
+    .replace(/[^a-z0-9]/g,'');
+  return (shadow?'sh:':'')+name;
+}
+function linkedIds(p,id){
+  if(!p) return [id];
+  const key=pkSpeciesKey(p,id);
+  if(!key||key==='sh:') return [id];
+  const pool=new Set([...Object.keys(p.pk||{}),...Object.keys(p.album||{})]);
+  return [...pool].filter(x=>pkSpeciesKey(p,x)===key);
+}
+function syncLinked(p,id,fields){
+  linkedIds(p,id).forEach(x=>{
+    if(x===id) return;
+    if(!p.pk[x]) p.pk[x]={};
+    Object.assign(p.pk[x],fields);
+  });
+}
 function togOwned(id,v) {
   const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={}; p.pk[id].owned=v;
+  syncLinked(p,id,{owned:v, ...(v?{}:{maxed:false})});
   // Si se desactiva "lo tengo", también se desactiva "al máximo"
   if(!v && p.pk[id].maxed) p.pk[id].maxed=false;
   save();
@@ -3050,6 +3088,7 @@ function togMaxed(id,v) {
   const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={}; p.pk[id].maxed=v;
   // Si se marca "al máximo", se marca también "lo tengo"
   if(v) p.pk[id].owned=true;
+  syncLinked(p,id,{maxed:v, ...(v?{owned:true}:{})});
   save();
   // Re-render album to update both toggles visually + counter
   if(ST.albumTab==='dmax') renderAlbumDmax(); else renderAlbum();
@@ -3087,6 +3126,7 @@ function updIV(id,s,v) {
     const el=document.getElementById('ih-'+id);
     if(el)el.innerHTML=n+'<span style="font-size:10px;color:#888;font-weight:400"> ('+pct+'%)</span>';
   }
+  syncLinked(p,id,{ivAtk:p.pk[id].ivAtk||0, ivDef:p.pk[id].ivDef||0, ivHp:p.pk[id].ivHp||0});
   save();
 }
 function updDPS(id,v) { const n=parseFloat(v); const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={}; p.pk[id].dps=isNaN(n)?undefined:n; save(); }
