@@ -166,7 +166,7 @@ body.dark .album-subtab.active{color:#ff6b6b;border-bottom-color:#ff6b6b}
 
 .final-wrap{position:relative}
 .evo-chain .final-wrap{background:none;border-right:none;width:36px;height:36px}
-.shadow-badge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;object-fit:contain;z-index:2;filter:drop-shadow(0 0 2px rgba(0,0,0,.6))}
+.shadow-badge{position:absolute;bottom:-3px;left:-5px;height:18px;width:auto;object-fit:contain;z-index:2;filter:drop-shadow(0 0 2px rgba(0,0,0,.6))}
 .pk-body{border-top:1px solid rgba(255,255,255,.25);padding:12px 14px;display:none;background:#fff!important}
 .pk-body.open{display:block}
 .fl{font-size:11px;color:#888!important;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
@@ -559,7 +559,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           🏆 Trackers
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.956.b
+          🆕 Novedades · v0.957
         </button>
       </div>
 
@@ -1253,13 +1253,13 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.956.b</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.957</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.956 · actual</span><span class="nov-version-tag">Cadenas evolutivas y distintivos</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.957 · actual</span><span class="nov-version-tag">Cadenas evolutivas y distintivos</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🧬</span><span>Las cadenas evolutivas ahora se muestran completas en ambas direcciones: al ampliar una pre-evolución (como en Pokémon Objetivo) también verás sus evoluciones futuras.</span></div>
-        <div class="nov-item"><span>🔥</span><span>Nueva llama morada con degradado para los Pokémon Oscuros, y nuevo distintivo Mega (hélice naranja/azul) sobre los Megas, en Mis Pokémon y Mejores IVs.</span></div>
+        <div class="nov-item"><span>🔥</span><span>Los Pokémon Oscuros lucen su llama morada y los Mega su símbolo multicolor, en la esquina inferior izquierda de su imagen: en Mis Pokémon, Mejores IVs y Rankings DPS.</span></div>
       </div>
     </div>
 
@@ -3068,8 +3068,8 @@ function renderMain() {
 }
 
 function pkBadge(shadow,mega){
-  if(shadow) return `<img src="badge_shadow.svg" class="shadow-badge" alt="Oscuro" title="Oscuro">`;
-  if(mega) return `<img src="badge_mega.svg" class="shadow-badge" alt="Mega" title="Mega">`;
+  if(shadow) return `<img src="badge_shadow.png" class="shadow-badge" alt="Oscuro" title="Oscuro">`;
+  if(mega) return `<img src="badge_mega.png" class="shadow-badge" alt="Mega" title="Mega">`;
   return '';
 }
 function evoH(evo,img,shadow,mega) {
@@ -3318,8 +3318,9 @@ function renderRanking() {
     const _pe3=PD.find(x=>x.id===rid);const _rt3=inferTags(r.n,r.fastL,r.chargeL,_pe3?_pe3.tags:[]);
     window._rankCache[rid]={n:r.n,dps:r.dps,img:r.img,fast:r.fast||'',fastL:r.fastL||false,charge:r.charge||'',chargeL:r.chargeL||false,type:ST.type,tags:_rt3};
     const addBtn=!isV?'<button class="rank-add-btn" onclick="event.stopPropagation();addFromRanking(\''+rid+'\')" title="Añadir a Mis Pokémon">+</button>':'';
-    const _rimg=/shadow reshiram|reshiram \(shadow\)/i.test(r.n)
-      ?`<span style="position:relative;display:inline-block;width:36px;height:36px;flex-shrink:0"><img src="aura_shadow.png" style="position:absolute;inset:-8px;width:52px;height:52px;object-fit:contain;opacity:.9" alt=""><img class="rank-img" src="${si(r.img)}" style="position:relative;z-index:1" onerror="this.style.opacity=.1"><img src="badge_shadow.png" style="position:absolute;bottom:-3px;left:-5px;width:16px;height:18px;z-index:2" alt=""></span>`
+    const _rb2=pkBadge(/shadow|\(shadow\)/i.test(r.n),/^(mega|primal) /i.test(r.n));
+    const _rimg=_rb2
+      ?`<span style="position:relative;display:inline-block;width:36px;height:36px;flex-shrink:0">${_rb2}<img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></span>`
       :`<img class="rank-img" src="${si(r.img)}" onerror="this.style.opacity=.1">`;
     return `<div class="rank-row${isA?' ours':''}" style="background:${rowBg};--tc:${t.color}"><span class="rank-num">#${i+1}</span>${_rimg}<div class="rank-info"><div class="rank-name" style="color:${nameCol}">${r.n.replace(' (Shadow)','')}${(()=>{const _pe=PD.find(x=>x.id===rid);const _rt=inferTags(r.n,r.fastL,r.chargeL,_pe?_pe.tags:[]);return renderBadges(_rt)+(isO?`<span class="badge" style="background:${t.color}">TUYO</span>`:'');})()}</div><div class="rank-move">${ft} / ${ct}</div><div class="dps-minibar"><div class="dps-minifill" style="width:${bw}%;background:${t.color}"></div></div></div><div class="rank-dps" style="color:${nameCol}">${r.dps.toFixed(2)}</div>${addBtn}</div>`;
   }).join('');
