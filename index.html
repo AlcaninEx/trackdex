@@ -559,7 +559,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           🏆 Trackers
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.957.a
+          🆕 Novedades · v0.958
         </button>
       </div>
 
@@ -1253,10 +1253,17 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.957.a</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.958</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.957 · actual</span><span class="nov-version-tag">Cadenas evolutivas y distintivos</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.958 · actual</span><span class="nov-version-tag">Familias evolutivas completas</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🧬</span><span>El popup de imagen ahora muestra la familia evolutiva al completo: en familias con ramas (Eevee, Ralts, Wurmple…) verás todas las formas como miniaturas y podrás saltar a cualquiera de ellas.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.957</span><span class="nov-version-tag">Cadenas evolutivas y distintivos</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🧬</span><span>Las cadenas evolutivas ahora se muestran completas en ambas direcciones: al ampliar una pre-evolución (como en Pokémon Objetivo) también verás sus evoluciones futuras.</span></div>
         <div class="nov-item"><span>🔥</span><span>Los Pokémon Oscuros lucen su llama morada y los Mega su símbolo multicolor, en la esquina inferior izquierda de su imagen: en Mis Pokémon, Mejores IVs y Rankings DPS.</span></div>
@@ -5770,9 +5777,9 @@ function maybeShowWelcome(){
     window.scrollTo(0,0);
   };
   // ── Popup con cadena evolutiva (PokeAPI en vivo + caché) ──
-  const EVO_KEY='evo-cache-v2';
+  const EVO_KEY='evo-cache-v3';
   let evoCache={}; try{evoCache=JSON.parse(localStorage.getItem(EVO_KEY))||{};}catch(e){}
-  try{localStorage.removeItem('evo-cache-v1');}catch(e){}
+  try{localStorage.removeItem('evo-cache-v1');localStorage.removeItem('evo-cache-v2');}catch(e){}
   const ART='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
   const cap=s=>s? s.charAt(0).toUpperCase()+s.slice(1) : '';
   const idFromUrl=u=>parseInt(u.split('/').filter(Boolean).pop());
@@ -5782,19 +5789,17 @@ function maybeShowWelcome(){
     const sid=idFromUrl(pj.species.url);
     const sj=await (await fetch('https://pokeapi.co/api/v2/pokemon-species/'+sid+'/')).json();
     const ej=await (await fetch(sj.evolution_chain.url)).json();
-    // Camino lineal: raíz → sid → primera rama descendente
+    // Familia completa (DFS). Si hay ramas (Eevee, Wurmple...), se marca branched
     const node2item=n=>({id:idFromUrl(n.species.url),name:cap(n.species.name)});
-    function pathTo(node,target,acc){
-      const cur=[...acc,node];
-      if(idFromUrl(node.species.url)===target) return cur;
-      for(const ch of (node.evolves_to||[])){ const r=pathTo(ch,target,cur); if(r) return r; }
-      return null;
-    }
-    let path=pathTo(ej.chain,sid,[])||[ej.chain];
-    // Continuar desde sid hacia adelante (primera rama)
-    let last=path[path.length-1];
-    while(last.evolves_to&&last.evolves_to.length){ last=last.evolves_to[0]; path.push(last); }
-    const res={sid:sid,chain:path.map(node2item)};
+    let branched=false;
+    const flat=[];
+    (function walk(node){
+      flat.push(node2item(node));
+      const ch=node.evolves_to||[];
+      if(ch.length>1) branched=true;
+      ch.forEach(walk);
+    })(ej.chain);
+    const res={sid:sid,chain:flat,branched:branched};
     evoCache[pid]=res;
     try{localStorage.setItem(EVO_KEY,JSON.stringify(evoCache));}catch(e){}
     return res;
@@ -5810,17 +5815,18 @@ function maybeShowWelcome(){
       img.src=url;
     } else { img.removeAttribute('src'); img.style.display='none'; emo.style.display='block'; }
   }
-  function ppRenderChain(items,curIdx){
+  function ppRenderChain(items,curIdx,branched){
     const row=document.getElementById('poke-popup-chain');
     if(items.length<=1){ row.style.display='none'; row.innerHTML=''; return; }
     row.innerHTML=''; row.style.display='flex';
+    row.style.flexWrap='wrap'; row.style.justifyContent='center'; row.style.maxWidth='100%';
     items.forEach((it,i)=>{
-      if(i>0){ const a=document.createElement('span'); a.textContent='→'; a.style.cssText='color:#8b90b5;font-weight:700'; row.appendChild(a); }
-      if(i===curIdx){ const d=document.createElement('span'); d.textContent='⬤'; d.style.cssText='color:#3b4bcf;font-size:1.1rem'; d.title=it.name; row.appendChild(d); return; }
+      if(!branched && i>0){ const a=document.createElement('span'); a.textContent='→'; a.style.cssText='color:#8b90b5;font-weight:700'; row.appendChild(a); }
+      if(i===curIdx){ const d=document.createElement('span'); d.textContent='⬤'; d.style.cssText='color:#3b4bcf;font-size:1.1rem;align-self:center'; d.title=it.name; row.appendChild(d); return; }
       const t=document.createElement('img');
       t.src=it.url; t.alt=it.name; t.title=it.name;
       t.style.cssText='width:56px;height:56px;object-fit:contain;cursor:pointer;background:#22274a;border:1px solid #2e3563;border-radius:12px;padding:3px';
-      t.onclick=e=>{ e.stopPropagation(); ppSetBig(it.name,it.url); ppRenderChain(items,i); };
+      t.onclick=e=>{ e.stopPropagation(); ppSetBig(it.name,it.url); ppRenderChain(items,i,branched); };
       row.appendChild(t);
     });
   }
@@ -5837,7 +5843,7 @@ function maybeShowWelcome(){
       const items=res.chain.map(c=>({id:c.id,name:c.name,url:ART+c.id+'.png'}));
       const curIdx=items.findIndex(c=>c.id===res.sid);
       if(curIdx>=0){ items[curIdx]={id:res.sid,name:name||items[curIdx].name,url:url||items[curIdx].url}; }
-      ppRenderChain(items,curIdx);
+      ppRenderChain(items,curIdx,res.branched);
       if(!name && curIdx>=0) document.getElementById('poke-popup-name').textContent=items[curIdx].name;
     }).catch(()=>{});
   };
