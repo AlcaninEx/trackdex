@@ -558,8 +558,11 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
         <button class="home-btn-small" onclick="openTrackerHub()" style="grid-column:1/-1;background:#e3f2fd;border-color:#1565c0;color:#0d47a1">
           🏆 Trackers
         </button>
+        <button class="home-btn-small" onclick="openComunidad()" style="grid-column:1/-1;background:#fff3e0;border-color:#ef6c00;color:#e65100">
+          🏘️ Comunidad
+        </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.959
+          🆕 Novedades · v0.960
         </button>
       </div>
 
@@ -650,6 +653,15 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
   <div class="app-header">
     <button class="back-btn" onclick="goBack()">←</button>
     <h1 id="detail-title"></h1>
+    <button class="filtro-info-btn" onclick="toggleAlbumInfo(true)">i</button>
+  </div>
+  <div id="album-info-pop" onclick="toggleAlbumInfo(false)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:center;justify-content:center">
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:20px;max-width:340px;width:90%">
+      <h3 style="margin:0 0 10px;font-size:16px;color:#CC0000">ℹ️ ¿Para qué sirven las marcas?</h3>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px"><b>✅ Obtenido:</b> indica que ya tienes ese Pokémon. Cuenta para tu progreso, se excluye de los filtros de captura y aparece en <b>Mejores IVs</b> con su comparador para valorar nuevos ejemplares.</p>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:12px"><b>⭐ Al máximo:</b> indica que ya lo subiste del todo. Deja de contar caramelos en <b>Pokémon Objetivo</b> y se quita de los filtros de intercambio: no necesitas más copias.</p>
+      <button onclick="toggleAlbumInfo(false)" style="width:100%;padding:10px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">Entendido</button>
+    </div>
   </div>
   <div class="tabs">
     <button class="tab active" id="tab-a" onclick="switchTab('album')">Mis Pokémon</button>
@@ -1236,6 +1248,21 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 </div>
 
 <!-- PERFIL SCREEN -->
+<div id="comunidad-screen" class="screen">
+  <div class="app-header" style="position:sticky;top:0;z-index:40">
+    <button class="back-btn" onclick="closeComunidad()">←</button>
+    <h1>🏘️ Comunidad</h1>
+  </div>
+  <div style="padding:16px">
+    <p id="comunidad-name-lbl" style="font-size:14px;color:#555;margin-bottom:14px"></p>
+    <button class="perfil-danger-btn" style="color:#5e35b1;border-color:#5e35b1;width:100%;margin-bottom:10px" onclick="showMembers()">👥 Miembros de la Comunidad</button>
+    <div style="background:#fff;border:1.5px dashed #ef6c00;border-radius:12px;padding:18px;text-align:center;margin-top:6px">
+      <p style="font-size:15px;font-weight:700;color:#e65100;margin-bottom:6px">💬 Chat de comunidad</p>
+      <p style="font-size:12.5px;color:#888">Próximamente: un chat para hablar con los miembros de tu comunidad, organizar incursiones e intercambios.</p>
+    </div>
+  </div>
+</div>
+
 <div id="perfil-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="closePerfilScreen()">←</button>
@@ -1279,10 +1306,19 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.959</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.960</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.959 · actual</span><span class="nov-version-tag">Guía TrackDex</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.960 · actual</span><span class="nov-version-tag">Comunidad y expulsiones</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🏘️</span><span>Nuevo botón "Comunidad" en la pantalla principal: acceso directo a los miembros de tu comunidad, y muy pronto un chat para organizar incursiones e intercambios.</span></div>
+        <div class="nov-item"><span>👢</span><span>El admin de una comunidad ya puede expulsar miembros desde la lista de Miembros. Los Pokémon del expulsado no se borran de su cuenta; solo deja de compartir con esa comunidad.</span></div>
+        <div class="nov-item"><span>ℹ️</span><span>Nuevo botón de info en Mis Pokémon que explica para qué sirven las marcas "Obtenido" y "Al máximo".</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.959</span><span class="nov-version-tag">Guía TrackDex</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>📖</span><span>Nueva "Guía TrackDex" en Perfil (sustituye a "Info App"): todas las funciones de la app en botones con su explicación. Al leer cada una se marca con ✅ para que sepas cuáles te quedan por descubrir.</span></div>
         <div class="nov-item"><span>👋</span><span>Mensaje de bienvenida renovado: más corto y directo, y te señala la Guía TrackDex para empezar.</span></div>
@@ -6434,6 +6470,37 @@ async function deleteCurrentCommunity(){
     showCommunitySelection();
   } catch(e){ showToast('Error al borrar: '+(e.message||e)); }
 }
+function toggleAlbumInfo(on){ const el=document.getElementById('album-info-pop'); if(el) el.style.display=on?'flex':'none'; }
+function openComunidad(){
+  if(!ST.cur){ showToast('Selecciona un entrenador primero'); return; }
+  const lbl=document.getElementById('comunidad-name-lbl');
+  if(lbl) lbl.innerHTML='Estás en <b>'+((ST.currentCommunity&&(ST.currentCommunity.displayName||ST.currentCommunity.id))||'—')+'</b>';
+  document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
+  document.getElementById('comunidad-screen').style.display='block';
+  var hm=document.getElementById('home-menu'); if(hm) hm.style.display='none';
+  window.scrollTo(0,0);
+}
+function closeComunidad(){
+  document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
+  document.getElementById('profile-screen').style.display='block';
+  document.getElementById('home-menu').style.display='block';
+  document.getElementById('home-profile-section').style.display='none';
+  document.getElementById('trainer-name-bar').textContent='👋 '+ST.cur;
+  updateHomeMenu();
+  window.scrollTo(0,0);
+}
+async function kickMember(uid){
+  const c=ST.currentCommunity; if(!c||!c.members||!c.members[uid]) return;
+  const alias=c.members[uid].alias||uid;
+  if(!confirm('¿Expulsar a "'+alias+'" de la comunidad?\n\nSus Pokémon NO se borran (quedan en su cuenta), pero dejará de ver los equipos y filtros de esta comunidad y su equipo dejará de verse aquí.')) return;
+  delete c.members[uid];
+  try{ await db.collection('communities').doc(c.id).collection('profiles').doc(alias).delete(); }catch(e){}
+  try{ await db.collection('communities').doc(c.id).set(c); }
+  catch(e){ showToast('Error al expulsar: '+(e.message||e)); return; }
+  ST.profiles=ST.profiles.filter(p=>p.name!==alias);
+  showToast('👢 '+alias+' ha sido expulsado');
+  renderMembers();
+}
 function showMembers(){
   document.getElementById('home-menu').style.display='none';
   document.getElementById('home-profile-section').style.display='';
@@ -6458,7 +6525,9 @@ function renderMembers(){
     const meTag = isMe ? ' <span style="color:#2e7d32;font-size:11px;font-weight:700">(tú)</span>' : '';
     const act = isMe ? 'backToHome()' : (idx>=0 ? 'viewProfileIdx('+idx+')' : "showToast('Este miembro aún no ha creado su equipo')");
     const btn = isMe ? 'Inicio' : 'Ver';
-    return '<div class="profile-row"><div class="avatar">'+ini+'</div><div class="profile-info" onclick="'+act+'"><div class="profile-name">'+alias+meTag+owner+'</div><div class="profile-stat">'+oc.owned+'/'+oc.total+' Pokémon deseados</div></div><div class="profile-actions"><button class="view-btn" onclick="'+act+'">'+btn+'</button></div></div>';
+    const iAmOwner = ST.currentCommunity && (ST.currentCommunity.ownerId===ST.globalUserId || isAdminUser(ST.globalUserId));
+    const kickBtn = (iAmOwner && !isMe && !(m&&m.isOwner)) ? '<button class="del-btn" title="Expulsar" onclick="event.stopPropagation();kickMember(\''+uid.replace(/'/g,"\\'")+'\')">👢</button>' : '';
+    return '<div class="profile-row"><div class="avatar">'+ini+'</div><div class="profile-info" onclick="'+act+'"><div class="profile-name">'+alias+meTag+owner+'</div><div class="profile-stat">'+oc.owned+'/'+oc.total+' Pokémon deseados</div></div><div class="profile-actions"><button class="view-btn" onclick="'+act+'">'+btn+'</button>'+kickBtn+'</div></div>';
   }).join('');
 }
 
