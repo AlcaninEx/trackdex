@@ -1259,6 +1259,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <div class="nov-version-head"><span class="nov-version-num">v0.955 · actual</span><span class="nov-version-tag">Sprites HD en Objetivo</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🖼️</span><span>Pokémon Objetivo estrena las imágenes en alta calidad (artwork oficial), las mismas que en Rankings y Mis Pokémon, tanto en las tarjetas como en el popup de caramelos.</span></div>
+        <div class="nov-item"><span>🔍</span><span>Recuerda: dentro del popup de caramelos, toca la imagen para verla en grande con su cadena evolutiva.</span></div>
       </div>
     </div>
 
@@ -4834,7 +4835,7 @@ function closePokeparadas() {
 // Ampliar el Pokémon del popup de Objetivo (imagen grande + cadena evolutiva)
 function objZoomCur(){
   const img=document.getElementById('obj-popup-img');
-  const m=(img&&img.src||'').match(/pokemon\/(\d+)\.png/);
+  const m=(img&&img.src||'').match(/\/(\d+)\.png/);
   const nameEl=document.getElementById('obj-popup-name');
   const name=nameEl?nameEl.textContent:'';
   if(m&&window.showPokePopup) showPokePopup(name, img.src, parseInt(m[1]));
