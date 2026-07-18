@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.962</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.963</p>
   </div>
 </div>
 
@@ -564,7 +564,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           🏘️ Comunidad
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.962
+          🆕 Novedades · v0.963
         </button>
       </div>
 
@@ -1306,10 +1306,19 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.962</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.963</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.962 · actual</span><span class="nov-version-tag">Mejores IVs y limpieza</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.963 · actual</span><span class="nov-version-tag">Pokémon Objetivo afinado</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🍬</span><span>Nuevo orden por caramelos restantes ponderados: 1 caramelo normal = 1 punto, 1 XL = 10 puntos. Los XL ya no se muestran en las tarjetas — toca el Pokémon para ver su detalle.</span></div>
+        <div class="nov-item"><span>⌨️</span><span>Ahora puedes escribir la cantidad exacta de caramelos y XL que tienes (además de la barra), perfecto para totales grandes como 3600.</span></div>
+        <div class="nov-item"><span>ℹ️</span><span>Botón de info en Pokémon Objetivo explicando el sistema de puntos y cómo apuntar tu progreso.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.962</span><span class="nov-version-tag">Mejores IVs y limpieza</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>👻</span><span>Mejores IVs ahora también muestra los Pokémon no obtenidos, al final de la lista y en blanco y negro, para que tengas toda la foto de tus equipos.</span></div>
         <div class="nov-item"><span>🗂️</span><span>Nueva casilla "Por equipos (tipos)" en Mejores IVs: agrupa la lista por tipo en el mismo orden que Mis Pokémon, combinable con "Mejores/Peores primero".</span></div>
@@ -1714,7 +1723,16 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="objetivo-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="closeObjetivo()">←</button>
-    <h1>🎯 Pokémon Objetivo</h1>
+    <h1 style="flex:1">🎯 Pokémon Objetivo</h1>
+    <button class="filtro-info-btn" onclick="toggleObjInfo(true)">i</button>
+  </div>
+  <div id="obj-info-pop" onclick="toggleObjInfo(false)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:center;justify-content:center">
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:20px;max-width:340px;width:90%">
+      <h3 style="margin:0 0 10px;font-size:16px;color:#CC0000">🎯 ¿Cómo se ordena esta lista?</h3>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px">Los Pokémon se ordenan por los <b>caramelos que te faltan</b>, contando que <b>1 caramelo normal vale 1 punto</b> y <b>1 caramelo XL vale 10 puntos</b> (cuestan mucho más de conseguir). Cuanto más te falte, más arriba aparece.</p>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:12px">Toca cualquier Pokémon para ver su detalle: allí apuntas los caramelos y XL que ya tienes (con la barra o <b>escribiendo la cantidad exacta</b>), y la lista se reordena sola. Los completados se van al final con ✓.</p>
+      <button onclick="toggleObjInfo(false)" style="width:100%;padding:10px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">Entendido</button>
+    </div>
   </div>
   <div id="obj-trainer-bar" style="padding:8px 14px;background:#fff;border-bottom:1px solid #e0e0e0;font-size:13px;color:#555;font-weight:600"></div>
   <div style="background:#fffde7;border-bottom:1px solid #ffe082">
@@ -4792,8 +4810,9 @@ function buildObjetivoData(profileName) {
     const pa = candyProgress[a.id] || {c:0, xl:0};
     const pb = candyProgress[b.id] || {c:0, xl:0};
     // peso restante = caramelos+XL que aún faltan (total - lo que ya tienes guardado)
-    const wa = Math.max(0, a.totalC - pa.c) + Math.max(0, a.totalXL - pa.xl);
-    const wb = Math.max(0, b.totalC - pb.c) + Math.max(0, b.totalXL - pb.xl);
+    // 1 caramelo normal = 1 punto · 1 XL = 10 puntos
+    const wa = Math.max(0, a.totalC - pa.c) + Math.max(0, a.totalXL - pa.xl)*10;
+    const wb = Math.max(0, b.totalC - pb.c) + Math.max(0, b.totalXL - pb.xl)*10;
     return wb - wa || a.n.localeCompare(b.n);
   });
 }
@@ -5459,12 +5478,7 @@ function openObjetivo() {
           '</div>';
       }
       const badge = d.count > 1 ? '<div class="obj-badge">x' + d.count + '</div>' : '';
-      const p_obj = window._ST_CUR_PROFILE;
-      const prog_obj = (p_obj && p_obj.candyProgress && p_obj.candyProgress[d.id]) || {c:0, xl:0};
-      const xlRemaining = Math.max(0, d.totalXL - prog_obj.xl);
-      const xlColor = xlRemaining === 0 ? '#43a047' : '#e65100';
-      const xlTag = '<div style="position:absolute;bottom:2px;left:2px;right:2px;font-size:7.5px;font-weight:700;color:#fff;background:'+xlColor+';border-radius:5px;padding:1px 2px;text-align:center">'+(xlRemaining===0?'✓ XL':'⭐'+xlRemaining+' XL')+'</div>';
-      return '<div class="obj-card" onclick="openObjPopup(' + i + ')" style="cursor:pointer;position:relative;padding-bottom:14px">' + badge + xlTag +
+      return '<div class="obj-card" onclick="openObjPopup(' + i + ')" style="cursor:pointer;position:relative">' + badge +
         '<img class="obj-img" src="' + imgUrl + '" alt="' + d.n + '" onerror="this.style.opacity=.2">' +
         '<div class="obj-name">' + d.n + '</div>' +
         '</div>';
@@ -5563,14 +5577,14 @@ function openObjPopup(idx) {
           <span style="font-size:11px;font-weight:700;color:#444">🍬 Caramelos que tengo</span>
           <span style="font-size:10px;font-weight:700;color:${cColor}">Necesarios: ${cNeeded}</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;color:#999;margin-bottom:2px"><span>0</span><span id="obj-bar-c-val">${prog.c} / ${d.totalC}</span></div>
-        <input type="range" min="0" max="${d.totalC}" value="${prog.c}" oninput="updateCandyProgress('${d.id}','c',this.value)" style="width:100%;accent-color:#CC0000">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#999;margin-bottom:2px"><span>0</span><span><input id="obj-num-c" type="number" min="0" max="${d.totalC}" value="${prog.c}" onchange="candyNumInput('${d.id}','c',this)" style="width:64px;padding:2px 4px;border:1.5px solid #CC0000;border-radius:6px;font-size:12px;font-weight:700;text-align:right;color:#CC0000"> <span id="obj-bar-c-val">/ ${d.totalC}</span></span></div>
+        <input id="obj-rng-c" type="range" min="0" max="${d.totalC}" value="${prog.c}" oninput="updateCandyProgress('${d.id}','c',this.value)" style="width:100%;accent-color:#CC0000">
         <div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0 6px">
           <span style="font-size:11px;font-weight:700;color:#444">⭐ XL que tengo</span>
           <span style="font-size:10px;font-weight:700;color:${xlColor}">Necesarios: ${xlNeeded}</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;color:#999;margin-bottom:2px"><span>0</span><span id="obj-bar-xl-val">${prog.xl} / ${d.totalXL}</span></div>
-        <input type="range" min="0" max="${d.totalXL}" value="${prog.xl}" oninput="updateCandyProgress('${d.id}','xl',this.value)" style="width:100%;accent-color:#FF9800">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#999;margin-bottom:2px"><span>0</span><span><input id="obj-num-xl" type="number" min="0" max="${d.totalXL}" value="${prog.xl}" onchange="candyNumInput('${d.id}','xl',this)" style="width:64px;padding:2px 4px;border:1.5px solid #FF9800;border-radius:6px;font-size:12px;font-weight:700;text-align:right;color:#e65100"> <span id="obj-bar-xl-val">/ ${d.totalXL}</span></span></div>
+        <input id="obj-rng-xl" type="range" min="0" max="${d.totalXL}" value="${prog.xl}" oninput="updateCandyProgress('${d.id}','xl',this.value)" style="width:100%;accent-color:#FF9800">
       </div>`;
   }
 
@@ -5599,10 +5613,18 @@ function updateCandyProgress(evoId, kind, value) {
   const d = window._objData.find(x => x.id === evoId);
   if (!d) return;
   const prog = p.candyProgress[evoId];
-  const labelId = kind === 'c' ? 'obj-bar-c-val' : 'obj-bar-xl-val';
-  const max = kind === 'c' ? d.totalC : d.totalXL;
-  const labelEl = document.getElementById(labelId);
-  if (labelEl) labelEl.textContent = prog[kind] + ' / ' + max;
+  const num = document.getElementById(kind === 'c' ? 'obj-num-c' : 'obj-num-xl');
+  if (num && document.activeElement !== num) num.value = prog[kind];
+}
+function toggleObjInfo(on){ const el=document.getElementById('obj-info-pop'); if(el) el.style.display=on?'flex':'none'; }
+function candyNumInput(evoId, kind, inp){
+  const d = window._objData && window._objData.find(x => x.id === evoId);
+  const max = d ? (kind === 'c' ? d.totalC : d.totalXL) : 99999;
+  let v = parseInt(inp.value, 10); if (isNaN(v) || v < 0) v = 0; if (v > max) v = max;
+  inp.value = v;
+  updateCandyProgress(evoId, kind, v);
+  const rng = document.getElementById(kind === 'c' ? 'obj-rng-c' : 'obj-rng-xl');
+  if (rng) rng.value = v;
 }
 function toggleTradeAnyDay(evoId) {
   const p = goc(ST.cur);
