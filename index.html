@@ -558,7 +558,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           🏆 Trackers
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.952
+          🆕 Novedades · v0.953
         </button>
       </div>
 
@@ -1252,10 +1252,17 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.952</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.953</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.952 · actual</span><span class="nov-version-tag">Valores IVs configurables</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.953 · actual</span><span class="nov-version-tag">Comparador de IVs</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>⚖️</span><span>Nuevo botón "Comparar" al desplegar un Pokémon en Mejores IVs: mueve tres barras con los IVs de otro ejemplar y te dice al instante si es mejor o peor en porcentaje, usando tus Valores IVs actuales (15/15/15 = 100%).</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.952</span><span class="nov-version-tag">Valores IVs configurables</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>⚖️</span><span>Nuevo botón "Valores IVs" en Mejores IVs: ajusta el peso de Ataque, Defensa y Vida (de -100 a +100) con el que se puntúan y ordenan tus Pokémon.</span></div>
         <div class="nov-item"><span>🎚️</span><span>Dos configuraciones rápidas: "Por defecto" (At +100 · Def +20 · Vida +30) y "Extremo" (At +100 · Def -10 · Vida +20). Tu ajuste se guarda en el dispositivo.</span></div>
@@ -4936,12 +4943,40 @@ function buildBivData(){
   }
   return {rows,total};
 }
-function togBivCard(id){ ST.bivExpanded=(ST.bivExpanded===id)?null:id; renderBestIvs(); }
+function togBivCard(id){ ST.bivExpanded=(ST.bivExpanded===id)?null:id; ST.bivCmp=null; renderBestIvs(); }
+function togBivCompare(id){
+  ST.bivCmp=(ST.bivCmp&&ST.bivCmp.id===id)?null:{id,a:15,d:15,h:15};
+  renderBestIvs();
+  if(ST.bivCmp) bivCmpCalc(id);
+}
+function bivCmpInput(id,k,v){
+  if(!ST.bivCmp||ST.bivCmp.id!==id) return;
+  ST.bivCmp[k]=parseInt(v)||0;
+  const el=document.getElementById('biv-cmp-v-'+k+'-'+id); if(el) el.textContent=ST.bivCmp[k];
+  bivCmpCalc(id);
+}
+function bivCmpCalc(id){
+  const res=document.getElementById('biv-cmp-res-'+id); if(!res||!ST.bivCmp) return;
+  const p=gp(ST.cur); const pk=(p&&p.pk&&p.pk[id])||{};
+  const cur={a:pk.ivAtk||0,d:pk.ivDef||0,h:pk.ivHp||0};
+  const w=getBivWeights();
+  const max=15*(w.a+w.d+w.h);
+  if(max<=0){ res.innerHTML='<span style="color:#b71c1c">Ajusta los Valores IVs (suma de pesos ≤ 0)</span>'; return; }
+  const pct=iv=>Math.round(bivScore(iv)/max*1000)/10;
+  const pCur=pct(cur), pCmp=pct(ST.bivCmp);
+  const diff=Math.round((pCmp-pCur)*10)/10;
+  let verdict;
+  if(diff>0) verdict='<span style="color:#2e7d32">✅ Mejor por +'+diff+'%</span>';
+  else if(diff<0) verdict='<span style="color:#b71c1c">❌ Peor por '+diff+'%</span>';
+  else verdict='<span style="color:#555">🟰 Iguales</span>';
+  res.innerHTML='<span style="color:#555;font-size:11.5px">Este: '+pCur+'% · Comparado: '+pCmp+'%</span><br>'+verdict;
+}
 function bivUpdIV(id,s,v){
   updIV(id,s,v); // guarda y actualiza también las cartas del álbum si existen
   const n=parseInt(v);
   const el=document.getElementById('biv-v-'+s+'-'+id); if(el) el.textContent=n;
   const top=document.getElementById('biv-top-'+s+'-'+id); if(top) top.textContent=n;
+  if(ST.bivCmp&&ST.bivCmp.id===id) bivCmpCalc(id);
 }
 function bivTogOwned(id,v){ togOwned(id,v); renderBestIvs(); }
 function bivTogMaxed(id,v){ togMaxed(id,v); renderBestIvs(); }
@@ -4963,8 +4998,21 @@ function renderBestIvs(){
     const t=TM[x.type]||{color:'#78909c',name:x.type};
     const open=ST.bivExpanded===x.id;
     const p=gp(ST.cur); const pk=(p&&p.pk&&p.pk[x.id])||{};
+    const cmpOpen=ST.bivCmp&&ST.bivCmp.id===x.id;
+    const cmpPanel=!cmpOpen?'':`
+        <div style="margin-top:10px;padding:10px;background:#ede7f6;border-radius:10px;border:1.5px solid #5e35b1">
+          <div style="font-size:12px;font-weight:800;color:#4527a0;margin-bottom:8px">⚖️ Comparar con otro ejemplar</div>
+          <div class="iv-grid">
+            <div class="iv-col"><div class="iv-lbl">Ataque</div><div class="iv-val"><span id="biv-cmp-v-a-${x.id}">${ST.bivCmp.a}</span></div><input type="range" min="0" max="15" value="${ST.bivCmp.a}" oninput="bivCmpInput('${x.id}','a',this.value)"></div>
+            <div class="iv-col"><div class="iv-lbl">Defensa</div><div class="iv-val"><span id="biv-cmp-v-d-${x.id}">${ST.bivCmp.d}</span></div><input type="range" min="0" max="15" value="${ST.bivCmp.d}" oninput="bivCmpInput('${x.id}','d',this.value)"></div>
+            <div class="iv-col"><div class="iv-lbl">Vida</div><div class="iv-val"><span id="biv-cmp-v-h-${x.id}">${ST.bivCmp.h}</span></div><input type="range" min="0" max="15" value="${ST.bivCmp.h}" oninput="bivCmpInput('${x.id}','h',this.value)"></div>
+          </div>
+          <div id="biv-cmp-res-${x.id}" style="margin-top:8px;text-align:center;font-size:13px;font-weight:700"></div>
+        </div>`;
     const editor=`
       <div style="background:#fff;border-radius:10px;padding:10px 12px;margin:0 8px 8px">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:4px"><button onclick="event.stopPropagation();togBivCompare('${x.id}')" style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:14px;border:1.5px solid #5e35b1;background:${cmpOpen?'#5e35b1':'#fff'};color:${cmpOpen?'#fff':'#4527a0'};cursor:pointer">⚖️ Comparar</button></div>
+        ${cmpPanel}
         <div class="fr"><div class="fl">IVs</div>
           <div class="iv-grid">
             <div class="iv-col"><div class="iv-lbl">Ataque</div><div class="iv-val"><span id="biv-v-a-${x.id}">${x.iv.a}</span></div><input type="range" min="0" max="15" value="${x.iv.a}" oninput="bivUpdIV('${x.id}','a',this.value)"></div>
