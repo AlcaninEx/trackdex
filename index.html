@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.961</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.962</p>
   </div>
 </div>
 
@@ -564,7 +564,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           🏘️ Comunidad
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.961
+          🆕 Novedades · v0.962
         </button>
       </div>
 
@@ -607,6 +607,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <select id="biv-team" onchange="renderBestIvs()" style="padding:6px 10px;border-radius:8px;border:1.5px solid #5e35b1;font-size:12px;font-weight:700;color:#4527a0;background:#fff">
         <option value="all">Todos</option>
       </select>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#4527a0;cursor:pointer"><input type="checkbox" id="biv-byteam" onchange="renderBestIvs()"> 🗂️ Por equipos (tipos)</label>
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
       <button onclick="toggleBivWeights(true)" style="padding:6px 12px;border-radius:8px;border:1.5px solid #5e35b1;font-size:12px;font-weight:700;color:#fff;background:#5e35b1;cursor:pointer">⚖️ Valores IVs</button>
@@ -1267,6 +1268,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       </div>
     </div>
     <button class="perfil-danger-btn" style="color:#00695c;border-color:#00838f;width:100%;margin-top:14px" onclick="chatStop();showCommunitySelection()">🔄 Cambiar comunidad</button>
+    <button class="perfil-danger-btn" id="comunidad-del-btn" style="display:none;background:#c62828;color:#fff;width:100%;margin-top:10px" onclick="deleteCurrentCommunity()">💥 Borrar esta comunidad (eres el creador)</button>
   </div>
 </div>
 
@@ -1279,14 +1281,8 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <p style="text-align:center;font-size:13px;color:#888;padding:14px 14px 0">Entrenador: <b id="perfil-name-label" style="color:#37474f"></b></p>
 
     <div class="perfil-card">
-      <p style="font-size:13px;font-weight:800;color:#37474f;margin-bottom:8px">🏘️ Comunidad</p>
-      <p style="font-size:14px;color:#555;margin-bottom:10px">Estás en <b id="perfil-community-name">—</b></p>
-      <button class="perfil-danger-btn" style="color:#5e35b1;border-color:#5e35b1" onclick="showMembers()">👥 Miembros de la Comunidad</button>
-    </div>
-    <div class="perfil-card">
       <p style="font-size:13px;font-weight:800;color:#37474f;margin-bottom:8px">ℹ️ Aplicación</p>
       <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="openGuia()">📖 Guía TrackDex</button>
-      <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="restoreReads()">♻️ Restaurar información leída</button>
       <button class="perfil-danger-btn" style="color:#5e35b1;border-color:#5e35b1" onclick="renameTeamPrompt()">✏️ Cambiar nombres de tus equipos</button>
       <button class="perfil-danger-btn" style="color:#00695c;border-color:#00838f" onclick="changePasswordPrompt()">🔑 Cambiar contraseña</button>
       <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="openPrivacy()">🔒 Política de privacidad</button>
@@ -1299,7 +1295,6 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="perfil-danger-btn" onclick="confirmDeleteRaidTeam()">🗑️ Borrar todos tus Pokémon de Incursión</button>
       <button class="perfil-danger-btn" onclick="confirmDeleteDmaxTeam()">🗑️ Borrar todos tus Pokémon Dynamax</button>
       <button class="perfil-danger-btn" onclick="deleteAccountPrompt()">☠️ Borrar mi cuenta y todos mis datos</button>
-      <button class="perfil-danger-btn" id="perfil-del-community" style="display:none;background:#c62828;color:#fff" onclick="deleteCurrentCommunity()">💥 Borrar esta comunidad (eres el creador)</button>
     </div>
   </div>
 </div>
@@ -1311,10 +1306,20 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.961</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.962</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.961 · actual</span><span class="nov-version-tag">Chat de comunidad</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.962 · actual</span><span class="nov-version-tag">Mejores IVs y limpieza</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>👻</span><span>Mejores IVs ahora también muestra los Pokémon no obtenidos, al final de la lista y en blanco y negro, para que tengas toda la foto de tus equipos.</span></div>
+        <div class="nov-item"><span>🗂️</span><span>Nueva casilla "Por equipos (tipos)" en Mejores IVs: agrupa la lista por tipo en el mismo orden que Mis Pokémon, combinable con "Mejores/Peores primero".</span></div>
+        <div class="nov-item"><span>🏘️</span><span>El Perfil queda solo para tu cuenta: todo lo de comunidad (miembros, borrar comunidad) vive ahora en la pantalla Comunidad. Se retira "Restaurar información leída".</span></div>
+        <div class="nov-item"><span>🗑️</span><span>Borrar todos tus Pokémon de Incursión/Dynamax ahora avisa de que afecta a TODOS tus equipos y limpia también sus asignaciones.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.961</span><span class="nov-version-tag">Chat de comunidad</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>💬</span><span>¡Estrena el chat de comunidad! En la pantalla Comunidad: mensajes en tiempo real con los miembros, borra los tuyos (el admin puede borrar cualquiera).</span></div>
         <div class="nov-item"><span>🏘️</span><span>"Cambiar comunidad" se muda del Perfil a la pantalla Comunidad, y "Volver" desde Miembros ahora regresa a Comunidad. Se retira el botón de copiar perfil (sin uso).</span></div>
@@ -5050,7 +5055,7 @@ function buildBivData(){
     if(teamMode!=='all' && !entryInTeam(p,id,parseInt(teamMode))) continue;
     total++;
     const pk=(p.pk&&p.pk[id])||{};
-    if(!pk.owned) continue;
+    const _owned=!!pk.owned;
     let name='',img='',type='',dps=0;
     if(p.custom&&p.custom[id]){
       const d=p.custom[id]; name=d.n; img=d.img||''; type=d.type; dps=d.dps||0;
@@ -5066,7 +5071,7 @@ function buildBivData(){
     }
     if(isD&&!type) type=id.split('-dmax-')[0];
     const iv={a:pk.ivAtk||0,d:pk.ivDef||0,h:pk.ivHp||0};
-    rows.push({id,name,img,type,dps,iv,score:bivScore(iv),noIv:(iv.a+iv.d+iv.h)===0,ti:Math.max(0,typeOrder.indexOf(type))});
+    rows.push({id,name,img,type,dps,iv,score:bivScore(iv),noIv:(iv.a+iv.d+iv.h)===0,ti:Math.max(0,typeOrder.indexOf(type)),owned:_owned});
   }
   return {rows,total};
 }
@@ -5110,12 +5115,16 @@ function bivTogMaxed(id,v){ togMaxed(id,v); renderBestIvs(); }
 function renderBestIvs(){
   const {rows,total}=buildBivData();
   const order=(document.getElementById('biv-order')||{}).value||'peores';
+  const byTeams=!!(document.getElementById('biv-byteam')||{}).checked;
   const byTeamOrder=(a,b)=> a.ti-b.ti || b.dps-a.dps || a.name.localeCompare(b.name);
-  const valued=rows.filter(x=>!x.noIv), blank=rows.filter(x=>x.noIv);
-  valued.sort(order==='mejores' ? ((a,b)=>b.score-a.score||byTeamOrder(a,b)) : ((a,b)=>a.score-b.score||byTeamOrder(a,b)));
+  const wrapT=cmp=> byTeams ? ((a,b)=> a.ti-b.ti || cmp(a,b)) : cmp;
+  const ownedRows=rows.filter(x=>x.owned), notOwned=rows.filter(x=>!x.owned);
+  const valued=ownedRows.filter(x=>!x.noIv), blank=ownedRows.filter(x=>x.noIv);
+  valued.sort(wrapT(order==='mejores' ? ((a,b)=>b.score-a.score||byTeamOrder(a,b)) : ((a,b)=>a.score-b.score||byTeamOrder(a,b))));
   blank.sort(byTeamOrder);
-  const list = order==='sinivs' ? [...blank,...valued] : [...valued,...blank];
-  document.getElementById('biv-count').textContent = rows.length+'/'+total+' obtenidos';
+  notOwned.sort(byTeamOrder);
+  const list = (order==='sinivs' ? [...blank,...valued] : [...valued,...blank]).concat(notOwned);
+  document.getElementById('biv-count').textContent = ownedRows.length+'/'+total+' obtenidos';
   const el=document.getElementById('biv-list');
   if(!list.length){
     el.innerHTML='<p style="text-align:center;padding:40px 16px;color:#aaa;font-size:13px">No hay Pokémon marcados como "Obtenido" en este ámbito.<br><br>Marca tus Pokémon en "Mis Pokémon" y aparecerán aquí.</p>';
@@ -5150,10 +5159,10 @@ function renderBestIvs(){
         <div class="tr" style="margin-top:8px;padding:8px 12px;background:${pk.owned?'#e8f5e9':'#f5f5f5'};border-radius:8px;border:1.5px solid ${pk.owned?'#43a047':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${pk.owned?'#2e7d32':'#555'}">✅ Obtenido</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${pk.owned?'checked':''} onchange="bivTogOwned('${x.id}',this.checked)"><span class="sl"></span></label></div>
         <div class="tr" style="margin-top:6px;padding:8px 12px;background:${pk.maxed?'#fff8e1':'#f5f5f5'};border-radius:8px;border:1.5px solid ${pk.maxed?'#ffb300':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${pk.maxed?'#e65100':'#555'}">⭐ Al máximo</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${pk.maxed?'checked':''} onchange="bivTogMaxed('${x.id}',this.checked)"><span class="sl"></span></label></div>
       </div>`;
-    return `<div class="pk-card" style="background:${t.color};${x.noIv?'opacity:.5;':''}">
+    return `<div class="pk-card" style="background:${t.color};${!x.owned?'filter:grayscale(1);opacity:.55;':(x.noIv?'opacity:.5;':'')}">
       <div class="pk-top" onclick="togBivCard('${x.id}')">
         <div style="flex-shrink:0"><div class="final-wrap">${pkBadge(/\(shadow\)/i.test(x.name)||/^shadow /i.test(x.name),/^(mega|primal) /i.test(x.name))}<img class="final-img" src="${si(x.img)}" onerror="this.style.opacity=.1"></div></div>
-        <div class="pk-info"><div class="pk-name">${x.name.replace(' (Shadow)','')}</div><div style="font-size:10px;color:rgba(255,255,255,.8);font-weight:600">${t.name||''}${x.noIv?' · sin IVs':''}</div></div>
+        <div class="pk-info"><div class="pk-name">${x.name.replace(' (Shadow)','')}</div><div style="font-size:10px;color:rgba(255,255,255,.8);font-weight:600">${t.name||''}${!x.owned?' · no obtenido':(x.noIv?' · sin IVs':'')}</div></div>
         <div style="display:flex;gap:7px;font-weight:800;color:#fff;font-size:17px;flex-shrink:0;margin-right:8px;text-shadow:0 1px 2px rgba(0,0,0,.35)">
           <span title="Ataque" id="biv-top-a-${x.id}">${x.iv.a}</span><span title="Defensa" id="biv-top-d-${x.id}">${x.iv.d}</span><span title="Vida" id="biv-top-h-${x.id}">${x.iv.h}</span>
         </div>
@@ -5187,13 +5196,14 @@ function closePerfilScreen() {
   window.scrollTo(0, 0);
 }
 function confirmDeleteRaidTeam() {
-  if (!confirm('¿Estás seguro? Esto borrará TODOS tus Pokémon de Incursión de todos los tipos. Esta acción no se puede deshacer.')) return;
+  if (!confirm('¿Estás seguro? Esto borrará TODOS tus Pokémon de Incursión de todos los tipos y de TODOS tus equipos (1, 2, 3 y 4). Esta acción no se puede deshacer.')) return;
   const p = goc(ST.cur);
   Object.keys(p.album || {}).forEach(id => {
     if (!id.includes('-dmax-')) {
       delete p.album[id];
       if (p.custom) delete p.custom[id];
       if (p.pk) delete p.pk[id];
+      if (p.teamAssign) delete p.teamAssign[id];
     }
   });
   save();
@@ -5201,13 +5211,14 @@ function confirmDeleteRaidTeam() {
   updateHomeMenu();
 }
 function confirmDeleteDmaxTeam() {
-  if (!confirm('¿Estás seguro? Esto borrará TODOS tus Pokémon Dynamax de todos los tipos. Esta acción no se puede deshacer.')) return;
+  if (!confirm('¿Estás seguro? Esto borrará TODOS tus Pokémon Dynamax de todos los tipos y de TODOS tus equipos (1, 2, 3 y 4). Esta acción no se puede deshacer.')) return;
   const p = goc(ST.cur);
   Object.keys(p.album || {}).forEach(id => {
     if (id.includes('-dmax-')) {
       delete p.album[id];
       if (p.custom) delete p.custom[id];
       if (p.pk) delete p.pk[id];
+      if (p.teamAssign) delete p.teamAssign[id];
     }
   });
   save();
@@ -5684,7 +5695,6 @@ function markRead(k,v){
   setRead(k,v);
   if(k==='legacyHowto'){ const e=document.getElementById('lg-howto'); if(e) e.style.display = v ? 'none' : 'block'; }
 }
-function restoreReads(){ try{ localStorage.removeItem('pokeBCN_read'); }catch(e){} showToast('♻️ Información restaurada'); }
 
 
 function maybeShowWelcome(){
@@ -6501,6 +6511,8 @@ function openComunidad(){
   if(!ST.cur){ showToast('Selecciona un entrenador primero'); return; }
   const lbl=document.getElementById('comunidad-name-lbl');
   if(lbl) lbl.innerHTML='Estás en <b>'+((ST.currentCommunity&&(ST.currentCommunity.displayName||ST.currentCommunity.id))||'—')+'</b>';
+  { const _d=document.getElementById('comunidad-del-btn');
+    if(_d){ const c=ST.currentCommunity; _d.style.display=(c&&(isAdminUser(ST.globalUserId)||c.ownerId===ST.globalUserId))?'block':'none'; } }
   document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
   document.getElementById('comunidad-screen').style.display='block';
   var hm=document.getElementById('home-menu'); if(hm) hm.style.display='none';
