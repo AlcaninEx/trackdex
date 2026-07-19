@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.965.a</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.966</p>
   </div>
 </div>
 
@@ -564,7 +564,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           🏘️ Comunidad
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.965.a
+          🆕 Novedades · v0.966
         </button>
       </div>
 
@@ -1312,10 +1312,18 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.965.a</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.966</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.965 · actual</span><span class="nov-version-tag">Tracker IVs</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.966 · actual</span><span class="nov-version-tag">Copias identificadas</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🔢</span><span>Cuando tienes varias copias del mismo Pokémon, cada una se identifica como "copia 1", "copia 2"… en Mis Pokémon y en Tracker IVs, para saber siempre cuál estás editando.</span></div>
+        <div class="nov-item"><span>🐛</span><span>Corregido: las copias del mismo Pokémon compartían IVs y marcas por error. Ahora cada copia es independiente y solo se vinculan la ficha de Incursión con la de Dynamax (y solo si no hay ambigüedad).</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.965</span><span class="nov-version-tag">Tracker IVs</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>📈</span><span>"Mejores IVs" pasa a llamarse "Tracker IVs", con nuevas opciones: orden "No obtenidos", casillas para ocultar Oscuros y Legendarios (se recuerdan), y "Por equipos (tipos)" ahora integra también los sin IVs y no obtenidos dentro de cada tipo.</span></div>
         <div class="nov-item"><span>💡</span><span>Al desplegar un Pokémon apagado (sin IVs o no obtenido) se ilumina mientras lo editas; si lo dejas a 0/0/0 vuelve a apagarse al cerrar.</span></div>
@@ -3068,13 +3076,38 @@ function pkSpeciesKey(p,id){
     .replace(/[^a-z0-9]/g,'');
   return (shadow?'sh:':'')+name;
 }
+// Copias del mismo Pokémon: id, id-1, id-2… Son ejemplares DISTINTOS y nunca se vinculan.
+function copyBaseId(id){ return String(id).replace(/-\d+$/,''); }
+function copySiblings(p,id){
+  if(!p||!p.album) return [id];
+  const base=copyBaseId(id);
+  const sibs=Object.keys(p.album).filter(k=>p.album[k]===true&&copyBaseId(k)===base);
+  const num=k=>k===base?0:(parseInt(k.slice(base.length+1),10)||0);
+  return sibs.sort((a,b)=>num(a)-num(b));
+}
+// Sufijo " 1", " 2"… solo cuando hay más de una copia en el álbum
+function copyLabel(p,id){
+  const sibs=copySiblings(p,id);
+  if(sibs.length<2) return '';
+  const i=sibs.indexOf(id);
+  return i>=0 ? ' '+(i+1) : '';
+}
 function linkedIds(p,id){
   if(!p) return [id];
   if(p.pk&&p.pk[id]&&p.pk[id].noLink) return [id];
   const key=pkSpeciesKey(p,id);
   if(!key||key==='sh:') return [id];
+  const isD=String(id).includes('-dmax-');
   const pool=new Set([...Object.keys(p.pk||{}),...Object.keys(p.album||{})]);
-  return [...pool].filter(x=>pkSpeciesKey(p,x)===key && !(p.pk&&p.pk[x]&&p.pk[x].noLink));
+  // Solo se vincula la ficha de incursión con la de Dynamax (nunca copias entre sí),
+  // y únicamente si hay exactamente una candidata al otro lado (sin ambigüedad).
+  const others=[...pool].filter(x=>x!==id
+    && String(x).includes('-dmax-')!==isD
+    && pkSpeciesKey(p,x)===key
+    && !(p.pk&&p.pk[x]&&p.pk[x].noLink));
+  const mine=[...pool].filter(x=>String(x).includes('-dmax-')===isD&&pkSpeciesKey(p,x)===key);
+  if(others.length!==1||mine.length!==1) return [id];
+  return [id,others[0]];
 }
 function syncLinked(p,id,fields){
   linkedIds(p,id).forEach(x=>{
@@ -3295,7 +3328,7 @@ function renderAlbum() {
     const _pkOwned=!!(pp0&&pp0.pk[pk.id]&&pp0.pk[pk.id].owned);
     const _pkMaxed=!!(pp0&&pp0.pk[pk.id]&&pp0.pk[pk.id].maxed);
     const tickHtml=`<div class="pk-ticks" title="${_pkMaxed?'Al máximo':_pkOwned?'Lo tienes':'Pendiente'}"><span class="pk-tick${_pkOwned?' on':''}">✓</span><span class="pk-tick${_pkMaxed?' on':''}">✓</span></div>`;
-    return `<div class="pk-card" id="c-${pk.id}" style="background:${t.color}"><div class="pk-top" onclick="togCard('${pk.id}')"><div style="display:flex;align-items:center;gap:2px;flex-shrink:0">${evoDisplay}</div><div class="pk-info"><div class="pk-name">${pk.name.replace(' (Shadow)','')}</div>${pk.tags.length?`<div class="tags-row">${tH}</div>`:''}<div class="dps-wrap"><div class="dps-lbl"><span>DPS <span id="dps-bar-${pk.id}">${dd.toFixed(2)}</span></span><span style="color:rgba(255,255,255,.6);font-size:9px">Max ${baseDps.toFixed(2)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${bw}%"></div></div></div></div>${tickHtml}${removeBtn}</div><div class="pk-body${isOpen?' open':''}">${isV?viewF:editF}</div></div>`;
+    return `<div class="pk-card" id="c-${pk.id}" style="background:${t.color}"><div class="pk-top" onclick="togCard('${pk.id}')"><div style="display:flex;align-items:center;gap:2px;flex-shrink:0">${evoDisplay}</div><div class="pk-info"><div class="pk-name">${pk.name.replace(' (Shadow)','')}${copyLabel(pp0,pk.id)?`<span style="opacity:.85"> · copia${copyLabel(pp0,pk.id)}</span>`:''}</div>${pk.tags.length?`<div class="tags-row">${tH}</div>`:''}<div class="dps-wrap"><div class="dps-lbl"><span>DPS <span id="dps-bar-${pk.id}">${dd.toFixed(2)}</span></span><span style="color:rgba(255,255,255,.6);font-size:9px">Max ${baseDps.toFixed(2)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${bw}%"></div></div></div></div>${tickHtml}${removeBtn}</div><div class="pk-body${isOpen?' open':''}">${isV?viewF:editF}</div></div>`;
   }).join('')+empty;
 }
 
@@ -3344,7 +3377,7 @@ function renderAlbumDmax() {
     const dIsOpen=ST.expanded===albumId;
     const dInner=!isV?`<div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div>${dToggles}`:`<div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div>`;
     const dTickHtml=`<div class="pk-ticks" title="${dIsMax?'Al máximo':dIsO?'Lo tienes':'Pendiente'}"><span class="pk-tick${dIsO?' on':''}">✓</span><span class="pk-tick${dIsMax?' on':''}">✓</span></div>`;
-    return `<div class="pk-card" id="c-${albumId}" style="background:${t.color}"><div class="pk-top" onclick="togCard('${albumId}')"><div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">${r.n.replace(/^[GD]-/,'')}</div><div class="tags-row">${isG(r)?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>'}</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>${r.dps.toFixed(1)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${Math.round(r.dps/maxD*100)}%"></div></div></div></div>${dTickHtml}${rb}</div><div class="pk-body${dIsOpen?' open':''}">${dInner}</div></div>`;
+    return `<div class="pk-card" id="c-${albumId}" style="background:${t.color}"><div class="pk-top" onclick="togCard('${albumId}')"><div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">${r.n.replace(/^[GD]-/,'')}${copyLabel(gp(ST.view||ST.cur),albumId)?`<span style="opacity:.85"> · copia${copyLabel(gp(ST.view||ST.cur),albumId)}</span>`:''}</div><div class="tags-row">${isG(r)?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>'}</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>${r.dps.toFixed(1)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${Math.round(r.dps/maxD*100)}%"></div></div></div></div>${dTickHtml}${rb}</div><div class="pk-body${dIsOpen?' open':''}">${dInner}</div></div>`;
   }).join('')+emptyDmax;
 }
 function removeDmaxEntry(albumId) {
@@ -5166,7 +5199,7 @@ function buildBivData(){
     }
     if(isD&&!type) type=id.split('-dmax-')[0];
     const iv={a:pk.ivAtk||0,d:pk.ivDef||0,h:pk.ivHp||0};
-    rows.push({id,name,img,type,dps,iv,score:bivScore(iv),noIv:(iv.a+iv.d+iv.h)===0,ti:Math.max(0,typeOrder.indexOf(type)),owned:_owned});
+    rows.push({id,name,img,type,dps,iv,score:bivScore(iv),noIv:(iv.a+iv.d+iv.h)===0,ti:Math.max(0,typeOrder.indexOf(type)),owned:_owned,lbl:copyLabel(p,id)});
   }
   return {rows,total};
 }
@@ -5263,7 +5296,7 @@ function renderBestIvs(){
     return `<div class="pk-card" style="background:${t.color};${open?'':(!x.owned?'filter:grayscale(1);opacity:.55;':(x.noIv?'opacity:.5;':''))}">
       <div class="pk-top" onclick="togBivCard('${x.id}')">
         <div style="flex-shrink:0"><div class="final-wrap">${pkBadge(/\(shadow\)/i.test(x.name)||/^shadow /i.test(x.name),/^(mega|primal) /i.test(x.name))}<img class="final-img" src="${si(x.img)}" onerror="this.style.opacity=.1"></div></div>
-        <div class="pk-info"><div class="pk-name">${x.name.replace(' (Shadow)','')}</div><div style="font-size:10px;color:rgba(255,255,255,.8);font-weight:600">${t.name||''}${!x.owned?' · no obtenido':(x.noIv?' · sin IVs':'')}</div></div>
+        <div class="pk-info"><div class="pk-name">${x.name.replace(' (Shadow)','')}${x.lbl?`<span style="opacity:.85;font-weight:700"> · copia${x.lbl}</span>`:''}</div><div style="font-size:10px;color:rgba(255,255,255,.8);font-weight:600">${t.name||''}${!x.owned?' · no obtenido':(x.noIv?' · sin IVs':'')}</div></div>
         <div style="display:flex;gap:7px;font-weight:800;color:#fff;font-size:17px;flex-shrink:0;margin-right:8px;text-shadow:0 1px 2px rgba(0,0,0,.35)">
           <span title="Ataque" id="biv-top-a-${x.id}">${x.iv.a}</span><span title="Defensa" id="biv-top-d-${x.id}">${x.iv.d}</span><span title="Vida" id="biv-top-h-${x.id}">${x.iv.h}</span>
         </div>
