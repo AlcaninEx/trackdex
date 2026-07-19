@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.967</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.968</p>
   </div>
 </div>
 
@@ -564,7 +564,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           🏘️ Comunidad
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.967
+          🆕 Novedades · v0.968
         </button>
       </div>
 
@@ -1312,10 +1312,17 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.967</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.968</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.967 · actual</span><span class="nov-version-tag">Pikachu Celebration 3</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.968 · actual</span><span class="nov-version-tag">Filtro de Legendarios</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🏆</span><span>Corregido "Ocultar Legendarios" en Tracker IVs: ahora reconoce las formas (Keldeo Resolute, Shaymin Sky, Enamorus Incarnate, Giratina Origin, Kyurem Black…) y cubre legendarios, singulares y Ultraentes — 99 especies en total.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.967</span><span class="nov-version-tag">Pikachu Celebration 3</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>⚡</span><span>Tracker Pikachu al día con la Celebration 3 (18–20 jul): 8 skins salvajes nuevas (5º Aniversario, Moon Crown, Sun Crown, Flower Hat, Flower Crown, Party Top Hat, Cherry Blossom y Cake Hat) con su propia sección.</span></div>
         <div class="nov-item"><span>📋</span><span>Añadida su investigación de campo: gorros de Calem, Hilbert, Hilda, Nate, Rosa y Serena (Captura 10 Pikachu) y Shaymin Scarf (Captura 15). Los tres Dapper salen en las tres celebrations.</span></div>
@@ -5123,7 +5130,20 @@ function deleteTeamPrompt(){
 // ── MEJORES IVS ──────────────────────────────────────────────────────────────
 function toggleBivInfo(on){ const el=document.getElementById('biv-info-pop'); if(el) el.style.display=on?'flex':'none'; }
 const BIV_PRESETS={default:{a:100,d:20,h:30},extremo:{a:100,d:-10,h:20}};
-const BIV_LEGENDS=new Set(['articuno','zapdos','moltres','mewtwo','mew','raikou','entei','suicune','lugia','hooh','celebi','regirock','regice','registeel','latias','latios','kyogre','groudon','rayquaza','jirachi','deoxys','deoxysnormal','deoxysattack','deoxysdefense','deoxysspeed','uxie','mesprit','azelf','dialga','palkia','heatran','regigigas','giratina','cresselia','phione','manaphy','darkrai','shaymin','arceus','victini','cobalion','terrakion','virizion','tornadus','thundurus','reshiram','zekrom','landorus','kyurem','keldeo','meloetta','genesect','xerneas','yveltal','zygarde','diancie','hoopa','hoopaunbound','volcanion','tapukoko','tapulele','tapubulu','tapufini','cosmog','cosmoem','solgaleo','lunala','nihilego','buzzwole','pheromosa','xurkitree','celesteela','kartana','guzzlord','necrozma','magearna','marshadow','poipole','naganadel','stakataka','blacephalon','zeraora','meltan','melmetal','zacian','zamazenta','eternatus','kubfu','urshifu','zarude','regieleki','regidrago','glastrier','spectrier','calyrex','enamorus','wochien','chienpao','tinglu','chiyu','koraidon','miraidon','okidogi','munkidori','fezandipiti','ogerpon','terapagos','pecharunt']);
+// Legendarios, singulares (míticos) y Ultraentes. Se detecta la especie base,
+// así funcionan también las formas: "Keldeo Resolute", "Shaymin Sky", "Giratina Origin"…
+const BIV_LEGENDS=new Set(['articuno','zapdos','moltres','mewtwo','mew','raikou','entei','suicune','lugia','hooh','celebi','regirock','regice','registeel','latias','latios','kyogre','groudon','rayquaza','jirachi','deoxys','deoxysnormal','deoxysattack','deoxysdefense','deoxysspeed','uxie','mesprit','azelf','dialga','palkia','heatran','regigigas','giratina','cresselia','phione','manaphy','darkrai','shaymin','arceus','victini','cobalion','terrakion','virizion','tornadus','thundurus','reshiram','zekrom','landorus','kyurem','keldeo','meloetta','genesect','xerneas','yveltal','zygarde','diancie','hoopa','hoopaunbound','volcanion','tapukoko','tapulele','tapubulu','tapufini','cosmog','cosmoem','solgaleo','lunala','nihilego','buzzwole','pheromosa','xurkitree','celesteela','kartana','guzzlord','necrozma','magearna','marshadow','poipole','naganadel','stakataka','blacephalon','zeraora','meltan','melmetal','zacian','zamazenta','eternatus','kubfu','urshifu','zarude','regieleki','regidrago','glastrier','spectrier','calyrex','enamorus','wochien','chienpao','tinglu','chiyu','koraidon','miraidon','okidogi','munkidori','fezandipiti','ogerpon','terapagos','pecharunt',
+'meltan','melmetal','galarianarticuno','galarianzapdos','galarianmoltres']);
+function isLegendName(name){
+  const n=String(name||'').toLowerCase()
+    .replace(/\(shadow\)/g,'').replace(/^shadow\s+/,'')
+    .replace(/^(mega|primal)\s+/,'').replace(/^[gd]-/,'')
+    .replace(/[^a-z0-9]/g,'');
+  if(!n) return false;
+  if(BIV_LEGENDS.has(n)) return true;
+  for(const k of BIV_LEGENDS){ if(k.length>=4 && n.includes(k)) return true; }
+  return false;
+}
 function bivHideState(){ try{ return JSON.parse(localStorage.getItem('bivHide'))||{}; }catch(e){ return {}; } }
 function toggleBivHide(k){
   const st=bivHideState(); st[k]=!st[k];
@@ -5256,7 +5276,7 @@ function renderBestIvs(){
   const hideSh=!!_bh.shadow, hideLg=!!_bh.legend;
   const rows=rows0.filter(x=>{
     if(hideSh && (/\(shadow\)/i.test(x.name)||/^shadow /i.test(x.name))) return false;
-    if(hideLg && BIV_LEGENDS.has(x.name.toLowerCase().replace(/\s*\(shadow\)/,'').replace(/^shadow\s+/,'').replace(/^(mega|primal)\s+/,'').replace(/^[gd]-/,'').replace(/\s+(x|y)$/,'').replace(/[^a-z0-9]/g,''))) return false;
+    if(hideLg && isLegendName(x.name)) return false;
     return true;
   });
   const byTeamOrder=(a,b)=> a.ti-b.ti || b.dps-a.dps || a.name.localeCompare(b.name);
