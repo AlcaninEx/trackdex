@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.973</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.974</p>
   </div>
 </div>
 
@@ -556,7 +556,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
         <button class="home-btn-small" onclick="openComunidad()" style="grid-column:1/-1;background:#fff3e0;border-color:#ef6c00;color:#e65100"><span data-i18n="community">🏘️ Comunidad</span>
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          <span data-i18n="news">🆕 Novedades</span> · v0.973
+          <span data-i18n="news">🆕 Novedades</span> · v0.974
         </button>
       </div>
 
@@ -1250,6 +1250,37 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 </div>
 
 <!-- PERFIL SCREEN -->
+<div id="notifs-screen" class="screen">
+  <div class="app-header" style="position:sticky;top:0;z-index:40">
+    <button class="back-btn" onclick="closeNotifs()">←</button>
+    <h1 style="flex:1">🔔 Notificaciones</h1>
+    <button class="filtro-info-btn" onclick="toggleNotifInfo(true)">i</button>
+  </div>
+  <div id="notif-perm" style="display:none;padding:12px 14px;background:#fff3e0;border-bottom:1px solid #ffb74d;font-size:12.5px;color:#e65100">
+    <b>Permiso necesario.</b> Toca cualquier casilla y acepta el aviso del navegador para recibir recordatorios.
+  </div>
+  <div style="padding:10px 12px 24px">
+    <div id="notif-list"></div>
+    <div style="margin-top:16px;background:#fff;border:1.5px solid #5e35b1;border-radius:12px;padding:12px">
+      <p style="font-size:13px;font-weight:800;color:#4527a0;margin-bottom:8px">➕ Recordatorio personalizado</p>
+      <input id="notif-new-txt" maxlength="60" placeholder="¿De qué te aviso?" style="width:100%;padding:9px 10px;border:1.5px solid #ccc;border-radius:8px;font-size:13px;margin-bottom:8px">
+      <div style="display:flex;gap:8px">
+        <input id="notif-new-time" type="time" value="09:00" style="flex:1;padding:8px;border:1.5px solid #ccc;border-radius:8px;font-size:13px">
+        <button onclick="addCustomNotif()" style="background:#5e35b1;color:#fff;border:none;border-radius:8px;padding:0 16px;font-weight:800;cursor:pointer">Añadir</button>
+      </div>
+    </div>
+  </div>
+  <div id="notif-info-pop" onclick="toggleNotifInfo(false)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:center;justify-content:center">
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:20px;max-width:340px;width:90%">
+      <h3 style="margin:0 0 10px;font-size:16px;color:#CC0000">🔔 Cómo funcionan</h3>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px">Marca la casilla de lo que quieras que te recuerde y elige la hora. Se repite <b>todos los días</b> a esa hora.</p>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px">Los avisos que ocurren varias veces al día, como el <b>globo del Team GO Rocket</b>, se despliegan con ▾ para activar solo los pases que te interesen.</p>
+      <p style="font-size:12.5px;line-height:1.7;color:#b71c1c;margin-bottom:12px">⚠️ De momento los recordatorios se lanzan desde tu dispositivo, así que <b>necesitan que TrackDex esté instalada y abierta o en segundo plano</b>. Los avisos con la app cerrada del todo llegarán en una próxima versión.</p>
+      <button onclick="toggleNotifInfo(false)" style="width:100%;padding:10px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">Entendido</button>
+    </div>
+  </div>
+</div>
+
 <div id="comunidad-screen" class="screen">
   <div class="app-header" style="position:sticky;top:0;z-index:40">
     <button class="back-btn" onclick="closeComunidad()">←</button>
@@ -1282,6 +1313,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <div class="perfil-card">
       <p style="font-size:13px;font-weight:800;color:#37474f;margin-bottom:8px" data-i18n="app_section">ℹ️ Aplicación</p>
       <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="openGuia()" data-i18n="guide">📖 Guía TrackDex</button>
+      <button class="perfil-danger-btn" style="color:#e65100;border-color:#ef6c00" onclick="openNotifs()">🔔 Notificaciones</button>
       <button class="perfil-danger-btn" id="perfil-lang" style="color:#00695c;border-color:#00838f" onclick="toggleLang()">🌐 Idioma / Language</button>
       <button class="perfil-danger-btn" style="color:#5e35b1;border-color:#5e35b1" onclick="renameTeamPrompt()" data-i18n="rename_teams">✏️ Cambiar nombres de tus equipos</button>
       <button class="perfil-danger-btn" style="color:#00695c;border-color:#00838f" onclick="changePasswordPrompt()" data-i18n="change_pass">🔑 Cambiar contraseña</button>
@@ -1306,10 +1338,20 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.973</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.974</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.973 · actual</span><span class="nov-version-tag">Más inglés</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.974 · actual</span><span class="nov-version-tag">Notificaciones</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🔔</span><span>Nueva pantalla "Notificaciones" en Perfil: activa con una casilla los recordatorios que quieras (captura diaria, pase de incursión, regalos, misión, compañero, PvP, pack diario, incienso, gimnasios e intercambios) y elige la hora de cada uno. Se repiten cada día.</span></div>
+        <div class="nov-item"><span>🎈</span><span>El globo del Team GO Rocket se despliega en sus cuatro pases (00:00, 06:00, 12:00 y 18:00) para activar solo los que te interesen.</span></div>
+        <div class="nov-item"><span>➕</span><span>Puedes crear tus propios recordatorios con el texto y la hora que quieras.</span></div>
+        <div class="nov-item"><span>⚠️</span><span>De momento los avisos se lanzan desde tu dispositivo con la app instalada y abierta o en segundo plano. Los avisos con la app cerrada llegarán más adelante.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.973</span><span class="nov-version-tag">Más inglés</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🌐</span><span>El menú principal, el Perfil y la pantalla de Comunidad ya se traducen al inglés. Nuevo botón "🌐 Idioma / Language" en Perfil para cambiarlo sin volver al acceso.</span></div>
       </div>
@@ -6824,6 +6866,143 @@ async function deleteCurrentCommunity(){
   } catch(e){ showToast('Error al borrar: '+(e.message||e)); }
 }
 function toggleAlbumInfo(on){ const el=document.getElementById('album-info-pop'); if(el) el.style.display=on?'flex':'none'; }
+// ── NOTIFICACIONES (recordatorios locales) ───────────────────────────────────
+const NOTIF_DEFS=[
+  {id:'catch',   ic:'⭐', t:'Captura diaria / racha de polvos', time:'21:00'},
+  {id:'raid',    ic:'🏟️', t:'Gastar el pase de incursión diario', time:'20:00'},
+  {id:'gifts',   ic:'🎁', t:'Abrir y enviar regalos', time:'10:00'},
+  {id:'research',ic:'🗺️', t:'Misión de PokéParada diaria', time:'12:00'},
+  {id:'buddy',   ic:'🤝', t:'Corazones con tu compañero', time:'19:00'},
+  {id:'pvp',     ic:'⚔️', t:'Combates PvP (5 rondas)', time:'18:30'},
+  {id:'pack',    ic:'🛍️', t:'Pack diario gratuito de la tienda', time:'18:00'},
+  {id:'incense', ic:'🌀', t:'Incienso diario gratuito', time:'17:00'},
+  {id:'gym',     ic:'🏅', t:'Revisar gimnasios / PokéMonedas', time:'22:00'},
+  {id:'trade',   ic:'🤝', t:'Intercambios del día', time:'19:30'},
+  {id:'rocket',  ic:'🎈', t:'Globo del Team GO Rocket', sub:[
+     {id:'rocket0', t:'Globo de las 00:00', time:'00:00'},
+     {id:'rocket6', t:'Globo de las 06:00', time:'06:00'},
+     {id:'rocket12',t:'Globo de las 12:00', time:'12:00'},
+     {id:'rocket18',t:'Globo de las 18:00', time:'18:00'}
+  ]}
+];
+function notifState(){
+  try{ const o=JSON.parse(localStorage.getItem('td_notifs'))||{}; o.on=o.on||{}; o.times=o.times||{}; o.custom=o.custom||[]; o.fired=o.fired||{}; return o; }
+  catch(e){ return {on:{},times:{},custom:[],fired:{}}; }
+}
+function notifSave(o){ try{ localStorage.setItem('td_notifs',JSON.stringify(o)); }catch(e){} }
+function notifTime(o,id,def){ return o.times[id]||def||'09:00'; }
+function toggleNotifInfo(on){ const el=document.getElementById('notif-info-pop'); if(el) el.style.display=on?'flex':'none'; }
+function openNotifs(){
+  document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
+  document.getElementById('notifs-screen').style.display='block';
+  const hm=document.getElementById('home-menu'); if(hm) hm.style.display='none';
+  renderNotifs(); window.scrollTo(0,0);
+}
+function closeNotifs(){
+  document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
+  document.getElementById('perfil-screen').style.display='block';
+  window.scrollTo(0,0);
+}
+function notifRow(o,def,isSub){
+  const on=!!o.on[def.id];
+  const time=notifTime(o,def.id,def.time);
+  return `<div style="display:flex;align-items:center;gap:10px;padding:${isSub?'7px 10px 7px 26px':'10px 12px'};background:${on?'#fff8e1':'#fff'};border:1.5px solid ${on?'#ffb300':'#e0e0e0'};border-radius:10px;margin-bottom:6px">
+    <input type="checkbox" ${on?'checked':''} onchange="toggleNotif('${def.id}',this.checked)" style="width:20px;height:20px;flex-shrink:0;accent-color:#e65100">
+    <span style="flex:1;font-size:${isSub?'12':'13'}px;font-weight:${isSub?'600':'700'};color:#333">${def.ic?def.ic+' ':''}${def.t}</span>
+    <input type="time" value="${time}" onchange="setNotifTime('${def.id}',this.value)" style="padding:5px 6px;border:1.5px solid #ccc;border-radius:8px;font-size:12px;font-weight:700;color:#e65100">
+  </div>`;
+}
+function renderNotifs(){
+  const o=notifState(), el=document.getElementById('notif-list'); if(!el) return;
+  const perm=document.getElementById('notif-perm');
+  if(perm) perm.style.display=(('Notification' in window)&&Notification.permission!=='granted')?'block':'none';
+  let html=NOTIF_DEFS.map(d=>{
+    if(!d.sub) return notifRow(o,d);
+    const open=!!o.on['_open_'+d.id];
+    const nOn=d.sub.filter(s=>o.on[s.id]).length;
+    return `<div style="border:1.5px solid ${nOn?'#ffb300':'#e0e0e0'};border-radius:10px;margin-bottom:6px;background:${nOn?'#fff8e1':'#fff'}">
+      <div onclick="toggleNotifGroup('${d.id}')" style="display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer">
+        <span style="flex:1;font-size:13px;font-weight:700;color:#333">${d.ic} ${d.t}</span>
+        <span style="font-size:11px;font-weight:800;color:#e65100">${nOn}/4</span>
+        <span style="font-size:12px;color:#888">${open?'▴':'▾'}</span>
+      </div>
+      ${open?'<div style="padding:0 8px 8px">'+d.sub.map(s=>notifRow(o,s,true)).join('')+'</div>':''}
+    </div>`;
+  }).join('');
+  if(o.custom.length){
+    html+='<p style="font-size:12px;font-weight:800;color:#4527a0;margin:14px 0 6px">➕ Tus recordatorios</p>';
+    html+=o.custom.map(c=>{
+      const on=!!o.on[c.id];
+      return `<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:${on?'#ede7f6':'#fff'};border:1.5px solid ${on?'#5e35b1':'#e0e0e0'};border-radius:10px;margin-bottom:6px">
+        <input type="checkbox" ${on?'checked':''} onchange="toggleNotif('${c.id}',this.checked)" style="width:20px;height:20px;flex-shrink:0;accent-color:#5e35b1">
+        <span style="flex:1;font-size:13px;font-weight:700;color:#333">🔔 ${c.t.replace(/</g,'&lt;')}</span>
+        <input type="time" value="${notifTime(o,c.id,c.time)}" onchange="setNotifTime('${c.id}',this.value)" style="padding:5px 6px;border:1.5px solid #ccc;border-radius:8px;font-size:12px;font-weight:700;color:#4527a0">
+        <button onclick="delCustomNotif('${c.id}')" style="background:#ffe0e0;border:1.5px solid #CC0000;color:#CC0000;border-radius:50%;width:26px;height:26px;cursor:pointer;font-weight:700">✕</button>
+      </div>`;
+    }).join('');
+  }
+  el.innerHTML=html;
+}
+function toggleNotifGroup(id){ const o=notifState(); o.on['_open_'+id]=!o.on['_open_'+id]; notifSave(o); renderNotifs(); }
+async function toggleNotif(id,v){
+  const o=notifState();
+  if(v && 'Notification' in window && Notification.permission!=='granted'){
+    const r=await Notification.requestPermission();
+    if(r!=='granted'){ showToast('Sin permiso no puedo avisarte 🔕'); renderNotifs(); return; }
+  }
+  o.on[id]=v; if(!v) delete o.on[id];
+  notifSave(o); renderNotifs();
+  if(v) showToast('🔔 Aviso activado');
+}
+function setNotifTime(id,v){ const o=notifState(); o.times[id]=v; notifSave(o); renderNotifs(); }
+function addCustomNotif(){
+  const t=(document.getElementById('notif-new-txt')||{}).value||'';
+  const time=(document.getElementById('notif-new-time')||{}).value||'09:00';
+  if(!t.trim()){ showToast('Escribe de qué te aviso'); return; }
+  const o=notifState();
+  const id='c'+Date.now();
+  o.custom.push({id,t:t.trim(),time}); o.times[id]=time; o.on[id]=true;
+  notifSave(o);
+  document.getElementById('notif-new-txt').value='';
+  renderNotifs(); showToast('🔔 Recordatorio añadido');
+  if('Notification' in window && Notification.permission!=='granted') Notification.requestPermission();
+}
+function delCustomNotif(id){
+  const o=notifState();
+  o.custom=o.custom.filter(c=>c.id!==id); delete o.on[id]; delete o.times[id];
+  notifSave(o); renderNotifs();
+}
+function notifAllDefs(o){
+  const out=[];
+  NOTIF_DEFS.forEach(d=>{ if(d.sub) d.sub.forEach(s=>out.push(s)); else out.push(d); });
+  (o.custom||[]).forEach(c=>out.push(c));
+  return out;
+}
+async function fireNotif(title){
+  const body='TrackDex · toca para abrir';
+  try{
+    const reg=await navigator.serviceWorker.ready;
+    reg.showNotification(title,{body,icon:'icon-192.png',badge:'icon-192.png',tag:'trackdex'});
+  }catch(e){ try{ new Notification(title,{body,icon:'icon-192.png'}); }catch(e2){} }
+}
+function checkNotifs(){
+  if(!('Notification' in window)||Notification.permission!=='granted') return;
+  const o=notifState();
+  const now=new Date();
+  const hhmm=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  const today=now.toISOString().slice(0,10);
+  let changed=false;
+  notifAllDefs(o).forEach(d=>{
+    if(!o.on[d.id]) return;
+    if(notifTime(o,d.id,d.time)!==hhmm) return;
+    if(o.fired[d.id]===today) return;
+    o.fired[d.id]=today; changed=true;
+    fireNotif((d.ic?d.ic+' ':'🔔 ')+d.t);
+  });
+  if(changed) notifSave(o);
+}
+setInterval(checkNotifs,30000);
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') checkNotifs(); });
 // ── IDIOMA (fase 1: login y registro) ────────────────────────────────────────
 const I18N={
   es:{login_sub:'Inicia sesión con tu cuenta',user:'Usuario',pass:'Contraseña',user_ph:'tu usuario',pass_ph:'tu contraseña',remember:'Recordarme en este dispositivo',disclaimer:'TrackDex es una aplicación de fans sin ánimo de lucro, no afiliada a Nintendo, Niantic, The Pokémon Company ni Game Freak. Pokémon y todos los nombres e imágenes relacionados son marcas de sus respectivos propietarios.',privacy:'Política de privacidad',enter:'Entrar',no_account:'¿No tienes cuenta?',create_account:'Crear cuenta',reg_sub:'Una sola vez, para todas tus comunidades',user_ph2:'letras, números, - o _',pass_ph2:'mínimo 6 caracteres',pass2:'Repite la contraseña',pass2_ph:'repite la contraseña',have_account:'¿Ya tienes cuenta?',signin:'Iniciar sesión',

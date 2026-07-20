@@ -1,4 +1,4 @@
-const CACHE_NAME = 'trackdex-v146';
+const CACHE_NAME = 'trackdex-v147';
 const ASSETS = [
   '/',
   '/index.html',
@@ -18,6 +18,14 @@ self.addEventListener('install', e => {
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))));
   self.clients.claim();
+});
+
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  e.waitUntil(clients.matchAll({type:'window', includeUncontrolled:true}).then(list => {
+    for (const c of list) { if ('focus' in c) return c.focus(); }
+    if (clients.openWindow) return clients.openWindow('/');
+  }));
 });
 
 self.addEventListener('fetch', e => {
