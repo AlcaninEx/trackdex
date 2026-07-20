@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.969</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.971</p>
   </div>
 </div>
 
@@ -564,7 +564,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           🏘️ Comunidad
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.969
+          🆕 Novedades · v0.971
         </button>
       </div>
 
@@ -668,7 +668,8 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:20px;max-width:340px;width:90%">
       <h3 style="margin:0 0 10px;font-size:16px;color:#CC0000">ℹ️ ¿Para qué sirven las marcas?</h3>
       <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px"><b>✅ Obtenido:</b> indica que ya tienes ese Pokémon. Cuenta para tu progreso, se excluye de los filtros de captura y aparece en <b>Mejores IVs</b> con su comparador para valorar nuevos ejemplares.</p>
-      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:12px"><b>⭐ Al máximo:</b> indica que ya lo subiste del todo. Deja de contar caramelos en <b>Pokémon Objetivo</b> y se quita de los filtros de intercambio: no necesitas más copias.</p>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px"><b>⭐ Al máximo:</b> indica que ya lo subiste del todo. Deja de contar caramelos en <b>Pokémon Objetivo</b> y se quita de los filtros de intercambio: no necesitas más copias.</p>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:12px"><b>💎 Base perfecta:</b> márcalo cuando el ejemplar que tienes ya te sirva y no quieras buscar uno mejor. Entonces sale del filtro <b>Viernes</b> (buscar buena base) y pasa al de <b>Resto de días</b>, que solo busca caramelos. Los Pokémon Oscuros no lo tienen: no se pueden intercambiar.</p>
       <button onclick="toggleAlbumInfo(false)" style="width:100%;padding:10px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">Entendido</button>
     </div>
   </div>
@@ -1312,10 +1313,28 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.969</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.971</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.969 · actual</span><span class="nov-version-tag">Trackers compartidos</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.971 · actual</span><span class="nov-version-tag">Comparador y vínculos</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>✅</span><span>El comparador de Tracker IVs estrena el botón "Elegir este": aplica al Pokémon los IVs que has puesto en las barras, ideal cuando cambias un ejemplar por otro mejor.</span></div>
+        <div class="nov-item"><span>🔗</span><span>Si tienes ficha Gigantamax y Dynamax del mismo Pokémon, al marcarlo como Obtenido la app te deja elegir con cuál de las dos es el mismo ejemplar, en vez de adivinar.</span></div>
+        <div class="nov-item"><span>ℹ️</span><span>La información de Mis Pokémon explica ahora también para qué sirve "💎 Base perfecta".</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.970</span><span class="nov-version-tag">Base perfecta y caramelos</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>💎</span><span>Nuevo interruptor "¿Base perfecta?" en cada Pokémon de Mis Pokémon: al activarlo deja de buscarse base y pasa a intercambios normales. Los Oscuros no lo tienen porque no se pueden intercambiar.</span></div>
+        <div class="nov-item"><span>🛠️</span><span>Los filtros Viernes y Resto de días se calculan solos con ese interruptor: desaparecen la etiqueta de categoría y el botón "Pasar a cualquier día" del popup de Objetivo.</span></div>
+        <div class="nov-item"><span>🍬</span><span>Pokémon Objetivo usa ya la equivalencia real del juego para ordenar: 1 caramelo XL = 100 normales. Los caramelos normales se apuntan escribiendo la cantidad (sin barra ni tope).</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.969</span><span class="nov-version-tag">Trackers compartidos</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>👥</span><span>Los trackers (Legendarios y Pikachu Skins) estrenan un desplegable "Ver progreso de:" para consultar en solo lectura lo que han marcado otros miembros de tu comunidad.</span></div>
         <div class="nov-item"><span>☁️</span><span>Tu progreso en los trackers ahora se guarda en la nube junto a tu perfil: se sincroniza entre dispositivos y ya no se pierde. Lo que tuvieras marcado se sube automáticamente la primera vez que abras cada tracker.</span></div>
@@ -1782,8 +1801,8 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
   <div id="obj-info-pop" onclick="toggleObjInfo(false)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:center;justify-content:center">
     <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:20px;max-width:340px;width:90%">
       <h3 style="margin:0 0 10px;font-size:16px;color:#CC0000">🎯 ¿Cómo se ordena esta lista?</h3>
-      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px">Los Pokémon se ordenan por los <b>caramelos que te faltan</b>, contando que <b>1 caramelo normal vale 1 punto</b> y <b>1 caramelo XL vale 10 puntos</b> (cuestan mucho más de conseguir). Cuanto más te falte, más arriba aparece.</p>
-      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:12px">Toca cualquier Pokémon para ver su detalle: allí apuntas los caramelos y XL que ya tienes (con la barra o <b>escribiendo la cantidad exacta</b>), y la lista se reordena sola. Los completados se van al final con ✓.</p>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px">Los Pokémon se ordenan por los <b>caramelos que te faltan</b>, usando la equivalencia real del juego: <b>1 caramelo XL = 100 caramelos normales</b>. Cuanto más te falte, más arriba aparece.</p>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:12px">Toca cualquier Pokémon para ver su detalle: escribe los <b>caramelos normales</b> que tienes y ajusta tus <b>XL</b>, y la lista se reordena sola. Los completados se van al final con ✓.</p>
       <button onclick="toggleObjInfo(false)" style="width:100%;padding:10px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">Entendido</button>
     </div>
   </div>
@@ -3147,9 +3166,21 @@ function copyLabel(p,id){
   const i=sibs.indexOf(id);
   return i>=0 ? ' '+(i+1) : '';
 }
+// Etiqueta legible de una ficha Dynamax: "⚡ Gigantamax (G-Gengar)" / "⚡ Dynamax (D-Gengar)"
+function dmaxLabel(p,id){
+  let n='';
+  if(p&&p.custom&&p.custom[id]) n=p.custom[id].n||'';
+  if(!n){ const s=String(id).split('-dmax-')[1]||''; n=s.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase()).replace(/^([GD]) /,'$1-'); }
+  const isG=/^g-/i.test(n);
+  const tipo=String(id).split('-dmax-')[0]||'';
+  return (isG?'Gigantamax':'Dynamax')+' · '+n+(tipo?' ('+((TM[tipo]&&TM[tipo].name)||tipo)+')':'');
+}
 function linkedIds(p,id){
   if(!p) return [id];
-  if(p.pk&&p.pk[id]&&p.pk[id].noLink) return [id];
+  const _r=p.pk&&p.pk[id];
+  if(_r&&_r.noLink) return [id];
+  // vínculo explícito elegido por el usuario (p. ej. Gigantamax vs Dynamax)
+  if(_r&&_r.linkTo&&p.album&&p.album[_r.linkTo]===true) return [id,_r.linkTo];
   const key=pkSpeciesKey(p,id);
   if(!key||key==='sh:') return [id];
   const isD=String(id).includes('-dmax-');
@@ -3173,10 +3204,27 @@ function syncLinked(p,id,fields){
 }
 function togOwned(id,v) {
   const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={};
-  if(v && !String(id).includes('-dmax-') && p.pk[id].noLink===undefined){
-    const twins=linkedIds(p,id).filter(x=>x!==id&&String(x).includes('-dmax-'));
-    if(twins.length){
-      p.pk[id].noLink=!confirm('¿Este ejemplar es Dinamax?\n\n✅ Aceptar = Sí, es el mismo que tu ficha Dinamax (compartirán IVs y marcas)\n❌ Cancelar = No, es otro ejemplar aparte');
+  if(v && !String(id).includes('-dmax-') && p.pk[id].noLink===undefined && !p.pk[id].linkTo){
+    const key=pkSpeciesKey(p,id);
+    const twins=Object.keys(p.album||{}).filter(x=>p.album[x]===true&&String(x).includes('-dmax-')&&pkSpeciesKey(p,x)===key);
+    if(twins.length===1){
+      if(confirm('¿Este ejemplar es Dinamax?\n\n✅ Aceptar = Sí, es el mismo que tu ficha "'+dmaxLabel(p,twins[0])+'" (compartirán IVs y marcas)\n❌ Cancelar = No, es otro ejemplar aparte')){
+        p.pk[id].linkTo=twins[0];
+        if(!p.pk[twins[0]]) p.pk[twins[0]]={};
+        p.pk[twins[0]].linkTo=id;
+      } else p.pk[id].noLink=true;
+    } else if(twins.length>1){
+      // Varias fichas Dynamax de la misma especie (Gigantamax y Dynamax): preguntar cuál
+      const lista=twins.map((t,i)=>(i+1)+') '+dmaxLabel(p,t)).join('\n');
+      const r=prompt('Tienes varias fichas de este Pokémon en Dinamax.\n¿Cuál es el mismo ejemplar que estás marcando?\n\n'+lista+'\n\nEscribe el número, o déjalo vacío si es un ejemplar aparte.');
+      const n=parseInt(r,10);
+      if(n>=1&&n<=twins.length){
+        const sel=twins[n-1];
+        p.pk[id].linkTo=sel;
+        if(!p.pk[sel]) p.pk[sel]={};
+        p.pk[sel].linkTo=id;
+        showToast('🔗 Vinculado con '+dmaxLabel(p,sel));
+      } else p.pk[id].noLink=true;
     }
   }
   p.pk[id].owned=v;
@@ -3194,6 +3242,12 @@ function togOwned(id,v) {
   // Re-render album to reflect maxed toggle reset if needed
   if(ST.albumTab==='dmax') renderAlbumDmax(); else renderAlbum();
   renderMain(); renderRanking(); renderProfiles();
+}
+function togBasePerfect(id,v) {
+  const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={}; p.pk[id].basePerfect=v;
+  syncLinked(p,id,{basePerfect:v});
+  save();
+  if(ST.albumTab==='dmax') renderAlbumDmax(); else renderAlbum();
 }
 function togMaxed(id,v) {
   const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={}; p.pk[id].maxed=v;
@@ -3376,7 +3430,9 @@ function renderAlbum() {
     const ownedToggle=!isV?`<div class="tr" style="margin-bottom:8px;padding:8px 12px;background:${isO?'#e8f5e9':'#f5f5f5'};border-radius:8px;border:1.5px solid ${isO?'#43a047':'#ddd'}"><span style="font-size:13px;font-weight:700;color:${isO?'#2e7d32':'#555'}">${isO?'✅ Obtenido':'¿Lo tienes?'}</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${isO?'checked':''} onchange="togOwned('${pk.id}',this.checked)"><span class="sl"></span></label></div>`:'';
     const isMax=pd.maxed||false;
     const maxToggle=!isV?`<div class="tr" style="margin-bottom:10px;padding:8px 12px;background:${isMax?'#fff8e1':'#f5f5f5'};border-radius:8px;border:1.5px solid ${isMax?'#ffb300':'#ddd'}"><span style="font-size:13px;font-weight:700;color:${isMax?'#e65100':'#555'}">${isMax?'⭐ Al máximo':'¿Lo tengo al máximo?'}</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${isMax?'checked':''} onchange="togMaxed('${pk.id}',this.checked)"><span class="sl"></span></label></div>`:'';
-    const editF=`${ownedToggle}${maxToggle}<div class="fr" style="margin-top:4px"><div class="fl">DPS con tus IVs</div><p style="font-size:18px;font-weight:700;color:#222"><span id="dps-real-${pk.id}">${dd.toFixed(2)}</span> <span style="font-size:12px;color:#888;font-weight:400">/ Max ${baseDps.toFixed(2)}</span></p></div><div class="fr"><div class="fl">IVs</div><div class="iv-grid"><div class="iv-col"><div class="iv-lbl">Ataque</div><div class="iv-val" id="ia-${pk.id}">${ia}<span style="font-size:10px;color:#888;font-weight:400"> (${pctA}%)</span></div><input type="range" min="0" max="15" value="${ia}" oninput="updIV('${pk.id}','a',this.value)"></div><div class="iv-col"><div class="iv-lbl">Defensa</div><div class="iv-val" id="id-${pk.id}">${id2}<span style="font-size:10px;color:#888;font-weight:400"> (${pctD}%)</span></div><input type="range" min="0" max="15" value="${id2}" oninput="updIV('${pk.id}','d',this.value)"></div><div class="iv-col"><div class="iv-lbl">Vida</div><div class="iv-val" id="ih-${pk.id}">${ih}<span style="font-size:10px;color:#888;font-weight:400"> (${pctH}%)</span></div><input type="range" min="0" max="15" value="${ih}" oninput="updIV('${pk.id}','h',this.value)"></div></div></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
+    const isBase=pd.basePerfect||false;
+    const baseToggle=(!isV&&!isShadow)?`<div class="tr" style="margin-bottom:10px;padding:8px 12px;background:${isBase?'#e3f2fd':'#f5f5f5'};border-radius:8px;border:1.5px solid ${isBase?'#1565c0':'#ddd'}"><span style="font-size:13px;font-weight:700;color:${isBase?'#0d47a1':'#555'}">${isBase?'💎 Base perfecta':'¿Base perfecta?'}<span style="display:block;font-size:10px;font-weight:400;color:#777">${isBase?'Ya no se busca base: pasa a intercambios normales':'Mientras no lo marques, se busca base los Viernes'}</span></span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${isBase?'checked':''} onchange="togBasePerfect('${pk.id}',this.checked)"><span class="sl"></span></label></div>`:'';
+    const editF=`${ownedToggle}${maxToggle}${baseToggle}<div class="fr" style="margin-top:4px"><div class="fl">DPS con tus IVs</div><p style="font-size:18px;font-weight:700;color:#222"><span id="dps-real-${pk.id}">${dd.toFixed(2)}</span> <span style="font-size:12px;color:#888;font-weight:400">/ Max ${baseDps.toFixed(2)}</span></p></div><div class="fr"><div class="fl">IVs</div><div class="iv-grid"><div class="iv-col"><div class="iv-lbl">Ataque</div><div class="iv-val" id="ia-${pk.id}">${ia}<span style="font-size:10px;color:#888;font-weight:400"> (${pctA}%)</span></div><input type="range" min="0" max="15" value="${ia}" oninput="updIV('${pk.id}','a',this.value)"></div><div class="iv-col"><div class="iv-lbl">Defensa</div><div class="iv-val" id="id-${pk.id}">${id2}<span style="font-size:10px;color:#888;font-weight:400"> (${pctD}%)</span></div><input type="range" min="0" max="15" value="${id2}" oninput="updIV('${pk.id}','d',this.value)"></div><div class="iv-col"><div class="iv-lbl">Vida</div><div class="iv-val" id="ih-${pk.id}">${ih}<span style="font-size:10px;color:#888;font-weight:400"> (${pctH}%)</span></div><input type="range" min="0" max="15" value="${ih}" oninput="updIV('${pk.id}','h',this.value)"></div></div></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
     const viewF=`<div class="fr"><div class="fl">DPS con sus IVs</div><p style="font-size:18px;font-weight:700;color:#222"><span id="dps-real-${pk.id}">${dd.toFixed(2)}</span> <span style="font-size:12px;color:#888;font-weight:400">/ Max ${baseDps.toFixed(2)}</span></p></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
     const removeBtn=!isV?(pk.isCustom?`<button class="album-remove" onclick="event.stopPropagation();removeRankEntry('${pk.id}','${ST.type}')">✕</button>`:`<button class="album-remove" onclick="event.stopPropagation();removeFromAlbum('${pk.id}')">✕</button>`):'';
     const evoDisplay=pk.isCustom?`<div class="final-wrap">${pkBadge(isShadow,isMegaPk)}<img class="final-img" src="${si(pk.img)}" onerror="this.style.opacity=.1"></div>`:evoH(pk.evo,pk.img,isShadow,isMegaPk);
@@ -3427,7 +3483,8 @@ function renderAlbumDmax() {
     </div></div></div>`:'';
     const dToggles=!isV?dIvBlock+`<div style="padding:8px 12px;background:rgba(255,255,255,.92)">
       <div class="tr" style="margin-bottom:6px;padding:6px 10px;background:${dIsO?'#e8f5e9':'#f5f5f5'};border-radius:8px;border:1.5px solid ${dIsO?'#43a047':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${dIsO?'#2e7d32':'#555'}">${dIsO?'✅ Obtenido':'¿Lo tienes?'}</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${dIsO?'checked':''} onchange="togOwned('${albumId}',this.checked)"><span class="sl"></span></label></div>
-      <div class="tr" style="padding:6px 10px;background:${dIsMax?'#fff8e1':'#f5f5f5'};border-radius:8px;border:1.5px solid ${dIsMax?'#ffb300':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${dIsMax?'#e65100':'#555'}">${dIsMax?'⭐ Al máximo':'¿Lo tengo al máximo?'}</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${dIsMax?'checked':''} onchange="togMaxed('${albumId}',this.checked)"><span class="sl"></span></label></div>
+      <div class="tr" style="margin-bottom:6px;padding:6px 10px;background:${dIsMax?'#fff8e1':'#f5f5f5'};border-radius:8px;border:1.5px solid ${dIsMax?'#ffb300':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${dIsMax?'#e65100':'#555'}">${dIsMax?'⭐ Al máximo':'¿Lo tengo al máximo?'}</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${dIsMax?'checked':''} onchange="togMaxed('${albumId}',this.checked)"><span class="sl"></span></label></div>
+      ${(()=>{const _b=!!(p2&&p2.pk&&p2.pk[albumId]&&p2.pk[albumId].basePerfect);return `<div class="tr" style="padding:6px 10px;background:${_b?'#e3f2fd':'#f5f5f5'};border-radius:8px;border:1.5px solid ${_b?'#1565c0':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${_b?'#0d47a1':'#555'}">${_b?'💎 Base perfecta':'¿Base perfecta?'}</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${_b?'checked':''} onchange="togBasePerfect('${albumId}',this.checked)"><span class="sl"></span></label></div>`;})()}
     </div>`:'';
     const dIsOpen=ST.expanded===albumId;
     const dInner=!isV?`<div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div>${dToggles}`:`<div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div>`;
@@ -4889,7 +4946,7 @@ function buildObjetivoData(profileName) {
     bucket.totalCopies++;
     if (isMaxed(id)) bucket.maxedCopies++;
 
-    const entry = {id, maxed: isMaxed(id), owned: isOwned(id)};
+    const entry = {id, maxed: isMaxed(id), owned: isOwned(id), basePerfect: !!(p.pk && p.pk[id] && p.pk[id].basePerfect)};
     if (isDmaxSlot) bucket.dmaxEntries.push(entry);
     else if (isPurifiedEntry(id, p)) bucket.raidPurified.push(entry);
     else if (isShadowEntry(id, p)) bucket.raidShadow.push(entry);
@@ -4924,12 +4981,12 @@ function buildObjetivoData(profileName) {
     const done = (pendingCount === 0 && dmaxSkills === 0);
 
     // ── Categoría de trade: Viernes vs Resto de días ──────────────────────
-    // "Normal" para trade = raidNormal + raidDmax (Mega/Dynamax cuentan como normal, nunca shadow/purified)
-    // Necesita Viernes si queda AL MENOS una copia "normal" sin marcar owned todavía.
+    // Los Oscuros no se pueden intercambiar, así que nunca piden "buena base".
+    // Sigue buscando base mientras alguna copia normal/Dynamax no esté marcada
+    // como "💎 Base perfecta" por el usuario.
     const normalTypeEntries = [...e.raidNormal, ...e.raidDmax];
-    const needsGoodBase = normalTypeEntries.some(x => !x.owned);
-    let tradeCategory = needsGoodBase ? 'viernes' : 'resto';
-    if (tradeAnyDay[key]) tradeCategory = 'resto'; // override manual del usuario
+    const needsGoodBase = normalTypeEntries.some(x => !x.basePerfect);
+    const tradeCategory = needsGoodBase ? 'viernes' : 'resto';
 
     // ¿Esta familia tiene CUALQUIER capacidad Dynamax? (aunque ya no queden normales pendientes)
     const hasDmaxCapability = e.raidDmax.length > 0 || e.dmaxEntries.length > 0;
@@ -4948,7 +5005,6 @@ function buildObjetivoData(profileName) {
       totalCopies: e.totalCopies,
       maxedCopies: e.maxedCopies,
       tradeCategory,
-      forcedAnyDay: !!tradeAnyDay[key],
       hasDmaxCapability,
       totalC, totalXL
     });
@@ -4961,9 +5017,9 @@ function buildObjetivoData(profileName) {
     const pa = candyProgress[a.id] || {c:0, xl:0};
     const pb = candyProgress[b.id] || {c:0, xl:0};
     // peso restante = caramelos+XL que aún faltan (total - lo que ya tienes guardado)
-    // 1 caramelo normal = 1 punto · 1 XL = 10 puntos
-    const wa = Math.max(0, a.totalC - pa.c) + Math.max(0, a.totalXL - pa.xl)*10;
-    const wb = Math.max(0, b.totalC - pb.c) + Math.max(0, b.totalXL - pb.xl)*10;
+    // 1 XL = 100 caramelos normales (equivalencia real del juego)
+    const wa = Math.max(0, a.totalXL - pa.xl)*100 + Math.max(0, a.totalC - pa.c);
+    const wb = Math.max(0, b.totalXL - pb.xl)*100 + Math.max(0, b.totalC - pb.c);
     return wb - wa || a.n.localeCompare(b.n);
   });
 }
@@ -5283,6 +5339,18 @@ function bivCmpInput(id,k,v){
   const el=document.getElementById('biv-cmp-v-'+k+'-'+id); if(el) el.textContent=ST.bivCmp[k];
   bivCmpCalc(id);
 }
+function bivApplyCmp(id){
+  if(!ST.bivCmp||ST.bivCmp.id!==id) return;
+  const a=ST.bivCmp.a, d=ST.bivCmp.d, h=ST.bivCmp.h;
+  const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={};
+  p.pk[id].ivAtk=a; p.pk[id].ivDef=d; p.pk[id].ivHp=h;
+  if(!p.pk[id].owned) p.pk[id].owned=true;
+  syncLinked(p,id,{ivAtk:a,ivDef:d,ivHp:h,owned:true});
+  save();
+  ST.bivCmp=null;
+  showToast('✅ IVs actualizados a '+a+'/'+d+'/'+h,'ok');
+  renderBestIvs();
+}
 function bivCmpCalc(id){
   const res=document.getElementById('biv-cmp-res-'+id); if(!res||!ST.bivCmp) return;
   const p=gp(ST.cur); const pk=(p&&p.pk&&p.pk[id])||{};
@@ -5346,6 +5414,7 @@ function renderBestIvs(){
             <div class="iv-col"><div class="iv-lbl">Vida</div><div class="iv-val"><span id="biv-cmp-v-h-${x.id}">${ST.bivCmp.h}</span></div><input type="range" min="0" max="15" value="${ST.bivCmp.h}" oninput="bivCmpInput('${x.id}','h',this.value)"></div>
           </div>
           <div id="biv-cmp-res-${x.id}" style="margin-top:8px;text-align:center;font-size:13px;font-weight:700"></div>
+          <button onclick="event.stopPropagation();bivApplyCmp('${x.id}')" style="width:100%;margin-top:8px;padding:9px;background:#5e35b1;color:#fff;border:none;border-radius:10px;font-size:12.5px;font-weight:800;cursor:pointer">✅ Elegir este (aplicar sus IVs)</button>
         </div>`;
     const editor=`
       <div style="background:#fff;border-radius:10px;padding:10px 12px;margin:0 8px 8px">
@@ -5745,7 +5814,6 @@ function openObjPopup(idx) {
   if (!p.candyProgress[d.id]) p.candyProgress[d.id] = {c:0, xl:0};
   const prog = p.candyProgress[d.id];
   // clamp por si el total bajó (p.ej. tras marcar maxed) y el guardado quedó por encima
-  prog.c = Math.min(prog.c, d.totalC);
   prog.xl = Math.min(prog.xl, d.totalXL);
 
   const barsBox = document.getElementById('obj-popup-bars');
@@ -5757,11 +5825,9 @@ function openObjPopup(idx) {
     barsBox.innerHTML = `
       <div style="margin-top:10px;padding:10px;background:#f5f5f5;border-radius:10px">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-          <span style="font-size:11px;font-weight:700;color:#444">🍬 Caramelos que tengo</span>
-          <span style="font-size:10px;font-weight:700;color:${cColor}">Necesarios: ${cNeeded}</span>
+          <span style="font-size:11px;font-weight:700;color:#444">🍬 Caramelos normales que tengo</span>
+          <span><input id="obj-num-c" type="number" min="0" value="${prog.c}" onchange="candyNumInput('${d.id}','c',this)" style="width:82px;padding:3px 6px;border:1.5px solid #CC0000;border-radius:6px;font-size:13px;font-weight:700;text-align:right;color:#CC0000"></span>
         </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#999;margin-bottom:2px"><span>0</span><span><input id="obj-num-c" type="number" min="0" max="${d.totalC}" value="${prog.c}" onchange="candyNumInput('${d.id}','c',this)" style="width:64px;padding:2px 4px;border:1.5px solid #CC0000;border-radius:6px;font-size:12px;font-weight:700;text-align:right;color:#CC0000"> <span id="obj-bar-c-val">/ ${d.totalC}</span></span></div>
-        <input id="obj-rng-c" type="range" min="0" max="${d.totalC}" value="${prog.c}" oninput="updateCandyProgress('${d.id}','c',this.value)" style="width:100%;accent-color:#CC0000">
         <div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0 6px">
           <span style="font-size:11px;font-weight:700;color:#444">⭐ XL que tengo</span>
           <span style="font-size:10px;font-weight:700;color:${xlColor}">Necesarios: ${xlNeeded}</span>
@@ -5771,17 +5837,8 @@ function openObjPopup(idx) {
       </div>`;
   }
 
-  // Categoría de trade + toggle manual
   const tcBox = document.getElementById('obj-popup-tradecat');
-  if (tcBox) {
-    const tcColor = d.tradeCategory === 'viernes' ? '#1565c0' : '#789';
-    const tcLabel = d.tradeCategory === 'viernes' ? '⭐ Viernes (busca buena base)' : '📅 Resto de días (ya tienes base)';
-    const btnLabel = d.forcedAnyDay ? '↩️ Quitar de "cualquier día"' : '📅 Pasar a "cualquier día"';
-    tcBox.innerHTML = '<div style="margin-top:10px;padding:8px 10px;background:#f5f5f5;border-radius:10px;font-size:11px">' +
-      '<div style="font-weight:700;color:' + tcColor + ';margin-bottom:6px">' + tcLabel + '</div>' +
-      '<button onclick="toggleTradeAnyDay(\'' + d.id + '\')" style="width:100%;padding:7px;background:#fff;border:1.5px solid ' + tcColor + ';color:' + tcColor + ';border-radius:8px;font-size:11px;font-weight:700;cursor:pointer">' + btnLabel + '</button>' +
-      '</div>';
-  }
+  if (tcBox) tcBox.innerHTML = '';
 
   const popup = document.getElementById('obj-popup');
   popup.style.display = 'flex';
@@ -5802,7 +5859,7 @@ function updateCandyProgress(evoId, kind, value) {
 function toggleObjInfo(on){ const el=document.getElementById('obj-info-pop'); if(el) el.style.display=on?'flex':'none'; }
 function candyNumInput(evoId, kind, inp){
   const d = window._objData && window._objData.find(x => x.id === evoId);
-  const max = d ? (kind === 'c' ? d.totalC : d.totalXL) : 99999;
+  const max = (kind === 'xl' && d) ? d.totalXL : Infinity;  // los normales no se limitan
   let v = parseInt(inp.value, 10); if (isNaN(v) || v < 0) v = 0; if (v > max) v = max;
   inp.value = v;
   updateCandyProgress(evoId, kind, v);
