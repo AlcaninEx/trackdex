@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.972</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.973</p>
   </div>
 </div>
 
@@ -519,52 +519,44 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 
       <!-- BIG BUTTON: Mis Pokemons -->
       <button class="home-btn-big" style="margin-top:10px" onclick="goToTypes()">
-        <div style="font-size:18px;font-weight:800">⚔️ Mis Pokemons</div>
-        <div style="font-size:13px;opacity:.85;margin-top:6px"><span id="hm-raid-count">0</span>/102 Pokémon Incursiones</div>
+        <div style="font-size:18px;font-weight:800" data-i18n="my_pokemon">⚔️ Mis Pokemons</div>
+        <div style="font-size:13px;opacity:.85;margin-top:6px"><span id="hm-raid-count">0</span>/102 <span data-i18n="raid_pk">Pokémon Incursiones</span></div>
         <div class="home-prog-bar"><div class="home-prog-fill" id="hm-raid-bar" style="width:0%"></div></div>
-        <div style="font-size:12px;opacity:.75;margin-top:6px"><span id="hm-dmax-count">0</span>/51 Pokémon Dynamax</div>
+        <div style="font-size:12px;opacity:.75;margin-top:6px"><span id="hm-dmax-count">0</span>/51 <span data-i18n="dmax_pk">Pokémon Dynamax</span></div>
         <div class="home-prog-bar" style="background:rgba(255,255,255,.2)"><div class="home-prog-fill" style="width:0%;background:rgba(255,255,255,.7)" id="hm-dmax-bar"></div></div>
       </button>
 
       <!-- RANKINGS BUTTON -->
       <button onclick="goToFireRanking()" style="width:100%;margin-top:10px;background:linear-gradient(135deg,#7B1FA2,#AB47BC);color:#fff;border:none;border-radius:14px;padding:14px 16px;cursor:pointer;text-align:center;box-shadow:0 4px 12px rgba(123,31,162,.35);transition:transform .1s;display:flex;align-items:center;justify-content:center;gap:10px;font-size:16px;font-weight:800" ontouchstart="this.style.transform='scale(.98)'" ontouchend="this.style.transform=''">
         <span style="font-size:22px">&#x1F451;</span>
-        <span>Rankings DPS</span>
-        <span style="font-size:12px;font-weight:600;opacity:.85;background:rgba(255,255,255,.2);border-radius:20px;padding:2px 10px">Top 50 por tipo</span>
+        <span data-i18n="rankings">Rankings DPS</span>
+        <span style="font-size:12px;font-weight:600;opacity:.85;background:rgba(255,255,255,.2);border-radius:20px;padding:2px 10px" data-i18n="top50">Top 50 por tipo</span>
       </button>
 
       <!-- SMALL BUTTONS ROW 1 -->
-      <button class="home-btn-small" style="width:100%;margin-top:10px;font-size:15px" onclick="showTypeChart()">
-        🔥 Calculadora de Tipos
+      <button class="home-btn-small" style="width:100%;margin-top:10px;font-size:15px" onclick="showTypeChart()"><span data-i18n="type_calc">🔥 Calculadora de Tipos</span>
       </button>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
-        <button class="home-btn-small" onclick="showMegaCandy()">
-          🍬 Megas
+        <button class="home-btn-small" onclick="showMegaCandy()"><span data-i18n="megas">🍬 Megas</span>
         </button>
-        <button class="home-btn-small" onclick="showLegacyGuide()">
-          ⭐ Legacy
+        <button class="home-btn-small" onclick="showLegacyGuide()"><span data-i18n="legacy">⭐ Legacy</span>
         </button>
       </div>
 
       <!-- SMALL BUTTONS ROW 2 -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
-        <button class="home-btn-small" onclick="openObjetivo()" style="grid-column:1/-1;background:#fff3e0;border-color:#FF6F00;color:#E65100">
-          🎯 Pokémon Objetivo
+        <button class="home-btn-small" onclick="openObjetivo()" style="grid-column:1/-1;background:#fff3e0;border-color:#FF6F00;color:#E65100"><span data-i18n="target">🎯 Pokémon Objetivo</span>
         </button>
-        <button class="home-btn-small" onclick="openDiarias()" style="grid-column:1/-1;background:#e8f5e9;border-color:#2e7d32;color:#1b5e20">
-          📋 Diarias
+        <button class="home-btn-small" onclick="openDiarias()" style="grid-column:1/-1;background:#e8f5e9;border-color:#2e7d32;color:#1b5e20"><span data-i18n="daily">📋 Diarias</span>
         </button>
-        <button class="home-btn-small" onclick="openPokeparadas()" style="grid-column:1/-1;background:#fce4ec;border-color:#c2185b;color:#880e4f">
-          🎁 Poképaradas!
+        <button class="home-btn-small" onclick="openPokeparadas()" style="grid-column:1/-1;background:#fce4ec;border-color:#c2185b;color:#880e4f"><span data-i18n="stops">🎁 Poképaradas!</span>
         </button>
-        <button class="home-btn-small" onclick="openTrackerHub()" style="grid-column:1/-1;background:#e3f2fd;border-color:#1565c0;color:#0d47a1">
-          🏆 Trackers
+        <button class="home-btn-small" onclick="openTrackerHub()" style="grid-column:1/-1;background:#e3f2fd;border-color:#1565c0;color:#0d47a1"><span data-i18n="trackers">🏆 Trackers</span>
         </button>
-        <button class="home-btn-small" onclick="openComunidad()" style="grid-column:1/-1;background:#fff3e0;border-color:#ef6c00;color:#e65100">
-          🏘️ Comunidad
+        <button class="home-btn-small" onclick="openComunidad()" style="grid-column:1/-1;background:#fff3e0;border-color:#ef6c00;color:#e65100"><span data-i18n="community">🏘️ Comunidad</span>
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.972
+          <span data-i18n="news">🆕 Novedades</span> · v0.973
         </button>
       </div>
 
@@ -1261,20 +1253,20 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="comunidad-screen" class="screen">
   <div class="app-header" style="position:sticky;top:0;z-index:40">
     <button class="back-btn" onclick="closeComunidad()">←</button>
-    <h1>🏘️ Comunidad</h1>
+    <h1 data-i18n="community_t">🏘️ Comunidad</h1>
   </div>
   <div style="padding:16px">
     <p id="comunidad-name-lbl" style="font-size:14px;color:#555;margin-bottom:14px"></p>
-    <button class="perfil-danger-btn" style="color:#5e35b1;border-color:#5e35b1;width:100%;margin-bottom:10px" onclick="showMembers()">👥 Miembros de la Comunidad</button>
+    <button class="perfil-danger-btn" style="color:#5e35b1;border-color:#5e35b1;width:100%;margin-bottom:10px" onclick="showMembers()" data-i18n="members">👥 Miembros de la Comunidad</button>
     <div style="background:#fff;border:1.5px solid #ef6c00;border-radius:12px;margin-top:6px;display:flex;flex-direction:column;height:60vh;min-height:320px">
-      <div style="padding:10px 14px;border-bottom:1px solid #eee;font-weight:800;color:#e65100;font-size:14px">💬 Chat de comunidad</div>
+      <div style="padding:10px 14px;border-bottom:1px solid #eee;font-weight:800;color:#e65100;font-size:14px" data-i18n="chat">💬 Chat de comunidad</div>
       <div id="chat-msgs" style="flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px"></div>
       <div style="display:flex;gap:8px;padding:10px;border-top:1px solid #eee">
         <input id="chat-input" maxlength="300" placeholder="Escribe un mensaje…" style="flex:1;padding:10px 12px;border:1.5px solid #ccc;border-radius:20px;font-size:14px" onkeydown="if(event.key==='Enter')sendChatMsg()">
         <button onclick="sendChatMsg()" style="background:#ef6c00;color:#fff;border:none;border-radius:50%;width:42px;height:42px;font-size:16px;cursor:pointer;flex-shrink:0">➤</button>
       </div>
     </div>
-    <button class="perfil-danger-btn" style="color:#00695c;border-color:#00838f;width:100%;margin-top:14px" onclick="chatStop();showCommunitySelection()">🔄 Cambiar comunidad</button>
+    <button class="perfil-danger-btn" style="color:#00695c;border-color:#00838f;width:100%;margin-top:14px" onclick="chatStop();showCommunitySelection()" data-i18n="switch_comm">🔄 Cambiar comunidad</button>
     <button class="perfil-danger-btn" id="comunidad-del-btn" style="display:none;background:#c62828;color:#fff;width:100%;margin-top:10px" onclick="deleteCurrentCommunity()">💥 Borrar esta comunidad (eres el creador)</button>
   </div>
 </div>
@@ -1282,26 +1274,27 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="perfil-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="closePerfilScreen()">←</button>
-    <h1>👤 Perfil</h1>
+    <h1 data-i18n="profile">👤 Perfil</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
     <p style="text-align:center;font-size:13px;color:#888;padding:14px 14px 0">Entrenador: <b id="perfil-name-label" style="color:#37474f"></b></p>
 
     <div class="perfil-card">
-      <p style="font-size:13px;font-weight:800;color:#37474f;margin-bottom:8px">ℹ️ Aplicación</p>
-      <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="openGuia()">📖 Guía TrackDex</button>
-      <button class="perfil-danger-btn" style="color:#5e35b1;border-color:#5e35b1" onclick="renameTeamPrompt()">✏️ Cambiar nombres de tus equipos</button>
-      <button class="perfil-danger-btn" style="color:#00695c;border-color:#00838f" onclick="changePasswordPrompt()">🔑 Cambiar contraseña</button>
-      <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="openPrivacy()">🔒 Política de privacidad</button>
+      <p style="font-size:13px;font-weight:800;color:#37474f;margin-bottom:8px" data-i18n="app_section">ℹ️ Aplicación</p>
+      <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="openGuia()" data-i18n="guide">📖 Guía TrackDex</button>
+      <button class="perfil-danger-btn" id="perfil-lang" style="color:#00695c;border-color:#00838f" onclick="toggleLang()">🌐 Idioma / Language</button>
+      <button class="perfil-danger-btn" style="color:#5e35b1;border-color:#5e35b1" onclick="renameTeamPrompt()" data-i18n="rename_teams">✏️ Cambiar nombres de tus equipos</button>
+      <button class="perfil-danger-btn" style="color:#00695c;border-color:#00838f" onclick="changePasswordPrompt()" data-i18n="change_pass">🔑 Cambiar contraseña</button>
+      <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="openPrivacy()" data-i18n="privacy_btn">🔒 Política de privacidad</button>
       <button class="perfil-danger-btn" id="perfil-backup" style="display:none;color:#1565c0;border-color:#1565c0" onclick="exportBackup()">⬇️ Copia de seguridad (admin)</button>
       <button class="perfil-danger-btn" style="color:#333;border-color:#bbb" onclick="showToast('🌙 Modo oscuro: en desarrollo, próximamente')">🌙 Modo oscuro (próximamente)</button>
     </div>
     <div class="perfil-card">
-      <p style="font-size:13px;font-weight:800;color:#c62828;margin-bottom:10px">⚠️ Zona de peligro</p>
-      <button class="perfil-danger-btn" onclick="deleteTeamPrompt()">🗑️ Borrar un equipo de Pokémon (2, 3 o 4)</button>
-      <button class="perfil-danger-btn" onclick="confirmDeleteRaidTeam()">🗑️ Borrar todos tus Pokémon de Incursión</button>
-      <button class="perfil-danger-btn" onclick="confirmDeleteDmaxTeam()">🗑️ Borrar todos tus Pokémon Dynamax</button>
-      <button class="perfil-danger-btn" onclick="deleteAccountPrompt()">☠️ Borrar mi cuenta y todos mis datos</button>
+      <p style="font-size:13px;font-weight:800;color:#c62828;margin-bottom:10px" data-i18n="danger">⚠️ Zona de peligro</p>
+      <button class="perfil-danger-btn" onclick="deleteTeamPrompt()" data-i18n="del_team">🗑️ Borrar un equipo de Pokémon (2, 3 o 4)</button>
+      <button class="perfil-danger-btn" onclick="confirmDeleteRaidTeam()" data-i18n="del_raid">🗑️ Borrar todos tus Pokémon de Incursión</button>
+      <button class="perfil-danger-btn" onclick="confirmDeleteDmaxTeam()" data-i18n="del_dmax">🗑️ Borrar todos tus Pokémon Dynamax</button>
+      <button class="perfil-danger-btn" onclick="deleteAccountPrompt()" data-i18n="del_account">☠️ Borrar mi cuenta y todos mis datos</button>
     </div>
   </div>
 </div>
@@ -1313,10 +1306,17 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.972</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.973</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.972 · actual</span><span class="nov-version-tag">Ajustes y suerte aumentada</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.973 · actual</span><span class="nov-version-tag">Más inglés</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🌐</span><span>El menú principal, el Perfil y la pantalla de Comunidad ya se traducen al inglés. Nuevo botón "🌐 Idioma / Language" en Perfil para cambiarlo sin volver al acceso.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.972</span><span class="nov-version-tag">Ajustes y suerte aumentada</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🍀</span><span>El filtro "Viernes" pasa a llamarse "Día de intercambios con suerte aumentada" en toda la app, para no atarlo a un día concreto.</span></div>
         <div class="nov-item"><span>🏷️</span><span>"¿Lo tengo al máximo?" ahora es "⭐ Maxed Lvl 50" y va debajo de "💎 Base perfecta", que pierde su frase explicativa (sigue explicada en el botón de info).</span></div>
@@ -6827,9 +6827,15 @@ function toggleAlbumInfo(on){ const el=document.getElementById('album-info-pop')
 // ── IDIOMA (fase 1: login y registro) ────────────────────────────────────────
 const I18N={
   es:{login_sub:'Inicia sesión con tu cuenta',user:'Usuario',pass:'Contraseña',user_ph:'tu usuario',pass_ph:'tu contraseña',remember:'Recordarme en este dispositivo',disclaimer:'TrackDex es una aplicación de fans sin ánimo de lucro, no afiliada a Nintendo, Niantic, The Pokémon Company ni Game Freak. Pokémon y todos los nombres e imágenes relacionados son marcas de sus respectivos propietarios.',privacy:'Política de privacidad',enter:'Entrar',no_account:'¿No tienes cuenta?',create_account:'Crear cuenta',reg_sub:'Una sola vez, para todas tus comunidades',user_ph2:'letras, números, - o _',pass_ph2:'mínimo 6 caracteres',pass2:'Repite la contraseña',pass2_ph:'repite la contraseña',have_account:'¿Ya tienes cuenta?',signin:'Iniciar sesión',
-    communities:'Comunidades',logout:'Salir',create_comm:'➕ Crear comunidad',comm_name:'Nombre de la comunidad',comm_pass:'Contraseña de la comunidad',comm_alias:'Tu alias en esta comunidad',create:'Crear',join_sub:'Elige tu alias y escribe la contraseña',alias_ph:'cómo te verán aquí',pass_only:'contraseña'},
+    communities:'Comunidades',logout:'Salir',create_comm:'➕ Crear comunidad',comm_name:'Nombre de la comunidad',comm_pass:'Contraseña de la comunidad',comm_alias:'Tu alias en esta comunidad',create:'Crear',join_sub:'Elige tu alias y escribe la contraseña',alias_ph:'cómo te verán aquí',pass_only:'contraseña',
+    my_pokemon:'⚔️ Mis Pokemons',raid_pk:'Pokémon Incursiones',dmax_pk:'Pokémon Dynamax',rankings:'Rankings DPS',top50:'Top 50 por tipo',type_calc:'🔥 Calculadora de Tipos',megas:'🍬 Megas',legacy:'⭐ Legacy',target:'🎯 Pokémon Objetivo',daily:'📋 Diarias',stops:'🎁 Poképaradas!',trackers:'🏆 Trackers',community:'🏘️ Comunidad',news:'🆕 Novedades',
+    profile:'👤 Perfil',app_section:'ℹ️ Aplicación',guide:'📖 Guía TrackDex',rename_teams:'✏️ Cambiar nombres de tus equipos',change_pass:'🔑 Cambiar contraseña',privacy_btn:'🔒 Política de privacidad',danger:'⚠️ Zona de peligro',del_team:'🗑️ Borrar un equipo de Pokémon (2, 3 o 4)',del_raid:'🗑️ Borrar todos tus Pokémon de Incursión',del_dmax:'🗑️ Borrar todos tus Pokémon Dynamax',del_account:'☠️ Borrar mi cuenta y todos mis datos',
+    community_t:'🏘️ Comunidad',members:'👥 Miembros de la Comunidad',chat:'💬 Chat de comunidad',switch_comm:'🔄 Cambiar comunidad'},
   en:{login_sub:'Sign in to your account',user:'Username',pass:'Password',user_ph:'your username',pass_ph:'your password',remember:'Remember me on this device',disclaimer:'TrackDex is a non-profit fan app, not affiliated with Nintendo, Niantic, The Pokémon Company or Game Freak. Pokémon and all related names and images are trademarks of their respective owners.',privacy:'Privacy policy',enter:'Sign in',no_account:"Don't have an account?",create_account:'Create account',reg_sub:'Just once, for all your communities',user_ph2:'letters, numbers, - or _',pass_ph2:'at least 6 characters',pass2:'Repeat password',pass2_ph:'repeat your password',have_account:'Already have an account?',signin:'Sign in',
-    communities:'Communities',logout:'Sign out',create_comm:'➕ Create community',comm_name:'Community name',comm_pass:'Community password',comm_alias:'Your nickname in this community',create:'Create',join_sub:'Pick your nickname and enter the password',alias_ph:'how others will see you',pass_only:'password'}
+    communities:'Communities',logout:'Sign out',create_comm:'➕ Create community',comm_name:'Community name',comm_pass:'Community password',comm_alias:'Your nickname in this community',create:'Create',join_sub:'Pick your nickname and enter the password',alias_ph:'how others will see you',pass_only:'password',
+    my_pokemon:'⚔️ My Pokémon',raid_pk:'Raid Pokémon',dmax_pk:'Dynamax Pokémon',rankings:'DPS Rankings',top50:'Top 50 per type',type_calc:'🔥 Type Calculator',megas:'🍬 Megas',legacy:'⭐ Legacy',target:'🎯 Target Pokémon',daily:'📋 Dailies',stops:'🎁 PokéStops!',trackers:'🏆 Trackers',community:'🏘️ Community',news:'🆕 News',
+    profile:'👤 Profile',app_section:'ℹ️ App',guide:'📖 TrackDex guide',rename_teams:'✏️ Rename your teams',change_pass:'🔑 Change password',privacy_btn:'🔒 Privacy policy',danger:'⚠️ Danger zone',del_team:'🗑️ Delete a Pokémon team (2, 3 or 4)',del_raid:'🗑️ Delete all your Raid Pokémon',del_dmax:'🗑️ Delete all your Dynamax Pokémon',del_account:'☠️ Delete my account and all my data',
+    community_t:'🏘️ Community',members:'👥 Community members',chat:'💬 Community chat',switch_comm:'🔄 Switch community'}
 };
 function getLang(){ try{ return localStorage.getItem('td_lang')||'es'; }catch(e){ return 'es'; } }
 function applyLang(){
@@ -6837,6 +6843,7 @@ function applyLang(){
   document.querySelectorAll('[data-i18n]').forEach(el=>{ const k=el.getAttribute('data-i18n'); if(d[k]) el.textContent=d[k]; });
   document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ const k=el.getAttribute('data-i18n-ph'); if(d[k]) el.placeholder=d[k]; });
   const b=document.getElementById('lang-toggle'); if(b) b.textContent='🌐 '+(getLang()==='es'?'EN':'ES');
+  const pl=document.getElementById('perfil-lang'); if(pl) pl.textContent=getLang()==='es'?'🌐 Idioma: Español (cambiar a English)':'🌐 Language: English (switch to Español)';
 }
 function toggleLang(){
   try{ localStorage.setItem('td_lang', getLang()==='es'?'en':'es'); }catch(e){}
