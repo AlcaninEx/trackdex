@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.968</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.969</p>
   </div>
 </div>
 
@@ -564,7 +564,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           🏘️ Comunidad
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.968
+          🆕 Novedades · v0.969
         </button>
       </div>
 
@@ -1312,10 +1312,18 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.968</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.969</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.968 · actual</span><span class="nov-version-tag">Filtro de Legendarios</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.969 · actual</span><span class="nov-version-tag">Trackers compartidos</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>👥</span><span>Los trackers (Legendarios y Pikachu Skins) estrenan un desplegable "Ver progreso de:" para consultar en solo lectura lo que han marcado otros miembros de tu comunidad.</span></div>
+        <div class="nov-item"><span>☁️</span><span>Tu progreso en los trackers ahora se guarda en la nube junto a tu perfil: se sincroniza entre dispositivos y ya no se pierde. Lo que tuvieras marcado se sube automáticamente la primera vez que abras cada tracker.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.968</span><span class="nov-version-tag">Filtro de Legendarios</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🏆</span><span>Corregido "Ocultar Legendarios" en Tracker IVs: ahora reconoce las formas (Keldeo Resolute, Shaymin Sky, Enamorus Incarnate, Giratina Origin, Kyurem Black…) y cubre legendarios, singulares y Ultraentes — 99 especies en total.</span></div>
       </div>
@@ -1928,6 +1936,11 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <button class="back-btn" onclick="openTrackerHub()">←</button>
     <h1>🏆 GoFest Legendary Tracker</h1>
   </div>
+  <div data-trk-bar style="display:flex;align-items:center;gap:8px;padding:7px 12px;background:#fff8e1;border-bottom:1px solid #ffe082;flex-wrap:wrap">
+    <span style="font-size:11px;color:#795548;font-weight:700">Ver progreso de:</span>
+    <select id="lt-member" onchange="trkSetView(this,window._ltReload)" style="flex:1;min-width:130px;padding:5px 8px;border-radius:8px;border:1.5px solid #ffb300;font-size:12px;font-weight:700;color:#795548;background:#fff"></select>
+    <span data-trk-warn style="display:none;font-size:11px;font-weight:800;color:#e65100">👁 Solo lectura</span>
+  </div>
   <div id="lt-root">
     <div class="lt-bar"><div id="lt-prog"></div></div>
     <div class="lt-stats" id="lt-stats"></div>
@@ -2011,6 +2024,11 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
   <div class="app-header">
     <button class="back-btn" onclick="openTrackerHub()">←</button>
     <h1>⚡ Pikachu Skins Event</h1>
+  </div>
+  <div data-trk-bar style="display:flex;align-items:center;gap:8px;padding:7px 12px;background:#fff8e1;border-bottom:1px solid #ffe082;flex-wrap:wrap">
+    <span style="font-size:11px;color:#795548;font-weight:700">Ver progreso de:</span>
+    <select id="pk-member" onchange="trkSetView(this,window._pkReload)" style="flex:1;min-width:130px;padding:5px 8px;border-radius:8px;border:1.5px solid #ffb300;font-size:12px;font-weight:700;color:#795548;background:#fff"></select>
+    <span data-trk-warn style="display:none;font-size:11px;font-weight:800;color:#e65100">👁 Solo lectura</span>
   </div>
   <div id="pk-root">
     <div class="pk-bar"><div id="pk-prog"></div></div>
@@ -2390,9 +2408,31 @@ function save() {
       tradeAnyDay: p.tradeAnyDay || {},
       ppPinned: p.ppPinned || {},
       teamNames: p.teamNames || {},
-      teamAssign: p.teamAssign || {}
+      teamAssign: p.teamAssign || {},
+      trackers: p.trackers || {}
     });
   }, 500);
+}
+// ── TRACKERS COMPARTIDOS (progreso por perfil, visible por la comunidad) ─────
+function trkIsView(){ return !!ST.trkView; }
+function trkProfile(){ return gp(ST.trkView || ST.cur); }
+function trkLoad(key){ const p=trkProfile(); return (p && p.trackers && p.trackers[key]) || null; }
+function trkSave(key, data){
+  if(trkIsView()) return;                 // solo lectura al ver a otro miembro
+  const p=goc(ST.cur); p.trackers=p.trackers||{}; p.trackers[key]=data; save();
+}
+function trkFillSelect(sel){
+  if(!sel) return;
+  const me=ST.cur||'';
+  const names=(ST.profiles||[]).map(p=>p.name).filter(n=>n&&n!==me).sort((a,b)=>a.localeCompare(b));
+  sel.innerHTML='<option value="">👤 '+me+' (tú)</option>'+names.map(n=>`<option value="${n}">👁 ${n}</option>`).join('');
+  sel.value=ST.trkView||'';
+}
+function trkSetView(sel, reload){
+  ST.trkView = sel.value || null;
+  const bar=sel.closest('[data-trk-bar]');
+  if(bar){ const w=bar.querySelector('[data-trk-warn]'); if(w) w.style.display=ST.trkView?'inline':'none'; }
+  if(typeof reload==='function') reload();
 }
 function load() {
   try { const s=localStorage.getItem('pokeBCN'); if(s){const d=JSON.parse(s);ST.profiles=d.profiles||[];} } catch(e){ST.profiles=[];}
@@ -5958,9 +5998,20 @@ function closeGuiaItem(){
   ];
   const CATLABEL={}; CATS.forEach(c=>CATLABEL[c.id]=c.label);
   let state={}, days={};
-  try{ const raw=JSON.parse(localStorage.getItem(KEY))||{}; state=raw.state||{}; days=raw.days||{}; }catch(e){}
+  function loadState(){
+    const remote=trkLoad('legendary');
+    if(remote){ state=remote.state||{}; days=remote.days||{}; return; }
+    if(trkIsView()){ state={}; days={}; return; }   // ese miembro aún no tiene progreso
+    try{ const raw=JSON.parse(localStorage.getItem(KEY))||{}; state=raw.state||{}; days=raw.days||{}; }catch(e){ state={}; days={}; }
+    // primera vez: sube a la nube el progreso que ya tenías en el dispositivo
+    if(ST.cur && (Object.keys(state).length||Object.keys(days).length)) trkSave('legendary',{state,days});
+  }
+  loadState();
   let mode=null, query="";
-  function save(){ try{ localStorage.setItem(KEY, JSON.stringify({state,days})); }catch(e){} }
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify({state,days})); }catch(e){}
+    trkSave('legendary',{state,days});
+  }
   const art=id=>`https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/other/official-artwork/${id}.png`;
   const spr=id=>`https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/${id}.png`;
   const home=id=>`https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/other/home/${id}.png`;
@@ -5995,6 +6046,7 @@ function closeGuiaItem(){
       if(window.showPokePopup) showPokePopup(key, rec?art(rec[1]):null, rec?rec[1]:null);
       return;
     }
+    if(trkIsView()){ showToast('👁 Solo lectura: estás viendo el progreso de '+ST.trkView); return; }
     if(mode==="sabado"||mode==="domingo"){ days[key]=(days[key]===mode)?undefined:mode; if(!days[key])delete days[key]; }
     else { if(state[key]===mode) delete state[key]; else state[key]=mode; }
     save(); ltRender();
@@ -6006,7 +6058,7 @@ function closeGuiaItem(){
     document.getElementById("lt-modehint").textContent=HINTS[mode||"null"];
   });
   document.getElementById("lt-search").oninput=e=>{ query=e.target.value.toLowerCase(); ltRender(); };
-  document.getElementById("lt-reset").onclick=()=>{ if(confirm("¿Borrar todo el progreso del tracker?")){ state={}; days={}; save(); ltRender(); } };
+  document.getElementById("lt-reset").onclick=()=>{ if(trkIsView()){ showToast('👁 Solo lectura'); return; } if(confirm("¿Borrar todo el progreso del tracker?")){ state={}; days={}; save(); ltRender(); } };
 
   function ltRender(){
     const counts={prio:0,pend:0,later:0,got:0,unob:0};
@@ -6037,7 +6089,11 @@ function closeGuiaItem(){
   }
   document.getElementById("lt-modehint").textContent=HINTS["null"];
 
+  window._ltReload=function(){ loadState(); build(); };
   window.openGoFest=function(){
+    ST.trkView=null;
+    const _s=document.getElementById('lt-member'); if(_s){ trkFillSelect(_s); const _w=_s.closest('[data-trk-bar]').querySelector('[data-trk-warn]'); if(_w) _w.style.display='none'; }
+    loadState();
     build();
     document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
     document.getElementById('legendary-screen').style.display='block';
@@ -6286,8 +6342,18 @@ function closeGuiaItem(){
   ];
   const LABEL={pend:"Pendiente",got:"Conseguido",later:"Later",prio:"Prioritario",unob:"No obtenible"};
   let state={}, query="", mode=null;
-  try{ state=JSON.parse(localStorage.getItem(KEY))||{}; }catch(e){}
-  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function loadState(){
+    const remote=trkLoad('pikachu');
+    if(remote){ state=remote.state||remote||{}; return; }
+    if(trkIsView()){ state={}; return; }
+    try{ state=JSON.parse(localStorage.getItem(KEY))||{}; }catch(e){ state={}; }
+    if(ST.cur && Object.keys(state).length) trkSave('pikachu',{state});
+  }
+  loadState();
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+    trkSave('pikachu',{state});
+  }
 
   const main=document.getElementById("pk-main");
   const grids={}, empties={}, cards={};
@@ -6310,6 +6376,7 @@ function closeGuiaItem(){
       c.innerHTML=`${imgHtml}<div class="pk-nm">${key}</div><div class="pk-how">${p[2]}</div><span class="pk-pill"></span>`;
       c.onclick=()=>{
         if(!mode){ if(window.showPokePopup) showPokePopup(key, IMG[key]||null); return; }
+        if(trkIsView()){ showToast('👁 Solo lectura: estás viendo el progreso de '+ST.trkView); return; }
         if(state[key]===mode) delete state[key]; else state[key]=mode;
         save(); pkRender();
       };
@@ -6325,7 +6392,7 @@ function closeGuiaItem(){
   });
   document.getElementById("pk-hint").textContent=PKHINTS["null"];
   document.getElementById("pk-search").oninput=e=>{ query=e.target.value.toLowerCase(); pkRender(); };
-  document.getElementById("pk-reset").onclick=()=>{ if(confirm("¿Borrar todo el progreso de Pikachu Skins?")){ state={}; save(); pkRender(); } };
+  document.getElementById("pk-reset").onclick=()=>{ if(trkIsView()){ showToast('👁 Solo lectura'); return; } if(confirm("¿Borrar todo el progreso de Pikachu Skins?")){ state={}; save(); pkRender(); } };
 
   function pkRender(){
     const counts={pend:0,got:0,later:0,prio:0,unob:0};
@@ -6352,7 +6419,11 @@ function closeGuiaItem(){
     document.getElementById("pk-prog").style.width=(counts.got/total*100)+"%";
     document.getElementById("pk-stats").innerHTML=`<b>${counts.got}</b>/${total} conseguidas · <b>${counts.prio}</b> prioritarias · <b>${counts.pend}</b> por cazar · <b>${counts.later}</b> later · <b>${counts.unob}</b> no obtenibles`;
   }
+  window._pkReload=function(){ loadState(); build(); };
   window.openPikaSkins=function(){
+    ST.trkView=null;
+    const _s=document.getElementById('pk-member'); if(_s){ trkFillSelect(_s); const _w=_s.closest('[data-trk-bar]').querySelector('[data-trk-warn]'); if(_w) _w.style.display='none'; }
+    loadState();
     build();
     document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
     document.getElementById('pikachu-screen').style.display='block';
