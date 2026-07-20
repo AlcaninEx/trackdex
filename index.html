@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.971</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.972</p>
   </div>
 </div>
 
@@ -450,10 +450,10 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="community-selection-screen" class="screen">
   <div style="background:#CC0000;padding:16px;display:flex;align-items:center;gap:12px">
     <div style="flex:1">
-      <div style="color:#fff;font-size:20px;font-weight:800">Comunidades</div>
+      <div style="color:#fff;font-size:20px;font-weight:800" data-i18n="communities">Comunidades</div>
       <div id="cs-user-bar" style="color:rgba(255,255,255,.85);font-size:12px"></div>
     </div>
-    <button onclick="globalLogout()" style="background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);border-radius:20px;color:#fff;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer">Salir</button>
+    <button onclick="globalLogout()" style="background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);border-radius:20px;color:#fff;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer" data-i18n="logout">Salir</button>
   </div>
   <div style="max-width:520px;margin:0 auto;padding:16px">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
@@ -461,11 +461,11 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     </div>
     <div id="community-list"></div>
     <div class="auth-card" style="margin-top:18px">
-      <div style="font-weight:800;color:#CC0000;margin-bottom:10px">➕ Crear comunidad</div>
-      <input id="cc-name" class="auth-input" type="text" placeholder="Nombre de la comunidad">
-      <input id="cc-pass" class="auth-input" type="password" placeholder="Contraseña para unirse">
-      <input id="cc-alias" class="auth-input" type="text" placeholder="Tu alias en esta comunidad">
-      <button class="auth-btn" onclick="doCreateCommunity()">Crear</button>
+      <div style="font-weight:800;color:#CC0000;margin-bottom:10px" data-i18n="create_comm">➕ Crear comunidad</div>
+      <input id="cc-name" class="auth-input" type="text" placeholder="Nombre de la comunidad" data-i18n-ph="comm_name">
+      <input id="cc-pass" class="auth-input" type="password" placeholder="Contraseña para unirse" data-i18n-ph="comm_pass">
+      <input id="cc-alias" class="auth-input" type="text" placeholder="Tu alias en esta comunidad" data-i18n-ph="comm_alias">
+      <button class="auth-btn" onclick="doCreateCommunity()" data-i18n="create">Crear</button>
     </div>
   </div>
 </div>
@@ -476,14 +476,14 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <button class="back-btn" onclick="showCommunitySelection()" style="margin-bottom:12px">←</button>
     <div style="text-align:center;margin-bottom:20px">
       <div style="font-size:22px;font-weight:800;color:#CC0000">Unirse a <span id="cj-name"></span></div>
-      <div style="font-size:13px;color:#888;margin-top:4px">Elige tu alias y escribe la contraseña</div>
+      <div style="font-size:13px;color:#888;margin-top:4px" data-i18n="join_sub">Elige tu alias y escribe la contraseña</div>
     </div>
     <div class="auth-card">
-      <label class="auth-label">Tu alias en esta comunidad</label>
-      <input id="cj-alias" class="auth-input" type="text" placeholder="cómo te verán aquí" onkeydown="if(event.key==='Enter')doJoinCommunity()">
-      <label class="auth-label">Contraseña de la comunidad</label>
-      <input id="cj-pass" class="auth-input" type="password" placeholder="contraseña" onkeydown="if(event.key==='Enter')doJoinCommunity()">
-      <button class="auth-btn" onclick="doJoinCommunity()">Entrar</button>
+      <label class="auth-label" data-i18n="comm_alias">Tu alias en esta comunidad</label>
+      <input id="cj-alias" class="auth-input" type="text" placeholder="cómo te verán aquí" data-i18n-ph="alias_ph" onkeydown="if(event.key==='Enter')doJoinCommunity()">
+      <label class="auth-label" data-i18n="comm_pass">Contraseña de la comunidad</label>
+      <input id="cj-pass" class="auth-input" type="password" placeholder="contraseña" data-i18n-ph="pass_only" onkeydown="if(event.key==='Enter')doJoinCommunity()">
+      <button class="auth-btn" onclick="doJoinCommunity()" data-i18n="enter">Entrar</button>
     </div>
   </div>
 </div>
@@ -564,7 +564,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           🏘️ Comunidad
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          🆕 Novedades · v0.971
+          🆕 Novedades · v0.972
         </button>
       </div>
 
@@ -668,8 +668,8 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:20px;max-width:340px;width:90%">
       <h3 style="margin:0 0 10px;font-size:16px;color:#CC0000">ℹ️ ¿Para qué sirven las marcas?</h3>
       <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px"><b>✅ Obtenido:</b> indica que ya tienes ese Pokémon. Cuenta para tu progreso, se excluye de los filtros de captura y aparece en <b>Mejores IVs</b> con su comparador para valorar nuevos ejemplares.</p>
-      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px"><b>⭐ Al máximo:</b> indica que ya lo subiste del todo. Deja de contar caramelos en <b>Pokémon Objetivo</b> y se quita de los filtros de intercambio: no necesitas más copias.</p>
-      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:12px"><b>💎 Base perfecta:</b> márcalo cuando el ejemplar que tienes ya te sirva y no quieras buscar uno mejor. Entonces sale del filtro <b>Viernes</b> (buscar buena base) y pasa al de <b>Resto de días</b>, que solo busca caramelos. Los Pokémon Oscuros no lo tienen: no se pueden intercambiar.</p>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px"><b>⭐ Maxed Lvl 50:</b> indica que ya lo subiste del todo. Deja de contar caramelos en <b>Pokémon Objetivo</b> y se quita de los filtros de intercambio: no necesitas más copias.</p>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:12px"><b>💎 Base perfecta:</b> márcalo cuando el ejemplar que tienes ya te sirva y no quieras buscar uno mejor. Entonces sale del filtro de <b>Día de intercambios con suerte aumentada</b> (buscar buena base) y pasa al de <b>Resto de días</b>, que solo busca caramelos. Los Pokémon Oscuros no lo tienen: no se pueden intercambiar.</p>
       <button onclick="toggleAlbumInfo(false)" style="width:100%;padding:10px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">Entendido</button>
     </div>
   </div>
@@ -1313,10 +1313,20 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.971</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.972</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.971 · actual</span><span class="nov-version-tag">Comparador y vínculos</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.972 · actual</span><span class="nov-version-tag">Ajustes y suerte aumentada</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🍀</span><span>El filtro "Viernes" pasa a llamarse "Día de intercambios con suerte aumentada" en toda la app, para no atarlo a un día concreto.</span></div>
+        <div class="nov-item"><span>🏷️</span><span>"¿Lo tengo al máximo?" ahora es "⭐ Maxed Lvl 50" y va debajo de "💎 Base perfecta", que pierde su frase explicativa (sigue explicada en el botón de info).</span></div>
+        <div class="nov-item"><span>🧹</span><span>El desplegable "Ver progreso de" de los trackers ya solo muestra miembros reales de tu comunidad, sin perfiles huérfanos con identificadores raros.</span></div>
+        <div class="nov-item"><span>🌐</span><span>Más traducción al inglés: pantallas de comunidades y de unirse a una comunidad.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.971</span><span class="nov-version-tag">Comparador y vínculos</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>✅</span><span>El comparador de Tracker IVs estrena el botón "Elegir este": aplica al Pokémon los IVs que has puesto en las barras, ideal cuando cambias un ejemplar por otro mejor.</span></div>
         <div class="nov-item"><span>🔗</span><span>Si tienes ficha Gigantamax y Dynamax del mismo Pokémon, al marcarlo como Obtenido la app te deja elegir con cuál de las dos es el mismo ejemplar, en vez de adivinar.</span></div>
@@ -1752,7 +1762,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
 
-    <p style="font-size:10.5px;color:#999;margin:10px 14px 0;line-height:1.5">⭐ <b>Viernes</b>: Pokémon que aún necesitan buena base (búscalos en intercambios de Viernes para Lucky/buenos IVs). 📅 <b>Resto de días</b>: ya tienen base, solo intercambia para caramelos.</p>
+    <p style="font-size:10.5px;color:#999;margin:10px 14px 0;line-height:1.5">⭐ <b>Día de intercambios con suerte aumentada</b>: Pokémon que aún necesitan buena base (búscalos ese día para Lucky/buenos IVs). 📅 <b>Resto de días</b>: ya tienen base, solo intercambia para caramelos.</p>
 
     <!-- BLOQUE RESTO DE DÍAS (siempre visible, es tu propio filtro) -->
     <div style="margin:16px 14px 0;padding:10px 12px;background:#eceff1;border-radius:10px 10px 0 0;border:1.5px solid #607d8b;border-bottom:none">
@@ -1770,14 +1780,14 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 
     <!-- BLOQUE VIERNES (requiere elegir con quién comerciar) -->
     <div style="margin:26px 14px 0;padding:10px 12px;background:#e3f2fd;border-radius:10px 10px 0 0;border:1.5px solid #1565c0;border-bottom:none;position:relative">
-      <span style="font-size:13px;font-weight:800;color:#0d47a1">⭐ Filtro Viernes (buscar buena base)</span>
+      <span style="font-size:13px;font-weight:800;color:#0d47a1">⭐ Filtro · Día de intercambios con suerte aumentada</span>
       <div id="filtro-trade-with-label" style="font-size:11px;color:#1565c0;margin-top:4px;cursor:pointer;display:none" onclick="toggleTradeWithDropdown()">
         Comerciando con "<b id="filtro-trade-with-name"></b>" <span style="font-size:9px">▾</span>
       </div>
       <select id="filtro-trade-with-select" style="display:none;width:100%;margin-top:6px;padding:6px;border-radius:6px;border:1px solid #1565c0;font-size:12px" onchange="onTradeWithChange()"></select>
     </div>
     <div id="filtro-viernes-locked" style="margin:0 14px;padding:24px 16px;background:#fff;border:1.5px solid #1565c0;border-top:none;border-radius:0 0 10px 10px;text-align:center">
-      <p style="font-size:12px;color:#666;margin-bottom:10px">Elige con quién vas a comerciar para ver tu filtro Viernes</p>
+      <p style="font-size:12px;color:#666;margin-bottom:10px">Elige con quién vas a comerciar para ver este filtro</p>
       <select id="filtro-trade-with-select-initial" style="padding:8px 12px;border-radius:8px;border:1.5px solid #1565c0;font-size:13px;font-weight:700;color:#0d47a1" onchange="onTradeWithInitialSelect()">
         <option value="">Selecciona un entrenador...</option>
       </select>
@@ -1785,7 +1795,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <div id="filtro-viernes-unlocked" style="display:none">
       <textarea id="filtro-text-viernes" class="filtro-textarea" style="margin:0 14px;border-color:#1565c0;border-radius:0" oninput="onFiltroEdit('viernes')" spellcheck="false"></textarea>
       <div class="filtro-toggles" id="filtro-toggles-viernes" data-cat="viernes"></div>
-      <button class="filtro-copy-btn" style="background:#1565c0;margin-top:8px" onclick="copyFiltroFinal('viernes')">📋 Copiar Filtro Viernes</button>
+      <button class="filtro-copy-btn" style="background:#1565c0;margin-top:8px" onclick="copyFiltroFinal('viernes')">📋 Copiar filtro de suerte aumentada</button>
     </div>
 
   </div>
@@ -2443,7 +2453,9 @@ function trkSave(key, data){
 function trkFillSelect(sel){
   if(!sel) return;
   const me=ST.cur||'';
-  const names=(ST.profiles||[]).map(p=>p.name).filter(n=>n&&n!==me).sort((a,b)=>a.localeCompare(b));
+  // Solo miembros reales de la comunidad (fuera perfiles huérfanos con ids raros)
+  const memberAliases=new Set(Object.values((ST.currentCommunity&&ST.currentCommunity.members)||{}).map(m=>String(m.alias)));
+  const names=(ST.profiles||[]).map(p=>p.name).filter(n=>n&&n!==me&&memberAliases.has(n)).sort((a,b)=>a.localeCompare(b));
   sel.innerHTML='<option value="">👤 '+me+' (tú)</option>'+names.map(n=>`<option value="${n}">👁 ${n}</option>`).join('');
   sel.value=ST.trkView||'';
 }
@@ -3429,16 +3441,16 @@ function renderAlbum() {
     const pctH=Math.round((bs[2]+ih)/(bs[2]+15)*100);
     const ownedToggle=!isV?`<div class="tr" style="margin-bottom:8px;padding:8px 12px;background:${isO?'#e8f5e9':'#f5f5f5'};border-radius:8px;border:1.5px solid ${isO?'#43a047':'#ddd'}"><span style="font-size:13px;font-weight:700;color:${isO?'#2e7d32':'#555'}">${isO?'✅ Obtenido':'¿Lo tienes?'}</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${isO?'checked':''} onchange="togOwned('${pk.id}',this.checked)"><span class="sl"></span></label></div>`:'';
     const isMax=pd.maxed||false;
-    const maxToggle=!isV?`<div class="tr" style="margin-bottom:10px;padding:8px 12px;background:${isMax?'#fff8e1':'#f5f5f5'};border-radius:8px;border:1.5px solid ${isMax?'#ffb300':'#ddd'}"><span style="font-size:13px;font-weight:700;color:${isMax?'#e65100':'#555'}">${isMax?'⭐ Al máximo':'¿Lo tengo al máximo?'}</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${isMax?'checked':''} onchange="togMaxed('${pk.id}',this.checked)"><span class="sl"></span></label></div>`:'';
+    const maxToggle=!isV?`<div class="tr" style="margin-bottom:10px;padding:8px 12px;background:${isMax?'#fff8e1':'#f5f5f5'};border-radius:8px;border:1.5px solid ${isMax?'#ffb300':'#ddd'}"><span style="font-size:13px;font-weight:700;color:${isMax?'#e65100':'#555'}">⭐ Maxed Lvl 50</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${isMax?'checked':''} onchange="togMaxed('${pk.id}',this.checked)"><span class="sl"></span></label></div>`:'';
     const isBase=pd.basePerfect||false;
-    const baseToggle=(!isV&&!isShadow)?`<div class="tr" style="margin-bottom:10px;padding:8px 12px;background:${isBase?'#e3f2fd':'#f5f5f5'};border-radius:8px;border:1.5px solid ${isBase?'#1565c0':'#ddd'}"><span style="font-size:13px;font-weight:700;color:${isBase?'#0d47a1':'#555'}">${isBase?'💎 Base perfecta':'¿Base perfecta?'}<span style="display:block;font-size:10px;font-weight:400;color:#777">${isBase?'Ya no se busca base: pasa a intercambios normales':'Mientras no lo marques, se busca base los Viernes'}</span></span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${isBase?'checked':''} onchange="togBasePerfect('${pk.id}',this.checked)"><span class="sl"></span></label></div>`:'';
-    const editF=`${ownedToggle}${maxToggle}${baseToggle}<div class="fr" style="margin-top:4px"><div class="fl">DPS con tus IVs</div><p style="font-size:18px;font-weight:700;color:#222"><span id="dps-real-${pk.id}">${dd.toFixed(2)}</span> <span style="font-size:12px;color:#888;font-weight:400">/ Max ${baseDps.toFixed(2)}</span></p></div><div class="fr"><div class="fl">IVs</div><div class="iv-grid"><div class="iv-col"><div class="iv-lbl">Ataque</div><div class="iv-val" id="ia-${pk.id}">${ia}<span style="font-size:10px;color:#888;font-weight:400"> (${pctA}%)</span></div><input type="range" min="0" max="15" value="${ia}" oninput="updIV('${pk.id}','a',this.value)"></div><div class="iv-col"><div class="iv-lbl">Defensa</div><div class="iv-val" id="id-${pk.id}">${id2}<span style="font-size:10px;color:#888;font-weight:400"> (${pctD}%)</span></div><input type="range" min="0" max="15" value="${id2}" oninput="updIV('${pk.id}','d',this.value)"></div><div class="iv-col"><div class="iv-lbl">Vida</div><div class="iv-val" id="ih-${pk.id}">${ih}<span style="font-size:10px;color:#888;font-weight:400"> (${pctH}%)</span></div><input type="range" min="0" max="15" value="${ih}" oninput="updIV('${pk.id}','h',this.value)"></div></div></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
+    const baseToggle=(!isV&&!isShadow)?`<div class="tr" style="margin-bottom:10px;padding:8px 12px;background:${isBase?'#e3f2fd':'#f5f5f5'};border-radius:8px;border:1.5px solid ${isBase?'#1565c0':'#ddd'}"><span style="font-size:13px;font-weight:700;color:${isBase?'#0d47a1':'#555'}">💎 Base perfecta</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${isBase?'checked':''} onchange="togBasePerfect('${pk.id}',this.checked)"><span class="sl"></span></label></div>`:'';
+    const editF=`${ownedToggle}${baseToggle}${maxToggle}<div class="fr" style="margin-top:4px"><div class="fl">DPS con tus IVs</div><p style="font-size:18px;font-weight:700;color:#222"><span id="dps-real-${pk.id}">${dd.toFixed(2)}</span> <span style="font-size:12px;color:#888;font-weight:400">/ Max ${baseDps.toFixed(2)}</span></p></div><div class="fr"><div class="fl">IVs</div><div class="iv-grid"><div class="iv-col"><div class="iv-lbl">Ataque</div><div class="iv-val" id="ia-${pk.id}">${ia}<span style="font-size:10px;color:#888;font-weight:400"> (${pctA}%)</span></div><input type="range" min="0" max="15" value="${ia}" oninput="updIV('${pk.id}','a',this.value)"></div><div class="iv-col"><div class="iv-lbl">Defensa</div><div class="iv-val" id="id-${pk.id}">${id2}<span style="font-size:10px;color:#888;font-weight:400"> (${pctD}%)</span></div><input type="range" min="0" max="15" value="${id2}" oninput="updIV('${pk.id}','d',this.value)"></div><div class="iv-col"><div class="iv-lbl">Vida</div><div class="iv-val" id="ih-${pk.id}">${ih}<span style="font-size:10px;color:#888;font-weight:400"> (${pctH}%)</span></div><input type="range" min="0" max="15" value="${ih}" oninput="updIV('${pk.id}','h',this.value)"></div></div></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
     const viewF=`<div class="fr"><div class="fl">DPS con sus IVs</div><p style="font-size:18px;font-weight:700;color:#222"><span id="dps-real-${pk.id}">${dd.toFixed(2)}</span> <span style="font-size:12px;color:#888;font-weight:400">/ Max ${baseDps.toFixed(2)}</span></p></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
     const removeBtn=!isV?(pk.isCustom?`<button class="album-remove" onclick="event.stopPropagation();removeRankEntry('${pk.id}','${ST.type}')">✕</button>`:`<button class="album-remove" onclick="event.stopPropagation();removeFromAlbum('${pk.id}')">✕</button>`):'';
     const evoDisplay=pk.isCustom?`<div class="final-wrap">${pkBadge(isShadow,isMegaPk)}<img class="final-img" src="${si(pk.img)}" onerror="this.style.opacity=.1"></div>`:evoH(pk.evo,pk.img,isShadow,isMegaPk);
     const _pkOwned=!!(pp0&&pp0.pk[pk.id]&&pp0.pk[pk.id].owned);
     const _pkMaxed=!!(pp0&&pp0.pk[pk.id]&&pp0.pk[pk.id].maxed);
-    const tickHtml=`<div class="pk-ticks" title="${_pkMaxed?'Al máximo':_pkOwned?'Lo tienes':'Pendiente'}"><span class="pk-tick${_pkOwned?' on':''}">✓</span><span class="pk-tick${_pkMaxed?' on':''}">✓</span></div>`;
+    const tickHtml=`<div class="pk-ticks" title="${_pkMaxed?'Maxed Lvl 50':_pkOwned?'Lo tienes':'Pendiente'}"><span class="pk-tick${_pkOwned?' on':''}">✓</span><span class="pk-tick${_pkMaxed?' on':''}">✓</span></div>`;
     return `<div class="pk-card" id="c-${pk.id}" style="background:${t.color}"><div class="pk-top" onclick="togCard('${pk.id}')"><div style="display:flex;align-items:center;gap:2px;flex-shrink:0">${evoDisplay}</div><div class="pk-info"><div class="pk-name">${pk.name.replace(' (Shadow)','')}${copyLabel(pp0,pk.id)?`<span style="opacity:.85"> · copia${copyLabel(pp0,pk.id)}</span>`:''}</div>${pk.tags.length?`<div class="tags-row">${tH}</div>`:''}<div class="dps-wrap"><div class="dps-lbl"><span>DPS <span id="dps-bar-${pk.id}">${dd.toFixed(2)}</span></span><span style="color:rgba(255,255,255,.6);font-size:9px">Max ${baseDps.toFixed(2)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${bw}%"></div></div></div></div>${tickHtml}${removeBtn}</div><div class="pk-body${isOpen?' open':''}">${isV?viewF:editF}</div></div>`;
   }).join('')+empty;
 }
@@ -3483,12 +3495,12 @@ function renderAlbumDmax() {
     </div></div></div>`:'';
     const dToggles=!isV?dIvBlock+`<div style="padding:8px 12px;background:rgba(255,255,255,.92)">
       <div class="tr" style="margin-bottom:6px;padding:6px 10px;background:${dIsO?'#e8f5e9':'#f5f5f5'};border-radius:8px;border:1.5px solid ${dIsO?'#43a047':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${dIsO?'#2e7d32':'#555'}">${dIsO?'✅ Obtenido':'¿Lo tienes?'}</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${dIsO?'checked':''} onchange="togOwned('${albumId}',this.checked)"><span class="sl"></span></label></div>
-      <div class="tr" style="margin-bottom:6px;padding:6px 10px;background:${dIsMax?'#fff8e1':'#f5f5f5'};border-radius:8px;border:1.5px solid ${dIsMax?'#ffb300':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${dIsMax?'#e65100':'#555'}">${dIsMax?'⭐ Al máximo':'¿Lo tengo al máximo?'}</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${dIsMax?'checked':''} onchange="togMaxed('${albumId}',this.checked)"><span class="sl"></span></label></div>
-      ${(()=>{const _b=!!(p2&&p2.pk&&p2.pk[albumId]&&p2.pk[albumId].basePerfect);return `<div class="tr" style="padding:6px 10px;background:${_b?'#e3f2fd':'#f5f5f5'};border-radius:8px;border:1.5px solid ${_b?'#1565c0':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${_b?'#0d47a1':'#555'}">${_b?'💎 Base perfecta':'¿Base perfecta?'}</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${_b?'checked':''} onchange="togBasePerfect('${albumId}',this.checked)"><span class="sl"></span></label></div>`;})()}
+      ${(()=>{const _b=!!(p2&&p2.pk&&p2.pk[albumId]&&p2.pk[albumId].basePerfect);return `<div class="tr" style="margin-bottom:6px;padding:6px 10px;background:${_b?'#e3f2fd':'#f5f5f5'};border-radius:8px;border:1.5px solid ${_b?'#1565c0':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${_b?'#0d47a1':'#555'}">💎 Base perfecta</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${_b?'checked':''} onchange="togBasePerfect('${albumId}',this.checked)"><span class="sl"></span></label></div>`;})()}
+      <div class="tr" style="padding:6px 10px;background:${dIsMax?'#fff8e1':'#f5f5f5'};border-radius:8px;border:1.5px solid ${dIsMax?'#ffb300':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${dIsMax?'#e65100':'#555'}">⭐ Maxed Lvl 50</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${dIsMax?'checked':''} onchange="togMaxed('${albumId}',this.checked)"><span class="sl"></span></label></div>
     </div>`:'';
     const dIsOpen=ST.expanded===albumId;
     const dInner=!isV?`<div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div>${dToggles}`:`<div style="padding:8px 12px;font-size:11px;color:rgba(255,255,255,.8)">${r.fast} → ${r.charge}</div>`;
-    const dTickHtml=`<div class="pk-ticks" title="${dIsMax?'Al máximo':dIsO?'Lo tienes':'Pendiente'}"><span class="pk-tick${dIsO?' on':''}">✓</span><span class="pk-tick${dIsMax?' on':''}">✓</span></div>`;
+    const dTickHtml=`<div class="pk-ticks" title="${dIsMax?'Maxed Lvl 50':dIsO?'Lo tienes':'Pendiente'}"><span class="pk-tick${dIsO?' on':''}">✓</span><span class="pk-tick${dIsMax?' on':''}">✓</span></div>`;
     return `<div class="pk-card" id="c-${albumId}" style="background:${t.color}"><div class="pk-top" onclick="togCard('${albumId}')"><div style="flex-shrink:0"><div class="final-wrap"><img class="final-img" src="${si(r.img)}" onerror="this.style.opacity=.1"></div></div><div class="pk-info"><div class="pk-name">${r.n.replace(/^[GD]-/,'')}${copyLabel(gp(ST.view||ST.cur),albumId)?`<span style="opacity:.85"> · copia${copyLabel(gp(ST.view||ST.cur),albumId)}</span>`:''}</div><div class="tags-row">${isG(r)?'<span class="tag" style="background:#7b1fa2;color:#fff;font-size:9px">GMAX</span>':'<span class="tag" style="background:#1565c0;color:#fff;font-size:9px">DMAX</span>'}</div><div class="dps-wrap"><div class="dps-lbl"><span>Max Dmg</span><span>${r.dps.toFixed(1)}</span></div><div class="dps-bar"><div class="dps-fill" style="width:${Math.round(r.dps/maxD*100)}%"></div></div></div></div>${dTickHtml}${rb}</div><div class="pk-body${dIsOpen?' open':''}">${dInner}</div></div>`;
   }).join('')+emptyDmax;
 }
@@ -4980,7 +4992,7 @@ function buildObjetivoData(profileName) {
     // "done" = all copies maxed (nothing pending and nothing to power up)
     const done = (pendingCount === 0 && dmaxSkills === 0);
 
-    // ── Categoría de trade: Viernes vs Resto de días ──────────────────────
+    // ── Categoría de trade: suerte aumentada vs Resto de días ──────────────────────
     // Los Oscuros no se pueden intercambiar, así que nunca piden "buena base".
     // Sigue buscando base mientras alguna copia normal/Dynamax no esté marcada
     // como "💎 Base perfecta" por el usuario.
@@ -5428,7 +5440,7 @@ function renderBestIvs(){
           </div>
         </div>
         <div class="tr" style="margin-top:8px;padding:8px 12px;background:${pk.owned?'#e8f5e9':'#f5f5f5'};border-radius:8px;border:1.5px solid ${pk.owned?'#43a047':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${pk.owned?'#2e7d32':'#555'}">✅ Obtenido</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${pk.owned?'checked':''} onchange="bivTogOwned('${x.id}',this.checked)"><span class="sl"></span></label></div>
-        <div class="tr" style="margin-top:6px;padding:8px 12px;background:${pk.maxed?'#fff8e1':'#f5f5f5'};border-radius:8px;border:1.5px solid ${pk.maxed?'#ffb300':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${pk.maxed?'#e65100':'#555'}">⭐ Al máximo</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${pk.maxed?'checked':''} onchange="bivTogMaxed('${x.id}',this.checked)"><span class="sl"></span></label></div>
+        <div class="tr" style="margin-top:6px;padding:8px 12px;background:${pk.maxed?'#fff8e1':'#f5f5f5'};border-radius:8px;border:1.5px solid ${pk.maxed?'#ffb300':'#ddd'}"><span style="font-size:12px;font-weight:700;color:${pk.maxed?'#e65100':'#555'}">⭐ Maxed Lvl 50</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${pk.maxed?'checked':''} onchange="bivTogMaxed('${x.id}',this.checked)"><span class="sl"></span></label></div>
       </div>`;
     return `<div class="pk-card" style="background:${t.color};${open?'':(!x.owned?'filter:grayscale(1);opacity:.55;':(x.noIv?'opacity:.5;':''))}">
       <div class="pk-top" onclick="togBivCard('${x.id}')">
@@ -5979,12 +5991,12 @@ function maybeShowWelcome(){
 
 // ── GUÍA TRACKDEX (Perfil) ───────────────────────────────────────────────────
 const GUIA_ITEMS=[
-  {k:'mispoke',ic:'⚔️',n:'Mis Pokémon',d:'El corazón de la app: tus equipos por tipo (hasta 4 por entrenador, Incursión y Dynamax). Marca cada Pokémon como Obtenido o Al máximo, asígnale sus IVs con las barras y controla tu progreso con las barras de cada tipo en la pantalla principal.'},
+  {k:'mispoke',ic:'⚔️',n:'Mis Pokémon',d:'El corazón de la app: tus equipos por tipo (hasta 4 por entrenador, Incursión y Dynamax). Marca cada Pokémon como Obtenido, Base perfecta o Maxed Lvl 50, asígnale sus IVs con las barras y controla tu progreso con las barras de cada tipo en la pantalla principal.'},
   {k:'rankings',ic:'👑',n:'Rankings DPS',d:'El top 50 de atacantes de cada tipo ordenado por DPS efectivo, con sus mejores ataques y marcas de Legacy, Shadow y Mega. Desde aquí añades Pokémon a tus equipos con el botón +. Puedes ocultar Megas, Oscuros o Legacy si no los usas.'},
   {k:'bestivs',ic:'📈',n:'Tracker IVs',d:'Todos tus Pokémon en una sola lista, puntuados por la calidad de sus IVs (los no obtenidos, en blanco y negro al final). Configura el peso de Ataque/Defensa/Vida con "Valores IVs", compara un ejemplar nuevo con "Comparar" y usa "Peores primero" para saber cuál cambiar o subir.'},
   {k:'objetivo',ic:'🎯',n:'Pokémon Objetivo',d:'Te dice qué pre-evoluciones capturar y cuántos caramelos (normales y XL) te faltan para completar tus equipos, con barras de progreso que se sincronizan entre dispositivos. Genera un filtro listo para copiar en Pokémon GO.'},
   {k:'calc',ic:'🔥',n:'Calculadora de Tipos',d:'Eficacia de tipos atacando y defendiendo: elige 1 o 2 tipos y ve al instante contra qué haces daño súper eficaz y qué te resiste. Imprescindible antes de una incursión difícil.'},
-  {k:'filtro',ic:'🛠️',n:'Crea tu filtro',d:'Filtros personalizados para el buscador de Pokémon GO: el filtro "Resto de días" (solo caramelos) y el filtro "Viernes" (buscar buena base para intercambios), que se adapta automáticamente a la persona con la que comercias.'},
+  {k:'filtro',ic:'🛠️',n:'Crea tu filtro',d:'Filtros personalizados para el buscador de Pokémon GO: el filtro "Resto de días" (solo caramelos) y el filtro del "Día de intercambios con suerte aumentada" (buscar buena base), que se adapta automáticamente a la persona con la que comercias.'},
   {k:'megas',ic:'🍬',n:'Megas',d:'La rotación de Megaincursiones del mes, cómo conseguir megaenergía en Poképaradas y misiones, la regla de oro del compañero y la tabla de niveles Mega con sus costes y tiempos de espera.'},
   {k:'diarias',ic:'📋',n:'Diarias',d:'Checklist de tareas diarias ordenadas por esfuerzo y recompensa: racha de captura, regalos, globo Rocket, PvP, intercambios… tanto desde casa como al salir a caminar.'},
   {k:'pokeparadas',ic:'🎁',n:'Poképaradas!',d:'Las misiones de investigación de campo de la temporada actual con sus Pokémon de recompensa. Fija arriba tus favoritas para no perderlas de vista.'},
@@ -6814,8 +6826,10 @@ async function deleteCurrentCommunity(){
 function toggleAlbumInfo(on){ const el=document.getElementById('album-info-pop'); if(el) el.style.display=on?'flex':'none'; }
 // ── IDIOMA (fase 1: login y registro) ────────────────────────────────────────
 const I18N={
-  es:{login_sub:'Inicia sesión con tu cuenta',user:'Usuario',pass:'Contraseña',user_ph:'tu usuario',pass_ph:'tu contraseña',remember:'Recordarme en este dispositivo',disclaimer:'TrackDex es una aplicación de fans sin ánimo de lucro, no afiliada a Nintendo, Niantic, The Pokémon Company ni Game Freak. Pokémon y todos los nombres e imágenes relacionados son marcas de sus respectivos propietarios.',privacy:'Política de privacidad',enter:'Entrar',no_account:'¿No tienes cuenta?',create_account:'Crear cuenta',reg_sub:'Una sola vez, para todas tus comunidades',user_ph2:'letras, números, - o _',pass_ph2:'mínimo 6 caracteres',pass2:'Repite la contraseña',pass2_ph:'repite la contraseña',have_account:'¿Ya tienes cuenta?',signin:'Iniciar sesión'},
-  en:{login_sub:'Sign in to your account',user:'Username',pass:'Password',user_ph:'your username',pass_ph:'your password',remember:'Remember me on this device',disclaimer:'TrackDex is a non-profit fan app, not affiliated with Nintendo, Niantic, The Pokémon Company or Game Freak. Pokémon and all related names and images are trademarks of their respective owners.',privacy:'Privacy policy',enter:'Sign in',no_account:"Don't have an account?",create_account:'Create account',reg_sub:'Just once, for all your communities',user_ph2:'letters, numbers, - or _',pass_ph2:'at least 6 characters',pass2:'Repeat password',pass2_ph:'repeat your password',have_account:'Already have an account?',signin:'Sign in'}
+  es:{login_sub:'Inicia sesión con tu cuenta',user:'Usuario',pass:'Contraseña',user_ph:'tu usuario',pass_ph:'tu contraseña',remember:'Recordarme en este dispositivo',disclaimer:'TrackDex es una aplicación de fans sin ánimo de lucro, no afiliada a Nintendo, Niantic, The Pokémon Company ni Game Freak. Pokémon y todos los nombres e imágenes relacionados son marcas de sus respectivos propietarios.',privacy:'Política de privacidad',enter:'Entrar',no_account:'¿No tienes cuenta?',create_account:'Crear cuenta',reg_sub:'Una sola vez, para todas tus comunidades',user_ph2:'letras, números, - o _',pass_ph2:'mínimo 6 caracteres',pass2:'Repite la contraseña',pass2_ph:'repite la contraseña',have_account:'¿Ya tienes cuenta?',signin:'Iniciar sesión',
+    communities:'Comunidades',logout:'Salir',create_comm:'➕ Crear comunidad',comm_name:'Nombre de la comunidad',comm_pass:'Contraseña de la comunidad',comm_alias:'Tu alias en esta comunidad',create:'Crear',join_sub:'Elige tu alias y escribe la contraseña',alias_ph:'cómo te verán aquí',pass_only:'contraseña'},
+  en:{login_sub:'Sign in to your account',user:'Username',pass:'Password',user_ph:'your username',pass_ph:'your password',remember:'Remember me on this device',disclaimer:'TrackDex is a non-profit fan app, not affiliated with Nintendo, Niantic, The Pokémon Company or Game Freak. Pokémon and all related names and images are trademarks of their respective owners.',privacy:'Privacy policy',enter:'Sign in',no_account:"Don't have an account?",create_account:'Create account',reg_sub:'Just once, for all your communities',user_ph2:'letters, numbers, - or _',pass_ph2:'at least 6 characters',pass2:'Repeat password',pass2_ph:'repeat your password',have_account:'Already have an account?',signin:'Sign in',
+    communities:'Communities',logout:'Sign out',create_comm:'➕ Create community',comm_name:'Community name',comm_pass:'Community password',comm_alias:'Your nickname in this community',create:'Create',join_sub:'Pick your nickname and enter the password',alias_ph:'how others will see you',pass_only:'password'}
 };
 function getLang(){ try{ return localStorage.getItem('td_lang')||'es'; }catch(e){ return 'es'; } }
 function applyLang(){
