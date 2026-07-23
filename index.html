@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.975</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.976</p>
   </div>
 </div>
 
@@ -533,30 +533,30 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
         <span style="font-size:12px;font-weight:600;opacity:.85;background:rgba(255,255,255,.2);border-radius:20px;padding:2px 10px" data-i18n="top50">Top 50 por tipo</span>
       </button>
 
-      <!-- SMALL BUTTONS ROW 1 -->
+      <!-- MENÚ PRINCIPAL -->
       <button class="home-btn-small" style="width:100%;margin-top:10px;font-size:15px" onclick="showTypeChart()"><span data-i18n="type_calc">🔥 Calculadora de Tipos</span>
       </button>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
-        <button class="home-btn-small" onclick="showMegaCandy()"><span data-i18n="megas">🍬 Megas</span>
+      <div style="display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px">
+        <button class="home-btn-small" onclick="openObjetivo()" style="background:#fff3e0;border-color:#FF6F00;color:#E65100"><span data-i18n="target">🎯 Pokémon Objetivo</span>
         </button>
-        <button class="home-btn-small" onclick="showLegacyGuide()"><span data-i18n="legacy">⭐ Legacy</span>
+        <button class="home-btn-small" onclick="openTrackerHub()" style="background:#e3f2fd;border-color:#1565c0;color:#0d47a1"><span data-i18n="trackers">🏆 Trackers</span>
         </button>
-      </div>
-
-      <!-- SMALL BUTTONS ROW 2 -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
-        <button class="home-btn-small" onclick="openObjetivo()" style="grid-column:1/-1;background:#fff3e0;border-color:#FF6F00;color:#E65100"><span data-i18n="target">🎯 Pokémon Objetivo</span>
+        <button class="home-btn-small" onclick="openComunidad()" style="background:#fff3e0;border-color:#ef6c00;color:#e65100"><span data-i18n="community">🏘️ Comunidad</span>
         </button>
-        <button class="home-btn-small" onclick="openDiarias()" style="grid-column:1/-1;background:#e8f5e9;border-color:#2e7d32;color:#1b5e20"><span data-i18n="daily">📋 Diarias</span>
+        <button class="home-btn-small" onclick="toggleMoreTools()" id="more-tools-btn" style="background:#eceff1;border-color:#607d8b;color:#37474f"><span data-i18n="more_tools">➕ Más Herramientas</span> <span id="more-tools-arrow" style="font-size:11px">▾</span>
         </button>
-        <button class="home-btn-small" onclick="openPokeparadas()" style="grid-column:1/-1;background:#fce4ec;border-color:#c2185b;color:#880e4f"><span data-i18n="stops">🎁 Poképaradas!</span>
-        </button>
-        <button class="home-btn-small" onclick="openTrackerHub()" style="grid-column:1/-1;background:#e3f2fd;border-color:#1565c0;color:#0d47a1"><span data-i18n="trackers">🏆 Trackers</span>
-        </button>
-        <button class="home-btn-small" onclick="openComunidad()" style="grid-column:1/-1;background:#fff3e0;border-color:#ef6c00;color:#e65100"><span data-i18n="community">🏘️ Comunidad</span>
-        </button>
-        <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          <span data-i18n="news">🆕 Novedades</span> · v0.975
+        <div id="more-tools-panel" style="display:none;grid-template-columns:1fr 1fr;gap:10px">
+          <button class="home-btn-small" onclick="showMegaCandy()"><span data-i18n="megas">🍬 Megas</span>
+          </button>
+          <button class="home-btn-small" onclick="showLegacyGuide()"><span data-i18n="legacy">⭐ Legacy</span>
+          </button>
+          <button class="home-btn-small" onclick="openPokeparadas()" style="grid-column:1/-1;background:#fce4ec;border-color:#c2185b;color:#880e4f"><span data-i18n="stops">🎁 Poképaradas!</span>
+          </button>
+          <button class="home-btn-small" onclick="openDiarias()" style="grid-column:1/-1;background:#e8f5e9;border-color:#2e7d32;color:#1b5e20"><span data-i18n="daily">📋 Diarias</span>
+          </button>
+        </div>
+        <button class="home-btn-small" onclick="openNovedades()" style="background:#ede7f6;border-color:#5e35b1;color:#4527a0">
+          <span data-i18n="news">🆕 Novedades</span> · v0.976
         </button>
       </div>
 
@@ -1183,10 +1183,9 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       </div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">👥 Misiones de grupo <span class="diff diff-medium">Media · 10 min</span></div>
+        <div class="diarias-item-title">👥 Misiones de grupo <span class="diff diff-medium">Media</span></div>
         <div class="diarias-item-body">
           Si sales con alguien, podéis formar grupos para conseguir misiones de grupo extra con posibilidad de megaenergía de ciertos Pokémon.
-          <div class="diarias-tip">💡 Podéis rehacer el grupo hasta conseguir una misión de megaenergía. De media tarda unos 10 min.</div>
         </div>
       </div>
 
@@ -1239,7 +1238,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <button class="back-btn" onclick="closePokeparadas()">←</button>
     <h1>🎁 Poképaradas!</h1>
   </div>
-  <p style="text-align:center;font-size:10.5px;color:#888;padding:10px 14px 0">Temporada: <b style="color:#c2185b">Memories in Motion</b> · 📌 fija tus misiones favoritas arriba</p>
+  <p style="text-align:center;font-size:10.5px;color:#888;padding:10px 14px 0">Temporada: <b style="color:#c2185b">Forever Forward</b> · 📌 fija tus misiones favoritas arriba</p>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
     <div class="pp-pinned-section" id="pp-pinned-section" style="display:none">
       <div class="pp-pinned-title">📌 Fijadas</div>
@@ -1338,10 +1337,19 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.975</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.976</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.975 · actual</span><span class="nov-version-tag">Filtros Normal y Lucky</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.976 · actual</span><span class="nov-version-tag">Menú reorganizado</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🧭</span><span>Menú principal reorganizado: Calculadora, Pokémon Objetivo, Trackers y Comunidad arriba; Megas, Legacy, Poképaradas! y Diarias se agrupan en el nuevo botón "➕ Más Herramientas".</span></div>
+        <div class="nov-item"><span>🎁</span><span>Poképaradas! actualizado a la temporada Forever Forward (misión de Rocket "Derrota 3 Grunts" y ajustes en "Gira 5 PokéParadas").</span></div>
+        <div class="nov-item"><span>👥</span><span>Diarias: la misión de grupo pierde la estimación de tiempo y el consejo de rehacer grupo.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.975</span><span class="nov-version-tag">Filtros Normal y Lucky</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🛠️</span><span>Los filtros pasan a llamarse <b>Filtro Normal (Caramelos)</b> y <b>Filtro Lucky (Bases)</b>.</span></div>
         <div class="nov-item"><span>🐛</span><span>Corregido: el Filtro Normal dejaba fuera a Pokémon que aún coleccionabas (como Mudkip, Treecko o Torchic) si no los tenías marcados como "Base perfecta". Ahora incluye TODOS los que sigues coleccionando; el Filtro Lucky es solo el subconjunto que aún necesita buena base.</span></div>
@@ -5106,7 +5114,7 @@ function closeNovedades() {
 
 
 // ── POKEPARADAS! ──────────────────────────────────────────────────────────
-// Misiones de Investigación de Campo — Temporada Memories in Motion (jun 2026)
+// Misiones de Investigación de Campo — Temporada Forever Forward (act. jul 2026, fuente LeekDuck/GO Hub)
 const PP_DATA = {
   '🎯 Lanzamientos': [
     {id:'curve10', text:'Haz 10 lanzamientos curvos', pkm:['alolan-geodude','electabuzz','makuhita','swablu','baltoy','dusclops','staravia','emolga','ferroseed','lechonk']},
@@ -5122,7 +5130,7 @@ const PP_DATA = {
     {id:'hatch1', text:'Eclosiona un huevo', pkm:['alolan-marowak','scyther','dratini','noctowl','sudowoodo','nincada','combee','audino','cubchoo','tyrunt','amaura','stufful','wimpod']},
     {id:'hatch2', text:'Eclosiona 2 huevos', pkm:['sneasel','mawile','feebas']},
     {id:'spin3', text:'Gira 3 PokéParadas o Gimnasios', pkm:['doduo','remoraid','ralts','aron']},
-    {id:'spin5', text:'Gira 5 PokéParadas o Gimnasios', pkm:['alolan-rattata','rattata','growlithe','hisuian-growlithe','galarian-slowpoke','slowpoke','dunsparce','sneasel','galarian-zigzagoon','zigzagoon','snorunt','bidoof','hippopotas','trubbish','ducklett','dewpider','skwovet','nickit','wooloo','tarountula','nacli']},
+    {id:'spin5', text:'Gira 5 PokéParadas o Gimnasios', pkm:['alolan-rattata','rattata','growlithe','hisuian-growlithe','galarian-slowpoke','slowpoke','dunsparce','sneasel','galarian-zigzagoon','zigzagoon','numel','snorunt','bidoof','hippopotas','ducklett','dewpider','nickit','wooloo','tarountula','nacli']},
     {id:'snapshot', text:'Haz una foto a un Pokémon salvaje', pkm:['trapinch','croagunk','cottonee']},
   ],
   '🤝 Compañero y Amistad': [
@@ -5153,7 +5161,7 @@ const PP_DATA = {
     {id:'powerup7', text:'Mejora un Pokémon 7 veces', pkm:['rowlet','litten','popplio']},
   ],
   '🚀 Team GO Rocket': [
-    {id:'defeatgrunt', text:'Derrota a un Grunt del Team GO Rocket', pkm:['meowth','wobbuffet','yamask']},
+    {id:'defeat3grunts', text:'Derrota a 3 Grunts del Team GO Rocket', pkm:['meowth','wobbuffet','yamask']},
   ],
 };
 
@@ -6876,6 +6884,13 @@ async function deleteCurrentCommunity(){
   } catch(e){ showToast('Error al borrar: '+(e.message||e)); }
 }
 function toggleAlbumInfo(on){ const el=document.getElementById('album-info-pop'); if(el) el.style.display=on?'flex':'none'; }
+function toggleMoreTools(){
+  const p=document.getElementById('more-tools-panel'), a=document.getElementById('more-tools-arrow');
+  if(!p) return;
+  const open=p.style.display==='grid';
+  p.style.display=open?'none':'grid';
+  if(a) a.textContent=open?'▾':'▴';
+}
 // ── NOTIFICACIONES (recordatorios locales) ───────────────────────────────────
 const NOTIF_DEFS=[
   {id:'catch',   ic:'⭐', t:'Captura diaria / racha de polvos', time:'21:00'},
@@ -7017,12 +7032,12 @@ document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==
 const I18N={
   es:{login_sub:'Inicia sesión con tu cuenta',user:'Usuario',pass:'Contraseña',user_ph:'tu usuario',pass_ph:'tu contraseña',remember:'Recordarme en este dispositivo',disclaimer:'TrackDex es una aplicación de fans sin ánimo de lucro, no afiliada a Nintendo, Niantic, The Pokémon Company ni Game Freak. Pokémon y todos los nombres e imágenes relacionados son marcas de sus respectivos propietarios.',privacy:'Política de privacidad',enter:'Entrar',no_account:'¿No tienes cuenta?',create_account:'Crear cuenta',reg_sub:'Una sola vez, para todas tus comunidades',user_ph2:'letras, números, - o _',pass_ph2:'mínimo 6 caracteres',pass2:'Repite la contraseña',pass2_ph:'repite la contraseña',have_account:'¿Ya tienes cuenta?',signin:'Iniciar sesión',
     communities:'Comunidades',logout:'Salir',create_comm:'➕ Crear comunidad',comm_name:'Nombre de la comunidad',comm_pass:'Contraseña de la comunidad',comm_alias:'Tu alias en esta comunidad',create:'Crear',join_sub:'Elige tu alias y escribe la contraseña',alias_ph:'cómo te verán aquí',pass_only:'contraseña',
-    my_pokemon:'⚔️ Mis Pokemons',raid_pk:'Pokémon Incursiones',dmax_pk:'Pokémon Dynamax',rankings:'Rankings DPS',top50:'Top 50 por tipo',type_calc:'🔥 Calculadora de Tipos',megas:'🍬 Megas',legacy:'⭐ Legacy',target:'🎯 Pokémon Objetivo',daily:'📋 Diarias',stops:'🎁 Poképaradas!',trackers:'🏆 Trackers',community:'🏘️ Comunidad',news:'🆕 Novedades',
+    my_pokemon:'⚔️ Mis Pokemons',raid_pk:'Pokémon Incursiones',dmax_pk:'Pokémon Dynamax',rankings:'Rankings DPS',top50:'Top 50 por tipo',type_calc:'🔥 Calculadora de Tipos',megas:'🍬 Megas',legacy:'⭐ Legacy',target:'🎯 Pokémon Objetivo',daily:'📋 Diarias',stops:'🎁 Poképaradas!',trackers:'🏆 Trackers',community:'🏘️ Comunidad',news:'🆕 Novedades',more_tools:'➕ Más Herramientas',
     profile:'👤 Perfil',app_section:'ℹ️ Aplicación',guide:'📖 Guía TrackDex',rename_teams:'✏️ Cambiar nombres de tus equipos',change_pass:'🔑 Cambiar contraseña',privacy_btn:'🔒 Política de privacidad',danger:'⚠️ Zona de peligro',del_team:'🗑️ Borrar un equipo de Pokémon (2, 3 o 4)',del_raid:'🗑️ Borrar todos tus Pokémon de Incursión',del_dmax:'🗑️ Borrar todos tus Pokémon Dynamax',del_account:'☠️ Borrar mi cuenta y todos mis datos',
     community_t:'🏘️ Comunidad',members:'👥 Miembros de la Comunidad',chat:'💬 Chat de comunidad',switch_comm:'🔄 Cambiar comunidad'},
   en:{login_sub:'Sign in to your account',user:'Username',pass:'Password',user_ph:'your username',pass_ph:'your password',remember:'Remember me on this device',disclaimer:'TrackDex is a non-profit fan app, not affiliated with Nintendo, Niantic, The Pokémon Company or Game Freak. Pokémon and all related names and images are trademarks of their respective owners.',privacy:'Privacy policy',enter:'Sign in',no_account:"Don't have an account?",create_account:'Create account',reg_sub:'Just once, for all your communities',user_ph2:'letters, numbers, - or _',pass_ph2:'at least 6 characters',pass2:'Repeat password',pass2_ph:'repeat your password',have_account:'Already have an account?',signin:'Sign in',
     communities:'Communities',logout:'Sign out',create_comm:'➕ Create community',comm_name:'Community name',comm_pass:'Community password',comm_alias:'Your nickname in this community',create:'Create',join_sub:'Pick your nickname and enter the password',alias_ph:'how others will see you',pass_only:'password',
-    my_pokemon:'⚔️ My Pokémon',raid_pk:'Raid Pokémon',dmax_pk:'Dynamax Pokémon',rankings:'DPS Rankings',top50:'Top 50 per type',type_calc:'🔥 Type Calculator',megas:'🍬 Megas',legacy:'⭐ Legacy',target:'🎯 Target Pokémon',daily:'📋 Dailies',stops:'🎁 PokéStops!',trackers:'🏆 Trackers',community:'🏘️ Community',news:'🆕 News',
+    my_pokemon:'⚔️ My Pokémon',raid_pk:'Raid Pokémon',dmax_pk:'Dynamax Pokémon',rankings:'DPS Rankings',top50:'Top 50 per type',type_calc:'🔥 Type Calculator',megas:'🍬 Megas',legacy:'⭐ Legacy',target:'🎯 Target Pokémon',daily:'📋 Dailies',stops:'🎁 PokéStops!',trackers:'🏆 Trackers',community:'🏘️ Community',news:'🆕 News',more_tools:'➕ More tools',
     profile:'👤 Profile',app_section:'ℹ️ App',guide:'📖 TrackDex guide',rename_teams:'✏️ Rename your teams',change_pass:'🔑 Change password',privacy_btn:'🔒 Privacy policy',danger:'⚠️ Danger zone',del_team:'🗑️ Delete a Pokémon team (2, 3 or 4)',del_raid:'🗑️ Delete all your Raid Pokémon',del_dmax:'🗑️ Delete all your Dynamax Pokémon',del_account:'☠️ Delete my account and all my data',
     community_t:'🏘️ Community',members:'👥 Community members',chat:'💬 Community chat',switch_comm:'🔄 Switch community'}
 };
