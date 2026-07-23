@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.974</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.975</p>
   </div>
 </div>
 
@@ -556,7 +556,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
         <button class="home-btn-small" onclick="openComunidad()" style="grid-column:1/-1;background:#fff3e0;border-color:#ef6c00;color:#e65100"><span data-i18n="community">🏘️ Comunidad</span>
         </button>
         <button class="home-btn-small" onclick="openNovedades()" style="grid-column:1/-1;background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          <span data-i18n="news">🆕 Novedades</span> · v0.974
+          <span data-i18n="news">🆕 Novedades</span> · v0.975
         </button>
       </div>
 
@@ -661,7 +661,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <h3 style="margin:0 0 10px;font-size:16px;color:#CC0000">ℹ️ ¿Para qué sirven las marcas?</h3>
       <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px"><b>✅ Obtenido:</b> indica que ya tienes ese Pokémon. Cuenta para tu progreso, se excluye de los filtros de captura y aparece en <b>Mejores IVs</b> con su comparador para valorar nuevos ejemplares.</p>
       <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px"><b>⭐ Maxed Lvl 50:</b> indica que ya lo subiste del todo. Deja de contar caramelos en <b>Pokémon Objetivo</b> y se quita de los filtros de intercambio: no necesitas más copias.</p>
-      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:12px"><b>💎 Base perfecta:</b> márcalo cuando el ejemplar que tienes ya te sirva y no quieras buscar uno mejor. Entonces sale del filtro de <b>Día de intercambios con suerte aumentada</b> (buscar buena base) y pasa al de <b>Resto de días</b>, que solo busca caramelos. Los Pokémon Oscuros no lo tienen: no se pueden intercambiar.</p>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:12px"><b>💎 Base perfecta:</b> márcalo cuando el ejemplar que tienes ya te sirva y no quieras buscar uno mejor. Entonces sale del <b>Filtro Lucky (Bases)</b> y se queda solo en el <b>Filtro Normal (Caramelos)</b>. Los Pokémon Oscuros no lo tienen: no se pueden intercambiar.</p>
       <button onclick="toggleAlbumInfo(false)" style="width:100%;padding:10px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">Entendido</button>
     </div>
   </div>
@@ -1338,10 +1338,18 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.974</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.975</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.974 · actual</span><span class="nov-version-tag">Notificaciones</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.975 · actual</span><span class="nov-version-tag">Filtros Normal y Lucky</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🛠️</span><span>Los filtros pasan a llamarse <b>Filtro Normal (Caramelos)</b> y <b>Filtro Lucky (Bases)</b>.</span></div>
+        <div class="nov-item"><span>🐛</span><span>Corregido: el Filtro Normal dejaba fuera a Pokémon que aún coleccionabas (como Mudkip, Treecko o Torchic) si no los tenías marcados como "Base perfecta". Ahora incluye TODOS los que sigues coleccionando; el Filtro Lucky es solo el subconjunto que aún necesita buena base.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.974</span><span class="nov-version-tag">Notificaciones</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🔔</span><span>Nueva pantalla "Notificaciones" en Perfil: activa con una casilla los recordatorios que quieras (captura diaria, pase de incursión, regalos, misión, compañero, PvP, pack diario, incienso, gimnasios e intercambios) y elige la hora de cada uno. Se repiten cada día.</span></div>
         <div class="nov-item"><span>🎈</span><span>El globo del Team GO Rocket se despliega en sus cuatro pases (00:00, 06:00, 12:00 y 18:00) para activar solo los que te interesen.</span></div>
@@ -1804,15 +1812,15 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
 
-    <p style="font-size:10.5px;color:#999;margin:10px 14px 0;line-height:1.5">⭐ <b>Día de intercambios con suerte aumentada</b>: Pokémon que aún necesitan buena base (búscalos ese día para Lucky/buenos IVs). 📅 <b>Resto de días</b>: ya tienen base, solo intercambia para caramelos.</p>
+    <p style="font-size:10.5px;color:#999;margin:10px 14px 0;line-height:1.5">📅 <b>Filtro Normal (Caramelos)</b>: todos los que aún coleccionas; intercámbialos cualquier día por caramelos. 🍀 <b>Filtro Lucky (Bases)</b>: los que aún necesitan buena base; búscalos en el día de suerte aumentada.</p>
 
     <!-- BLOQUE RESTO DE DÍAS (siempre visible, es tu propio filtro) -->
     <div style="margin:16px 14px 0;padding:10px 12px;background:#eceff1;border-radius:10px 10px 0 0;border:1.5px solid #607d8b;border-bottom:none">
-      <span style="font-size:13px;font-weight:800;color:#37474f">📅 Filtro Resto de días (solo caramelos)</span>
+      <span style="font-size:13px;font-weight:800;color:#37474f">📅 Filtro Normal (Caramelos)</span>
     </div>
     <textarea id="filtro-text-resto" class="filtro-textarea" style="margin:0 14px;border-color:#607d8b;border-radius:0" oninput="onFiltroEdit('resto')" spellcheck="false"></textarea>
     <div class="filtro-toggles" id="filtro-toggles-resto" data-cat="resto"></div>
-    <button class="filtro-copy-btn" style="background:#607d8b;margin-top:8px" onclick="copyFiltroFinal('resto')">📋 Copiar Filtro Resto de días</button>
+    <button class="filtro-copy-btn" style="background:#607d8b;margin-top:8px" onclick="copyFiltroFinal('resto')">📋 Copiar Filtro Normal (Caramelos)</button>
 
     <div class="filtro-label" style="margin-top:20px">Añadir Pokémon (al filtro Resto):</div>
     <div class="filtro-add-row">
@@ -1822,14 +1830,14 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 
     <!-- BLOQUE VIERNES (requiere elegir con quién comerciar) -->
     <div style="margin:26px 14px 0;padding:10px 12px;background:#e3f2fd;border-radius:10px 10px 0 0;border:1.5px solid #1565c0;border-bottom:none;position:relative">
-      <span style="font-size:13px;font-weight:800;color:#0d47a1">⭐ Filtro · Día de intercambios con suerte aumentada</span>
+      <span style="font-size:13px;font-weight:800;color:#0d47a1">🍀 Filtro Lucky (Bases)</span>
       <div id="filtro-trade-with-label" style="font-size:11px;color:#1565c0;margin-top:4px;cursor:pointer;display:none" onclick="toggleTradeWithDropdown()">
         Comerciando con "<b id="filtro-trade-with-name"></b>" <span style="font-size:9px">▾</span>
       </div>
       <select id="filtro-trade-with-select" style="display:none;width:100%;margin-top:6px;padding:6px;border-radius:6px;border:1px solid #1565c0;font-size:12px" onchange="onTradeWithChange()"></select>
     </div>
     <div id="filtro-viernes-locked" style="margin:0 14px;padding:24px 16px;background:#fff;border:1.5px solid #1565c0;border-top:none;border-radius:0 0 10px 10px;text-align:center">
-      <p style="font-size:12px;color:#666;margin-bottom:10px">Elige con quién vas a comerciar para ver este filtro</p>
+      <p style="font-size:12px;color:#666;margin-bottom:10px">Elige con quién vas a comerciar para ver el Filtro Lucky</p>
       <select id="filtro-trade-with-select-initial" style="padding:8px 12px;border-radius:8px;border:1.5px solid #1565c0;font-size:13px;font-weight:700;color:#0d47a1" onchange="onTradeWithInitialSelect()">
         <option value="">Selecciona un entrenador...</option>
       </select>
@@ -1837,7 +1845,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <div id="filtro-viernes-unlocked" style="display:none">
       <textarea id="filtro-text-viernes" class="filtro-textarea" style="margin:0 14px;border-color:#1565c0;border-radius:0" oninput="onFiltroEdit('viernes')" spellcheck="false"></textarea>
       <div class="filtro-toggles" id="filtro-toggles-viernes" data-cat="viernes"></div>
-      <button class="filtro-copy-btn" style="background:#1565c0;margin-top:8px" onclick="copyFiltroFinal('viernes')">📋 Copiar filtro de suerte aumentada</button>
+      <button class="filtro-copy-btn" style="background:#1565c0;margin-top:8px" onclick="copyFiltroFinal('viernes')">📋 Copiar Filtro Lucky (Bases)</button>
     </div>
 
   </div>
@@ -5034,7 +5042,7 @@ function buildObjetivoData(profileName) {
     // "done" = all copies maxed (nothing pending and nothing to power up)
     const done = (pendingCount === 0 && dmaxSkills === 0);
 
-    // ── Categoría de trade: suerte aumentada vs Resto de días ──────────────────────
+    // ── Categoría de trade: Lucky (bases) vs Normal (caramelos) ──────────────────────
     // Los Oscuros no se pueden intercambiar, así que nunca piden "buena base".
     // Sigue buscando base mientras alguna copia normal/Dynamax no esté marcada
     // como "💎 Base perfecta" por el usuario.
@@ -5582,7 +5590,9 @@ let _objDataViernes = [];
 function buildBaseFilterFromData(data, cat) {
   if (!data || !data.length) return '';
   return data
-    .filter(d => !d.done && d.tradeCategory === cat)
+    // Normal (resto): TODOS los que aún coleccionas (siempre se intercambian por caramelos).
+    // Lucky (viernes): solo los que aún necesitan buena base.
+    .filter(d => !d.done && (cat === 'resto' ? true : d.tradeCategory === 'viernes'))
     .map(d => {
       const eng = (POKEDEX[d.id] && POKEDEX[d.id].en) || ENG_NAMES[d.id];
       if (!eng) return null;
@@ -6038,7 +6048,7 @@ const GUIA_ITEMS=[
   {k:'bestivs',ic:'📈',n:'Tracker IVs',d:'Todos tus Pokémon en una sola lista, puntuados por la calidad de sus IVs (los no obtenidos, en blanco y negro al final). Configura el peso de Ataque/Defensa/Vida con "Valores IVs", compara un ejemplar nuevo con "Comparar" y usa "Peores primero" para saber cuál cambiar o subir.'},
   {k:'objetivo',ic:'🎯',n:'Pokémon Objetivo',d:'Te dice qué pre-evoluciones capturar y cuántos caramelos (normales y XL) te faltan para completar tus equipos, con barras de progreso que se sincronizan entre dispositivos. Genera un filtro listo para copiar en Pokémon GO.'},
   {k:'calc',ic:'🔥',n:'Calculadora de Tipos',d:'Eficacia de tipos atacando y defendiendo: elige 1 o 2 tipos y ve al instante contra qué haces daño súper eficaz y qué te resiste. Imprescindible antes de una incursión difícil.'},
-  {k:'filtro',ic:'🛠️',n:'Crea tu filtro',d:'Filtros personalizados para el buscador de Pokémon GO: el filtro "Resto de días" (solo caramelos) y el filtro del "Día de intercambios con suerte aumentada" (buscar buena base), que se adapta automáticamente a la persona con la que comercias.'},
+  {k:'filtro',ic:'🛠️',n:'Crea tu filtro',d:'Filtros personalizados para el buscador de Pokémon GO: el "Filtro Normal (Caramelos)" con todos los que coleccionas y el "Filtro Lucky (Bases)" con los que aún necesitan buena base, que se adapta a la persona con la que comercias.'},
   {k:'megas',ic:'🍬',n:'Megas',d:'La rotación de Megaincursiones del mes, cómo conseguir megaenergía en Poképaradas y misiones, la regla de oro del compañero y la tabla de niveles Mega con sus costes y tiempos de espera.'},
   {k:'diarias',ic:'📋',n:'Diarias',d:'Checklist de tareas diarias ordenadas por esfuerzo y recompensa: racha de captura, regalos, globo Rocket, PvP, intercambios… tanto desde casa como al salir a caminar.'},
   {k:'pokeparadas',ic:'🎁',n:'Poképaradas!',d:'Las misiones de investigación de campo de la temporada actual con sus Pokémon de recompensa. Fija arriba tus favoritas para no perderlas de vista.'},
