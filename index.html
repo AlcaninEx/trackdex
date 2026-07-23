@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.984</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.985.b</p>
   </div>
 </div>
 
@@ -557,7 +557,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           </button>
         </div>
         <button class="home-btn-small" onclick="openNovedades()" style="background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          <span data-i18n="news">🆕 Novedades</span> · v0.984
+          <span data-i18n="news">🆕 Novedades</span> · v0.985.b
         </button>
       </div>
 
@@ -583,69 +583,69 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="bestivs-screen" class="screen">
   <div class="app-header" style="position:sticky;top:0;z-index:40">
     <button class="back-btn" onclick="show('main-screen');renderMain()">←</button>
-    <h1 style="flex:1">📈 Tracker IVs</h1>
+    <h1 style="flex:1" data-i18n="biv_title">📈 Tracker IVs</h1>
     <button class="filtro-info-btn" onclick="toggleBivInfo(true)">i</button>
   </div>
   <div class="tabs" style="position:static">
-    <button class="tab active" id="biv-tab-raid" onclick="switchBivTab('raid')">⚔️ Incursión</button>
-    <button class="tab" id="biv-tab-dmax" onclick="switchBivTab('dmax')">⚡ Dinamax</button>
+    <button class="tab active" id="biv-tab-raid" onclick="switchBivTab('raid')" data-i18n="biv_tab_raid">⚔️ Incursión</button>
+    <button class="tab" id="biv-tab-dmax" onclick="switchBivTab('dmax')" data-i18n="biv_tab_dmax">⚡ Dinamax</button>
   </div>
   <div style="background:#fff;border-bottom:1px solid #e0e0e0;padding:8px 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
     <div style="display:flex;flex-direction:column;gap:6px">
       <select id="biv-order" onchange="renderBestIvs()" style="padding:6px 10px;border-radius:8px;border:1.5px solid #5e35b1;font-size:12px;font-weight:700;color:#4527a0;background:#fff">
-        <option value="peores" selected>Peores primero</option>
-        <option value="mejores">Mejores primero</option>
-        <option value="sinivs">Sin IVs asignados</option>
-        <option value="noobt">No obtenidos</option>
+        <option value="peores" selected data-i18n="biv_ord_worst">Peores primero</option>
+        <option value="mejores" data-i18n="biv_ord_best">Mejores primero</option>
+        <option value="sinivs" data-i18n="biv_ord_noivs">Sin IVs asignados</option>
+        <option value="noobt" data-i18n="biv_ord_notobt">No obtenidos</option>
       </select>
       <select id="biv-team" onchange="renderBestIvs()" style="padding:6px 10px;border-radius:8px;border:1.5px solid #5e35b1;font-size:12px;font-weight:700;color:#4527a0;background:#fff">
-        <option value="all">Todos</option>
+        <option value="all" data-i18n="biv_team_all">Todos</option>
       </select>
-      <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#4527a0;cursor:pointer"><input type="checkbox" id="biv-byteam" onchange="renderBestIvs()"> 🗂️ Por equipos (tipos)</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#4527a0;cursor:pointer"><input type="checkbox" id="biv-byteam" onchange="renderBestIvs()"> <span data-i18n="biv_byteam">🗂️ Por equipos (tipos)</span></label>
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
-      <button onclick="toggleBivWeights(true)" style="padding:6px 12px;border-radius:8px;border:1.5px solid #5e35b1;font-size:12px;font-weight:700;color:#fff;background:#5e35b1;cursor:pointer">⚖️ Valores IVs</button>
+      <button onclick="toggleBivWeights(true)" style="padding:6px 12px;border-radius:8px;border:1.5px solid #5e35b1;font-size:12px;font-weight:700;color:#fff;background:#5e35b1;cursor:pointer" data-i18n="biv_weights_btn">⚖️ Valores IVs</button>
       <div id="biv-count" style="font-size:12px;font-weight:800;color:#555;padding-bottom:4px"></div>
     </div>
   </div>
   <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:6px 14px;background:#fff8e1;border-bottom:1px solid #ffe082">
-    <span style="font-size:11px;color:#795548;font-weight:700">Ocultar:</span>
-    <button id="biv-hide-shadow-btn" class="rank-hide-btn" onclick="toggleBivHide('shadow')">👤 Oscuros</button>
-    <button id="biv-hide-legend-btn" class="rank-hide-btn" onclick="toggleBivHide('legend')">🏆 Legendarios</button>
+    <span style="font-size:11px;color:#795548;font-weight:700" data-i18n="biv_hide">Ocultar:</span>
+    <button id="biv-hide-shadow-btn" class="rank-hide-btn" onclick="toggleBivHide('shadow')" data-i18n="biv_hide_shadow">👤 Oscuros</button>
+    <button id="biv-hide-legend-btn" class="rank-hide-btn" onclick="toggleBivHide('legend')" data-i18n="biv_hide_legend">🏆 Legendarios</button>
   </div>
   <div id="biv-list" style="padding:12px;background:#f0f0f0;min-height:70vh"></div>
   <div id="biv-weights-pop" onclick="toggleBivWeights(false)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:center;justify-content:center">
     <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:20px;max-width:340px;width:90%;max-height:80vh;overflow-y:auto">
-      <h3 style="margin:0 0 4px;font-size:16px;color:#4527a0">⚖️ Valores IVs</h3>
-      <p style="font-size:12px;color:#666;margin-bottom:12px">Ajusta el peso de cada IV para ordenar la lista.</p>
+      <h3 style="margin:0 0 4px;font-size:16px;color:#4527a0" data-i18n="biv_weights_btn">⚖️ Valores IVs</h3>
+      <p style="font-size:12px;color:#666;margin-bottom:12px" data-i18n="biv_weights_sub">Ajusta el peso de cada IV para ordenar la lista.</p>
       <div style="display:flex;gap:8px;margin-bottom:14px">
-        <button onclick="setBivPreset('default')" style="flex:1;padding:8px;border:1.5px solid #5e35b1;background:#fff;color:#4527a0;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">Por defecto</button>
-        <button onclick="setBivPreset('extremo')" style="flex:1;padding:8px;border:1.5px solid #d32f2f;background:#fff;color:#d32f2f;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer">Extremo</button>
+        <button onclick="setBivPreset('default')" style="flex:1;padding:8px;border:1.5px solid #5e35b1;background:#fff;color:#4527a0;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer" data-i18n="biv_preset_def">Por defecto</button>
+        <button onclick="setBivPreset('extremo')" style="flex:1;padding:8px;border:1.5px solid #d32f2f;background:#fff;color:#d32f2f;border-radius:10px;font-weight:700;font-size:12px;cursor:pointer" data-i18n="biv_preset_ext">Extremo</button>
       </div>
       <div style="margin-bottom:12px">
-        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#333;margin-bottom:4px"><span>⚔️ Ataque</span><span id="bivw-val-a">100</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#333;margin-bottom:4px"><span data-i18n="biv_atk">⚔️ Ataque</span><span id="bivw-val-a">100</span></div>
         <input id="bivw-a" type="range" min="-100" max="100" value="100" style="width:100%" oninput="bivWeightInput('a',this.value)">
       </div>
       <div style="margin-bottom:12px">
-        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#333;margin-bottom:4px"><span>🛡️ Defensa</span><span id="bivw-val-d">20</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#333;margin-bottom:4px"><span data-i18n="biv_def">🛡️ Defensa</span><span id="bivw-val-d">20</span></div>
         <input id="bivw-d" type="range" min="-100" max="100" value="20" style="width:100%" oninput="bivWeightInput('d',this.value)">
       </div>
       <div style="margin-bottom:16px">
-        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#333;margin-bottom:4px"><span>❤️ Vida</span><span id="bivw-val-h">30</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#333;margin-bottom:4px"><span data-i18n="biv_hp">❤️ Vida</span><span id="bivw-val-h">30</span></div>
         <input id="bivw-h" type="range" min="-100" max="100" value="30" style="width:100%" oninput="bivWeightInput('h',this.value)">
       </div>
-      <button onclick="toggleBivWeights(false)" style="width:100%;padding:10px;background:#5e35b1;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">Cerrar</button>
+      <button onclick="toggleBivWeights(false)" style="width:100%;padding:10px;background:#5e35b1;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer" data-i18n="close">Cerrar</button>
     </div>
   </div>
   <div id="biv-info-pop" onclick="toggleBivInfo(false)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:center;justify-content:center">
     <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:20px;max-width:340px;width:90%;max-height:80vh;overflow-y:auto">
-      <h3 style="margin:0 0 10px;font-size:16px;color:#4527a0">📈 ¿Cómo se ordena esta lista?</h3>
-      <p style="font-size:12.5px;line-height:1.6;color:#333;margin-bottom:10px">Cada Pokémon obtenido se puntúa con sus IVs ponderados por su importancia en raids:<br><b>Ataque ×100 · Defensa ×20 · Vida ×30</b> (ajustables con el botón "⚖️ Valores IVs")</p>
-      <p style="font-size:12px;line-height:1.6;color:#555;margin-bottom:8px"><b>⚔️ Ataque (100):</b> el rey absoluto. Un punto extra puede alcanzar un "breakpoint" (umbral donde el daño redondea hacia arriba), acumulando una diferencia masiva durante toda la batalla.</p>
-      <p style="font-size:12px;line-height:1.6;color:#555;margin-bottom:8px"><b>🛡️ Defensa (20):</b> doble filo — a menos daño recibido, más lento cargas energía. A veces un IV bajo de defensa es imperceptible o incluso óptimo.</p>
-      <p style="font-size:12px;line-height:1.6;color:#555;margin-bottom:8px"><b>❤️ Vida (35):</b> recibir daño genera energía para tu cargado. Más vida = aguantar un golpe más y soltar un último ataque cargado.</p>
-      <p style="font-size:12px;line-height:1.6;color:#333;margin-bottom:12px">En resumen: un 15/10/10 (At/Def/Vida) es mucho más útil que un 10/15/15. <b>Busca el 15 en Ataque por encima de todo.</b> Usa "Peores primero" para saber cuáles priorizar cambiar o subir (incluso con caramelos raros).</p>
-      <button onclick="toggleBivInfo(false)" style="width:100%;padding:10px;background:#5e35b1;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">Entendido</button>
+      <h3 style="margin:0 0 10px;font-size:16px;color:#4527a0" data-i18n="biv_info_title">📈 ¿Cómo se ordena esta lista?</h3>
+      <p style="font-size:12.5px;line-height:1.6;color:#333;margin-bottom:10px" data-i18n="biv_info_p0">Cada Pokémon obtenido se puntúa con sus IVs ponderados por su importancia en raids:<br><b>Ataque ×100 · Defensa ×20 · Vida ×30</b> (ajustables con el botón "⚖️ Valores IVs")</p>
+      <p style="font-size:12px;line-height:1.6;color:#555;margin-bottom:8px" data-i18n="biv_info_p1"><b>⚔️ Ataque (100):</b> el rey absoluto. Un punto extra puede alcanzar un "breakpoint" (umbral donde el daño redondea hacia arriba), acumulando una diferencia masiva durante toda la batalla.</p>
+      <p style="font-size:12px;line-height:1.6;color:#555;margin-bottom:8px" data-i18n="biv_info_p2"><b>🛡️ Defensa (20):</b> doble filo — a menos daño recibido, más lento cargas energía. A veces un IV bajo de defensa es imperceptible o incluso óptimo.</p>
+      <p style="font-size:12px;line-height:1.6;color:#555;margin-bottom:8px" data-i18n="biv_info_p3"><b>❤️ Vida (35):</b> recibir daño genera energía para tu cargado. Más vida = aguantar un golpe más y soltar un último ataque cargado.</p>
+      <p style="font-size:12px;line-height:1.6;color:#333;margin-bottom:12px" data-i18n="biv_info_p4">En resumen: un 15/10/10 (At/Def/Vida) es mucho más útil que un 10/15/15. <b>Busca el 15 en Ataque por encima de todo.</b> Usa "Peores primero" para saber cuáles priorizar cambiar o subir (incluso con caramelos raros).</p>
+      <button onclick="toggleBivInfo(false)" style="width:100%;padding:10px;background:#5e35b1;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer" data-i18n="understood">Entendido</button>
     </div>
   </div>
 </div>
@@ -659,31 +659,31 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
   </div>
   <div id="album-info-pop" onclick="toggleAlbumInfo(false)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:center;justify-content:center">
     <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:20px;max-width:340px;width:90%">
-      <h3 style="margin:0 0 10px;font-size:16px;color:#CC0000">ℹ️ ¿Para qué sirven las marcas?</h3>
-      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px"><b>✅ Obtenido:</b> indica que ya tienes ese Pokémon. Cuenta para tu progreso, se excluye de los filtros de captura y aparece en <b>Mejores IVs</b> con su comparador para valorar nuevos ejemplares.</p>
-      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px"><b>⭐ Maxed Lvl 50:</b> indica que ya lo subiste del todo. Deja de contar caramelos en <b>Pokémon Objetivo</b> y se quita de los filtros de intercambio: no necesitas más copias.</p>
-      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:12px"><b>💎 Base perfecta:</b> márcalo cuando el ejemplar que tienes ya te sirva y no quieras buscar uno mejor. Entonces sale del <b>Filtro Lucky (Bases)</b> y se queda solo en el <b>Filtro Normal (Caramelos)</b>. Los Pokémon Oscuros no lo tienen: no se pueden intercambiar.</p>
-      <button onclick="toggleAlbumInfo(false)" style="width:100%;padding:10px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">Entendido</button>
+      <h3 style="margin:0 0 10px;font-size:16px;color:#CC0000" data-i18n="album_info_title">ℹ️ ¿Para qué sirven las marcas?</h3>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px" data-i18n="album_info_p1"><b>✅ Obtenido:</b> indica que ya tienes ese Pokémon. Cuenta para tu progreso, se excluye de los filtros de captura y aparece en <b>Mejores IVs</b> con su comparador para valorar nuevos ejemplares.</p>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px" data-i18n="album_info_p2"><b>⭐ Maxed Lvl 50:</b> indica que ya lo subiste del todo. Deja de contar caramelos en <b>Pokémon Objetivo</b> y se quita de los filtros de intercambio: no necesitas más copias.</p>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:12px" data-i18n="album_info_p3"><b>💎 Base perfecta:</b> márcalo cuando el ejemplar que tienes ya te sirva y no quieras buscar uno mejor. Entonces sale del <b>Filtro Lucky (Bases)</b> y se queda solo en el <b>Filtro Normal (Caramelos)</b>. Los Pokémon Oscuros no lo tienen: no se pueden intercambiar.</p>
+      <button onclick="toggleAlbumInfo(false)" style="width:100%;padding:10px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer" data-i18n="understood">Entendido</button>
     </div>
   </div>
   <div class="tabs">
-    <button class="tab active" id="tab-a" onclick="switchTab('album')">Mis Pokémon</button>
-    <button class="tab" id="tab-r" onclick="switchTab('ranking')">Ranking DPS</button>
+    <button class="tab active" id="tab-a" onclick="switchTab('album')" data-i18n="detail_tab_mine">Mis Pokémon</button>
+    <button class="tab" id="tab-r" onclick="switchTab('ranking')" data-i18n="detail_tab_rank">Ranking DPS</button>
   </div>
   <div id="type-nav-strip"></div>
-  <div id="view-badge-wrap" class="view-badge-bar" style="display:none">👁 Solo lectura — <span id="view-name"></span></div>
+  <div id="view-badge-wrap" class="view-badge-bar" style="display:none"><span data-i18n="detail_readonly">👁 Solo lectura —</span> <span id="view-name"></span></div>
   <div id="album-panel">
   <div class="album-subtabs">
-    <button class="album-subtab active" id="atab-raid" onclick="switchAlbumTab('raid')">⚔️ Incursión</button>
-    <button class="album-subtab" id="atab-dmax" onclick="switchAlbumTab('dmax')">⚡ Dynamax</button>
+    <button class="album-subtab active" id="atab-raid" onclick="switchAlbumTab('raid')" data-i18n="biv_tab_raid">⚔️ Incursión</button>
+    <button class="album-subtab" id="atab-dmax" onclick="switchAlbumTab('dmax')" data-i18n="tab_dynamax">⚡ Dynamax</button>
   </div>
   <div id="apanel-raid"><div class="album-wrap" id="album-list"></div></div>
   <div id="apanel-dmax" style="display:none"><div class="album-wrap" id="album-list-dmax"></div></div>
 </div>
   <div id="ranking-panel" style="display:none">
   <div style="display:flex;border-bottom:2px solid #e0e0e0;background:#fff">
-    <button id="rtab-raid" class="tab active" onclick="switchRankTab('raid')" style="flex:1;font-size:12px;padding:8px">⚔️ Incursiones</button>
-    <button id="rtab-dmax" class="tab" onclick="switchRankTab('dmax')" style="flex:1;font-size:12px;padding:8px">⚡ Dynamax</button>
+    <button id="rtab-raid" class="tab active" onclick="switchRankTab('raid')" style="flex:1;font-size:12px;padding:8px" data-i18n="detail_rank_raid">⚔️ Incursiones</button>
+    <button id="rtab-dmax" class="tab" onclick="switchRankTab('dmax')" style="flex:1;font-size:12px;padding:8px" data-i18n="tab_dynamax">⚡ Dynamax</button>
   </div>
   <div id="rpanel-raid">
     <div id="rank-mega-toggle"></div>
@@ -701,29 +701,29 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="typechart-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="show('profile-screen');document.getElementById('home-menu').style.display='block'">←</button>
-    <h1>Eficacia de Tipos</h1>
+    <h1 data-i18n="tc_title">Eficacia de Tipos</h1>
   </div>
   <div style="padding:12px;background:#f0f0f0;min-height:100vh">
 
     <!-- ATTACKING SECTION -->
     <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,.08);min-height:200px">
-      <p style="font-weight:800;font-size:15px;text-align:center;margin-bottom:12px;text-decoration:underline">⚔️ Atacando</p>
+      <p style="font-weight:800;font-size:15px;text-align:center;margin-bottom:12px;text-decoration:underline" data-i18n="tc_attacking">⚔️ Atacando</p>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div><p style="font-size:11px;font-weight:700;color:#888;text-align:center;margin-bottom:6px">x0.625 (poco eficaz)</p><div id="tc-atk-resisted" class="tc-ball-col"></div></div>
+        <div><p style="font-size:11px;font-weight:700;color:#888;text-align:center;margin-bottom:6px" data-i18n="tc_notvery">x0.625 (poco eficaz)</p><div id="tc-atk-resisted" class="tc-ball-col"></div></div>
         <div id="tc-atk-neutral" style="display:none"></div>
-        <div><p style="font-size:11px;font-weight:700;color:#e53935;text-align:center;margin-bottom:6px">x1.6 (super eficaz)</p><div id="tc-atk-super" class="tc-ball-col"></div></div>
+        <div><p style="font-size:11px;font-weight:700;color:#e53935;text-align:center;margin-bottom:6px" data-i18n="tc_super">x1.6 (super eficaz)</p><div id="tc-atk-super" class="tc-ball-col"></div></div>
       </div>
     </div>
 
     <!-- TYPE SELECTOR -->
-    <p style="font-size:12px;color:#666;text-align:center;margin-bottom:8px">Selecciona 1 o 2 tipos (toca para seleccionar/deseleccionar)</p>
+    <p style="font-size:12px;color:#666;text-align:center;margin-bottom:8px" data-i18n="tc_select">Selecciona 1 o 2 tipos (toca para seleccionar/deseleccionar)</p>
     <div id="tc-type-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:16px"></div>
 
     <!-- DEFENDING SECTION -->
     <div style="background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 6px rgba(0,0,0,.08);min-height:220px">
-      <p style="font-weight:800;font-size:15px;text-align:center;margin-bottom:12px;text-decoration:underline">🛡️ Defendiendo</p>
+      <p style="font-weight:800;font-size:15px;text-align:center;margin-bottom:12px;text-decoration:underline" data-i18n="tc_defending">🛡️ Defendiendo</p>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px">
-        <div><p style="font-size:10px;font-weight:700;color:#43a047;text-align:center;margin-bottom:6px">x0.390 (doble resist.)</p><div id="tc-def-immune" class="tc-ball-col"></div></div>
+        <div><p style="font-size:10px;font-weight:700;color:#43a047;text-align:center;margin-bottom:6px" data-i18n="tc_doubleresist">x0.390 (doble resist.)</p><div id="tc-def-immune" class="tc-ball-col"></div></div>
         <div><p style="font-size:10px;font-weight:700;color:#66bb6a;text-align:center;margin-bottom:6px">x0.625</p><div id="tc-def-resisted" class="tc-ball-col"></div></div>
         <div><p style="font-size:10px;font-weight:700;color:#ef5350;text-align:center;margin-bottom:6px">x1.6</p><div id="tc-def-super" class="tc-ball-col"></div></div>
         <div><p style="font-size:10px;font-weight:700;color:#b71c1c;text-align:center;margin-bottom:6px">x2.56</p><div id="tc-def-double" class="tc-ball-col"></div></div>
@@ -739,7 +739,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="megaguide-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="show('profile-screen');document.getElementById('home-menu').style.display='block'">←</button>
-    <h1>🍬 Megas</h1>
+    <h1 data-i18n="megas">🍬 Megas</h1>
   </div>
   <div style="padding:12px;background:#f0f0f0;min-height:100vh">
 
@@ -747,201 +747,201 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <!-- DEV MODE TOGGLE (solo visible para desarrollador) -->
     <div id="mega-dev-bar" style="display:none;background:#263238;border-radius:12px;padding:12px 14px;margin-bottom:10px">
       <div style="display:flex;align-items:center;justify-content:space-between">
-        <span style="font-size:13px;font-weight:800;color:#fff">🛠️ Modo Desarrollador</span>
+        <span style="font-size:13px;font-weight:800;color:#fff" data-i18n="mega_dev_title">🛠️ Modo Desarrollador</span>
         <label class="sw"><input type="checkbox" id="mega-dev-toggle" onchange="toggleMegaDevMode(this.checked)"><span class="sl"></span></label>
       </div>
-      <p style="font-size:10px;color:#90a4ae;margin-top:6px">Activa para marcar qué Megas están en rotación. Los cambios se guardan para todos los jugadores.</p>
+      <p style="font-size:10px;color:#90a4ae;margin-top:6px" data-i18n="mega_dev_desc">Activa para marcar qué Megas están en rotación. Los cambios se guardan para todos los jugadores.</p>
     </div>
 
     <!-- MEGA RAIDS SECTION (dinámico) -->
     <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
-      <p style="font-size:14px;font-weight:800;margin-bottom:4px">🥊 Megaincursiones actuales</p>
-      <p style="font-size:11px;color:#888;margin-bottom:10px" id="mega-raids-subtitle">Las Megas en incursión este mes. La activa ahora aparece destacada.</p>
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px" data-i18n="mega_raids_title">🥊 Megaincursiones actuales</p>
+      <p style="font-size:11px;color:#888;margin-bottom:10px" id="mega-raids-subtitle" data-i18n="mega_raids_subtitle">Las Megas en incursión este mes. La activa ahora aparece destacada.</p>
       <div id="mega-raids-grid" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"></div>
     </div>
 
     <!-- ROTACIÓN GENERAL SECTION (dinámico) -->
     <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
-      <p style="font-size:14px;font-weight:800;margin-bottom:4px">🏙️ Megaenergía en Poképaradas</p>
-      <p style="font-size:11px;color:#888;margin-bottom:12px">Misiones fijas que dan megaenergía. Busca siempre hueco libre antes de girar una nueva Poképarada.</p>
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px" data-i18n="mega_energy_title">🏙️ Megaenergía en Poképaradas</p>
+      <p style="font-size:11px;color:#888;margin-bottom:12px" data-i18n="mega_energy_desc">Misiones fijas que dan megaenergía. Busca siempre hueco libre antes de girar una nueva Poképarada.</p>
 
-      <p style="font-size:12px;font-weight:800;color:#2e7d32;margin-bottom:8px">🎯 Por capturar 10 de tipo (10 Megaenergía)</p>
+      <p style="font-size:12px;font-weight:800;color:#2e7d32;margin-bottom:8px" data-i18n="mega_capture10">🎯 Por capturar 10 de tipo (10 Megaenergía)</p>
       <div id="mega-capture-missions"></div>
 
-      <p style="font-size:12px;font-weight:800;color:#1565c0;margin:16px 0 8px">💪 Por dar más poder / Power-Up</p>
+      <p style="font-size:12px;font-weight:800;color:#1565c0;margin:16px 0 8px" data-i18n="mega_powerup">💪 Por dar más poder / Power-Up</p>
       <div id="mega-powerup-missions"></div>
     </div>
 
     <!-- MISIONES DE GRUPO -->
     <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
-      <p style="font-size:14px;font-weight:800;margin-bottom:4px">👥 Misiones de Grupo (Party Play)</p>
-      <p style="font-size:11px;color:#888;margin-bottom:10px">20 Megaenergía por "Ganar 2 incursiones" o "Derrotar 3 Reclutas Rocket"</p>
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px" data-i18n="mega_group_title">👥 Misiones de Grupo (Party Play)</p>
+      <p style="font-size:11px;color:#888;margin-bottom:10px" data-i18n="mega_group_desc">20 Megaenergía por "Ganar 2 incursiones" o "Derrotar 3 Reclutas Rocket"</p>
       <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
           <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
           <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Charizard</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
+          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center" data-i18n="active_badge">ACTIVA</div>
         </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
           <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
           <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Blastoise</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
+          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center" data-i18n="active_badge">ACTIVA</div>
         </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
           <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/15.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
           <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Beedrill</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
+          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center" data-i18n="active_badge">ACTIVA</div>
         </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
           <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/18.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
           <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Pidgeot</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
+          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center" data-i18n="active_badge">ACTIVA</div>
         </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
           <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/130.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
           <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Gyarados</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
+          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center" data-i18n="active_badge">ACTIVA</div>
         </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
           <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
           <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Gengar</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
+          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center" data-i18n="active_badge">ACTIVA</div>
         </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
           <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/127.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
           <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Pinsir</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
+          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center" data-i18n="active_badge">ACTIVA</div>
         </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
           <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/359.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
           <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Absol</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
+          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center" data-i18n="active_badge">ACTIVA</div>
         </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
           <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #CC0000;">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/302.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
           <div style="font-size:9px;font-weight:700;text-align:center;color:#333;max-width:60px;line-height:1.2">Sableye</div>
-          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>
+          <div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center" data-i18n="active_badge">ACTIVA</div>
         </div></div>
     </div>
 
     <!-- ESPECIALES -->
     <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
-      <p style="font-size:14px;font-weight:800;margin-bottom:4px">⚠️ Métodos Especiales</p>
-      <p style="font-size:11px;color:#888;margin-bottom:10px">Estos NO están en la rotación normal — requieren método específico</p>
+      <p style="font-size:14px;font-weight:800;margin-bottom:4px" data-i18n="mega_special_title">⚠️ Métodos Especiales</p>
+      <p style="font-size:11px;color:#888;margin-bottom:10px" data-i18n="mega_special_desc">Estos NO están en la rotación normal — requieren método específico</p>
       <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
           <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10090.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
           <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Beedrill</div>
-          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2">Girando Fotodiscos de Gimnasios</div>
+          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2" data-i18n="mega_special_photodisc">Girando Fotodiscos de Gimnasios</div>
         </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
           <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10078.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
           <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Primal Groudon</div>
-          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2">Incursiones Primigenias (eventos)</div>
+          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2" data-i18n="mega_special_primal">Incursiones Primigenias (eventos)</div>
         </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
           <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10077.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
           <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Primal Kyogre</div>
-          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2">Incursiones Primigenias (eventos)</div>
+          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2" data-i18n="mega_special_primal">Incursiones Primigenias (eventos)</div>
         </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
           <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10079.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
           <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Rayquaza</div>
-          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2">Incursiones Élite + Meteorito</div>
+          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2" data-i18n="mega_special_elite">Incursiones Élite + Meteorito</div>
         </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
           <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10043.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
           <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Mewtwo X</div>
-          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2">Super Mega Raids (GO Fest 2026)</div>
+          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2" data-i18n="mega_special_gofest">Super Mega Raids (GO Fest 2026)</div>
         </div><div style="display:flex;flex-direction:column;align-items:center;gap:2px">
           <div style="width:54px;height:54px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border:2px solid #ddd;opacity:.35;filter:grayscale(.7)">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10044.png" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
           </div>
           <div style="font-size:9px;font-weight:700;text-align:center;color:#aaa;max-width:60px;line-height:1.2">Mewtwo Y</div>
-          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2">Super Mega Raids (GO Fest 2026)</div>
+          <div style="font-size:9px;color:#666;text-align:center;margin-top:2px;max-width:70px;line-height:1.2" data-i18n="mega_special_gofest">Super Mega Raids (GO Fest 2026)</div>
         </div></div>
     </div>
 
     <!-- REGLA DE ORO -->
     <div style="background:#fff3e0;border-radius:12px;padding:14px;margin-bottom:10px;border-left:4px solid #f9a825">
-      <p style="font-size:13px;font-weight:800;margin-bottom:6px">💡 Regla de Oro del Compañero</p>
-      <p style="font-size:12px;color:#555;line-height:1.6">Una vez hayas registrado su Megaevolución <b>al menos una vez</b> en tu Pokédex, puedes poner cualquier miembro de su familia como <b>Compañero</b> y ganarás <b>5 Megaenergías por km caminado</b> (cada vez que encuentre un caramelo).</p>
+      <p style="font-size:13px;font-weight:800;margin-bottom:6px" data-i18n="mega_golden_title">💡 Regla de Oro del Compañero</p>
+      <p style="font-size:12px;color:#555;line-height:1.6" data-i18n="mega_golden_desc">Una vez hayas registrado su Megaevolución <b>al menos una vez</b> en tu Pokédex, puedes poner cualquier miembro de su familia como <b>Compañero</b> y ganarás <b>5 Megaenergías por km caminado</b> (cada vez que encuentre un caramelo).</p>
     </div>
 
     <!-- POKEPARADAS MISIONES FIJAS -->
     <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
-      <p style="font-size:14px;font-weight:800;margin-bottom:8px">📍 Misiones Fijas en Poképaradas</p>
+      <p style="font-size:14px;font-weight:800;margin-bottom:8px" data-i18n="mega_stops_title">📍 Misiones Fijas en Poképaradas</p>
       <div style="background:#fff8e1;border-left:4px solid #f9a825;border-radius:8px;padding:10px 12px;margin-bottom:8px">
-        <p style="font-weight:700;font-size:12px">⚡ "Potencia un Pokémon 5 veces" → 10 Megaenergía aleatoria de:</p>
+        <p style="font-weight:700;font-size:12px" data-i18n="mega_stops_p1">⚡ "Potencia un Pokémon 5 veces" → 10 Megaenergía aleatoria de:</p>
         <p style="font-size:11px;color:#555;margin-top:4px">Venusaur · Charizard · Blastoise · Beedrill · Pidgeot · Aggron · Manectric</p>
       </div>
       <div style="background:#e8f5e9;border-left:4px solid #43a047;border-radius:8px;padding:10px 12px">
-        <p style="font-weight:700;font-size:12px;margin-bottom:6px">🎯 Misiones de captura:</p>
-        <p style="font-size:11px">🔥 10 tipo Fuego → <b>Charizard o Blaziken</b></p>
-        <p style="font-size:11px">🌿 10 tipo Planta → <b>Venusaur o Sceptile</b></p>
-        <p style="font-size:11px">💧 10 tipo Agua → <b>Blastoise o Swampert</b></p>
-        <p style="font-size:11px">⭕ 10 tipo Normal → <b>Pidgeot</b></p>
+        <p style="font-weight:700;font-size:12px;margin-bottom:6px" data-i18n="mega_capture_title">🎯 Misiones de captura:</p>
+        <p style="font-size:11px" data-i18n="mega_capture_fire">🔥 10 tipo Fuego → <b>Charizard o Blaziken</b></p>
+        <p style="font-size:11px" data-i18n="mega_capture_grass">🌿 10 tipo Planta → <b>Venusaur o Sceptile</b></p>
+        <p style="font-size:11px" data-i18n="mega_capture_water">💧 10 tipo Agua → <b>Blastoise o Swampert</b></p>
+        <p style="font-size:11px" data-i18n="mega_capture_normal">⭕ 10 tipo Normal → <b>Pidgeot</b></p>
       </div>
     </div>
 
     <!-- MISIONES FIJAS EN POKEPARADAS -->
     <!-- INFO MEGAEVOLUCIONES TABLA -->
     <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
-      <p style="font-size:14px;font-weight:800;margin-bottom:10px">ℹ️ Información sobre MegaEvoluciones</p>
-      <p style="font-size:12px;font-weight:700;color:#444;margin-bottom:8px">Requisitos y tiempos de espera por nivel</p>
+      <p style="font-size:14px;font-weight:800;margin-bottom:10px" data-i18n="mega_info_title">ℹ️ Información sobre MegaEvoluciones</p>
+      <p style="font-size:12px;font-weight:700;color:#444;margin-bottom:8px" data-i18n="mega_info_sub">Requisitos y tiempos de espera por nivel</p>
       <div style="overflow-x:auto">
         <table style="width:100%;border-collapse:collapse;font-size:10.5px">
           <thead>
             <tr style="background:#f5f5f5">
-              <th style="padding:6px 5px;text-align:left;border:1px solid #e0e0e0;font-weight:800">Nivel</th>
-              <th style="padding:6px 5px;text-align:center;border:1px solid #e0e0e0;font-weight:800">Mega-Evos necesarias</th>
-              <th style="padding:6px 5px;text-align:center;border:1px solid #e0e0e0;font-weight:800">Espera para GRATIS</th>
-              <th style="padding:6px 5px;text-align:left;border:1px solid #e0e0e0;font-weight:800">Descuento si lo haces antes</th>
+              <th style="padding:6px 5px;text-align:left;border:1px solid #e0e0e0;font-weight:800" data-i18n="mega_th_level">Nivel</th>
+              <th style="padding:6px 5px;text-align:center;border:1px solid #e0e0e0;font-weight:800" data-i18n="mega_th_needed">Mega-Evos necesarias</th>
+              <th style="padding:6px 5px;text-align:center;border:1px solid #e0e0e0;font-weight:800" data-i18n="mega_th_wait">Espera para GRATIS</th>
+              <th style="padding:6px 5px;text-align:left;border:1px solid #e0e0e0;font-weight:800" data-i18n="mega_th_discount">Descuento si lo haces antes</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700">Base</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700" data-i18n="mega_row_base">Base</td>
               <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">1</td>
-              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">7 días</td>
-              <td style="padding:6px 5px;border:1px solid #e0e0e0">Coste base reducido (ej. 40 de energía)</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center" data-i18n="mega_wait_7">7 días</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0" data-i18n="mega_disc_base">Coste base reducido (ej. 40 de energía)</td>
             </tr>
             <tr style="background:#fafafa">
-              <td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700">Alto</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700" data-i18n="mega_row_high">Alto</td>
               <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">7</td>
-              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">5 días</td>
-              <td style="padding:6px 5px;border:1px solid #e0e0e0">50% de descuento sobre el nivel base</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center" data-i18n="mega_wait_5">5 días</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0" data-i18n="mega_disc_high">50% de descuento sobre el nivel base</td>
             </tr>
             <tr>
-              <td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700">Máximo</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700" data-i18n="mega_row_max">Máximo</td>
               <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">30</td>
-              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">3 días</td>
-              <td style="padding:6px 5px;border:1px solid #e0e0e0">75% de descuento sobre el nivel base</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center" data-i18n="mega_wait_3">3 días</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0" data-i18n="mega_disc_max">75% de descuento sobre el nivel base</td>
             </tr>
             <tr style="background:#fff8e1">
-              <td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700">Super Max</td>
-              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">Especial*</td>
-              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center">24 h</td>
-              <td style="padding:6px 5px;border:1px solid #e0e0e0">Descuento casi total</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;font-weight:700" data-i18n="mega_row_supermax">Super Max</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center" data-i18n="mega_special_needed">Especial*</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0;text-align:center" data-i18n="mega_wait_24h">24 h</td>
+              <td style="padding:6px 5px;border:1px solid #e0e0e0" data-i18n="mega_disc_supermax">Descuento casi total</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div style="background:#fff3e0;border-left:3px solid #ff9800;border-radius:0 8px 8px 0;padding:10px 12px;margin-top:12px;font-size:11px;color:#5d4037;line-height:1.6">
+      <div style="background:#fff3e0;border-left:3px solid #ff9800;border-radius:0 8px 8px 0;padding:10px 12px;margin-top:12px;font-size:11px;color:#5d4037;line-height:1.6" data-i18n="mega_supermax_note">
         <b>⚠️ Cómo llegar a Super Max:</b> Para desbloquear este cuarto nivel, primero debes tener al Pokémon en Nivel Máximo (nivel 3). Después, ya no te servirá seguir megaevolucionándolo día a día; tendrás que gastar un pago único de <b>5.000 de Megaenergía</b> directamente para potenciarlo a Super Max. Para acumular esa cantidad, la mejor opción es farmear las incursiones <b>Super Mega Raids</b>.
       </div>
     </div>
@@ -952,9 +952,9 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <!-- MODAL BIENVENIDA -->
 <div id="modal-welcome" class="modal-overlay" style="display:none;z-index:600">
   <div class="modal-box" style="max-width:360px;text-align:center">
-    <h3 style="font-size:20px;color:#CC0000;margin-bottom:12px">👋 ¡Bienvenido a TrackDex!</h3>
-    <p style="font-size:13.5px;color:#444;line-height:1.7;text-align:left;margin-bottom:6px">Esta app te ayuda a <b>mejorar tus equipos Pokémon para incursiones</b>: lleva el control de cuáles tienes y cuáles te faltan, crea automáticamente <b>filtros para intercambiar con tus amigos</b> y ten siempre a la vista qué Pokémon necesitas priorizar… entre muchas otras cosas.</p>
-    <p style="font-size:13.5px;color:#444;line-height:1.7;text-align:left">Ve a tu <b>Perfil</b> y toca <b>«📖 Guía TrackDex»</b> para descubrir todo lo que puedes hacer.</p>
+    <h3 style="font-size:20px;color:#CC0000;margin-bottom:12px" data-i18n="mod_welcome_title">👋 ¡Bienvenido a TrackDex!</h3>
+    <p style="font-size:13.5px;color:#444;line-height:1.7;text-align:left;margin-bottom:6px" data-i18n="mod_welcome_p1">Esta app te ayuda a <b>mejorar tus equipos Pokémon para incursiones</b>: lleva el control de cuáles tienes y cuáles te faltan, crea automáticamente <b>filtros para intercambiar con tus amigos</b> y ten siempre a la vista qué Pokémon necesitas priorizar… entre muchas otras cosas.</p>
+    <p style="font-size:13.5px;color:#444;line-height:1.7;text-align:left" data-i18n="mod_welcome_p2">Ve a tu <b>Perfil</b> y toca <b>«📖 Guía TrackDex»</b> para descubrir todo lo que puedes hacer.</p>
     <button id="welcome-close-btn" disabled style="display:block;width:100%;margin-top:16px;padding:13px;border:none;border-radius:10px;font-size:16px;font-weight:800;color:#fff;background:#CC0000;cursor:not-allowed;opacity:.55">Cerrar (6)</button>
   </div>
 </div>
@@ -962,8 +962,8 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <!-- MODAL GUIA TRACKDEX -->
 <div id="modal-guia" class="modal-overlay" style="display:none" onclick="document.getElementById('modal-guia').style.display='none'">
   <div class="modal-box" style="max-width:390px" onclick="event.stopPropagation()">
-    <div class="modal-title"><span>📖 Guía TrackDex</span><button class="modal-close" onclick="document.getElementById('modal-guia').style.display='none'">✕</button></div>
-    <p style="font-size:12px;color:#888;margin-bottom:12px">Toca cada función para saber qué hace. Las marcadas con ✅ ya las conoces.</p>
+    <div class="modal-title"><span data-i18n="mod_guia_title">📖 Guía TrackDex</span><button class="modal-close" onclick="document.getElementById('modal-guia').style.display='none'">✕</button></div>
+    <p style="font-size:12px;color:#888;margin-bottom:12px" data-i18n="mod_guia_sub">Toca cada función para saber qué hace. Las marcadas con ✅ ya las conoces.</p>
     <div id="guia-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
   </div>
 </div>
@@ -971,7 +971,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
   <div class="modal-box" style="max-width:340px" onclick="event.stopPropagation()">
     <h3 id="guia-item-title" style="font-size:17px;color:#CC0000;margin-bottom:10px"></h3>
     <p id="guia-item-desc" style="font-size:13px;color:#444;line-height:1.7;margin-bottom:14px"></p>
-    <button onclick="closeGuiaItem()" style="width:100%;padding:11px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">✅ Entendido</button>
+    <button onclick="closeGuiaItem()" style="width:100%;padding:11px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer" data-i18n="mod_guia_understood">✅ Entendido</button>
   </div>
 </div>
 
@@ -979,20 +979,20 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="modal-info" class="modal-overlay" style="display:none" onclick="closeInfo(event)">
   <div class="modal-box" style="max-width:390px">
     <div class="modal-title">
-      <span>ℹ️ ¿Para qué sirve esta app?</span>
+      <span data-i18n="mod_info_title">ℹ️ ¿Para qué sirve esta app?</span>
       <button class="modal-close" onclick="closeInfoBtn()">✕</button>
     </div>
 
-    <p style="font-size:13px;color:#444;line-height:1.6;margin-bottom:14px">
+    <p style="font-size:13px;color:#444;line-height:1.6;margin-bottom:14px" data-i18n="mod_info_p1">
       <b>TrackDex</b> es un álbum personal para saber qué Pokémon tienes y cuáles te faltan de los <b>mejores atacantes por tipo</b> en incursiones. El objetivo es ayudarte a <b>invertir tus polvos de forma eficiente</b> y saber qué Pokémon vale la pena subir.
     </p>
 
     <div style="border-top:1px solid #eee;padding-top:12px;margin-bottom:4px">
-      <p style="font-size:12px;font-weight:700;color:#CC0000;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em">🔗 Enlaces útiles</p>
+      <p style="font-size:12px;font-weight:700;color:#CC0000;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em" data-i18n="mod_info_links_title">🔗 Enlaces útiles</p>
       <a href="https://db.pokemongohub.net/best/attackers-per-type" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f5f5f5;border-radius:8px;text-decoration:none;margin-bottom:6px">
         <span style="font-size:20px">⚔️</span>
         <div>
-          <div style="font-size:13px;font-weight:700;color:#222">Mejores atacantes por tipo</div>
+          <div style="font-size:13px;font-weight:700;color:#222" data-i18n="mod_info_link1">Mejores atacantes por tipo</div>
           <div style="font-size:11px;color:#888">db.pokemongohub.net</div>
         </div>
         <span style="margin-left:auto;color:#aaa;font-size:16px">›</span>
@@ -1000,7 +1000,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <a href="https://db.pokemongohub.net/best/dynamax-attackers-per-type" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f5f5f5;border-radius:8px;text-decoration:none;margin-bottom:6px">
         <span style="font-size:20px">⚡</span>
         <div>
-          <div style="font-size:13px;font-weight:700;color:#222">Mejores Dinamax por tipo</div>
+          <div style="font-size:13px;font-weight:700;color:#222" data-i18n="mod_info_link2">Mejores Dinamax por tipo</div>
           <div style="font-size:11px;color:#888">db.pokemongohub.net</div>
         </div>
         <span style="margin-left:auto;color:#aaa;font-size:16px">›</span>
@@ -1008,8 +1008,8 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <a href="https://snacknap.com/max-battles" target="_blank" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f5f5f5;border-radius:8px;text-decoration:none">
         <span style="font-size:20px">🗺️</span>
         <div>
-          <div style="font-size:13px;font-weight:700;color:#222">Rotación actual de Dinamax</div>
-          <div style="font-size:11px;color:#888">snacknap.com · actualizado cada 5 min</div>
+          <div style="font-size:13px;font-weight:700;color:#222" data-i18n="mod_info_link3">Rotación actual de Dinamax</div>
+          <div style="font-size:11px;color:#888" data-i18n="mod_info_link3_sub">snacknap.com · actualizado cada 5 min</div>
         </div>
         <span style="margin-left:auto;color:#aaa;font-size:16px">›</span>
       </a>
@@ -1018,9 +1018,9 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 
 
     <div style="border-top:1px solid #eee;padding-top:12px;margin-bottom:12px">
-      <p style="font-size:12px;font-weight:700;color:#1a237e;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">⚡ Dynamax y Mega Evolución</p>
+      <p style="font-size:12px;font-weight:700;color:#1a237e;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em" data-i18n="mod_info_dmax_title">⚡ Dynamax y Mega Evolución</p>
       <div style="background:#e8eaf6;border-radius:8px;padding:10px 12px;border-left:3px solid #3949ab;margin-bottom:8px">
-        <p style="font-size:12px;color:#444;line-height:1.7;margin:0">
+        <p style="font-size:12px;color:#444;line-height:1.7;margin:0" data-i18n="mod_info_dmax_p">
           <b>Un Pokémon Dynamax puede hacer Mega Evolución</b>, pero no puede estar en ambas formas a la vez.<br>
           Mientras dure la Mega Evolución <b>(8 horas)</b>, ese Pokémon <b>no puede participar en combates Dynamax</b>.<br>
           <span style="color:#555">💡 Solución urgente: Mega Evoluciona otro Pokémon de tu equipo. Al solo poder tener un Mega activo, el primero vuelve automáticamente a su forma normal y ya puede entrar en Max Battles.</span>
@@ -1028,21 +1028,21 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       </div>
     </div>
     <div style="border-top:1px solid #eee;padding-top:12px;margin-bottom:12px">
-      <p style="font-size:12px;font-weight:700;color:#CC0000;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">💰 El coste real de subir un Pokémon</p>
+      <p style="font-size:12px;font-weight:700;color:#CC0000;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em" data-i18n="mod_info_cost_title">💰 El coste real de subir un Pokémon</p>
       <div style="background:#fff8e1;border-radius:8px;padding:10px 12px;border-left:3px solid #f9a825;margin-bottom:8px">
-        <p style="font-size:12px;color:#444;line-height:1.7;margin:0">
+        <p style="font-size:12px;color:#444;line-height:1.7;margin:0" data-i18n="mod_info_cost_p">
           <b>Nivel 1 → 40:</b> ~272.500 polvos · 273 caramelos<br>
           <b>Nivel 40 → 50:</b> ~296.000 polvos · 296 caramelos XL<br>
           <b>Total nivel 1 → 50: ~568.500 polvos</b><br>
           <span style="color:#888">Shadow: +20% polvos y caramelos · Lucky: −50% polvos</span>
         </p>
       </div>
-      <p style="font-size:12px;color:#555;line-height:1.6">
+      <p style="font-size:12px;color:#555;line-height:1.6" data-i18n="mod_info_cost_p2">
         Subir un solo Pokémon al nivel 50 cuesta más de medio millón de polvos. Por eso tiene sentido <b>esperar a tener la versión Dinamax</b> si existe: obtienes el mismo Pokémon con la capacidad extra de los Max Battles sin gastar polvos de más en la versión normal.
       </p>
     </div>
 
-          <p style="font-size:12px;color:#555;line-height:1.6">
+          <p style="font-size:12px;color:#555;line-height:1.6" data-i18n="mod_info_ivs_p">
         La diferencia entre un Pokémon con IVs perfectos y uno con IVs bajos es <b>prácticamente irrelevante en raids</b>. Para atacantes Mega, Shadow o Dinamax con mucho ataque base, un IV de ataque 10 vs 15 supone menos del 2% de daño extra. <b>Es mucho más importante tener el Pokémon correcto que tener el hundo perfecto</b>. No descartes un buen atacante por tener IVs imperfectos.
       </p>
     </div>
@@ -1053,22 +1053,22 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="diarias-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="closeDiarias()">←</button>
-    <h1>📋 Tareas Diarias</h1>
+    <h1 data-i18n="daily">📋 Tareas Diarias</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:20px">
 
     <!-- DESDE CASA -->
     <div class="diarias-section">
-      <div class="diarias-section-header casa">🏠 Desde Casa</div>
+      <div class="diarias-section-header casa" data-i18n="daily_home">🏠 Desde Casa</div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">⭐ Captura diaria / Girar PokéParada <span class="diff diff-easy">Fácil · 1 min</span></div>
-        <div class="diarias-item-body">Activa la racha de polvos estelares. Solo necesitas capturar 1 Pokémon o girar 1 PokéParada al día.</div>
+        <div class="diarias-item-title" data-i18n="daily_h1_t">⭐ Captura diaria / Girar PokéParada <span class="diff diff-easy">Fácil · 1 min</span></div>
+        <div class="diarias-item-body" data-i18n="daily_h1_b">Activa la racha de polvos estelares. Solo necesitas capturar 1 Pokémon o girar 1 PokéParada al día.</div>
       </div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">🎁 Abrir regalos <span class="diff diff-easy">Fácil · 4 min</span></div>
-        <div class="diarias-item-body">
+        <div class="diarias-item-title" data-i18n="daily_h2_t">🎁 Abrir regalos <span class="diff diff-easy">Fácil · 4 min</span></div>
+        <div class="diarias-item-body" data-i18n="daily_h2_b">
           20 diarios, 40+ en eventos — dan polvos estelares extra.
           <ul>
             <li>Salta la animación haciendo clicks rápidos.</li>
@@ -1078,29 +1078,29 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       </div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">🎈 Globo del Team GO Rocket <span class="diff diff-easy">Fácil · 3 min</span></div>
-        <div class="diarias-item-body">Aparece a las <b>00:00 · 06:00 · 12:00 · 18:00</b>. Lucha contra ellos para conseguir Pokémon oscuros.</div>
+        <div class="diarias-item-title" data-i18n="daily_h3_t">🎈 Globo del Team GO Rocket <span class="diff diff-easy">Fácil · 3 min</span></div>
+        <div class="diarias-item-body" data-i18n="daily_h3_b">Aparece a las <b>00:00 · 06:00 · 12:00 · 18:00</b>. Lucha contra ellos para conseguir Pokémon oscuros.</div>
       </div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">🛍️ Pack diario gratuito <span class="diff diff-easy">Fácil · 1 min</span></div>
-        <div class="diarias-item-body">
+        <div class="diarias-item-title" data-i18n="daily_h4_t">🛍️ Pack diario gratuito <span class="diff diff-easy">Fácil · 1 min</span></div>
+        <div class="diarias-item-body" data-i18n="daily_h4_b">
           Normalmente basura, pero puede contener pases de incursión premium, MTs, ataques cargados...
           <div class="diarias-tip">💡 Si por la mañana es basura, <b>no lo reclames</b>. Vuelve a mirar a las 18:00+, puede cambiar. Si por la noche sigue siendo basura, reclámalos para que salga uno nuevo al día siguiente.</div>
         </div>
       </div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">🤝 Corazones con tu compañero <span class="diff diff-easy">Fácil · 2 min</span></div>
-        <div class="diarias-item-body">
+        <div class="diarias-item-title" data-i18n="daily_h5_t">🤝 Corazones con tu compañero <span class="diff diff-easy">Fácil · 2 min</span></div>
+        <div class="diarias-item-body" data-i18n="daily_h5_b">
           Sube un nivel extra por encima del máximo (50+1), haciéndolo más fuerte en raids.
           <div class="diarias-tip">💡 Puedes cambiar de compañero hasta <b>20 veces al día</b>. Haz compañeros a tus mejores atacantes de raids.</div>
         </div>
       </div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">⚔️ Combates PvP <span class="diff diff-hard">Difícil · 40 min</span></div>
-        <div class="diarias-item-body">
+        <div class="diarias-item-title" data-i18n="daily_h6_t">⚔️ Combates PvP <span class="diff diff-hard">Difícil · 40 min</span></div>
+        <div class="diarias-item-body" data-i18n="daily_h6_b">
           Mayor fuente de polvos estelares, caramelos raros y MTs de ataques cargados y rápidos.
           <ul>
             <li>Solo puedes hacer <b>5 rondas de 5 combates</b> al día.</li>
@@ -1110,8 +1110,8 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       </div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">🔄 Intercambios diarios <span class="diff diff-medium">Media · 60 min</span></div>
-        <div class="diarias-item-body">
+        <div class="diarias-item-title" data-i18n="daily_h7_t">🔄 Intercambios diarios <span class="diff diff-medium">Media · 60 min</span></div>
+        <div class="diarias-item-body" data-i18n="daily_h7_b">
           Hasta 100 intercambios diarios con otra persona.
           <ul>
             <li>Obtienes caramelos extra del Pokémon enviado — mejor que recapturarlo.</li>
@@ -1123,8 +1123,8 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       </div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">📱 Organiza tus Pokémon</div>
-        <div class="diarias-item-body">
+        <div class="diarias-item-title" data-i18n="daily_h8_t">📱 Organiza tus Pokémon</div>
+        <div class="diarias-item-body" data-i18n="daily_h8_b">
           Esta app te ayuda: en <b>Pokémon Objetivo</b> tienes el filtro de los que necesitas para pegar directamente en Pokémon GO.
         </div>
       </div>
@@ -1132,60 +1132,60 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 
     <!-- AL SALIR -->
     <div class="diarias-section">
-      <div class="diarias-section-header calle">🚶 Al Salir a Caminar</div>
+      <div class="diarias-section-header calle" data-i18n="daily_out">🚶 Al Salir a Caminar</div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">🏟️ Pase de incursión diario gratuito</div>
-        <div class="diarias-item-body">Gástalo y consigue el nuevo en cualquier gimnasio. ¡No te quedes sin él!</div>
+        <div class="diarias-item-title" data-i18n="daily_o1_t">🏟️ Pase de incursión diario gratuito</div>
+        <div class="diarias-item-body" data-i18n="daily_o1_b">Gástalo y consigue el nuevo en cualquier gimnasio. ¡No te quedes sin él!</div>
       </div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">🌀 Incienso diario gratuito</div>
-        <div class="diarias-item-body">Úsalo para conseguir las <b>aves legendarias de Galar</b>: Articuno, Zapdos y Moltres de Galar.</div>
+        <div class="diarias-item-title" data-i18n="daily_o2_t">🌀 Incienso diario gratuito</div>
+        <div class="diarias-item-body" data-i18n="daily_o2_b">Úsalo para conseguir las <b>aves legendarias de Galar</b>: Articuno, Zapdos y Moltres de Galar.</div>
       </div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">🗺️ Misión de PokéParada diaria</div>
-        <div class="diarias-item-body">
+        <div class="diarias-item-title" data-i18n="daily_o3_t">🗺️ Misión de PokéParada diaria</div>
+        <div class="diarias-item-body" data-i18n="daily_o3_b">
           Completa una misión al día. Cada <b>7 días</b> recibes un encuentro con un Pokémon raro o legendario garantizado.
           <div class="diarias-tip">💡 Ten siempre una <b>misión de mapeo sin completar</b> encima (ocupa el 4º hueco y no cuenta) — fuerza a las demás PokéParadas a mostrar su misión oculta.</div>
         </div>
       </div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">🏅 Reclama gimnasios</div>
-        <div class="diarias-item-body">Defiende gimnasios para acumular <b>PokéMonedas</b> gratis (máx 50 al día).</div>
+        <div class="diarias-item-title" data-i18n="daily_o4_t">🏅 Reclama gimnasios</div>
+        <div class="diarias-item-body" data-i18n="daily_o4_b">Defiende gimnasios para acumular <b>PokéMonedas</b> gratis (máx 50 al día).</div>
       </div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">🥚 Pon huevos a incubar</div>
-        <div class="diarias-item-body">Aprovecha el camino para incubar huevos. Prioriza los de 12km (huevos rojos) por sus recompensas.</div>
+        <div class="diarias-item-title" data-i18n="daily_o5_t">🥚 Pon huevos a incubar</div>
+        <div class="diarias-item-body" data-i18n="daily_o5_b">Aprovecha el camino para incubar huevos. Prioriza los de 12km (huevos rojos) por sus recompensas.</div>
       </div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">🚀 Lucha contra el Team Rocket</div>
-        <div class="diarias-item-body">Los líderes y el jefe dan los <b>mejores Pokémon oscuros del juego</b>. Prioriza siempre a Sierra, Arlo, Cliff y Giovanni.</div>
+        <div class="diarias-item-title" data-i18n="daily_o6_t">🚀 Lucha contra el Team Rocket</div>
+        <div class="diarias-item-body" data-i18n="daily_o6_b">Los líderes y el jefe dan los <b>mejores Pokémon oscuros del juego</b>. Prioriza siempre a Sierra, Arlo, Cliff y Giovanni.</div>
       </div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">🛤️ Haz rutas</div>
-        <div class="diarias-item-body">
+        <div class="diarias-item-title" data-i18n="daily_o7_t">🛤️ Haz rutas</div>
+        <div class="diarias-item-body" data-i18n="daily_o7_b">
           Dan células de Zygarde, corazón extra con tu compañero y caramelos raros.
           <div class="diarias-tip">💡 El <b>día 7 de racha</b> de rutas da recompensas masivas: MTs, grandes cantidades de polvo estelar y más.</div>
         </div>
       </div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">✨ Misiones de megaenergía en PokéParadas</div>
-        <div class="diarias-item-body">
+        <div class="diarias-item-title" data-i18n="daily_o8_t">✨ Misiones de megaenergía en PokéParadas</div>
+        <div class="diarias-item-body" data-i18n="daily_o8_b">
           Son las misiones más valiosas. Busca activamente las que den megaenergía de Pokémon.
           <div class="diarias-tip">💡 <b>No cojas una PokéParada nueva sin tener hueco</b> para misiones, podrías perder una de megaenergía.</div>
         </div>
       </div>
 
       <div class="diarias-item">
-        <div class="diarias-item-title">👥 Misiones de grupo <span class="diff diff-medium">Media</span></div>
-        <div class="diarias-item-body">
+        <div class="diarias-item-title" data-i18n="daily_o9_t">👥 Misiones de grupo <span class="diff diff-medium">Media</span></div>
+        <div class="diarias-item-body" data-i18n="daily_o9_b">
           Si sales con alguien, podéis formar grupos para conseguir misiones de grupo extra con posibilidad de megaenergía de ciertos Pokémon.
         </div>
       </div>
@@ -1199,13 +1199,13 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="legacy-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="closeLegacy()">←</button>
-    <h1>⭐ Ataques Legacy</h1>
+    <h1 data-i18n="legacy">⭐ Ataques Legacy</h1>
   </div>
   <div id="lg-scroll" style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
 
     <div class="lg-card" id="lg-howto">
-      <div class="lg-title" onclick="toggleLegacyHowto()" style="cursor:pointer">¿Cómo se obtienen? <span id="lg-howto-arrow" style="float:right;font-size:12px;color:#888">▾</span></div>
-      <div class="lg-text" id="lg-howto-body">
+      <div class="lg-title" onclick="toggleLegacyHowto()" style="cursor:pointer" data-i18n="legacy_howto_title">¿Cómo se obtienen? <span id="lg-howto-arrow" style="float:right;font-size:12px;color:#888">▾</span></div>
+      <div class="lg-text" id="lg-howto-body" data-i18n="legacy_howto_body">
         Hay dos formas principales:<br><br>
         <b>🎉 En eventos (gratis):</b> evolucionando al Pokémon base hasta su última etapa, o capturándolo en incursiones/salvaje durante las horas del evento.<br><br>
         <b>💳 En cualquier momento (de pago):</b> usando una <b>MT Élite</b> (rápida o cargada). Son objetos raros que se consiguen al final de las temporadas PvP (Rango 19+) o en packs de la tienda.
@@ -1214,21 +1214,21 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     </div>
 
     <div class="lg-card">
-      <div class="lg-title">📅 Legacy de este año (Ene-Jul 2026)</div>
+      <div class="lg-title" data-i18n="legacy_thisyear">📅 Legacy de este año (Ene-Jul 2026)</div>
       <div id="lg-thisyear"></div>
     </div>
 
     <div class="lg-card">
-      <div class="lg-title">🔜 Confirmados y próximos</div>
+      <div class="lg-title" data-i18n="legacy_upcoming">🔜 Confirmados y próximos</div>
       <div id="lg-upcoming"></div>
     </div>
 
     <div class="lg-card">
-      <div class="lg-title">⚠️ Regla de oro del día del evento</div>
-      <div class="lg-text">Para que el juego te dé el ataque Legacy al evolucionar (sin gastar MT Élite):</div>
-      <div class="lg-warn"><b>⏰ Ventana horaria:</b> evoluciona durante las 3 h del evento y hasta 4-5 h después. Un minuto tarde = ataque normal.</div>
-      <div class="lg-warn"><b>📡 Cuidado con el GPS:</b> si pierde la señal justo al evolucionar, el servidor no sabrá que estás en el evento y te dará ataque común.</div>
-      <div class="lg-warn"><b>🚫 Sin Frustración:</b> si es un Pokémon Oscuro, no puede tener Frustración o bloqueará el Legacy. Quítasela antes en un evento del Team GO Rocket.</div>
+      <div class="lg-title" data-i18n="legacy_golden_title">⚠️ Regla de oro del día del evento</div>
+      <div class="lg-text" data-i18n="legacy_golden_sub">Para que el juego te dé el ataque Legacy al evolucionar (sin gastar MT Élite):</div>
+      <div class="lg-warn" data-i18n="legacy_warn1"><b>⏰ Ventana horaria:</b> evoluciona durante las 3 h del evento y hasta 4-5 h después. Un minuto tarde = ataque normal.</div>
+      <div class="lg-warn" data-i18n="legacy_warn2"><b>📡 Cuidado con el GPS:</b> si pierde la señal justo al evolucionar, el servidor no sabrá que estás en el evento y te dará ataque común.</div>
+      <div class="lg-warn" data-i18n="legacy_warn3"><b>🚫 Sin Frustración:</b> si es un Pokémon Oscuro, no puede tener Frustración o bloqueará el Legacy. Quítasela antes en un evento del Team GO Rocket.</div>
     </div>
 
   </div>
@@ -1238,12 +1238,12 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="pokeparadas-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="closePokeparadas()">←</button>
-    <h1>🎁 Poképaradas!</h1>
+    <h1 data-i18n="stops">🎁 Poképaradas!</h1>
   </div>
-  <p style="text-align:center;font-size:10.5px;color:#888;padding:10px 14px 0">Temporada: <b style="color:#c2185b">Forever Forward</b> · 📌 fija tus misiones favoritas arriba</p>
+  <p style="text-align:center;font-size:10.5px;color:#888;padding:10px 14px 0" data-i18n="stops_season">Temporada: <b style="color:#c2185b">Forever Forward</b> · 📌 fija tus misiones favoritas arriba</p>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
     <div class="pp-pinned-section" id="pp-pinned-section" style="display:none">
-      <div class="pp-pinned-title">📌 Fijadas</div>
+      <div class="pp-pinned-title" data-i18n="stops_pinned">📌 Fijadas</div>
       <div id="pp-pinned-list"></div>
     </div>
     <div id="pp-categories"></div>
@@ -1254,18 +1254,18 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="tipsadmin-screen" class="screen">
   <div class="app-header" style="position:sticky;top:0;z-index:40">
     <button class="back-btn" onclick="closeTipsAdmin()">←</button>
-    <h1 style="flex:1">✏️ Consejos (admin)</h1>
-    <button onclick="saveTipsAdmin()" style="background:#fff;color:#2e7d32;border:none;border-radius:8px;padding:6px 12px;font-weight:800;cursor:pointer">💾 Guardar</button>
+    <h1 style="flex:1" data-i18n="tips_title">✏️ Consejos (admin)</h1>
+    <button onclick="saveTipsAdmin()" style="background:#fff;color:#2e7d32;border:none;border-radius:8px;padding:6px 12px;font-weight:800;cursor:pointer" data-i18n="tips_save">💾 Guardar</button>
   </div>
   <div style="padding:12px">
-    <p style="font-size:12px;color:#888;margin-bottom:10px">Los cambios se publican para todos al pulsar 💾 Guardar. Puedes usar &lt;b&gt;negrita&lt;/b&gt; en el texto. Los consejos se muestran en orden aleatorio.</p>
-    <button onclick="addTipAdmin()" style="width:100%;margin-bottom:12px;padding:12px;background:#e8f5e9;border:1.5px dashed #2e7d32;color:#1b5e20;border-radius:10px;font-weight:700;cursor:pointer">➕ Añadir consejo (arriba)</button>
+    <p style="font-size:12px;color:#888;margin-bottom:10px" data-i18n="tips_desc">Los cambios se publican para todos al pulsar 💾 Guardar. Puedes usar &lt;b&gt;negrita&lt;/b&gt; en el texto. Los consejos se muestran en orden aleatorio.</p>
+    <button onclick="addTipAdmin()" style="width:100%;margin-bottom:12px;padding:12px;background:#e8f5e9;border:1.5px dashed #2e7d32;color:#1b5e20;border-radius:10px;font-weight:700;cursor:pointer" data-i18n="tips_add">➕ Añadir consejo (arriba)</button>
     <div id="tipsadmin-list"></div>
   </div>
   <div id="emoji-pop" onclick="closeEmojiPicker()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:560;align-items:flex-end;justify-content:center">
     <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px 16px 0 0;padding:16px;width:100%;max-width:420px;max-height:60vh;overflow-y:auto">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <b style="font-size:14px;color:#333">Elige un emoji</b>
+        <b style="font-size:14px;color:#333" data-i18n="tips_emoji_title">Elige un emoji</b>
         <button onclick="closeEmojiPicker()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#888">✕</button>
       </div>
       <div id="emoji-grid" style="display:grid;grid-template-columns:repeat(8,1fr);gap:4px"></div>
@@ -1276,30 +1276,30 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="notifs-screen" class="screen">
   <div class="app-header" style="position:sticky;top:0;z-index:40">
     <button class="back-btn" onclick="closeNotifs()">←</button>
-    <h1 style="flex:1">🔔 Notificaciones</h1>
+    <h1 style="flex:1" data-i18n="notif_title">🔔 Notificaciones</h1>
     <button class="filtro-info-btn" onclick="toggleNotifInfo(true)">i</button>
   </div>
-  <div id="notif-perm" style="display:none;padding:12px 14px;background:#fff3e0;border-bottom:1px solid #ffb74d;font-size:12.5px;color:#e65100">
+  <div id="notif-perm" style="display:none;padding:12px 14px;background:#fff3e0;border-bottom:1px solid #ffb74d;font-size:12.5px;color:#e65100" data-i18n="notif_perm">
     <b>Permiso necesario.</b> Toca cualquier casilla y acepta el aviso del navegador para recibir recordatorios.
   </div>
   <div style="padding:10px 12px 24px">
     <div id="notif-list"></div>
     <div style="margin-top:16px;background:#fff;border:1.5px solid #5e35b1;border-radius:12px;padding:12px">
-      <p style="font-size:13px;font-weight:800;color:#4527a0;margin-bottom:8px">➕ Recordatorio personalizado</p>
-      <input id="notif-new-txt" maxlength="60" placeholder="¿De qué te aviso?" style="width:100%;padding:9px 10px;border:1.5px solid #ccc;border-radius:8px;font-size:13px;margin-bottom:8px">
+      <p style="font-size:13px;font-weight:800;color:#4527a0;margin-bottom:8px" data-i18n="notif_custom_title">➕ Recordatorio personalizado</p>
+      <input id="notif-new-txt" maxlength="60" placeholder="¿De qué te aviso?" data-i18n-ph="notif_new_ph" style="width:100%;padding:9px 10px;border:1.5px solid #ccc;border-radius:8px;font-size:13px;margin-bottom:8px">
       <div style="display:flex;gap:8px">
         <input id="notif-new-time" type="time" value="09:00" style="flex:1;padding:8px;border:1.5px solid #ccc;border-radius:8px;font-size:13px">
-        <button onclick="addCustomNotif()" style="background:#5e35b1;color:#fff;border:none;border-radius:8px;padding:0 16px;font-weight:800;cursor:pointer">Añadir</button>
+        <button onclick="addCustomNotif()" style="background:#5e35b1;color:#fff;border:none;border-radius:8px;padding:0 16px;font-weight:800;cursor:pointer" data-i18n="notif_add">Añadir</button>
       </div>
     </div>
   </div>
   <div id="notif-info-pop" onclick="toggleNotifInfo(false)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:center;justify-content:center">
     <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:20px;max-width:340px;width:90%">
-      <h3 style="margin:0 0 10px;font-size:16px;color:#CC0000">🔔 Cómo funcionan</h3>
-      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px">Marca la casilla de lo que quieras que te recuerde y elige la hora. Se repite <b>todos los días</b> a esa hora.</p>
-      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px">Los avisos que ocurren varias veces al día, como el <b>globo del Team GO Rocket</b>, se despliegan con ▾ para activar solo los pases que te interesen.</p>
-      <p style="font-size:12.5px;line-height:1.7;color:#b71c1c;margin-bottom:12px">⚠️ De momento los recordatorios se lanzan desde tu dispositivo, así que <b>necesitan que TrackDex esté instalada y abierta o en segundo plano</b>. Los avisos con la app cerrada del todo llegarán en una próxima versión.</p>
-      <button onclick="toggleNotifInfo(false)" style="width:100%;padding:10px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">Entendido</button>
+      <h3 style="margin:0 0 10px;font-size:16px;color:#CC0000" data-i18n="notif_info_title">🔔 Cómo funcionan</h3>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px" data-i18n="notif_info_p1">Marca la casilla de lo que quieras que te recuerde y elige la hora. Se repite <b>todos los días</b> a esa hora.</p>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px" data-i18n="notif_info_p2">Los avisos que ocurren varias veces al día, como el <b>globo del Team GO Rocket</b>, se despliegan con ▾ para activar solo los pases que te interesen.</p>
+      <p style="font-size:12.5px;line-height:1.7;color:#b71c1c;margin-bottom:12px" data-i18n="notif_info_p3">⚠️ De momento los recordatorios se lanzan desde tu dispositivo, así que <b>necesitan que TrackDex esté instalada y abierta o en segundo plano</b>. Los avisos con la app cerrada del todo llegarán en una próxima versión.</p>
+      <button onclick="toggleNotifInfo(false)" style="width:100%;padding:10px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer" data-i18n="understood">Entendido</button>
     </div>
   </div>
 </div>
@@ -1312,10 +1312,10 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
   <div style="padding:16px">
     <p id="comunidad-name-lbl" style="font-size:14px;color:#555;margin-bottom:14px"></p>
     <button class="perfil-danger-btn" style="color:#5e35b1;border-color:#5e35b1;width:100%;margin-bottom:10px" onclick="showMembers()" data-i18n="members">👥 Miembros de la Comunidad</button>
-    <button class="perfil-danger-btn" style="color:#00695c;border-color:#00838f;width:100%;margin-bottom:10px" onclick="showMembers()">✉️ Mensajes privados</button>
-    <p style="font-size:11.5px;color:#999;line-height:1.6;margin-bottom:14px">Para escribir a alguien en privado, entra en <b>Miembros</b> y toca ✉️ junto a su nombre. Solo esa persona y tú veréis la conversación.</p>
+    <button class="perfil-danger-btn" style="color:#00695c;border-color:#00838f;width:100%;margin-bottom:10px" onclick="showMembers()" data-i18n="comm_dm_btn">✉️ Mensajes privados</button>
+    <p style="font-size:11.5px;color:#999;line-height:1.6;margin-bottom:14px" data-i18n="comm_dm_desc">Para escribir a alguien en privado, entra en <b>Miembros</b> y toca ✉️ junto a su nombre. Solo esa persona y tú veréis la conversación.</p>
     <button class="perfil-danger-btn" style="color:#00695c;border-color:#00838f;width:100%;margin-top:4px" onclick="showCommunitySelection()" data-i18n="switch_comm">🔄 Cambiar comunidad</button>
-    <button class="perfil-danger-btn" id="comunidad-del-btn" style="display:none;background:#c62828;color:#fff;width:100%;margin-top:10px" onclick="deleteCurrentCommunity()">💥 Borrar esta comunidad (eres el creador)</button>
+    <button class="perfil-danger-btn" id="comunidad-del-btn" style="display:none;background:#c62828;color:#fff;width:100%;margin-top:10px" onclick="deleteCurrentCommunity()" data-i18n="comm_del_btn">💥 Borrar esta comunidad (eres el creador)</button>
   </div>
 </div>
 
@@ -1327,7 +1327,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
   <div style="display:flex;flex-direction:column;height:calc(100vh - 52px)">
     <div id="dm-msgs" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:#f0f0f0"></div>
     <div style="display:flex;gap:8px;padding:10px;border-top:1px solid #ddd;background:#fff">
-      <input id="dm-input" maxlength="500" placeholder="Escribe un mensaje…" style="flex:1;padding:10px 12px;border:1.5px solid #ccc;border-radius:20px;font-size:14px" onkeydown="if(event.key==='Enter')sendDM()">
+      <input id="dm-input" maxlength="500" placeholder="Escribe un mensaje…" data-i18n-ph="dm_input_ph" style="flex:1;padding:10px 12px;border:1.5px solid #ccc;border-radius:20px;font-size:14px" onkeydown="if(event.key==='Enter')sendDM()">
       <button onclick="sendDM()" style="background:#00838f;color:#fff;border:none;border-radius:50%;width:42px;height:42px;font-size:16px;cursor:pointer;flex-shrink:0">➤</button>
     </div>
   </div>
@@ -1366,13 +1366,22 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="novedades-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="closeNovedades()">←</button>
-    <h1>🆕 Novedades</h1>
+    <h1 data-i18n="news">🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.984</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0"><span data-i18n="news_current_version">Versión actual:</span> <b style="color:#5e35b1">v0.985.b</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.984 · actual</span><span class="nov-version-tag">Comunidades ordenadas</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.985.b · actual</span><span class="nov-version-tag">Más traducción al inglés</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🌐</span><span>Muchas más pantallas traducidas al inglés: Tracker IVs, Mis Pokémon, Eficacia de Tipos, Megas, Diarias, Legacy, Poképaradas, Trackers, Pokémon Objetivo, Comunidad y más.</span></div>
+        <div class="nov-item"><span>🐛</span><span>Arreglado: al marcar un Pokémon "al máximo" cuando ya no quedaba ninguna copia pendiente de esa familia, se guardaba un progreso de caramelos "fantasma" que podía hacer que una copia nueva añadida más tarde (p.ej. otra base recién capturada) apareciera ya como completada en Pokémon Objetivo sin estarlo. Ahora se resetea ese progreso al completar la familia.</span></div>
+        <div class="nov-item"><span>✅</span><span>Las tarjetas ya completadas en Pokémon Objetivo ahora muestran también el texto "Completado" (no solo el tick), para verlas claramente al final de la lista.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.984</span><span class="nov-version-tag">Comunidades ordenadas</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>⬆️</span><span>En la lista de comunidades, las que ya perteneces aparecen primero; el resto, ordenadas por nombre.</span></div>
       </div>
@@ -1907,45 +1916,45 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="filtro-screen" class="screen">
   <div class="app-header" style="position:relative">
     <button class="back-btn" onclick="closeFiltro()">←</button>
-    <h1>🛠️ Crea tu filtro</h1>
-    <button class="filtro-info-btn" onclick="showToast('Ten en cuenta que si editas el filtro a mano puedes romperlo por error')">i</button>
+    <h1 data-i18n="filtro_title">🛠️ Crea tu filtro</h1>
+    <button class="filtro-info-btn" onclick="showToast((I18N[getLang()]||I18N.es).filtro_toast_warn||'Ten en cuenta que si editas el filtro a mano puedes romperlo por error')">i</button>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
 
-    <p style="font-size:10.5px;color:#999;margin:10px 14px 0;line-height:1.5">📅 <b>Filtro Normal (Caramelos)</b>: todos los que aún coleccionas; intercámbialos cualquier día por caramelos. 🍀 <b>Filtro Lucky (Bases)</b>: los que aún necesitan buena base; búscalos en el día de suerte aumentada.</p>
+    <p style="font-size:10.5px;color:#999;margin:10px 14px 0;line-height:1.5" data-i18n="filtro_intro">📅 <b>Filtro Normal (Caramelos)</b>: todos los que aún coleccionas; intercámbialos cualquier día por caramelos. 🍀 <b>Filtro Lucky (Bases)</b>: los que aún necesitan buena base; búscalos en el día de suerte aumentada.</p>
 
     <!-- BLOQUE RESTO DE DÍAS (siempre visible, es tu propio filtro) -->
     <div style="margin:16px 14px 0;padding:10px 12px;background:#eceff1;border-radius:10px 10px 0 0;border:1.5px solid #607d8b;border-bottom:none">
-      <span style="font-size:13px;font-weight:800;color:#37474f">📅 Filtro Normal (Caramelos)</span>
+      <span style="font-size:13px;font-weight:800;color:#37474f" data-i18n="filtro_normal_label">📅 Filtro Normal (Caramelos)</span>
     </div>
     <textarea id="filtro-text-resto" class="filtro-textarea" style="margin:0 14px;border-color:#607d8b;border-radius:0" oninput="onFiltroEdit('resto')" spellcheck="false"></textarea>
     <div class="filtro-toggles" id="filtro-toggles-resto" data-cat="resto"></div>
-    <button class="filtro-copy-btn" style="background:#607d8b;margin-top:8px" onclick="copyFiltroFinal('resto')">📋 Copiar Filtro Normal (Caramelos)</button>
+    <button class="filtro-copy-btn" style="background:#607d8b;margin-top:8px" onclick="copyFiltroFinal('resto')" data-i18n="filtro_copy_normal">📋 Copiar Filtro Normal (Caramelos)</button>
 
-    <div class="filtro-label" style="margin-top:20px">Añadir Pokémon (al filtro Resto):</div>
+    <div class="filtro-label" style="margin-top:20px" data-i18n="filtro_add_label">Añadir Pokémon (al filtro Resto):</div>
     <div class="filtro-add-row">
-      <input id="filtro-add-input" class="filtro-add-input" type="text" placeholder="ej. pikachu" spellcheck="false">
-      <button class="filtro-add-btn" onclick="addFiltroPokemon()">Añadir</button>
+      <input id="filtro-add-input" class="filtro-add-input" type="text" placeholder="ej. pikachu" data-i18n-ph="filtro_add_ph" spellcheck="false">
+      <button class="filtro-add-btn" onclick="addFiltroPokemon()" data-i18n="notif_add">Añadir</button>
     </div>
 
     <!-- BLOQUE VIERNES (requiere elegir con quién comerciar) -->
     <div style="margin:26px 14px 0;padding:10px 12px;background:#e3f2fd;border-radius:10px 10px 0 0;border:1.5px solid #1565c0;border-bottom:none;position:relative">
-      <span style="font-size:13px;font-weight:800;color:#0d47a1">🍀 Filtro Lucky (Bases)</span>
+      <span style="font-size:13px;font-weight:800;color:#0d47a1" data-i18n="filtro_lucky_label">🍀 Filtro Lucky (Bases)</span>
       <div id="filtro-trade-with-label" style="font-size:11px;color:#1565c0;margin-top:4px;cursor:pointer;display:none" onclick="toggleTradeWithDropdown()">
-        Comerciando con "<b id="filtro-trade-with-name"></b>" <span style="font-size:9px">▾</span>
+        <span data-i18n="filtro_trading_with">Comerciando con</span> "<b id="filtro-trade-with-name"></b>" <span style="font-size:9px">▾</span>
       </div>
       <select id="filtro-trade-with-select" style="display:none;width:100%;margin-top:6px;padding:6px;border-radius:6px;border:1px solid #1565c0;font-size:12px" onchange="onTradeWithChange()"></select>
     </div>
     <div id="filtro-viernes-locked" style="margin:0 14px;padding:24px 16px;background:#fff;border:1.5px solid #1565c0;border-top:none;border-radius:0 0 10px 10px;text-align:center">
-      <p style="font-size:12px;color:#666;margin-bottom:10px">Elige con quién vas a comerciar para ver el Filtro Lucky</p>
+      <p style="font-size:12px;color:#666;margin-bottom:10px" data-i18n="filtro_choose_trade">Elige con quién vas a comerciar para ver el Filtro Lucky</p>
       <select id="filtro-trade-with-select-initial" style="padding:8px 12px;border-radius:8px;border:1.5px solid #1565c0;font-size:13px;font-weight:700;color:#0d47a1" onchange="onTradeWithInitialSelect()">
-        <option value="">Selecciona un entrenador...</option>
+        <option value="" data-i18n="filtro_select_trainer">Selecciona un entrenador...</option>
       </select>
     </div>
     <div id="filtro-viernes-unlocked" style="display:none">
       <textarea id="filtro-text-viernes" class="filtro-textarea" style="margin:0 14px;border-color:#1565c0;border-radius:0" oninput="onFiltroEdit('viernes')" spellcheck="false"></textarea>
       <div class="filtro-toggles" id="filtro-toggles-viernes" data-cat="viernes"></div>
-      <button class="filtro-copy-btn" style="background:#1565c0;margin-top:8px" onclick="copyFiltroFinal('viernes')">📋 Copiar Filtro Lucky (Bases)</button>
+      <button class="filtro-copy-btn" style="background:#1565c0;margin-top:8px" onclick="copyFiltroFinal('viernes')" data-i18n="filtro_copy_lucky">📋 Copiar Filtro Lucky (Bases)</button>
     </div>
 
   </div>
@@ -1955,27 +1964,27 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="objetivo-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="closeObjetivo()">←</button>
-    <h1 style="flex:1">🎯 Pokémon Objetivo</h1>
+    <h1 style="flex:1" data-i18n="target">🎯 Pokémon Objetivo</h1>
     <button class="filtro-info-btn" onclick="toggleObjInfo(true)">i</button>
   </div>
   <div id="obj-info-pop" onclick="toggleObjInfo(false)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:center;justify-content:center">
     <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:20px;max-width:350px;width:92%;max-height:82vh;overflow-y:auto">
-      <h3 style="margin:0 0 10px;font-size:16px;color:#CC0000">🎯 Pokémon Objetivo</h3>
-      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px">Esta pantalla te dice <b>qué Pokémon capturar y cuántos caramelos te faltan</b> para completar tus equipos (subir todas tus copias al máximo). Toca un Pokémon para apuntar los caramelos normales y XL que ya tienes: la lista se reordena poniendo arriba lo que más te falta.</p>
-      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:10px">El orden usa la equivalencia real del juego: <b>1 caramelo XL = 100 caramelos normales</b>. Cuando completas los XL necesarios de un Pokémon, se marca ✓ y baja al final.</p>
+      <h3 style="margin:0 0 10px;font-size:16px;color:#CC0000" data-i18n="target">🎯 Pokémon Objetivo</h3>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px" data-i18n="obj_info_p1">Esta pantalla te dice <b>qué Pokémon capturar y cuántos caramelos te faltan</b> para completar tus equipos (subir todas tus copias al máximo). Toca un Pokémon para apuntar los caramelos normales y XL que ya tienes: la lista se reordena poniendo arriba lo que más te falta.</p>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:10px" data-i18n="obj_info_p2">El orden usa la equivalencia real del juego: <b>1 caramelo XL = 100 caramelos normales</b>. Cuando completas los XL necesarios de un Pokémon, se marca ✓ y baja al final.</p>
       <div style="background:#fffde7;border:1px solid #ffe082;border-radius:10px;padding:10px 12px;margin-bottom:12px">
-        <p style="font-size:12px;font-weight:800;color:#5d4037;margin-bottom:6px">🍬 Caramelos para subir un Pokémon al máximo</p>
-        <p style="font-size:11.5px;color:#5d4037;line-height:1.8;margin:0">Normal / Mega: ~250 + 296 XL<br>Purificado: ~220 + 268 XL<br>Oscuro: ~298 + 360 XL<br>⚡ Dynamax: ~600 + 416 XL (base + habilidades)</p>
+        <p style="font-size:12px;font-weight:800;color:#5d4037;margin-bottom:6px" data-i18n="obj_info_candy_title">🍬 Caramelos para subir un Pokémon al máximo</p>
+        <p style="font-size:11.5px;color:#5d4037;line-height:1.8;margin:0" data-i18n="obj_info_candy_body">Normal / Mega: ~250 + 296 XL<br>Purificado: ~220 + 268 XL<br>Oscuro: ~298 + 360 XL<br>⚡ Dynamax: ~600 + 416 XL (base + habilidades)</p>
       </div>
-      <button onclick="toggleObjInfo(false)" style="width:100%;padding:10px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">Entendido</button>
+      <button onclick="toggleObjInfo(false)" style="width:100%;padding:10px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer" data-i18n="understood">Entendido</button>
     </div>
   </div>
-  <button onclick="openFiltro()" style="display:block;width:100%;padding:13px;background:#1565c0;color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.3px">🛠️ Crea tu filtro para Pokémon GO</button>
+  <button onclick="openFiltro()" style="display:block;width:100%;padding:13px;background:#1565c0;color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.3px" data-i18n="obj_create_filter">🛠️ Crea tu filtro para Pokémon GO</button>
   <div id="obj-team-bar" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:8px 14px;background:#fff;border-bottom:1px solid #e0e0e0">
-    <button class="obj-team-btn on" id="objtm-all" onclick="setObjTeamMode('all')">Todos</button>
-    <button class="obj-team-btn" id="objtm-des" onclick="setObjTeamMode('des')">Solo Deseados</button>
+    <button class="obj-team-btn on" id="objtm-all" onclick="setObjTeamMode('all')" data-i18n="biv_team_all">Todos</button>
+    <button class="obj-team-btn" id="objtm-des" onclick="setObjTeamMode('des')" data-i18n="obj_only_wanted">Solo Deseados</button>
     <select id="objtm-sel" onchange="if(this.value)setObjTeamMode(this.value)" style="padding:5px 8px;border-radius:20px;border:1.5px solid #1565c0;font-size:12px;font-weight:700;color:#1565c0;background:#fff">
-      <option value="">Elige…</option>
+      <option value="" data-i18n="obj_choose">Elige…</option>
     </select>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch"><div class="obj-grid" id="obj-grid"></div></div>
@@ -1993,7 +2002,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       </div>
       <div id="obj-popup-bars"></div>
       <div id="obj-popup-tradecat"></div>
-      <button onclick="closeObjPopup()" style="margin-top:14px;background:#CC0000;color:#fff;border:none;border-radius:10px;padding:10px 28px;font-size:14px;font-weight:700;cursor:pointer">Cerrar</button>
+      <button onclick="closeObjPopup()" style="margin-top:14px;background:#CC0000;color:#fff;border:none;border-radius:10px;padding:10px 28px;font-size:14px;font-weight:700;cursor:pointer" data-i18n="close">Cerrar</button>
     </div>
   </div>
 </div>
@@ -2006,47 +2015,47 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="modal-guia" class="modal-overlay" style="display:none" onclick="closeGuia(event)">
   <div class="modal-box">
     <div class="modal-title">
-      <span>📖 Guía de iconos</span>
+      <span data-i18n="mod_glossary_title">📖 Guía de iconos</span>
       <button class="modal-close" onclick="closeGuiaBtn()">✕</button>
     </div>
     <div class="guia-item">
       <div class="guia-icon">⭐</div>
-      <div class="guia-text">
+      <div class="guia-text" data-i18n="mod_glossary_legacy">
         <strong>Ataque Legacy</strong>
         <p>Movimiento especial que ya no se puede aprender normalmente. Solo se obtuvo durante eventos pasados (Días de la Comunidad). Para enseñárselo ahora se necesita una <b>MT Élite</b>, muy escasa.</p>
       </div>
     </div>
     <div class="guia-item">
       <div class="guia-icon">👤</div>
-      <div class="guia-text">
+      <div class="guia-text" data-i18n="mod_glossary_shadow">
         <strong>Shadow / Oscuro</strong>
         <p>Pokémon capturado al derrotar al Team GO Rocket o en <b>Incursiones Oscuras</b>. Tienen <b>+20% de Ataque</b> pero <b>-20% de Defensa</b>. Son los más poderosos en raids si aguantan.</p>
       </div>
     </div>
     <div class="guia-item">
       <div class="guia-icon">🔴</div>
-      <div class="guia-text">
+      <div class="guia-text" data-i18n="mod_glossary_mega">
         <strong>Mega Evolución</strong>
         <p>Forma temporal potenciada. Las <b>piedras Mega</b> se consiguen en Mega Incursiones, misiones temporales o raramente en PokéParadas. Potencian a los aliados del mismo tipo en raid.</p>
       </div>
     </div>
     <div class="guia-item">
       <div class="guia-icon">🎯</div>
-      <div class="guia-text">
+      <div class="guia-text" data-i18n="mod_glossary_special">
         <strong>Misión especial</strong>
         <p>Pokémon obtenido completando una <b>Investigación Especial</b> o misión temporal. Suelen ser únicos o muy difíciles de conseguir de otra forma.</p>
       </div>
     </div>
     <div class="guia-item">
       <div class="guia-icon">📊</div>
-      <div class="guia-text">
+      <div class="guia-text" data-i18n="mod_glossary_dps">
         <strong>DPS (Daño Por Segundo)</strong>
         <p>Mide el daño sostenido en raids. Valores de referencia a nivel 40 con IVs perfectos (15/15/15). Fuente: Dittobase 2026.</p>
       </div>
     </div>
     <div class="guia-item">
       <div class="guia-icon">🧬</div>
-      <div class="guia-text">
+      <div class="guia-text" data-i18n="mod_glossary_ivs">
         <strong>IVs (Individual Values)</strong>
         <p>Estadísticas de cada Pokémon: <b>Ataque, Defensa y Vida</b>, de 0 a 15. Un Pokémon con 15/15/15 es "hundo" (perfecto). En raids el Ataque es el más importante.</p>
       </div>
@@ -2106,28 +2115,28 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="legendary-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="openTrackerHub()">←</button>
-    <h1>🏆 GoFest Legendary Tracker</h1>
+    <h1 data-i18n="leg_title">🏆 GoFest Legendary Tracker</h1>
   </div>
   <div data-trk-bar style="display:flex;align-items:center;gap:8px;padding:7px 12px;background:#fff8e1;border-bottom:1px solid #ffe082;flex-wrap:wrap">
-    <span style="font-size:11px;color:#795548;font-weight:700">Ver progreso de:</span>
+    <span style="font-size:11px;color:#795548;font-weight:700" data-i18n="trk_view_progress">Ver progreso de:</span>
     <select id="lt-member" onchange="trkSetView(this,window._ltReload)" style="flex:1;min-width:130px;padding:5px 8px;border-radius:8px;border:1.5px solid #ffb300;font-size:12px;font-weight:700;color:#795548;background:#fff"></select>
-    <span data-trk-warn style="display:none;font-size:11px;font-weight:800;color:#e65100">👁 Solo lectura</span>
+    <span data-trk-warn style="display:none;font-size:11px;font-weight:800;color:#e65100" data-i18n="trk_readonly">👁 Solo lectura</span>
   </div>
   <div id="lt-root">
     <div class="lt-bar"><div id="lt-prog"></div></div>
     <div class="lt-stats" id="lt-stats"></div>
     <div class="lt-modes lt-sticky">
-      <button class="lt-modebtn lt-mGot" data-mode="got">✅ Conseguido</button>
-      <button class="lt-modebtn lt-mLater" data-mode="later">⏳ Later</button>
-      <button class="lt-modebtn lt-mPrio" data-mode="prio">★ Prioritario</button>
-      <button class="lt-modebtn lt-mUnob" data-mode="unob">🚫 No Obtenible</button>
-      <button class="lt-modebtn lt-mSat" data-mode="sabado">📅 Sáb</button>
-      <button class="lt-modebtn lt-mSun" data-mode="domingo">📅 Dom</button>
-      <input id="lt-search" type="search" placeholder="Buscar…">
+      <button class="lt-modebtn lt-mGot" data-mode="got" data-i18n="trk_got">✅ Conseguido</button>
+      <button class="lt-modebtn lt-mLater" data-mode="later" data-i18n="trk_later">⏳ Later</button>
+      <button class="lt-modebtn lt-mPrio" data-mode="prio" data-i18n="trk_prio">★ Prioritario</button>
+      <button class="lt-modebtn lt-mUnob" data-mode="unob" data-i18n="trk_unob">🚫 No Obtenible</button>
+      <button class="lt-modebtn lt-mSat" data-mode="sabado" data-i18n="leg_sat">📅 Sáb</button>
+      <button class="lt-modebtn lt-mSun" data-mode="domingo" data-i18n="leg_sun">📅 Dom</button>
+      <input id="lt-search" type="search" placeholder="Buscar…" data-i18n-ph="trk_search_ph">
     </div>
     <div class="lt-modehint" id="lt-modehint"></div>
     <div id="lt-main"></div>
-    <div class="lt-foot"><span id="lt-footinfo"></span><button id="lt-reset">Reiniciar</button></div>
+    <div class="lt-foot"><span id="lt-footinfo"></span><button id="lt-reset" data-i18n="trk_reset">Reiniciar</button></div>
   </div>
 </div>
 <!-- ═══════════ END GOFEST TRACKER ═══════════ -->
@@ -2136,13 +2145,13 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="tracker-hub-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="backToHome()">←</button>
-    <h1>🏆 Trackers</h1>
+    <h1 data-i18n="trackers">🏆 Trackers</h1>
   </div>
   <div style="padding:18px 16px;display:flex;flex-direction:column;gap:12px;max-width:520px;margin:0 auto">
-    <button class="home-btn-small" onclick="openGoFest()" style="background:#e3f2fd;border-color:#1565c0;color:#0d47a1;padding:16px;font-size:15px;text-align:left">
+    <button class="home-btn-small" onclick="openGoFest()" style="background:#e3f2fd;border-color:#1565c0;color:#0d47a1;padding:16px;font-size:15px;text-align:left" data-i18n="hub_legendary">
       🐉 Legendarios<br><span style="font-size:11px;font-weight:400;opacity:.75">Raids 5★ — GO Fest y repeticiones</span>
     </button>
-    <button class="home-btn-small" onclick="openPikaSkins()" style="background:#fffde7;border-color:#f9a825;color:#795500;padding:16px;font-size:15px;text-align:left">
+    <button class="home-btn-small" onclick="openPikaSkins()" style="background:#fffde7;border-color:#f9a825;color:#795500;padding:16px;font-size:15px;text-align:left" data-i18n="hub_pikachu">
       ⚡ Pikachu Skins Event<br><span style="font-size:11px;font-weight:400;opacity:.75">Special Anniversary Celebration · 13–20 jul · 3 celebrations</span>
     </button>
   </div>
@@ -2195,26 +2204,26 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="pikachu-screen" class="screen">
   <div class="app-header">
     <button class="back-btn" onclick="openTrackerHub()">←</button>
-    <h1>⚡ Pikachu Skins Event</h1>
+    <h1 data-i18n="pika_title">⚡ Pikachu Skins Event</h1>
   </div>
   <div data-trk-bar style="display:flex;align-items:center;gap:8px;padding:7px 12px;background:#fff8e1;border-bottom:1px solid #ffe082;flex-wrap:wrap">
-    <span style="font-size:11px;color:#795548;font-weight:700">Ver progreso de:</span>
+    <span style="font-size:11px;color:#795548;font-weight:700" data-i18n="trk_view_progress">Ver progreso de:</span>
     <select id="pk-member" onchange="trkSetView(this,window._pkReload)" style="flex:1;min-width:130px;padding:5px 8px;border-radius:8px;border:1.5px solid #ffb300;font-size:12px;font-weight:700;color:#795548;background:#fff"></select>
-    <span data-trk-warn style="display:none;font-size:11px;font-weight:800;color:#e65100">👁 Solo lectura</span>
+    <span data-trk-warn style="display:none;font-size:11px;font-weight:800;color:#e65100" data-i18n="trk_readonly">👁 Solo lectura</span>
   </div>
   <div id="pk-root">
     <div class="pk-bar"><div id="pk-prog"></div></div>
     <div class="pk-stats" id="pk-stats"></div>
     <div class="pk-modes pk-sticky">
-      <button class="pk-modebtn pk-mGot" data-mode="got">✅ Conseguido</button>
-      <button class="pk-modebtn pk-mLater" data-mode="later">⏳ Later</button>
-      <button class="pk-modebtn pk-mPrio" data-mode="prio">★ Prioritario</button>
-      <button class="pk-modebtn pk-mUnob" data-mode="unob">🚫 No Obtenible</button>
-      <input id="pk-search" type="search" placeholder="Buscar…">
+      <button class="pk-modebtn pk-mGot" data-mode="got" data-i18n="trk_got">✅ Conseguido</button>
+      <button class="pk-modebtn pk-mLater" data-mode="later" data-i18n="trk_later">⏳ Later</button>
+      <button class="pk-modebtn pk-mPrio" data-mode="prio" data-i18n="trk_prio">★ Prioritario</button>
+      <button class="pk-modebtn pk-mUnob" data-mode="unob" data-i18n="trk_unob">🚫 No Obtenible</button>
+      <input id="pk-search" type="search" placeholder="Buscar…" data-i18n-ph="trk_search_ph">
     </div>
     <div class="pk-hint" id="pk-hint"></div>
     <div id="pk-main"></div>
-    <div class="pk-foot"><button id="pk-reset">Reiniciar</button></div>
+    <div class="pk-foot"><button id="pk-reset" data-i18n="trk_reset">Reiniciar</button></div>
   </div>
 </div>
 <!-- Política de privacidad -->
@@ -3005,7 +3014,7 @@ function renderMegaGrids() {
           <img src="${megaArt(m.id)}" style="width:46px;height:46px;object-fit:contain" onerror="this.style.opacity=.1">
         </div>
         <div style="font-size:9px;font-weight:700;text-align:center;color:${act?'#333':'#999'};max-width:60px;line-height:1.2">${m.name}</div>
-        ${act?'<div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center">ACTIVA</div>':''}
+        ${act?'<div style="font-size:9px;background:#CC0000;color:#fff;border-radius:6px;padding:1px 4px;margin-top:2px;text-align:center" data-i18n="active_badge">ACTIVA</div>':''}
       </div>`;
     }).join('');
   }
@@ -3439,6 +3448,25 @@ function togMaxed(id,v) {
   // Si se marca "al máximo", se marca también "lo tengo"
   if(v) p.pk[id].owned=true;
   syncLinked(p,id,{maxed:v, ...(v?{owned:true}:{})});
+  // Si al marcar "al máximo" toda la familia de evolución queda sin copias pendientes,
+  // reseteamos el progreso de caramelos guardado en Pokémon Objetivo para esa familia.
+  // Sin esto, el contador de caramelos/XL se queda "fantasma" y si más adelante añades
+  // otra copia nueva de la misma familia (p.ej. un Charmander recién capturado), puede
+  // aparecer marcada como ✓ completada desde el primer momento aunque no lo esté.
+  if (v && p.candyProgress) {
+    const pkName = getPkName(id, p);
+    const evo = pkName ? getEvoKey(pkName) : null;
+    if (evo && p.candyProgress[evo.id]) {
+      const stillPending = Object.keys(p.album||{}).some(aid => {
+        if (p.album[aid] !== true) return false;
+        const n2 = getPkName(aid, p);
+        const e2 = n2 ? getEvoKey(n2) : null;
+        if (!e2 || e2.id !== evo.id) return false;
+        return !(p.pk && p.pk[aid] && p.pk[aid].maxed);
+      });
+      if (!stillPending) { p.candyProgress[evo.id] = {c:0, xl:0}; }
+    }
+  }
   save();
   // Re-render album to update both toggles visually + counter
   if(ST.albumTab==='dmax') renderAlbumDmax(); else renderAlbum();
@@ -5908,11 +5936,13 @@ function openObjetivo(keepScroll) {
     grid.innerHTML = data.map((d,i) => {
       const imgUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/' + d.id + '.png';
       if (d.done || d.xlDone) {
-        // Completado: check verde, imagen atenuada
+        // Completado: check verde, imagen atenuada, con etiqueta de texto explícita
+        const _dl = I18N[getLang()]||I18N.es;
         return '<div class="obj-card obj-done" onclick="openObjPopup(' + i + ')" style="cursor:pointer;opacity:.55">' +
           '<div class="obj-badge" style="background:#43a047">✓</div>' +
           '<img class="obj-img" src="' + imgUrl + '" alt="' + d.n + '" onerror="this.style.opacity=.2">' +
           '<div class="obj-name">' + d.n + '</div>' +
+          '<div class="obj-done-label" style="font-size:10px;font-weight:800;color:#43a047;text-align:center;margin-top:2px">' + (_dl.obj_completed_label||'✅ Completado') + '</div>' +
           '</div>';
       }
       const badge = d.count > 1 ? '<div class="obj-badge">x' + d.count + '</div>' : '';
@@ -6238,15 +6268,17 @@ function maybeShowWelcome(){
   const btn = document.getElementById('welcome-close-btn');
   if(!modal||!btn) return;
   modal.style.display = 'flex';
-  let n = 6; btn.textContent = 'Cerrar ('+n+')'; btn.disabled = true;
+  const d0=I18N[getLang()]||I18N.es;
+  let n = 6; btn.textContent = (d0.mod_welcome_close_wait||'Cerrar (%n)').replace('%n',n); btn.disabled = true;
   const iv = setInterval(()=>{
     n--;
     if(n<=0){
       clearInterval(iv);
-      btn.textContent = 'Entendido, cerrar';
+      const d1=I18N[getLang()]||I18N.es;
+      btn.textContent = d1.mod_welcome_close_ready||'Entendido, cerrar';
       btn.disabled = false; btn.style.cursor='pointer'; btn.style.opacity='1';
       btn.onclick = ()=>{ setRead('welcome', true); modal.style.display='none'; };
-    } else { btn.textContent = 'Cerrar ('+n+')'; }
+    } else { const d2=I18N[getLang()]||I18N.es; btn.textContent = (d2.mod_welcome_close_wait||'Cerrar (%n)').replace('%n',n); }
   }, 1000);
 }
 
@@ -7245,17 +7277,51 @@ const I18N={
     communities:'Comunidades',logout:'Salir',create_comm:'➕ Crear comunidad',comm_name:'Nombre de la comunidad',comm_pass:'Contraseña de la comunidad',comm_alias:'Tu alias en esta comunidad',create:'Crear',join_sub:'Elige tu alias y escribe la contraseña',alias_ph:'cómo te verán aquí',pass_only:'contraseña',
     my_pokemon:'⚔️ Mis Pokemons',raid_pk:'Pokémon Incursiones',dmax_pk:'Pokémon Dynamax',rankings:'Rankings DPS',top50:'Top 50 por tipo',type_calc:'🔥 Calculadora de Tipos',megas:'🍬 Megas',legacy:'⭐ Legacy',target:'🎯 Pokémon Objetivo',daily:'📋 Diarias',stops:'🎁 Poképaradas!',trackers:'🏆 Trackers',community:'🏘️ Comunidad',news:'🆕 Novedades',more_tools:'➕ Más Herramientas',
     profile:'👤 Perfil',app_section:'ℹ️ Aplicación',guide:'📖 Guía TrackDex',rename_teams:'✏️ Cambiar nombres de tus equipos',change_pass:'🔑 Cambiar contraseña',privacy_btn:'🔒 Política de privacidad',danger:'⚠️ Zona de peligro',del_team:'🗑️ Borrar un equipo de Pokémon (2, 3 o 4)',del_raid:'🗑️ Borrar todos tus Pokémon de Incursión',del_dmax:'🗑️ Borrar todos tus Pokémon Dynamax',del_account:'☠️ Borrar mi cuenta y todos mis datos',
-    community_t:'🏘️ Comunidad',members:'👥 Miembros de la Comunidad',chat:'💬 Chat de comunidad',switch_comm:'🔄 Cambiar comunidad'},
+    community_t:'🏘️ Comunidad',members:'👥 Miembros de la Comunidad',chat:'💬 Chat de comunidad',switch_comm:'🔄 Cambiar comunidad',
+    close:'Cerrar',understood:'Entendido',
+    biv_title:'📈 Tracker IVs',biv_tab_raid:'⚔️ Incursión',biv_tab_dmax:'⚡ Dinamax',biv_ord_worst:'Peores primero',biv_ord_best:'Mejores primero',biv_ord_noivs:'Sin IVs asignados',biv_ord_notobt:'No obtenidos',biv_team_all:'Todos',biv_byteam:'🗂️ Por equipos (tipos)',biv_weights_btn:'⚖️ Valores IVs',biv_hide:'Ocultar:',biv_hide_shadow:'👤 Oscuros',biv_hide_legend:'🏆 Legendarios',biv_weights_sub:'Ajusta el peso de cada IV para ordenar la lista.',biv_preset_def:'Por defecto',biv_preset_ext:'Extremo',biv_atk:'⚔️ Ataque',biv_def:'🛡️ Defensa',biv_hp:'❤️ Vida',
+    biv_info_title:'📈 ¿Cómo se ordena esta lista?',
+    biv_info_p0:'Cada Pokémon obtenido se puntúa con sus IVs ponderados por su importancia en raids:<br><b>Ataque ×100 · Defensa ×20 · Vida ×30</b> (ajustables con el botón "⚖️ Valores IVs")',
+    biv_info_p1:'<b>⚔️ Ataque (100):</b> el rey absoluto. Un punto extra puede alcanzar un "breakpoint" (umbral donde el daño redondea hacia arriba), acumulando una diferencia masiva durante toda la batalla.',
+    biv_info_p2:'<b>🛡️ Defensa (20):</b> doble filo — a menos daño recibido, más lento cargas energía. A veces un IV bajo de defensa es imperceptible o incluso óptimo.',
+    biv_info_p3:'<b>❤️ Vida (35):</b> recibir daño genera energía para tu cargado. Más vida = aguantar un golpe más y soltar un último ataque cargado.',
+    biv_info_p4:'En resumen: un 15/10/10 (At/Def/Vida) es mucho más útil que un 10/15/15. <b>Busca el 15 en Ataque por encima de todo.</b> Usa "Peores primero" para saber cuáles priorizar cambiar o subir (incluso con caramelos raros).',
+    tab_dynamax:'⚡ Dynamax',
+    album_info_title:'ℹ️ ¿Para qué sirven las marcas?',
+    album_info_p1:'<b>✅ Obtenido:</b> indica que ya tienes ese Pokémon. Cuenta para tu progreso, se excluye de los filtros de captura y aparece en <b>Mejores IVs</b> con su comparador para valorar nuevos ejemplares.',
+    album_info_p2:'<b>⭐ Maxed Lvl 50:</b> indica que ya lo subiste del todo. Deja de contar caramelos en <b>Pokémon Objetivo</b> y se quita de los filtros de intercambio: no necesitas más copias.',
+    album_info_p3:'<b>💎 Base perfecta:</b> márcalo cuando el ejemplar que tienes ya te sirva y no quieras buscar uno mejor. Entonces sale del <b>Filtro Lucky (Bases)</b> y se queda solo en el <b>Filtro Normal (Caramelos)</b>. Los Pokémon Oscuros no lo tienen: no se pueden intercambiar.',
+    detail_tab_mine:'Mis Pokémon',detail_tab_rank:'Ranking DPS',detail_readonly:'👁 Solo lectura —',detail_rank_raid:'⚔️ Incursiones',
+    tc_title:'Eficacia de Tipos',tc_attacking:'⚔️ Atacando',tc_notvery:'x0.625 (poco eficaz)',tc_super:'x1.6 (super eficaz)',tc_select:'Selecciona 1 o 2 tipos (toca para seleccionar/deseleccionar)',tc_defending:'🛡️ Defendiendo',tc_doubleresist:'x0.390 (doble resist.)',
+    active_badge:'ACTIVA', mega_dev_title:'🛠️ Modo Desarrollador',mega_dev_desc:'Activa para marcar qué Megas están en rotación. Los cambios se guardan para todos los jugadores.', mega_raids_title:'🥊 Megaincursiones actuales',mega_raids_subtitle:'Las Megas en incursión este mes. La activa ahora aparece destacada.', mega_energy_title:'🏙️ Megaenergía en Poképaradas',mega_energy_desc:'Misiones fijas que dan megaenergía. Busca siempre hueco libre antes de girar una nueva Poképarada.', mega_capture10:'🎯 Por capturar 10 de tipo (10 Megaenergía)',mega_powerup:'💪 Por dar más poder / Power-Up', mega_group_title:'👥 Misiones de Grupo (Party Play)',mega_group_desc:'20 Megaenergía por "Ganar 2 incursiones" o "Derrotar 3 Reclutas Rocket"', mega_special_title:'⚠️ Métodos Especiales',mega_special_desc:'Estos NO están en la rotación normal — requieren método específico', mega_special_photodisc:'Girando Fotodiscos de Gimnasios',mega_special_primal:'Incursiones Primigenias (eventos)',mega_special_elite:'Incursiones Élite + Meteorito',mega_special_gofest:'Super Mega Raids (GO Fest 2026)', mega_golden_title:'💡 Regla de Oro del Compañero',mega_golden_desc:'Una vez hayas registrado su Megaevolución <b>al menos una vez</b> en tu Pokédex, puedes poner cualquier miembro de su familia como <b>Compañero</b> y ganarás <b>5 Megaenergías por km caminado</b> (cada vez que encuentre un caramelo).', mega_stops_title:'📍 Misiones Fijas en Poképaradas',mega_stops_p1:'⚡ "Potencia un Pokémon 5 veces" → 10 Megaenergía aleatoria de:', mega_capture_title:'🎯 Misiones de captura:',mega_capture_fire:'🔥 10 tipo Fuego → <b>Charizard o Blaziken</b>',mega_capture_grass:'🌿 10 tipo Planta → <b>Venusaur o Sceptile</b>',mega_capture_water:'💧 10 tipo Agua → <b>Blastoise o Swampert</b>',mega_capture_normal:'⭕ 10 tipo Normal → <b>Pidgeot</b>', mega_info_title:'ℹ️ Información sobre MegaEvoluciones',mega_info_sub:'Requisitos y tiempos de espera por nivel', mega_th_level:'Nivel',mega_th_needed:'Mega-Evos necesarias',mega_th_wait:'Espera para GRATIS',mega_th_discount:'Descuento si lo haces antes', mega_row_base:'Base',mega_row_high:'Alto',mega_row_max:'Máximo',mega_row_supermax:'Super Max', mega_wait_7:'7 días',mega_wait_5:'5 días',mega_wait_3:'3 días',mega_wait_24h:'24 h',mega_special_needed:'Especial*', mega_disc_base:'Coste base reducido (ej. 40 de energía)',mega_disc_high:'50% de descuento sobre el nivel base',mega_disc_max:'75% de descuento sobre el nivel base',mega_disc_supermax:'Descuento casi total', mega_supermax_note:'<b>⚠️ Cómo llegar a Super Max:</b> Para desbloquear este cuarto nivel, primero debes tener al Pokémon en Nivel Máximo (nivel 3). Después, ya no te servirá seguir megaevolucionándolo día a día; tendrás que gastar un pago único de <b>5.000 de Megaenergía</b> directamente para potenciarlo a Super Max. Para acumular esa cantidad, la mejor opción es farmear las incursiones <b>Super Mega Raids</b>.', mod_welcome_title:'👋 ¡Bienvenido a TrackDex!',mod_welcome_p1:'Esta app te ayuda a <b>mejorar tus equipos Pokémon para incursiones</b>: lleva el control de cuáles tienes y cuáles te faltan, crea automáticamente <b>filtros para intercambiar con tus amigos</b> y ten siempre a la vista qué Pokémon necesitas priorizar… entre muchas otras cosas.',mod_welcome_p2:'Ve a tu <b>Perfil</b> y toca <b>«📖 Guía TrackDex»</b> para descubrir todo lo que puedes hacer.', mod_welcome_close_wait:'Cerrar (%n)',mod_welcome_close_ready:'Entendido, cerrar', mod_guia_title:'📖 Guía TrackDex',mod_guia_sub:'Toca cada función para saber qué hace. Las marcadas con ✅ ya las conoces.',mod_guia_understood:'✅ Entendido', mod_info_title:'ℹ️ ¿Para qué sirve esta app?',mod_info_p1:'<b>TrackDex</b> es un álbum personal para saber qué Pokémon tienes y cuáles te faltan de los <b>mejores atacantes por tipo</b> en incursiones. El objetivo es ayudarte a <b>invertir tus polvos de forma eficiente</b> y saber qué Pokémon vale la pena subir.', mod_info_links_title:'🔗 Enlaces útiles',mod_info_link1:'Mejores atacantes por tipo',mod_info_link2:'Mejores Dinamax por tipo',mod_info_link3:'Rotación actual de Dinamax',mod_info_link3_sub:'snacknap.com · actualizado cada 5 min', mod_info_dmax_title:'⚡ Dynamax y Mega Evolución',mod_info_dmax_p:'<b>Un Pokémon Dynamax puede hacer Mega Evolución</b>, pero no puede estar en ambas formas a la vez.<br>Mientras dure la Mega Evolución <b>(8 horas)</b>, ese Pokémon <b>no puede participar en combates Dynamax</b>.<br><span style="color:#555">💡 Solución urgente: Mega Evoluciona otro Pokémon de tu equipo. Al solo poder tener un Mega activo, el primero vuelve automáticamente a su forma normal y ya puede entrar en Max Battles.</span>', mod_info_cost_title:'💰 El coste real de subir un Pokémon',mod_info_cost_p:'<b>Nivel 1 → 40:</b> ~272.500 polvos · 273 caramelos<br><b>Nivel 40 → 50:</b> ~296.000 polvos · 296 caramelos XL<br><b>Total nivel 1 → 50: ~568.500 polvos</b><br><span style="color:#888">Shadow: +20% polvos y caramelos · Lucky: −50% polvos</span>', mod_info_cost_p2:'Subir un solo Pokémon al nivel 50 cuesta más de medio millón de polvos. Por eso tiene sentido <b>esperar a tener la versión Dinamax</b> si existe: obtienes el mismo Pokémon con la capacidad extra de los Max Battles sin gastar polvos de más en la versión normal.', mod_info_ivs_p:'La diferencia entre un Pokémon con IVs perfectos y uno con IVs bajos es <b>prácticamente irrelevante en raids</b>. Para atacantes Mega, Shadow o Dinamax con mucho ataque base, un IV de ataque 10 vs 15 supone menos del 2% de daño extra. <b>Es mucho más importante tener el Pokémon correcto que tener el hundo perfecto</b>. No descartes un buen atacante por tener IVs imperfectos.', mod_glossary_title:'📖 Guía de iconos', mod_glossary_legacy:'<strong>Ataque Legacy</strong><p>Movimiento especial que ya no se puede aprender normalmente. Solo se obtuvo durante eventos pasados (Días de la Comunidad). Para enseñárselo ahora se necesita una <b>MT Élite</b>, muy escasa.</p>', mod_glossary_shadow:'<strong>Shadow / Oscuro</strong><p>Pokémon capturado al derrotar al Team GO Rocket o en <b>Incursiones Oscuras</b>. Tienen <b>+20% de Ataque</b> pero <b>-20% de Defensa</b>. Son los más poderosos en raids si aguantan.</p>', mod_glossary_mega:'<strong>Mega Evolución</strong><p>Forma temporal potenciada. Las <b>piedras Mega</b> se consiguen en Mega Incursiones, misiones temporales o raramente en PokéParadas. Potencian a los aliados del mismo tipo en raid.</p>', mod_glossary_special:'<strong>Misión especial</strong><p>Pokémon obtenido completando una <b>Investigación Especial</b> o misión temporal. Suelen ser únicos o muy difíciles de conseguir de otra forma.</p>', mod_glossary_dps:'<strong>DPS (Daño Por Segundo)</strong><p>Mide el daño sostenido en raids. Valores de referencia a nivel 40 con IVs perfectos (15/15/15). Fuente: Dittobase 2026.</p>', mod_glossary_ivs:'<strong>IVs (Individual Values)</strong><p>Estadísticas de cada Pokémon: <b>Ataque, Defensa y Vida</b>, de 0 a 15. Un Pokémon con 15/15/15 es "hundo" (perfecto). En raids el Ataque es el más importante.</p>', daily_home:'🏠 Desde Casa', daily_h1_t:'⭐ Captura diaria / Girar PokéParada <span class="diff diff-easy">Fácil · 1 min</span>',daily_h1_b:'Activa la racha de polvos estelares. Solo necesitas capturar 1 Pokémon o girar 1 PokéParada al día.', daily_h2_t:'🎁 Abrir regalos <span class="diff diff-easy">Fácil · 4 min</span>',daily_h2_b:'20 diarios, 40+ en eventos — dan polvos estelares extra.<ul><li>Salta la animación haciendo clicks rápidos.</li><li>Activa <b>"Abrir regalos con mochila llena"</b> para obtener solo polvos sin llenar el inventario.</li></ul>', daily_h3_t:'🎈 Globo del Team GO Rocket <span class="diff diff-easy">Fácil · 3 min</span>',daily_h3_b:'Aparece a las <b>00:00 · 06:00 · 12:00 · 18:00</b>. Lucha contra ellos para conseguir Pokémon oscuros.', daily_h4_t:'🛍️ Pack diario gratuito <span class="diff diff-easy">Fácil · 1 min</span>',daily_h4_b:'Normalmente basura, pero puede contener pases de incursión premium, MTs, ataques cargados...<div class="diarias-tip">💡 Si por la mañana es basura, <b>no lo reclames</b>. Vuelve a mirar a las 18:00+, puede cambiar. Si por la noche sigue siendo basura, reclámalos para que salga uno nuevo al día siguiente.</div>', daily_h5_t:'🤝 Corazones con tu compañero <span class="diff diff-easy">Fácil · 2 min</span>',daily_h5_b:'Sube un nivel extra por encima del máximo (50+1), haciéndolo más fuerte en raids.<div class="diarias-tip">💡 Puedes cambiar de compañero hasta <b>20 veces al día</b>. Haz compañeros a tus mejores atacantes de raids.</div>', daily_h6_t:'⚔️ Combates PvP <span class="diff diff-hard">Difícil · 40 min</span>',daily_h6_b:'Mayor fuente de polvos estelares, caramelos raros y MTs de ataques cargados y rápidos.<ul><li>Solo puedes hacer <b>5 rondas de 5 combates</b> al día.</li><li>En <b>Rango 20</b> se añaden los legendarios en rotación actual a la pool de recompensas.</li></ul>', daily_h7_t:'🔄 Intercambios diarios <span class="diff diff-medium">Media · 60 min</span>',daily_h7_b:'Hasta 100 intercambios diarios con otra persona.<ul><li>Obtienes caramelos extra del Pokémon enviado — mejor que recapturarlo.</li><li>Suele dar <b>1 caramelo XL garantizado</b> + caramelos normales.</li><li>Gana hasta <b>100 XL + 300 caramelos normales</b> al día.</li><li>Probabilidad de intercambios <b>Lucky</b> (IVs garantizados altos).</li></ul>', daily_h8_t:'📱 Organiza tus Pokémon',daily_h8_b:'Esta app te ayuda: en <b>Pokémon Objetivo</b> tienes el filtro de los que necesitas para pegar directamente en Pokémon GO.', daily_out:'🚶 Al Salir a Caminar', daily_o1_t:'🏟️ Pase de incursión diario gratuito',daily_o1_b:'Gástalo y consigue el nuevo en cualquier gimnasio. ¡No te quedes sin él!', daily_o2_t:'🌀 Incienso diario gratuito',daily_o2_b:'Úsalo para conseguir las <b>aves legendarias de Galar</b>: Articuno, Zapdos y Moltres de Galar.', daily_o3_t:'🗺️ Misión de PokéParada diaria',daily_o3_b:'Completa una misión al día. Cada <b>7 días</b> recibes un encuentro con un Pokémon raro o legendario garantizado.<div class="diarias-tip">💡 Ten siempre una <b>misión de mapeo sin completar</b> encima (ocupa el 4º hueco y no cuenta) — fuerza a las demás PokéParadas a mostrar su misión oculta.</div>', daily_o4_t:'🏅 Reclama gimnasios',daily_o4_b:'Defiende gimnasios para acumular <b>PokéMonedas</b> gratis (máx 50 al día).', daily_o5_t:'🥚 Pon huevos a incubar',daily_o5_b:'Aprovecha el camino para incubar huevos. Prioriza los de 12km (huevos rojos) por sus recompensas.', daily_o6_t:'🚀 Lucha contra el Team Rocket',daily_o6_b:'Los líderes y el jefe dan los <b>mejores Pokémon oscuros del juego</b>. Prioriza siempre a Sierra, Arlo, Cliff y Giovanni.', daily_o7_t:'🛤️ Haz rutas',daily_o7_b:'Dan células de Zygarde, corazón extra con tu compañero y caramelos raros.<div class="diarias-tip">💡 El <b>día 7 de racha</b> de rutas da recompensas masivas: MTs, grandes cantidades de polvo estelar y más.</div>', daily_o8_t:'✨ Misiones de megaenergía en PokéParadas',daily_o8_b:'Son las misiones más valiosas. Busca activamente las que den megaenergía de Pokémon.<div class="diarias-tip">💡 <b>No cojas una PokéParada nueva sin tener hueco</b> para misiones, podrías perder una de megaenergía.</div>', daily_o9_t:'👥 Misiones de grupo <span class="diff diff-medium">Media</span>',daily_o9_b:'Si sales con alguien, podéis formar grupos para conseguir misiones de grupo extra con posibilidad de megaenergía de ciertos Pokémon.', legacy_howto_title:'¿Cómo se obtienen? <span id="lg-howto-arrow" style="float:right;font-size:12px;color:#888">▾</span>', legacy_howto_body:'Hay dos formas principales:<br><br><b>🎉 En eventos (gratis):</b> evolucionando al Pokémon base hasta su última etapa, o capturándolo en incursiones/salvaje durante las horas del evento.<br><br><b>💳 En cualquier momento (de pago):</b> usando una <b>MT Élite</b> (rápida o cargada). Son objetos raros que se consiguen al final de las temporadas PvP (Rango 19+) o en packs de la tienda.<label style="display:block;margin-top:12px;font-size:12px;font-weight:600;color:#888;cursor:pointer"><input type="checkbox" id="lg-howto-read" onchange="markRead(\'legacyHowto\', this.checked)" style="vertical-align:middle"> Marcar como leído (lo envía al final)</label>', legacy_thisyear:'📅 Legacy de este año (Ene-Jul 2026)',legacy_upcoming:'🔜 Confirmados y próximos', legacy_golden_title:'⚠️ Regla de oro del día del evento',legacy_golden_sub:'Para que el juego te dé el ataque Legacy al evolucionar (sin gastar MT Élite):', legacy_warn1:'<b>⏰ Ventana horaria:</b> evoluciona durante las 3 h del evento y hasta 4-5 h después. Un minuto tarde = ataque normal.', legacy_warn2:'<b>📡 Cuidado con el GPS:</b> si pierde la señal justo al evolucionar, el servidor no sabrá que estás en el evento y te dará ataque común.', legacy_warn3:'<b>🚫 Sin Frustración:</b> si es un Pokémon Oscuro, no puede tener Frustración o bloqueará el Legacy. Quítasela antes en un evento del Team GO Rocket.', stops_season:'Temporada: <b style="color:#c2185b">Forever Forward</b> · 📌 fija tus misiones favoritas arriba',stops_pinned:'📌 Fijadas', tips_title:'✏️ Consejos (admin)',tips_save:'💾 Guardar',tips_desc:'Los cambios se publican para todos al pulsar 💾 Guardar. Puedes usar &lt;b&gt;negrita&lt;/b&gt; en el texto. Los consejos se muestran en orden aleatorio.',tips_add:'➕ Añadir consejo (arriba)',tips_emoji_title:'Elige un emoji', notif_title:'🔔 Notificaciones',notif_perm:'<b>Permiso necesario.</b> Toca cualquier casilla y acepta el aviso del navegador para recibir recordatorios.', notif_custom_title:'➕ Recordatorio personalizado',notif_new_ph:'¿De qué te aviso?',notif_add:'Añadir', notif_info_title:'🔔 Cómo funcionan',notif_info_p1:'Marca la casilla de lo que quieras que te recuerde y elige la hora. Se repite <b>todos los días</b> a esa hora.',notif_info_p2:'Los avisos que ocurren varias veces al día, como el <b>globo del Team GO Rocket</b>, se despliegan con ▾ para activar solo los pases que te interesen.',notif_info_p3:'⚠️ De momento los recordatorios se lanzan desde tu dispositivo, así que <b>necesitan que TrackDex esté instalada y abierta o en segundo plano</b>. Los avisos con la app cerrada del todo llegarán en una próxima versión.', comm_dm_btn:'✉️ Mensajes privados',comm_dm_desc:'Para escribir a alguien en privado, entra en <b>Miembros</b> y toca ✉️ junto a su nombre. Solo esa persona y tú veréis la conversación.',comm_del_btn:'💥 Borrar esta comunidad (eres el creador)', dm_input_ph:'Escribe un mensaje…',dm_load_error:'No se pudo cargar la conversación.',dm_no_messages:'Aún no hay mensajes con',dm_write_first:'¡Escribe el primero! 👋', news_current_version:'Versión actual:', filtro_title:'🛠️ Crea tu filtro',filtro_toast_warn:'Ten en cuenta que si editas el filtro a mano puedes romperlo por error', filtro_intro:'📅 <b>Filtro Normal (Caramelos)</b>: todos los que aún coleccionas; intercámbialos cualquier día por caramelos. 🍀 <b>Filtro Lucky (Bases)</b>: los que aún necesitan buena base; búscalos en el día de suerte aumentada.', filtro_normal_label:'📅 Filtro Normal (Caramelos)',filtro_copy_normal:'📋 Copiar Filtro Normal (Caramelos)', filtro_add_label:'Añadir Pokémon (al filtro Resto):',filtro_add_ph:'ej. pikachu', filtro_lucky_label:'🍀 Filtro Lucky (Bases)',filtro_trading_with:'Comerciando con',filtro_choose_trade:'Elige con quién vas a comerciar para ver el Filtro Lucky',filtro_select_trainer:'Selecciona un entrenador...',filtro_copy_lucky:'📋 Copiar Filtro Lucky (Bases)', obj_info_p1:'Esta pantalla te dice <b>qué Pokémon capturar y cuántos caramelos te faltan</b> para completar tus equipos (subir todas tus copias al máximo). Toca un Pokémon para apuntar los caramelos normales y XL que ya tienes: la lista se reordena poniendo arriba lo que más te falta.', obj_info_p2:'El orden usa la equivalencia real del juego: <b>1 caramelo XL = 100 caramelos normales</b>. Cuando completas los XL necesarios de un Pokémon, se marca ✓ y baja al final.', obj_info_candy_title:'🍬 Caramelos para subir un Pokémon al máximo',obj_info_candy_body:'Normal / Mega: ~250 + 296 XL<br>Purificado: ~220 + 268 XL<br>Oscuro: ~298 + 360 XL<br>⚡ Dynamax: ~600 + 416 XL (base + habilidades)', obj_create_filter:'🛠️ Crea tu filtro para Pokémon GO',obj_only_wanted:'Solo Deseados',obj_choose:'Elige…',obj_completed_label:'✅ Completado', leg_title:'🏆 GoFest Legendary Tracker',leg_sat:'📅 Sáb',leg_sun:'📅 Dom', trk_view_progress:'Ver progreso de:',trk_readonly:'👁 Solo lectura',trk_got:'✅ Conseguido',trk_later:'⏳ Later',trk_prio:'★ Prioritario',trk_unob:'🚫 No Obtenible',trk_search_ph:'Buscar…',trk_reset:'Reiniciar', hub_legendary:'🐉 Legendarios<br><span style="font-size:11px;font-weight:400;opacity:.75">Raids 5★ — GO Fest y repeticiones</span>', hub_pikachu:'⚡ Pikachu Skins Event<br><span style="font-size:11px;font-weight:400;opacity:.75">Special Anniversary Celebration · 13–20 jul · 3 celebrations</span>', pika_title:'⚡ Pikachu Skins Event',
+  },
   en:{login_sub:'Sign in to your account',user:'Username',pass:'Password',user_ph:'your username',pass_ph:'your password',remember:'Remember me on this device',disclaimer:'TrackDex is a non-profit fan app, not affiliated with Nintendo, Niantic, The Pokémon Company or Game Freak. Pokémon and all related names and images are trademarks of their respective owners.',privacy:'Privacy policy',enter:'Sign in',no_account:"Don't have an account?",create_account:'Create account',reg_sub:'Just once, for all your communities',user_ph2:'letters, numbers, - or _',pass_ph2:'at least 6 characters',pass2:'Repeat password',pass2_ph:'repeat your password',have_account:'Already have an account?',signin:'Sign in',
     communities:'Communities',logout:'Sign out',create_comm:'➕ Create community',comm_name:'Community name',comm_pass:'Community password',comm_alias:'Your nickname in this community',create:'Create',join_sub:'Pick your nickname and enter the password',alias_ph:'how others will see you',pass_only:'password',
     my_pokemon:'⚔️ My Pokémon',raid_pk:'Raid Pokémon',dmax_pk:'Dynamax Pokémon',rankings:'DPS Rankings',top50:'Top 50 per type',type_calc:'🔥 Type Calculator',megas:'🍬 Megas',legacy:'⭐ Legacy',target:'🎯 Target Pokémon',daily:'📋 Dailies',stops:'🎁 PokéStops!',trackers:'🏆 Trackers',community:'🏘️ Community',news:'🆕 News',more_tools:'➕ More tools',
     profile:'👤 Profile',app_section:'ℹ️ App',guide:'📖 TrackDex guide',rename_teams:'✏️ Rename your teams',change_pass:'🔑 Change password',privacy_btn:'🔒 Privacy policy',danger:'⚠️ Danger zone',del_team:'🗑️ Delete a Pokémon team (2, 3 or 4)',del_raid:'🗑️ Delete all your Raid Pokémon',del_dmax:'🗑️ Delete all your Dynamax Pokémon',del_account:'☠️ Delete my account and all my data',
-    community_t:'🏘️ Community',members:'👥 Community members',chat:'💬 Community chat',switch_comm:'🔄 Switch community'}
+    community_t:'🏘️ Community',members:'👥 Community members',chat:'💬 Community chat',switch_comm:'🔄 Switch community',
+    close:'Close',understood:'Got it',
+    biv_title:'📈 IV Tracker',biv_tab_raid:'⚔️ Raid',biv_tab_dmax:'⚡ Dynamax',biv_ord_worst:'Worst first',biv_ord_best:'Best first',biv_ord_noivs:'No IVs assigned',biv_ord_notobt:'Not obtained',biv_team_all:'All',biv_byteam:'🗂️ By teams (types)',biv_weights_btn:'⚖️ IV Weights',biv_hide:'Hide:',biv_hide_shadow:'👤 Shadow',biv_hide_legend:'🏆 Legendary',biv_weights_sub:'Adjust the weight of each IV to sort the list.',biv_preset_def:'Default',biv_preset_ext:'Extreme',biv_atk:'⚔️ Attack',biv_def:'🛡️ Defense',biv_hp:'❤️ HP',
+    biv_info_title:'📈 How is this list sorted?',
+    biv_info_p0:'Each Pokémon you own is scored using its IVs, weighted by how much they matter in raids:<br><b>Attack ×100 · Defense ×20 · HP ×30</b> (adjustable with the "⚖️ IV Weights" button)',
+    biv_info_p1:'<b>⚔️ Attack (100):</b> the absolute king. One extra point can reach a "breakpoint" (a threshold where damage rounds up), snowballing into a massive difference over the whole battle.',
+    biv_info_p2:'<b>🛡️ Defense (20):</b> double-edged — less damage taken also means slower energy charging. Sometimes a low Defense IV is unnoticeable or even optimal.',
+    biv_info_p3:'<b>❤️ HP (35):</b> taking damage generates energy for your charged move. More HP = surviving one extra hit and squeezing out one more charged attack.',
+    biv_info_p4:'In short: a 15/10/10 (Atk/Def/HP) is far more useful than a 10/15/15. <b>Look for the 15 in Attack above everything else.</b> Use "Worst first" to know which ones to prioritize powering up or trading (even with rare candy).',
+    tab_dynamax:'⚡ Dynamax',
+    album_info_title:'ℹ️ What are these badges for?',
+    album_info_p1:'<b>✅ Obtained:</b> means you already have this Pokémon. It counts toward your progress, is excluded from catch filters, and appears in <b>IV Tracker</b> with its comparison tool to evaluate new catches.',
+    album_info_p2:'<b>⭐ Maxed Lvl 50:</b> means you already fully powered it up. It stops counting candy in <b>Target Pokémon</b> and is removed from trade filters — you don\'t need more copies.',
+    album_info_p3:'<b>💎 Good enough base:</b> mark this when the one you have is already good enough and you don\'t want to look for a better one. It then leaves the <b>Lucky Filter (Bases)</b> and stays only in the <b>Normal Filter (Candy)</b>. Shadow Pokémon don\'t have this option: they can\'t be traded.',
+    detail_tab_mine:'My Pokémon',detail_tab_rank:'DPS Ranking',detail_readonly:'👁 Read-only —',detail_rank_raid:'⚔️ Raids',
+    tc_title:'Type Effectiveness',tc_attacking:'⚔️ Attacking',tc_notvery:'x0.625 (not very effective)',tc_super:'x1.6 (super effective)',tc_select:'Select 1 or 2 types (tap to select/deselect)',tc_defending:'🛡️ Defending',tc_doubleresist:'x0.390 (double resist.)',
+    active_badge:'ACTIVE', mega_dev_title:'🛠️ Developer Mode',mega_dev_desc:'Turn on to mark which Megas are in rotation. Changes are saved for all players.', mega_raids_title:'🥊 Current Mega Raids',mega_raids_subtitle:'The Megas in raids this month. The active one is highlighted.', mega_energy_title:'🏙️ Mega Energy at PokéStops',mega_energy_desc:'Fixed tasks that give mega energy. Always check for a free slot before spinning a new PokéStop.', mega_capture10:'🎯 Catch 10 of a type (10 Mega Energy)',mega_powerup:'💪 Power up a Pokémon', mega_group_title:'👥 Party Play Tasks',mega_group_desc:'20 Mega Energy for "Win 2 raids" or "Defeat 3 Team GO Rocket Grunts"', mega_special_title:'⚠️ Special Methods',mega_special_desc:'These are NOT in the normal rotation — they require a specific method', mega_special_photodisc:'Spinning Gym Photo Discs',mega_special_primal:'Primal Raids (events)',mega_special_elite:'Elite Raids + Meteorite',mega_special_gofest:'Super Mega Raids (GO Fest 2026)', mega_golden_title:'💡 The Golden Buddy Rule',mega_golden_desc:'Once you\'ve registered its Mega Evolution <b>at least once</b> in your Pokédex, you can set any member of its family as your <b>Buddy</b> and earn <b>5 Mega Energy per km walked</b> (each time it finds a candy).', mega_stops_title:'📍 Fixed PokéStop Tasks',mega_stops_p1:'⚡ "Power up a Pokémon 5 times" → 10 random Mega Energy from:', mega_capture_title:'🎯 Catch tasks:',mega_capture_fire:'🔥 10 Fire type → <b>Charizard or Blaziken</b>',mega_capture_grass:'🌿 10 Grass type → <b>Venusaur or Sceptile</b>',mega_capture_water:'💧 10 Water type → <b>Blastoise or Swampert</b>',mega_capture_normal:'⭕ 10 Normal type → <b>Pidgeot</b>', mega_info_title:'ℹ️ About Mega Evolution',mega_info_sub:'Requirements and wait times per level', mega_th_level:'Level',mega_th_needed:'Mega Evos needed',mega_th_wait:'Wait for FREE',mega_th_discount:'Discount if done early', mega_row_base:'Base',mega_row_high:'High',mega_row_max:'Max',mega_row_supermax:'Super Max', mega_wait_7:'7 days',mega_wait_5:'5 days',mega_wait_3:'3 days',mega_wait_24h:'24 h',mega_special_needed:'Special*', mega_disc_base:'Reduced base cost (e.g. 40 energy)',mega_disc_high:'50% discount over base level',mega_disc_max:'75% discount over base level',mega_disc_supermax:'Almost total discount', mega_supermax_note:'<b>⚠️ How to reach Super Max:</b> To unlock this fourth level, you must first have the Pokémon at Max Level (level 3). After that, evolving it day by day no longer helps; you\'ll need to spend a one-time payment of <b>5,000 Mega Energy</b> directly to power it up to Super Max. The best way to build up that amount is farming <b>Super Mega Raids</b>.', mod_welcome_title:'👋 Welcome to TrackDex!',mod_welcome_p1:'This app helps you <b>improve your Pokémon raid teams</b>: track which ones you have and which you\'re missing, automatically create <b>filters to trade with your friends</b>, and always see which Pokémon to prioritize… among many other things.',mod_welcome_p2:'Go to your <b>Profile</b> and tap <b>«📖 TrackDex Guide»</b> to discover everything you can do.', mod_welcome_close_wait:'Close (%n)',mod_welcome_close_ready:'Got it, close', mod_guia_title:'📖 TrackDex Guide',mod_guia_sub:'Tap each feature to learn what it does. Those marked with ✅ you already know.',mod_guia_understood:'✅ Got it', mod_info_title:'ℹ️ What is this app for?',mod_info_p1:'<b>TrackDex</b> is a personal album to know which Pokémon you have and which you\'re missing among the <b>best attackers per type</b> in raids. The goal is to help you <b>invest your stardust efficiently</b> and know which Pokémon are worth powering up.', mod_info_links_title:'🔗 Useful links',mod_info_link1:'Best attackers per type',mod_info_link2:'Best Dynamax per type',mod_info_link3:'Current Dynamax rotation',mod_info_link3_sub:'snacknap.com · updated every 5 min', mod_info_dmax_title:'⚡ Dynamax and Mega Evolution',mod_info_dmax_p:'<b>A Dynamax Pokémon can Mega Evolve</b>, but it can\'t be in both forms at once.<br>While the Mega Evolution lasts <b>(8 hours)</b>, that Pokémon <b>cannot take part in Max Battles</b>.<br><span style="color:#555">💡 Quick fix: Mega Evolve another Pokémon on your team. Since only one Mega can be active, the first one automatically reverts to its normal form and can enter Max Battles again.</span>', mod_info_cost_title:'💰 The real cost of powering up a Pokémon',mod_info_cost_p:'<b>Level 1 → 40:</b> ~272,500 stardust · 273 candy<br><b>Level 40 → 50:</b> ~296,000 stardust · 296 XL candy<br><b>Total level 1 → 50: ~568,500 stardust</b><br><span style="color:#888">Shadow: +20% stardust and candy · Lucky: −50% stardust</span>', mod_info_cost_p2:'Powering up a single Pokémon to level 50 costs over half a million stardust. That\'s why it makes sense to <b>wait for the Dynamax version</b> if it exists: you get the same Pokémon with the extra Max Battles ability without spending extra stardust on the normal version.', mod_info_ivs_p:'The difference between a Pokémon with perfect IVs and one with low IVs is <b>practically irrelevant in raids</b>. For Mega, Shadow, or Dynamax attackers with high base attack, an attack IV of 10 vs 15 means less than 2% extra damage. <b>Having the right Pokémon matters far more than having perfect IVs</b>. Don\'t rule out a good attacker just because of imperfect IVs.', mod_glossary_title:'📖 Icon Guide', mod_glossary_legacy:'<strong>Legacy Move</strong><p>A special move that can no longer be learned normally. It was only available during past events (Community Days). To teach it now you need an <b>Elite TM</b>, which is very scarce.</p>', mod_glossary_shadow:'<strong>Shadow</strong><p>Pokémon caught by defeating Team GO Rocket or in <b>Shadow Raids</b>. They have <b>+20% Attack</b> but <b>-20% Defense</b>. They\'re the most powerful raid attackers if they can take the hits.</p>', mod_glossary_mega:'<strong>Mega Evolution</strong><p>A temporary powered-up form. <b>Mega stones</b> are obtained from Mega Raids, timed research, or rarely from PokéStops. They boost allies of the same type in a raid.</p>', mod_glossary_special:'<strong>Special research</strong><p>A Pokémon obtained by completing a <b>Special Research</b> quest or timed research. Usually unique or very hard to obtain otherwise.</p>', mod_glossary_dps:'<strong>DPS (Damage Per Second)</strong><p>Measures sustained damage in raids. Reference values at level 40 with perfect IVs (15/15/15). Source: Dittobase 2026.</p>', mod_glossary_ivs:'<strong>IVs (Individual Values)</strong><p>Each Pokémon\'s stats: <b>Attack, Defense and HP</b>, from 0 to 15. A Pokémon with 15/15/15 is a "hundo" (perfect). In raids, Attack is the most important.</p>', daily_home:'🏠 From Home', daily_h1_t:'⭐ Daily catch / Spin a PokéStop <span class="diff diff-easy">Easy · 1 min</span>',daily_h1_b:'Activates the stardust streak. You only need to catch 1 Pokémon or spin 1 PokéStop per day.', daily_h2_t:'🎁 Open gifts <span class="diff diff-easy">Easy · 4 min</span>',daily_h2_b:'20 daily, 40+ during events — give extra stardust.<ul><li>Skip the animation by tapping quickly.</li><li>Turn on <b>"Open gifts with full backpack"</b> to get only stardust without filling your inventory.</li></ul>', daily_h3_t:'🎈 Team GO Rocket balloon <span class="diff diff-easy">Easy · 3 min</span>',daily_h3_b:'Appears at <b>00:00 · 06:00 · 12:00 · 18:00</b>. Battle them to get Shadow Pokémon.', daily_h4_t:'🛍️ Free daily box <span class="diff diff-easy">Easy · 1 min</span>',daily_h4_b:'Usually junk, but can contain premium raid passes, TMs, charged attacks...<div class="diarias-tip">💡 If it\'s junk in the morning, <b>don\'t claim it</b>. Check again at 18:00+, it may change. If it\'s still junk at night, claim it so a new one appears the next day.</div>', daily_h5_t:'🤝 Buddy hearts <span class="diff diff-easy">Easy · 2 min</span>',daily_h5_b:'Gain an extra level above the max (50+1), making it stronger in raids.<div class="diarias-tip">💡 You can change buddy up to <b>20 times a day</b>. Make your best raid attackers your buddy.</div>', daily_h6_t:'⚔️ PvP battles <span class="diff diff-hard">Hard · 40 min</span>',daily_h6_b:'The biggest source of stardust, rare candy and fast/charged move TMs.<ul><li>You can only do <b>5 sets of 5 battles</b> per day.</li><li>At <b>Rank 20</b>, the legendaries currently in rotation are added to the reward pool.</li></ul>', daily_h7_t:'🔄 Daily trades <span class="diff diff-medium">Medium · 60 min</span>',daily_h7_b:'Up to 100 daily trades with another person.<ul><li>You get extra candy from the traded Pokémon — better than recatching it.</li><li>Usually gives <b>1 guaranteed XL candy</b> + normal candy.</li><li>Earn up to <b>100 XL + 300 normal candy</b> per day.</li><li>Chance of <b>Lucky</b> trades (guaranteed high IVs).</li></ul>', daily_h8_t:'📱 Organize your Pokémon',daily_h8_b:'This app helps you: in <b>Target Pokémon</b> you have the filter for the ones you need, ready to paste directly into Pokémon GO.', daily_out:'🚶 While Out Walking', daily_o1_t:'🏟️ Free daily raid pass',daily_o1_b:'Use it up and get a new one at any gym. Don\'t let it go to waste!', daily_o2_t:'🌀 Free daily incense',daily_o2_b:'Use it to get the <b>Galarian legendary birds</b>: Galarian Articuno, Zapdos and Moltres.', daily_o3_t:'🗺️ Daily PokéStop task',daily_o3_b:'Complete one task per day. Every <b>7 days</b> you get a guaranteed encounter with a rare or legendary Pokémon.<div class="diarias-tip">💡 Always keep an <b>uncompleted mapping task</b> on hand (it takes the 4th slot and doesn\'t count) — it forces other PokéStops to show their hidden task.</div>', daily_o4_t:'🏅 Claim gyms',daily_o4_b:'Defend gyms to earn free <b>PokéCoins</b> (max 50 per day).', daily_o5_t:'🥚 Put eggs in an incubator',daily_o5_b:'Use your walking to hatch eggs. Prioritize 12km eggs (red eggs) for their rewards.', daily_o6_t:'🚀 Fight Team Rocket',daily_o6_b:'Leaders and the boss give the <b>best Shadow Pokémon in the game</b>. Always prioritize Sierra, Arlo, Cliff and Giovanni.', daily_o7_t:'🛤️ Do routes',daily_o7_b:'Give Zygarde cells, an extra buddy heart and rare candy.<div class="diarias-tip">💡 <b>Day 7</b> of a routes streak gives massive rewards: TMs, large amounts of stardust and more.</div>', daily_o8_t:'✨ Mega energy tasks at PokéStops',daily_o8_b:'These are the most valuable tasks. Actively look for the ones that give Pokémon mega energy.<div class="diarias-tip">💡 <b>Don\'t take a new PokéStop without a free slot</b> for tasks, you could miss a mega energy one.</div>', daily_o9_t:'👥 Group tasks <span class="diff diff-medium">Medium</span>',daily_o9_b:'If you go out with someone, you can form groups to get extra group tasks with a chance of mega energy for certain Pokémon.', legacy_howto_title:'How do you get them? <span id="lg-howto-arrow" style="float:right;font-size:12px;color:#888">▾</span>', legacy_howto_body:'There are two main ways:<br><br><b>🎉 During events (free):</b> by evolving the base Pokémon to its final stage, or catching it in raids/the wild during event hours.<br><br><b>💳 At any time (paid):</b> using an <b>Elite TM</b> (fast or charged). These are rare items obtained at the end of PvP seasons (Rank 19+) or in shop packs.<label style="display:block;margin-top:12px;font-size:12px;font-weight:600;color:#888;cursor:pointer"><input type="checkbox" id="lg-howto-read" onchange="markRead(\'legacyHowto\', this.checked)" style="vertical-align:middle"> Mark as read (sends it to the bottom)</label>', legacy_thisyear:'📅 Legacy this year (Jan-Jul 2026)',legacy_upcoming:'🔜 Confirmed and upcoming', legacy_golden_title:'⚠️ Golden rule for event day',legacy_golden_sub:'For the game to give you the Legacy move when evolving (without spending an Elite TM):', legacy_warn1:'<b>⏰ Time window:</b> evolve during the event\'s 3 hours and up to 4-5 hours after. One minute late = normal move.', legacy_warn2:'<b>📡 Watch your GPS:</b> if it loses signal right when evolving, the server won\'t know you\'re at the event and will give you the common move.', legacy_warn3:'<b>🚫 No Frustration:</b> if it\'s a Shadow Pokémon, it can\'t have Frustration or it will block the Legacy move. Remove it beforehand at a Team GO Rocket event.', stops_season:'Season: <b style="color:#c2185b">Forever Forward</b> · 📌 pin your favorite tasks above',stops_pinned:'📌 Pinned', tips_title:'✏️ Tips (admin)',tips_save:'💾 Save',tips_desc:'Changes are published for everyone when you press 💾 Save. You can use &lt;b&gt;bold&lt;/b&gt; in the text. Tips are shown in random order.',tips_add:'➕ Add tip (top)',tips_emoji_title:'Choose an emoji', notif_title:'🔔 Notifications',notif_perm:'<b>Permission needed.</b> Tap any checkbox and accept the browser prompt to receive reminders.', notif_custom_title:'➕ Custom reminder',notif_new_ph:'What should I remind you of?',notif_add:'Add', notif_info_title:'🔔 How it works',notif_info_p1:'Check the box for what you want to be reminded of and pick a time. It repeats <b>every day</b> at that time.',notif_info_p2:'Reminders that happen several times a day, like the <b>Team GO Rocket balloon</b>, expand with ▾ so you can enable only the passes you care about.',notif_info_p3:'⚠️ For now reminders are triggered from your device, so they <b>require TrackDex to be installed and open or running in the background</b>. Notifications with the app fully closed are coming in a future update.', comm_dm_btn:'✉️ Private messages',comm_dm_desc:'To write to someone privately, go to <b>Members</b> and tap ✉️ next to their name. Only that person and you will see the conversation.',comm_del_btn:'💥 Delete this community (you are the creator)', dm_input_ph:'Type a message…',dm_load_error:'Could not load the conversation.',dm_no_messages:'No messages yet with',dm_write_first:'Write the first one! 👋', news_current_version:'Current version:', filtro_title:'🛠️ Create your filter',filtro_toast_warn:'Keep in mind that if you edit the filter by hand you could break it by accident', filtro_intro:'📅 <b>Normal Filter (Candy)</b>: everything you\'re still collecting; trade it any day for candy. 🍀 <b>Lucky Filter (Bases)</b>: the ones that still need a good base; look for them on the boosted luck day.', filtro_normal_label:'📅 Normal Filter (Candy)',filtro_copy_normal:'📋 Copy Normal Filter (Candy)', filtro_add_label:'Add Pokémon (to the Rest filter):',filtro_add_ph:'e.g. pikachu', filtro_lucky_label:'🍀 Lucky Filter (Bases)',filtro_trading_with:'Trading with',filtro_choose_trade:'Choose who you\'re trading with to see the Lucky Filter',filtro_select_trainer:'Select a trainer...',filtro_copy_lucky:'📋 Copy Lucky Filter (Bases)', obj_info_p1:'This screen tells you <b>which Pokémon to catch and how much candy you\'re missing</b> to complete your teams (fully power up all your copies). Tap a Pokémon to log the normal and XL candy you already have: the list re-sorts putting what you need most on top.', obj_info_p2:'The order uses the game\'s real ratio: <b>1 XL candy = 100 normal candy</b>. When you complete the XL candy a Pokémon needs, it\'s marked ✓ and moves to the bottom.', obj_info_candy_title:'🍬 Candy to fully power up a Pokémon',obj_info_candy_body:'Normal / Mega: ~250 + 296 XL<br>Purified: ~220 + 268 XL<br>Shadow: ~298 + 360 XL<br>⚡ Dynamax: ~600 + 416 XL (base + moves)', obj_create_filter:'🛠️ Create your Pokémon GO filter',obj_only_wanted:'Only Wanted',obj_choose:'Choose…',obj_completed_label:'✅ Completed', leg_title:'🏆 GoFest Legendary Tracker',leg_sat:'📅 Sat',leg_sun:'📅 Sun', trk_view_progress:'View progress of:',trk_readonly:'👁 Read-only',trk_got:'✅ Obtained',trk_later:'⏳ Later',trk_prio:'★ Priority',trk_unob:'🚫 Not obtainable',trk_search_ph:'Search…',trk_reset:'Reset', hub_legendary:'🐉 Legendaries<br><span style="font-size:11px;font-weight:400;opacity:.75">5★ Raids — GO Fest and reruns</span>', hub_pikachu:'⚡ Pikachu Skins Event<br><span style="font-size:11px;font-weight:400;opacity:.75">Special Anniversary Celebration · Jul 13–20 · 3 celebrations</span>', pika_title:'⚡ Pikachu Skins Event',
+  }
 };
 function getLang(){ try{ return localStorage.getItem('td_lang')||'es'; }catch(e){ return 'es'; } }
 function applyLang(){
   const d=I18N[getLang()]||I18N.es;
-  document.querySelectorAll('[data-i18n]').forEach(el=>{ const k=el.getAttribute('data-i18n'); if(d[k]) el.textContent=d[k]; });
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ const k=el.getAttribute('data-i18n'); if(d[k]) el.innerHTML=d[k]; });
   document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ const k=el.getAttribute('data-i18n-ph'); if(d[k]) el.placeholder=d[k]; });
   const b=document.getElementById('lang-toggle'); if(b) b.textContent='🌐 '+(getLang()==='es'?'EN':'ES');
   const pl=document.getElementById('perfil-lang'); if(pl) pl.textContent=getLang()==='es'?'🌐 Idioma: Español (cambiar a English)':'🌐 Language: English (switch to Español)';
@@ -7308,12 +7374,12 @@ function dmStart(){
     .onSnapshot(snap=>{
       const msgs=snap.docs.map(d=>({id:d.id,...d.data()})).reverse();
       renderDM(msgs);
-    }, err=>{ const el=document.getElementById('dm-msgs'); if(el) el.innerHTML='<p style="color:#aaa;font-size:12px;text-align:center;padding:20px">No se pudo cargar la conversación.</p>'; });
+    }, err=>{ const el=document.getElementById('dm-msgs'); const d=I18N[getLang()]||I18N.es; if(el) el.innerHTML='<p style="color:#aaa;font-size:12px;text-align:center;padding:20px">'+(d.dm_load_error||'No se pudo cargar la conversación.')+'</p>'; });
 }
 function dmStop(){ if(_dmUnsub){ _dmUnsub(); _dmUnsub=null; } }
 function renderDM(msgs){
   const el=document.getElementById('dm-msgs'); if(!el) return;
-  if(!msgs.length){ el.innerHTML='<p style="color:#aaa;font-size:12.5px;text-align:center;padding:24px 10px">Aún no hay mensajes con '+escChat(_dmOtherAlias)+'.<br>¡Escribe el primero! 👋</p>'; return; }
+  if(!msgs.length){ const d=I18N[getLang()]||I18N.es; el.innerHTML='<p style="color:#aaa;font-size:12.5px;text-align:center;padding:24px 10px">'+(d.dm_no_messages||'Aún no hay mensajes con')+' '+escChat(_dmOtherAlias)+'.<br>'+(d.dm_write_first||'¡Escribe el primero! 👋')+'</p>'; return; }
   el.innerHTML=msgs.map(m=>{
     const mine=m.uid===ST.globalUserId;
     const time=m.ts?new Date(m.ts).toLocaleString('es-ES',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'';
