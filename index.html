@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.978</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.979</p>
   </div>
 </div>
 
@@ -545,18 +545,18 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
         </button>
         <button class="home-btn-small" onclick="toggleMoreTools()" id="more-tools-btn" style="background:#eceff1;border-color:#607d8b;color:#37474f"><span data-i18n="more_tools">➕ Más Herramientas</span> <span id="more-tools-arrow" style="font-size:11px">▾</span>
         </button>
-        <div id="more-tools-panel" style="display:none;grid-template-columns:1fr 1fr;gap:10px">
-          <button class="home-btn-small" onclick="showMegaCandy()"><span data-i18n="megas">🍬 Megas</span>
+        <div id="more-tools-panel" style="display:none;grid-template-columns:1fr 1fr;gap:8px;padding:2px 10px 2px">
+          <button class="home-btn-small" onclick="showMegaCandy()" style="font-size:13px;padding:10px;background:#fff3e0;border-color:#e64a19;color:#bf360c"><span data-i18n="megas">🍬 Megas</span>
           </button>
-          <button class="home-btn-small" onclick="showLegacyGuide()"><span data-i18n="legacy">⭐ Legacy</span>
+          <button class="home-btn-small" onclick="showLegacyGuide()" style="font-size:13px;padding:10px;background:#fffde7;border-color:#f9a825;color:#f57f17"><span data-i18n="legacy">⭐ Legacy</span>
           </button>
-          <button class="home-btn-small" onclick="openPokeparadas()" style="grid-column:1/-1;background:#fce4ec;border-color:#c2185b;color:#880e4f"><span data-i18n="stops">🎁 Poképaradas!</span>
+          <button class="home-btn-small" onclick="openPokeparadas()" style="font-size:13px;padding:10px;background:#fce4ec;border-color:#c2185b;color:#880e4f"><span data-i18n="stops">🎁 Poképaradas!</span>
           </button>
-          <button class="home-btn-small" onclick="openDiarias()" style="grid-column:1/-1;background:#e8f5e9;border-color:#2e7d32;color:#1b5e20"><span data-i18n="daily">📋 Diarias</span>
+          <button class="home-btn-small" onclick="openDiarias()" style="font-size:13px;padding:10px;background:#e8f5e9;border-color:#2e7d32;color:#1b5e20"><span data-i18n="daily">📋 Diarias</span>
           </button>
         </div>
         <button class="home-btn-small" onclick="openNovedades()" style="background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          <span data-i18n="news">🆕 Novedades</span> · v0.978
+          <span data-i18n="news">🆕 Novedades</span> · v0.979
         </button>
       </div>
 
@@ -1350,10 +1350,17 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.978</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.979</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.978 · actual</span><span class="nov-version-tag">Legacy al día</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.979 · actual</span><span class="nov-version-tag">Objetivo se reordena solo</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🔄</span><span>En Pokémon Objetivo, al cerrar la ficha de un Pokémon tras apuntar sus caramelos, la lista se reordena al instante sin tener que salir y volver a entrar. Se mantiene tu posición de scroll.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.978</span><span class="nov-version-tag">Legacy al día</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>⭐</span><span>Pantalla Legacy actualizada: añadidos los Días de la Comunidad de junio (Baxcalibur · Asalto Glaive) y julio (Inteleon · Hidrocañón), y como próximo el de agosto (Thievul · Viento Hielo).</span></div>
       </div>
@@ -5809,8 +5816,9 @@ function populateObjTeamSelect() {
     + extra.map(n => '<option value="' + n + '"' + (String(cur) === String(n) ? ' selected' : '') + '>' + teamName(p, n) + '</option>').join('');
   if (cur === 'all' || cur === 'des') sel.value = '';
 }
-function openObjetivo() {
+function openObjetivo(keepScroll) {
   if (!ST.cur) { showToast('Selecciona un entrenador primero'); return; }
+  const _sy = keepScroll ? window.scrollY : 0;
   populateObjTeamSelect();
   const data = buildObjetivoData(ST.cur);
   const bar = document.getElementById('obj-trainer-bar');
@@ -5843,7 +5851,7 @@ function openObjetivo() {
   const scr = document.getElementById('objetivo-screen');
   scr.style.display = 'block';
   document.getElementById('home-menu').style.display = 'none';
-  window.scrollTo(0, 0);
+  window.scrollTo(0, _sy);
 }
 
 
@@ -5978,6 +5986,7 @@ function toggleTradeAnyDay(evoId) {
 function closeObjPopup() {
   const popup = document.getElementById('obj-popup');
   if (popup) popup.style.display = 'none';
+  openObjetivo(true); // reordena la lista con los caramelos actualizados, sin perder la posición
 }
 function closeObjetivo() {
   document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
