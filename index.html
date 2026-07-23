@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.981</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.983</p>
   </div>
 </div>
 
@@ -557,7 +557,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           </button>
         </div>
         <button class="home-btn-small" onclick="openNovedades()" style="background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          <span data-i18n="news">🆕 Novedades</span> · v0.981
+          <span data-i18n="news">🆕 Novedades</span> · v0.983
         </button>
       </div>
 
@@ -1201,14 +1201,15 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <button class="back-btn" onclick="closeLegacy()">←</button>
     <h1>⭐ Ataques Legacy</h1>
   </div>
-  <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
+  <div id="lg-scroll" style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
 
     <div class="lg-card" id="lg-howto">
-      <div class="lg-title">¿Cómo se obtienen? <label style="float:right;font-size:12px;font-weight:600;color:#888;cursor:pointer;white-space:nowrap"><input type="checkbox" onchange="markRead('legacyHowto', this.checked)" style="vertical-align:middle"> leído</label></div>
-      <div class="lg-text">
+      <div class="lg-title" onclick="toggleLegacyHowto()" style="cursor:pointer">¿Cómo se obtienen? <span id="lg-howto-arrow" style="float:right;font-size:12px;color:#888">▾</span></div>
+      <div class="lg-text" id="lg-howto-body">
         Hay dos formas principales:<br><br>
         <b>🎉 En eventos (gratis):</b> evolucionando al Pokémon base hasta su última etapa, o capturándolo en incursiones/salvaje durante las horas del evento.<br><br>
         <b>💳 En cualquier momento (de pago):</b> usando una <b>MT Élite</b> (rápida o cargada). Son objetos raros que se consiguen al final de las temporadas PvP (Rango 19+) o en packs de la tienda.
+        <label style="display:block;margin-top:12px;font-size:12px;font-weight:600;color:#888;cursor:pointer"><input type="checkbox" id="lg-howto-read" onchange="markRead('legacyHowto', this.checked)" style="vertical-align:middle"> Marcar como leído (lo envía al final)</label>
       </div>
     </div>
 
@@ -1311,16 +1312,24 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
   <div style="padding:16px">
     <p id="comunidad-name-lbl" style="font-size:14px;color:#555;margin-bottom:14px"></p>
     <button class="perfil-danger-btn" style="color:#5e35b1;border-color:#5e35b1;width:100%;margin-bottom:10px" onclick="showMembers()" data-i18n="members">👥 Miembros de la Comunidad</button>
-    <div style="background:#fff;border:1.5px solid #ef6c00;border-radius:12px;margin-top:6px;display:flex;flex-direction:column;height:60vh;min-height:320px">
-      <div style="padding:10px 14px;border-bottom:1px solid #eee;font-weight:800;color:#e65100;font-size:14px" data-i18n="chat">💬 Chat de comunidad</div>
-      <div id="chat-msgs" style="flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px"></div>
-      <div style="display:flex;gap:8px;padding:10px;border-top:1px solid #eee">
-        <input id="chat-input" maxlength="300" placeholder="Escribe un mensaje…" style="flex:1;padding:10px 12px;border:1.5px solid #ccc;border-radius:20px;font-size:14px" onkeydown="if(event.key==='Enter')sendChatMsg()">
-        <button onclick="sendChatMsg()" style="background:#ef6c00;color:#fff;border:none;border-radius:50%;width:42px;height:42px;font-size:16px;cursor:pointer;flex-shrink:0">➤</button>
-      </div>
-    </div>
-    <button class="perfil-danger-btn" style="color:#00695c;border-color:#00838f;width:100%;margin-top:14px" onclick="chatStop();showCommunitySelection()" data-i18n="switch_comm">🔄 Cambiar comunidad</button>
+    <button class="perfil-danger-btn" style="color:#00695c;border-color:#00838f;width:100%;margin-bottom:10px" onclick="showMembers()">✉️ Mensajes privados</button>
+    <p style="font-size:11.5px;color:#999;line-height:1.6;margin-bottom:14px">Para escribir a alguien en privado, entra en <b>Miembros</b> y toca ✉️ junto a su nombre. Solo esa persona y tú veréis la conversación.</p>
+    <button class="perfil-danger-btn" style="color:#00695c;border-color:#00838f;width:100%;margin-top:4px" onclick="showCommunitySelection()" data-i18n="switch_comm">🔄 Cambiar comunidad</button>
     <button class="perfil-danger-btn" id="comunidad-del-btn" style="display:none;background:#c62828;color:#fff;width:100%;margin-top:10px" onclick="deleteCurrentCommunity()">💥 Borrar esta comunidad (eres el creador)</button>
+  </div>
+</div>
+
+<div id="dm-screen" class="screen">
+  <div class="app-header" style="position:sticky;top:0;z-index:40">
+    <button class="back-btn" onclick="closeDM()">←</button>
+    <h1 style="flex:1">✉️ <span id="dm-title"></span></h1>
+  </div>
+  <div style="display:flex;flex-direction:column;height:calc(100vh - 52px)">
+    <div id="dm-msgs" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:#f0f0f0"></div>
+    <div style="display:flex;gap:8px;padding:10px;border-top:1px solid #ddd;background:#fff">
+      <input id="dm-input" maxlength="500" placeholder="Escribe un mensaje…" style="flex:1;padding:10px 12px;border:1.5px solid #ccc;border-radius:20px;font-size:14px" onkeydown="if(event.key==='Enter')sendDM()">
+      <button onclick="sendDM()" style="background:#00838f;color:#fff;border:none;border-radius:50%;width:42px;height:42px;font-size:16px;cursor:pointer;flex-shrink:0">➤</button>
+    </div>
   </div>
 </div>
 
@@ -1360,10 +1369,25 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.981</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.983</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.981 · actual</span><span class="nov-version-tag">Objetivo más limpio</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.983 · actual</span><span class="nov-version-tag">Mensajes privados</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>✉️</span><span>El chat público de comunidad se sustituye por mensajes privados: en Miembros, toca ✉️ junto a alguien para abrir una conversación que solo veréis los dos.</span></div>
+        <div class="nov-item"><span>🔒</span><span>Las conversaciones están protegidas a nivel de servidor: solo los dos participantes pueden leerlas o escribir en ellas. Con un pequeño anti-spam al enviar.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.982</span><span class="nov-version-tag">Legacy plegable</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>📖</span><span>En Ataques Legacy, el "¿Cómo se obtienen?" ya no desaparece al marcarlo leído: se contrae y baja al final de la pantalla, desde donde puedes volver a desplegarlo cuando quieras.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.981</span><span class="nov-version-tag">Objetivo más limpio</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🧹</span><span>Pokémon Objetivo más despejado: fuera la cabecera con tu nombre y el bloque de caramelos. Ahora todo (para qué sirve la pantalla y los caramelos para subir al máximo) está en el botón de info "i".</span></div>
         <div class="nov-item"><span>✓</span><span>Cuando apuntas todos los caramelos XL que necesita un Pokémon, se marca como completado y baja al final de la lista. Su ficha sigue siendo editable por si te equivocas.</span></div>
@@ -3076,9 +3100,38 @@ function openLegacy() {
   }
   document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
   document.getElementById('legacy-screen').style.display = 'block';
-  { const _lh=document.getElementById('lg-howto'); if(_lh) _lh.style.display = isRead('legacyHowto')?'none':'block'; }
+  applyLegacyHowtoState();
   document.getElementById('home-menu').style.display = 'none';
   window.scrollTo(0, 0);
+}
+function applyLegacyHowtoState(){
+  const card=document.getElementById('lg-howto');
+  const body=document.getElementById('lg-howto-body');
+  const arrow=document.getElementById('lg-howto-arrow');
+  const chk=document.getElementById('lg-howto-read');
+  const scroll=document.getElementById('lg-scroll');
+  if(!card||!body||!scroll) return;
+  const read=isRead('legacyHowto');
+  if(chk) chk.checked=read;
+  if(read){
+    scroll.appendChild(card);              // al fondo
+    body.style.display='none';             // contraída
+    if(arrow) arrow.textContent='▸ leído';
+    card.style.opacity='.75';
+  } else {
+    scroll.insertBefore(card, scroll.firstChild); // arriba
+    body.style.display='block';
+    if(arrow) arrow.textContent='▾';
+    card.style.opacity='1';
+  }
+}
+function toggleLegacyHowto(){
+  const body=document.getElementById('lg-howto-body');
+  const arrow=document.getElementById('lg-howto-arrow');
+  if(!body) return;
+  const open=body.style.display!=='none';
+  body.style.display=open?'none':'block';
+  if(arrow) arrow.textContent=open?(isRead('legacyHowto')?'▸ leído':'▸'):'▾';
 }
 function closeLegacy() {
   document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
@@ -6168,7 +6221,7 @@ function isRead(k){ return !!readState()[k]; }
 function setRead(k,v){ const o=readState(); if(v) o[k]=true; else delete o[k]; try{ localStorage.setItem('pokeBCN_read', JSON.stringify(o)); }catch(e){} }
 function markRead(k,v){
   setRead(k,v);
-  if(k==='legacyHowto'){ const e=document.getElementById('lg-howto'); if(e) e.style.display = v ? 'none' : 'block'; }
+  if(k==='legacyHowto'){ applyLegacyHowtoState(); }
 }
 
 
@@ -7207,11 +7260,9 @@ function openComunidad(){
   document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
   document.getElementById('comunidad-screen').style.display='block';
   var hm=document.getElementById('home-menu'); if(hm) hm.style.display='none';
-  chatStart();
   window.scrollTo(0,0);
 }
 function closeComunidad(){
-  chatStop();
   document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
   document.getElementById('profile-screen').style.display='block';
   document.getElementById('home-menu').style.display='block';
@@ -7220,54 +7271,68 @@ function closeComunidad(){
   updateHomeMenu();
   window.scrollTo(0,0);
 }
-// ── CHAT DE COMUNIDAD ────────────────────────────────────────────────────────
-let _chatUnsub=null;
+// ── MENSAJES PRIVADOS (DM) ───────────────────────────────────────────────────
+let _dmUnsub=null, _dmConv=null, _dmOther=null, _dmOtherAlias='', _dmLastSent=0;
 function escChat(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function chatStart(){
-  chatStop();
-  const c=ST.currentCommunity; if(!c||!db) return;
-  _chatUnsub=db.collection('communities').doc(c.id).collection('messages')
-    .orderBy('ts','desc').limit(50)
+function dmConvId(a,b){ return [a,b].sort().join('~'); }
+function openDM(uid, alias){
+  if(!uid||uid===ST.globalUserId){ return; }
+  _dmOther=uid; _dmOtherAlias=alias||uid;
+  _dmConv=dmConvId(ST.globalUserId, uid);
+  document.getElementById('dm-title').textContent=_dmOtherAlias;
+  document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
+  document.getElementById('dm-screen').style.display='block';
+  const hm=document.getElementById('home-menu'); if(hm) hm.style.display='none';
+  dmStart(); window.scrollTo(0,0);
+}
+function closeDM(){ dmStop(); showMembers(); }
+function dmStart(){
+  dmStop();
+  if(!db||!_dmConv) return;
+  _dmUnsub=db.collection('dms').doc(_dmConv).collection('messages')
+    .orderBy('ts','desc').limit(60)
     .onSnapshot(snap=>{
       const msgs=snap.docs.map(d=>({id:d.id,...d.data()})).reverse();
-      renderChat(msgs);
-    },err=>{ const el=document.getElementById('chat-msgs'); if(el) el.innerHTML='<p style="color:#aaa;font-size:12px;text-align:center;padding:20px">No se pudo cargar el chat. Actualiza las reglas de Firestore.</p>'; });
+      renderDM(msgs);
+    }, err=>{ const el=document.getElementById('dm-msgs'); if(el) el.innerHTML='<p style="color:#aaa;font-size:12px;text-align:center;padding:20px">No se pudo cargar la conversación.</p>'; });
 }
-function chatStop(){ if(_chatUnsub){ _chatUnsub(); _chatUnsub=null; } }
-function renderChat(msgs){
-  const el=document.getElementById('chat-msgs'); if(!el) return;
-  if(!msgs.length){ el.innerHTML='<p style="color:#aaa;font-size:12.5px;text-align:center;padding:24px 10px">Aún no hay mensajes.<br>¡Escribe el primero! 👋</p>'; return; }
-  const c=ST.currentCommunity;
-  const iAmOwner=c&&(c.ownerId===ST.globalUserId||isAdminUser(ST.globalUserId));
+function dmStop(){ if(_dmUnsub){ _dmUnsub(); _dmUnsub=null; } }
+function renderDM(msgs){
+  const el=document.getElementById('dm-msgs'); if(!el) return;
+  if(!msgs.length){ el.innerHTML='<p style="color:#aaa;font-size:12.5px;text-align:center;padding:24px 10px">Aún no hay mensajes con '+escChat(_dmOtherAlias)+'.<br>¡Escribe el primero! 👋</p>'; return; }
   el.innerHTML=msgs.map(m=>{
     const mine=m.uid===ST.globalUserId;
-    const canDel=mine||iAmOwner;
-    const time=m.ts?new Date(m.ts).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}):'';
-    const del=canDel?`<span onclick="delChatMsg('${m.id}')" style="cursor:pointer;font-size:10px;opacity:.55;margin-left:6px">🗑️</span>`:'';
+    const time=m.ts?new Date(m.ts).toLocaleString('es-ES',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'';
+    const del=mine?`<span onclick="delDM('${m.id}')" style="cursor:pointer;font-size:10px;opacity:.5;margin-left:6px">🗑️</span>`:'';
     return `<div style="max-width:82%;align-self:${mine?'flex-end':'flex-start'}">
-      <div style="font-size:10px;color:#999;margin:0 6px 1px;${mine?'text-align:right':''}">${mine?'':escChat(m.alias||m.uid)+' · '}${time}${del}</div>
-      <div style="background:${mine?'#CC0000':'#f0f0f0'};color:${mine?'#fff':'#222'};padding:8px 12px;border-radius:${mine?'14px 14px 4px 14px':'14px 14px 14px 4px'};font-size:13.5px;line-height:1.45;word-break:break-word">${escChat(m.text)}</div>
+      <div style="font-size:10px;color:#999;margin:0 6px 1px;${mine?'text-align:right':''}">${time}${del}</div>
+      <div style="background:${mine?'#00838f':'#fff'};color:${mine?'#fff':'#222'};border:1px solid ${mine?'#00838f':'#e0e0e0'};padding:8px 12px;border-radius:${mine?'14px 14px 4px 14px':'14px 14px 14px 4px'};font-size:13.5px;line-height:1.45;word-break:break-word">${escChat(m.text)}</div>
     </div>`;
   }).join('');
   el.scrollTop=el.scrollHeight;
 }
-async function sendChatMsg(){
-  const inp=document.getElementById('chat-input'); if(!inp) return;
+async function sendDM(){
+  const inp=document.getElementById('dm-input'); if(!inp) return;
   const text=inp.value.trim(); if(!text) return;
-  const c=ST.currentCommunity; if(!c) return;
-  const me=(c.members&&c.members[ST.globalUserId])||{};
+  if(!_dmConv||!_dmOther) return;
+  const now=Date.now();
+  if(now-_dmLastSent<800){ showToast('Un momento… 🙂'); return; } // anti-spam básico
+  _dmLastSent=now;
   inp.value='';
   try{
-    await db.collection('communities').doc(c.id).collection('messages').add({
-      uid:ST.globalUserId, alias:me.alias||ST.cur||ST.globalUserId, text:text.slice(0,300), ts:Date.now()
+    await db.collection('dms').doc(_dmConv).collection('messages').add({
+      uid:ST.globalUserId, to:_dmOther, text:text.slice(0,500), ts:now
     });
   }catch(e){ showToast('No se pudo enviar: '+(e.message||e)); inp.value=text; }
 }
-async function delChatMsg(id){
-  const c=ST.currentCommunity; if(!c) return;
-  try{ await db.collection('communities').doc(c.id).collection('messages').doc(id).delete(); }
+async function delDM(id){
+  if(!_dmConv) return;
+  try{ await db.collection('dms').doc(_dmConv).collection('messages').doc(id).delete(); }
   catch(e){ showToast('No se pudo borrar'); }
 }
+// compat: por si queda alguna llamada al chat antiguo
+function chatStop(){ dmStop(); }
+function chatStart(){}
 async function kickMember(uid){
   const c=ST.currentCommunity; if(!c||!c.members||!c.members[uid]) return;
   const alias=c.members[uid].alias||uid;
@@ -7306,7 +7371,9 @@ function renderMembers(){
     const btn = isMe ? 'Inicio' : 'Ver';
     const iAmOwner = ST.currentCommunity && (ST.currentCommunity.ownerId===ST.globalUserId || isAdminUser(ST.globalUserId));
     const kickBtn = (iAmOwner && !isMe && !(m&&m.isOwner)) ? '<button class="del-btn" title="Expulsar" onclick="event.stopPropagation();kickMember(\''+uid.replace(/'/g,"\\'")+'\')">👢</button>' : '';
-    return '<div class="profile-row"><div class="avatar">'+ini+'</div><div class="profile-info" onclick="'+act+'"><div class="profile-name">'+alias+meTag+owner+'</div><div class="profile-stat">'+oc.owned+'/'+oc.total+' Pokémon deseados</div></div><div class="profile-actions"><button class="view-btn" onclick="'+act+'">'+btn+'</button>'+kickBtn+'</div></div>';
+    const _ua=(alias||uid).replace(/'/g,"\\'");
+    const dmBtn = !isMe ? '<button class="view-btn" style="background:#00838f!important" title="Mensaje privado" onclick="event.stopPropagation();openDM(\''+uid.replace(/'/g,"\\'")+'\',\''+_ua+'\')">✉️</button>' : '';
+    return '<div class="profile-row"><div class="avatar">'+ini+'</div><div class="profile-info" onclick="'+act+'"><div class="profile-name">'+alias+meTag+owner+'</div><div class="profile-stat">'+oc.owned+'/'+oc.total+' Pokémon deseados</div></div><div class="profile-actions"><button class="view-btn" onclick="'+act+'">'+btn+'</button>'+dmBtn+kickBtn+'</div></div>';
   }).join('');
 }
 

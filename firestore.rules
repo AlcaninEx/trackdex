@@ -54,6 +54,21 @@ service cloud.firestore {
       }
     }
 
+    // ── Mensajes privados (DM) entre dos usuarios ──────────────────────────
+    // El id de conversación es "usuarioA~usuarioB" (ordenados). Solo los dos
+    // participantes pueden leer o escribir en su conversación.
+    match /dms/{convId}/messages/{mid} {
+      allow read: if authed() && (uname() in convId.split('~'));
+      allow create: if authed()
+        && (uname() in convId.split('~'))
+        && request.resource.data.uid == uname()
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0
+        && request.resource.data.text.size() <= 500;
+      // borrar: solo el autor del mensaje
+      allow delete: if authed() && resource.data.uid == uname();
+    }
+
     // ── Configuración global (rotación de Megas, etc.) ─────────────────────
     match /config/{doc} {
       allow read: if authed();
