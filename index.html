@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.983</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.984</p>
   </div>
 </div>
 
@@ -557,7 +557,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           </button>
         </div>
         <button class="home-btn-small" onclick="openNovedades()" style="background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          <span data-i18n="news">🆕 Novedades</span> · v0.983
+          <span data-i18n="news">🆕 Novedades</span> · v0.984
         </button>
       </div>
 
@@ -1369,10 +1369,17 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.983</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.984</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.983 · actual</span><span class="nov-version-tag">Mensajes privados</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.984 · actual</span><span class="nov-version-tag">Comunidades ordenadas</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>⬆️</span><span>En la lista de comunidades, las que ya perteneces aparecen primero; el resto, ordenadas por nombre.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.983</span><span class="nov-version-tag">Mensajes privados</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>✉️</span><span>El chat público de comunidad se sustituye por mensajes privados: en Miembros, toca ✉️ junto a alguien para abrir una conversación que solo veréis los dos.</span></div>
         <div class="nov-item"><span>🔒</span><span>Las conversaciones están protegidas a nivel de servidor: solo los dos participantes pueden leerlas o escribir en ellas. Con un pequeño anti-spam al enviar.</span></div>
@@ -6962,7 +6969,14 @@ function renderCommunityList(){
     return;
   }
   const q=((document.getElementById('cs-search')||{}).value||'').trim().toLowerCase();
-  const list = q ? ST.communities.filter(c=>String(c.displayName||c.id).toLowerCase().includes(q)) : ST.communities;
+  let list = q ? ST.communities.filter(c=>String(c.displayName||c.id).toLowerCase().includes(q)) : ST.communities.slice();
+  // Las comunidades a las que perteneces quedan arriba
+  list.sort((a,b)=>{
+    const am=(a.members&&a.members[ST.globalUserId])?1:0;
+    const bm=(b.members&&b.members[ST.globalUserId])?1:0;
+    if(am!==bm) return bm-am;
+    return String(a.displayName||a.id).localeCompare(String(b.displayName||b.id));
+  });
   if(countEl) countEl.textContent = q ? (list.length+' de '+ST.communities.length) : (ST.communities.length+' disponible'+(ST.communities.length!==1?'s':''));
   if(!list.length){ el.innerHTML='<div class="community-empty"><p style="color:#aaa;text-align:center;padding:20px">Sin resultados para "'+q.replace(/</g,'&lt;')+'"</p></div>'; return; }
   el.innerHTML = list.map(c=>{
