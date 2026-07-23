@@ -6,7 +6,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#CC0000">
+<meta name="theme-color" content="#242426">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="TrackDex">
@@ -49,7 +49,7 @@ body.dark .guia-btn{background:#2a2a2a!important;color:#ddd!important;border-col
 body.dark .add-btn{background:#333!important;color:#eee!important}
 .screen{display:none}
 .screen.active{display:block}
-.app-header{background:#CC0000;color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:10}
+.app-header{background:#242426;color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:10}
 .back-btn{background:#fff!important;color:#CC0000!important;border:none;cursor:pointer;font-size:18px;padding:4px 10px;border-radius:8px;font-weight:700;line-height:1}
 .app-header h1{font-size:17px;font-weight:700;flex:1;color:#fff!important}
 /* PROFILE */
@@ -243,7 +243,7 @@ body.dark .mega-warn-box{background:#1e1e1e;color:#eee}
 body.dark .mega-warn-msg{color:#bbb}
 
 /* OBJETIVO SCREEN */
-#objetivo-screen{background:#f0f0f0;min-height:100vh}#objetivo-screen .app-header{background:#CC0000}
+#objetivo-screen{background:#f0f0f0;min-height:100vh}#objetivo-screen .app-header{background:#242426}
 .obj-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px}
 .obj-card{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.12);display:flex;flex-direction:column;align-items:center;padding:8px 4px 6px;position:relative;cursor:default}
 body.dark .obj-card{background:#1e1e1e}
@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.979</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.980</p>
   </div>
 </div>
 
@@ -448,7 +448,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 
 <!-- COMMUNITY SELECTION -->
 <div id="community-selection-screen" class="screen">
-  <div style="background:#CC0000;padding:16px;display:flex;align-items:center;gap:12px">
+  <div style="background:#242426;padding:16px;display:flex;align-items:center;gap:12px">
     <div style="flex:1">
       <div style="color:#fff;font-size:20px;font-weight:800" data-i18n="communities">Comunidades</div>
       <div id="cs-user-bar" style="color:rgba(255,255,255,.85);font-size:12px"></div>
@@ -459,6 +459,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
       <span style="font-size:13px;color:#888" id="cs-count"></span>
     </div>
+    <input id="cs-search" type="text" placeholder="🔍 Buscar comunidad…" oninput="renderCommunityList()" style="width:100%;padding:10px 12px;border:1.5px solid #ccc;border-radius:10px;font-size:14px;margin-bottom:10px">
     <div id="community-list"></div>
     <div class="auth-card" style="margin-top:18px">
       <div style="font-weight:800;color:#CC0000;margin-bottom:10px" data-i18n="create_comm">➕ Crear comunidad</div>
@@ -494,7 +495,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 <div id="profile-screen" class="screen">
   <div id="profile-screen-inner">
     <!-- HEADER -->
-    <div style="background:#CC0000;padding:16px;display:flex;align-items:center;gap:12px">
+    <div style="background:#242426;padding:16px;display:flex;align-items:center;gap:12px">
       <svg width="36" height="36" viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="14" fill="#5e35b1"/><circle cx="32" cy="32" r="16" stroke="white" stroke-width="4"/><line x1="32" y1="6" x2="32" y2="13" stroke="white" stroke-width="4" stroke-linecap="round"/><line x1="32" y1="51" x2="32" y2="58" stroke="white" stroke-width="4" stroke-linecap="round"/><line x1="6" y1="32" x2="13" y2="32" stroke="white" stroke-width="4" stroke-linecap="round"/><line x1="51" y1="32" x2="58" y2="32" stroke="white" stroke-width="4" stroke-linecap="round"/><circle cx="32" cy="32" r="6" fill="white"/><circle cx="41" cy="24" r="2.5" fill="white"/></svg>
       <div style="flex:1">
         <div style="color:#fff;font-size:20px;font-weight:800">TrackDex</div>
@@ -541,7 +542,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
         </button>
         <button class="home-btn-small" onclick="openTrackerHub()" style="background:#e3f2fd;border-color:#1565c0;color:#0d47a1"><span data-i18n="trackers">🏆 Trackers</span>
         </button>
-        <button class="home-btn-small" onclick="openComunidad()" style="background:#fff3e0;border-color:#ef6c00;color:#e65100"><span data-i18n="community">🏘️ Comunidad</span>
+        <button class="home-btn-small" onclick="openComunidad()" style="background:#ffebee;border-color:#c62828;color:#b71c1c"><span data-i18n="community">🏘️ Comunidad</span>
         </button>
         <button class="home-btn-small" onclick="toggleMoreTools()" id="more-tools-btn" style="background:#eceff1;border-color:#607d8b;color:#37474f"><span data-i18n="more_tools">➕ Más Herramientas</span> <span id="more-tools-arrow" style="font-size:11px">▾</span>
         </button>
@@ -556,7 +557,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           </button>
         </div>
         <button class="home-btn-small" onclick="openNovedades()" style="background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          <span data-i18n="news">🆕 Novedades</span> · v0.979
+          <span data-i18n="news">🆕 Novedades</span> · v0.980
         </button>
       </div>
 
@@ -1256,9 +1257,18 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <button onclick="saveTipsAdmin()" style="background:#fff;color:#2e7d32;border:none;border-radius:8px;padding:6px 12px;font-weight:800;cursor:pointer">💾 Guardar</button>
   </div>
   <div style="padding:12px">
-    <p style="font-size:12px;color:#888;margin-bottom:10px">Los cambios se publican para todos al pulsar 💾 Guardar. Puedes usar &lt;b&gt;negrita&lt;/b&gt; en el texto.</p>
+    <p style="font-size:12px;color:#888;margin-bottom:10px">Los cambios se publican para todos al pulsar 💾 Guardar. Puedes usar &lt;b&gt;negrita&lt;/b&gt; en el texto. Los consejos se muestran en orden aleatorio.</p>
+    <button onclick="addTipAdmin()" style="width:100%;margin-bottom:12px;padding:12px;background:#e8f5e9;border:1.5px dashed #2e7d32;color:#1b5e20;border-radius:10px;font-weight:700;cursor:pointer">➕ Añadir consejo (arriba)</button>
     <div id="tipsadmin-list"></div>
-    <button onclick="addTipAdmin()" style="width:100%;margin-top:10px;padding:12px;background:#e8f5e9;border:1.5px dashed #2e7d32;color:#1b5e20;border-radius:10px;font-weight:700;cursor:pointer">➕ Añadir consejo</button>
+  </div>
+  <div id="emoji-pop" onclick="closeEmojiPicker()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:560;align-items:flex-end;justify-content:center">
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px 16px 0 0;padding:16px;width:100%;max-width:420px;max-height:60vh;overflow-y:auto">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <b style="font-size:14px;color:#333">Elige un emoji</b>
+        <button onclick="closeEmojiPicker()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#888">✕</button>
+      </div>
+      <div id="emoji-grid" style="display:grid;grid-template-columns:repeat(8,1fr);gap:4px"></div>
+    </div>
   </div>
 </div>
 
@@ -1350,10 +1360,19 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.979</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.980</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.979 · actual</span><span class="nov-version-tag">Objetivo se reordena solo</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.980 · actual</span><span class="nov-version-tag">Cabecera oscura y ajustes</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🎨</span><span>Nueva cabecera en gris oscuro y botón "Comunidad" en rojo, para diferenciarlo de Pokémon Objetivo.</span></div>
+        <div class="nov-item"><span>🔍</span><span>Buscador de comunidades en la pantalla de selección: filtra por nombre al escribir.</span></div>
+        <div class="nov-item"><span>💡</span><span>Los consejos del inicio se muestran en orden aleatorio. Para el admin: botón "Añadir consejo" arriba y selector de emojis para escribirlos sin teclado.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.979</span><span class="nov-version-tag">Objetivo se reordena solo</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🔄</span><span>En Pokémon Objetivo, al cerrar la ficha de un Pokémon tras apuntar sus caramelos, la lista se reordena al instante sin tener que salir y volver a entrar. Se mantiene tu posición de scroll.</span></div>
       </div>
@@ -6052,22 +6071,30 @@ async function fbLoadTips(){
     const doc = await db.collection('config').doc('appTips').get();
     if(doc.exists && Array.isArray(doc.data().tips) && doc.data().tips.length){ APP_TIPS = doc.data().tips; }
   }catch(e){ console.warn('Tips load error:', e.code); }
-  _tipIdx=0; renderTip();
+  shuffleTips(); renderTip();
 }
 async function fbSaveTips(){
   try{ await db.collection('config').doc('appTips').set({tips: APP_TIPS}); }
   catch(e){ console.warn('Tips save error:', e.code); showToast('Error al guardar los consejos'); }
 }
-let _tipIdx = 0, _tipTimer = null;
+let _tipIdx = 0, _tipTimer = null, _tipOrder = [];
+function shuffleTips(){
+  _tipOrder = APP_TIPS.map((_,i)=>i);
+  for(let i=_tipOrder.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [_tipOrder[i],_tipOrder[j]]=[_tipOrder[j],_tipOrder[i]]; }
+  _tipIdx=0;
+}
 function renderTip(){
   const el = document.getElementById('home-tips'); if(!el) return;
-  const t = APP_TIPS[((_tipIdx % APP_TIPS.length) + APP_TIPS.length) % APP_TIPS.length];
+  if(!APP_TIPS.length) return;
+  if(_tipOrder.length!==APP_TIPS.length) shuffleTips();
+  const pos = ((_tipIdx % APP_TIPS.length) + APP_TIPS.length) % APP_TIPS.length;
+  const t = APP_TIPS[_tipOrder[pos]];
   el.innerHTML = '<div style="font-size:11px;font-weight:700;opacity:.85;margin-bottom:4px">💡 CONSEJO</div>'
     + '<div style="font-size:15px;font-weight:800;margin-bottom:4px">'+t.i+' '+t.t+'</div>'
     + '<div style="font-size:12.5px;line-height:1.5;opacity:.95">'+t.x+'</div>'
     + '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">'
     +   (isAdminUser(ST.globalUserId) ? '<button onclick="event.stopPropagation();openTipsAdmin()" style="font-size:10px;font-weight:700;background:rgba(255,255,255,.25);border:none;color:#fff;border-radius:12px;padding:3px 10px;cursor:pointer">✏️ Editar consejos</button>' : '<span></span>')
-    +   '<span style="font-size:10px;opacity:.8">'+(((_tipIdx % APP_TIPS.length)+APP_TIPS.length)%APP_TIPS.length + 1)+'/'+APP_TIPS.length+' · toca para otro</span>'
+    +   '<span style="font-size:10px;opacity:.8">'+(pos+1)+'/'+APP_TIPS.length+' · toca para otro</span>'
     + '</div>';
 }
 // ── EDITOR DE CONSEJOS (solo admin) ──────────────────────────────────────────
@@ -6094,7 +6121,7 @@ function renderTipsAdmin(){
   el.innerHTML=_tipsDraft.map((t,i)=>`
     <div style="background:#fff;border:1.5px solid #ddd;border-radius:12px;padding:10px 12px;margin-bottom:10px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-        <input value="${esc(t.i)}" oninput="tipEdit(${i},'i',this.value)" style="width:52px;padding:8px;border:1.5px solid #ccc;border-radius:8px;font-size:18px;text-align:center" placeholder="🎯">
+        <button type="button" onclick="openEmojiPicker(${i})" id="tip-emoji-${i}" style="width:46px;height:40px;padding:0;border:1.5px solid #ccc;border-radius:8px;font-size:20px;background:#fafafa;cursor:pointer" title="Elegir emoji">${esc(t.i)||'🙂'}</button>
         <input value="${esc(t.t)}" oninput="tipEdit(${i},'t',this.value)" style="flex:1;padding:8px;border:1.5px solid #ccc;border-radius:8px;font-size:13px;font-weight:700" placeholder="Título">
         <button onclick="delTipAdmin(${i})" style="background:#ffe0e0;border:1.5px solid #CC0000;color:#CC0000;border-radius:50%;width:30px;height:30px;flex-shrink:0;cursor:pointer;font-weight:700">✕</button>
       </div>
@@ -6106,14 +6133,30 @@ function renderTipsAdmin(){
     </div>`).join('');
 }
 function tipEdit(i,k,v){ if(_tipsDraft[i]) _tipsDraft[i][k]=v; }
-function addTipAdmin(){ _tipsDraft.push({i:'💡',t:'Nuevo consejo',x:''}); renderTipsAdmin(); }
+function addTipAdmin(){ _tipsDraft.unshift({i:'💡',t:'Nuevo consejo',x:''}); renderTipsAdmin(); const l=document.getElementById('tipsadmin-list'); if(l) l.scrollIntoView({behavior:'smooth',block:'start'}); }
+const EMOJI_POOL=['💡','⭐','🎯','🔴','🍬','📊','🧬','👤','👥','⚔️','🛡️','❤️','🔥','💧','🌿','⚡','🎁','📋','🏆','🥚','🚀','🏟️','🗺️','🤝','💎','🍀','📌','🔔','🌀','🏅','✨','🎉','💪','🧭','🔄','⏰','📡','🚫','✅','❓','💰','🐉','👑','🥊','🌙','☀️','🌸','🎈','🎊','📈','🔍','🛠️','🏘️','💬','🧹','😀','😎','🤔','👍','🙌','🔑','⬆️','⬇️'];
+let _emojiTargetTip=null;
+function openEmojiPicker(i){
+  _emojiTargetTip=i;
+  const g=document.getElementById('emoji-grid');
+  if(g) g.innerHTML=EMOJI_POOL.map(e=>`<button type="button" onclick="pickEmoji('${e}')" style="font-size:22px;padding:6px 0;border:none;background:#f5f5f5;border-radius:8px;cursor:pointer">${e}</button>`).join('');
+  document.getElementById('emoji-pop').style.display='flex';
+}
+function closeEmojiPicker(){ const el=document.getElementById('emoji-pop'); if(el) el.style.display='none'; _emojiTargetTip=null; }
+function pickEmoji(e){
+  if(_emojiTargetTip!==null && _tipsDraft[_emojiTargetTip]){
+    _tipsDraft[_emojiTargetTip].i=e;
+    const btn=document.getElementById('tip-emoji-'+_emojiTargetTip); if(btn) btn.textContent=e;
+  }
+  closeEmojiPicker();
+}
 function delTipAdmin(i){ if(_tipsDraft.length<=1){ showToast('Debe quedar al menos un consejo'); return; } _tipsDraft.splice(i,1); renderTipsAdmin(); }
 function moveTipAdmin(i,d){ const j=i+d; if(j<0||j>=_tipsDraft.length) return; const t=_tipsDraft[i]; _tipsDraft[i]=_tipsDraft[j]; _tipsDraft[j]=t; renderTipsAdmin(); }
 async function saveTipsAdmin(){
   APP_TIPS=_tipsDraft.filter(t=>(t.t&&t.t.trim())||(t.x&&t.x.trim()));
   if(!APP_TIPS.length) APP_TIPS=DEFAULT_TIPS.slice();
   await fbSaveTips();
-  _tipIdx=0; renderTip();
+  shuffleTips(); renderTip();
   showToast('✅ Consejos actualizados para todos');
   closeTipsAdmin();
 }
@@ -6866,8 +6909,11 @@ function renderCommunityList(){
     if(countEl) countEl.textContent='';
     return;
   }
-  if(countEl) countEl.textContent = ST.communities.length+' disponible'+(ST.communities.length!==1?'s':'');
-  el.innerHTML = ST.communities.map(c=>{
+  const q=((document.getElementById('cs-search')||{}).value||'').trim().toLowerCase();
+  const list = q ? ST.communities.filter(c=>String(c.displayName||c.id).toLowerCase().includes(q)) : ST.communities;
+  if(countEl) countEl.textContent = q ? (list.length+' de '+ST.communities.length) : (ST.communities.length+' disponible'+(ST.communities.length!==1?'s':''));
+  if(!list.length){ el.innerHTML='<div class="community-empty"><p style="color:#aaa;text-align:center;padding:20px">Sin resultados para "'+q.replace(/</g,'&lt;')+'"</p></div>'; return; }
+  el.innerHTML = list.map(c=>{
     const isMember = c.members && c.members[ST.globalUserId];
     const count = c.members ? Object.keys(c.members).length : 0;
     const myAlias = isMember ? c.members[ST.globalUserId].alias : '';
