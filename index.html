@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.985.d</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.985.e</p>
   </div>
 </div>
 
@@ -557,7 +557,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           </button>
         </div>
         <button class="home-btn-small" onclick="openNovedades()" style="background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          <span data-i18n="news">🆕 Novedades</span> · v0.985.d
+          <span data-i18n="news">🆕 Novedades</span> · v0.985.e
         </button>
       </div>
 
@@ -1369,16 +1369,17 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1 data-i18n="news">🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0"><span data-i18n="news_current_version">Versión actual:</span> <b style="color:#5e35b1">v0.985.d</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0"><span data-i18n="news_current_version">Versión actual:</span> <b style="color:#5e35b1">v0.985.e</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.985.d · actual</span><span class="nov-version-tag">Más traducción al inglés</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.985.e · actual</span><span class="nov-version-tag">Más traducción al inglés</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🌐</span><span>Muchas más pantallas traducidas al inglés: Tracker IVs, Mis Pokémon, Eficacia de Tipos, Megas, Diarias, Legacy, Poképaradas, Trackers, Pokémon Objetivo, Comunidad y más.</span></div>
         <div class="nov-item"><span>🐛</span><span>Arreglado: al marcar un Pokémon "al máximo" cuando ya no quedaba ninguna copia pendiente de esa familia, se guardaba un progreso de caramelos "fantasma" que podía hacer que una copia nueva añadida más tarde (p.ej. otra base recién capturada) apareciera ya como completada en Pokémon Objetivo sin estarlo. Ahora se resetea ese progreso al completar la familia.</span></div>
         <div class="nov-item"><span>✅</span><span>Las tarjetas ya completadas en Pokémon Objetivo ahora muestran también el texto "Completado" (no solo el tick), para verlas claramente al final de la lista.</span></div>
         <div class="nov-item"><span>⚡</span><span>Añadidos Deino/Zweilous/Hydreigon y Feebas/Milotic al reconocimiento de Dynamax (debutaron como Dynamax el 13 y 27 de julio respectivamente): ahora se marcan correctamente como Dynamax en el filtro inteligente.</span></div>
         <div class="nov-item"><span>📊</span><span>Actualizado el ranking Top DPS Dynamax de tipo Siniestro con los datos más recientes de Pokémon GO Hub: entran Dynamax Hydreigon (#2), Dynamax Gyarados (#5), Dynamax Zweilous (#7) y Dynamax Sableye (#10); salen Blastoise, Greedent y Umbreon.</span></div>
+        <div class="nov-item"><span>⚡</span><span>Nuevo interruptor "⚡ ¿Es Dinamax?" en las fichas de Incursión de Mis Pokémon (solo aparece si la especie puede ser Dynamax): actívalo cuando ese ejemplar concreto también se use como copia Dynamax, así Pokémon Objetivo no te pide una copia de más. Por defecto va desactivado, no cambia nada si no lo tocas.</span></div>
       </div>
     </div>
 
@@ -3446,6 +3447,15 @@ function togBasePerfect(id,v) {
   save();
   if(ST.albumTab==='dmax') renderAlbumDmax(); else renderAlbum();
 }
+function togDmaxCopy(id,v) {
+  // Marca si ESTA copia concreta de Incursión también se usa como copia Dynamax
+  // (comparte hueco con el equipo Dynamax en Pokémon Objetivo). Por defecto es NO:
+  // que la especie pueda ser Dynamax no significa que este ejemplar lo sea.
+  const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={}; p.pk[id].isDmaxCopy=v;
+  syncLinked(p,id,{isDmaxCopy:v});
+  save();
+  if(ST.albumTab==='dmax') renderAlbumDmax(); else renderAlbum();
+}
 function togMaxed(id,v) {
   const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={}; p.pk[id].maxed=v;
   // Si se marca "al máximo", se marca también "lo tengo"
@@ -3648,7 +3658,10 @@ function renderAlbum() {
     const maxToggle=!isV?`<div class="tr" style="margin-bottom:10px;padding:8px 12px;background:${isMax?'#fff8e1':'#f5f5f5'};border-radius:8px;border:1.5px solid ${isMax?'#ffb300':'#ddd'}"><span style="font-size:13px;font-weight:700;color:${isMax?'#e65100':'#555'}">⭐ Maxed Lvl 50</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${isMax?'checked':''} onchange="togMaxed('${pk.id}',this.checked)"><span class="sl"></span></label></div>`:'';
     const isBase=pd.basePerfect||false;
     const baseToggle=(!isV&&!isShadow)?`<div class="tr" style="margin-bottom:10px;padding:8px 12px;background:${isBase?'#e3f2fd':'#f5f5f5'};border-radius:8px;border:1.5px solid ${isBase?'#1565c0':'#ddd'}"><span style="font-size:13px;font-weight:700;color:${isBase?'#0d47a1':'#555'}">💎 Base perfecta</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${isBase?'checked':''} onchange="togBasePerfect('${pk.id}',this.checked)"><span class="sl"></span></label></div>`:'';
-    const editF=`${ownedToggle}${baseToggle}${maxToggle}<div class="fr" style="margin-top:4px"><div class="fl">DPS con tus IVs</div><p style="font-size:18px;font-weight:700;color:#222"><span id="dps-real-${pk.id}">${dd.toFixed(2)}</span> <span style="font-size:12px;color:#888;font-weight:400">/ Max ${baseDps.toFixed(2)}</span></p></div><div class="fr"><div class="fl">IVs</div><div class="iv-grid"><div class="iv-col"><div class="iv-lbl">Ataque</div><div class="iv-val" id="ia-${pk.id}">${ia}<span style="font-size:10px;color:#888;font-weight:400"> (${pctA}%)</span></div><input type="range" min="0" max="15" value="${ia}" oninput="updIV('${pk.id}','a',this.value)"></div><div class="iv-col"><div class="iv-lbl">Defensa</div><div class="iv-val" id="id-${pk.id}">${id2}<span style="font-size:10px;color:#888;font-weight:400"> (${pctD}%)</span></div><input type="range" min="0" max="15" value="${id2}" oninput="updIV('${pk.id}','d',this.value)"></div><div class="iv-col"><div class="iv-lbl">Vida</div><div class="iv-val" id="ih-${pk.id}">${ih}<span style="font-size:10px;color:#888;font-weight:400"> (${pctH}%)</span></div><input type="range" min="0" max="15" value="${ih}" oninput="updIV('${pk.id}','h',this.value)"></div></div></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
+    const canDmaxCopy=!isV&&!isShadow&&pk.tags&&pk.tags.includes('dynamax');
+    const isDmaxCopy=pd.isDmaxCopy||false;
+    const dmaxCopyToggle=canDmaxCopy?`<div class="tr" style="margin-bottom:10px;padding:8px 12px;background:${isDmaxCopy?'#f3e5f5':'#f5f5f5'};border-radius:8px;border:1.5px solid ${isDmaxCopy?'#7b1fa2':'#ddd'}"><span style="font-size:13px;font-weight:700;color:${isDmaxCopy?'#4a148c':'#555'}">⚡ ¿Es Dinamax?</span><label class="sw" onclick="event.stopPropagation()"><input type="checkbox" ${isDmaxCopy?'checked':''} onchange="togDmaxCopy('${pk.id}',this.checked)"><span class="sl"></span></label></div>`:'';
+    const editF=`${ownedToggle}${baseToggle}${maxToggle}${dmaxCopyToggle}<div class="fr" style="margin-top:4px"><div class="fl">DPS con tus IVs</div><p style="font-size:18px;font-weight:700;color:#222"><span id="dps-real-${pk.id}">${dd.toFixed(2)}</span> <span style="font-size:12px;color:#888;font-weight:400">/ Max ${baseDps.toFixed(2)}</span></p></div><div class="fr"><div class="fl">IVs</div><div class="iv-grid"><div class="iv-col"><div class="iv-lbl">Ataque</div><div class="iv-val" id="ia-${pk.id}">${ia}<span style="font-size:10px;color:#888;font-weight:400"> (${pctA}%)</span></div><input type="range" min="0" max="15" value="${ia}" oninput="updIV('${pk.id}','a',this.value)"></div><div class="iv-col"><div class="iv-lbl">Defensa</div><div class="iv-val" id="id-${pk.id}">${id2}<span style="font-size:10px;color:#888;font-weight:400"> (${pctD}%)</span></div><input type="range" min="0" max="15" value="${id2}" oninput="updIV('${pk.id}','d',this.value)"></div><div class="iv-col"><div class="iv-lbl">Vida</div><div class="iv-val" id="ih-${pk.id}">${ih}<span style="font-size:10px;color:#888;font-weight:400"> (${pctH}%)</span></div><input type="range" min="0" max="15" value="${ih}" oninput="updIV('${pk.id}','h',this.value)"></div></div></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
     const viewF=`<div class="fr"><div class="fl">DPS con sus IVs</div><p style="font-size:18px;font-weight:700;color:#222"><span id="dps-real-${pk.id}">${dd.toFixed(2)}</span> <span style="font-size:12px;color:#888;font-weight:400">/ Max ${baseDps.toFixed(2)}</span></p></div><div class="fr"><div class="fl">Moveset</div>${mvH}</div>`;
     const removeBtn=!isV?(pk.isCustom?`<button class="album-remove" onclick="event.stopPropagation();removeRankEntry('${pk.id}','${ST.type}')">✕</button>`:`<button class="album-remove" onclick="event.stopPropagation();removeFromAlbum('${pk.id}')">✕</button>`):'';
     const evoDisplay=pk.isCustom?`<div class="final-wrap">${pkBadge(isShadow,isMegaPk)}<img class="final-img" src="${si(pk.img)}" onerror="this.style.opacity=.1"></div>`:evoH(pk.evo,pk.img,isShadow,isMegaPk);
@@ -5163,10 +5176,14 @@ function buildObjetivoData(profileName) {
     if (isMaxed(id)) bucket.maxedCopies++;
 
     const entry = {id, maxed: isMaxed(id), owned: isOwned(id), basePerfect: !!(p.pk && p.pk[id] && p.pk[id].basePerfect)};
+    // "raidDmax" (comparte hueco con el equipo Dynamax) solo si el usuario ha marcado
+    // explícitamente esta copia con "⚡ ¿Es Dinamax?" — que la especie PUEDA ser Dynamax
+    // no significa que este ejemplar concreto lo esté siendo (puede tener copias separadas).
+    const isDmaxCopy = hasDmaxTag(id, p) && !!(p.pk && p.pk[id] && p.pk[id].isDmaxCopy);
     if (isDmaxSlot) bucket.dmaxEntries.push(entry);
     else if (isPurifiedEntry(id, p)) bucket.raidPurified.push(entry);
     else if (isShadowEntry(id, p)) bucket.raidShadow.push(entry);
-    else if (hasDmaxTag(id, p)) bucket.raidDmax.push(entry);
+    else if (isDmaxCopy) bucket.raidDmax.push(entry);
     else bucket.raidNormal.push(entry);
   }
 
