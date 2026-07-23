@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.976</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.977</p>
   </div>
 </div>
 
@@ -556,7 +556,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           </button>
         </div>
         <button class="home-btn-small" onclick="openNovedades()" style="background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          <span data-i18n="news">🆕 Novedades</span> · v0.976
+          <span data-i18n="news">🆕 Novedades</span> · v0.977
         </button>
       </div>
 
@@ -1249,6 +1249,19 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
 </div>
 
 <!-- PERFIL SCREEN -->
+<div id="tipsadmin-screen" class="screen">
+  <div class="app-header" style="position:sticky;top:0;z-index:40">
+    <button class="back-btn" onclick="closeTipsAdmin()">←</button>
+    <h1 style="flex:1">✏️ Consejos (admin)</h1>
+    <button onclick="saveTipsAdmin()" style="background:#fff;color:#2e7d32;border:none;border-radius:8px;padding:6px 12px;font-weight:800;cursor:pointer">💾 Guardar</button>
+  </div>
+  <div style="padding:12px">
+    <p style="font-size:12px;color:#888;margin-bottom:10px">Los cambios se publican para todos al pulsar 💾 Guardar. Puedes usar &lt;b&gt;negrita&lt;/b&gt; en el texto.</p>
+    <div id="tipsadmin-list"></div>
+    <button onclick="addTipAdmin()" style="width:100%;margin-top:10px;padding:12px;background:#e8f5e9;border:1.5px dashed #2e7d32;color:#1b5e20;border-radius:10px;font-weight:700;cursor:pointer">➕ Añadir consejo</button>
+  </div>
+</div>
+
 <div id="notifs-screen" class="screen">
   <div class="app-header" style="position:sticky;top:0;z-index:40">
     <button class="back-btn" onclick="closeNotifs()">←</button>
@@ -1337,10 +1350,17 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.976</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.977</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.976 · actual</span><span class="nov-version-tag">Menú reorganizado</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.977 · actual</span><span class="nov-version-tag">Consejos editables</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>✏️</span><span>El administrador puede editar los consejos del inicio: desde el propio consejo, botón "Editar consejos" para crear, modificar, reordenar o borrar cada uno. Los cambios se publican para toda la comunidad al guardar.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.976</span><span class="nov-version-tag">Menú reorganizado</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🧭</span><span>Menú principal reorganizado: Calculadora, Pokémon Objetivo, Trackers y Comunidad arriba; Megas, Legacy, Poképaradas! y Diarias se agrupan en el nuevo botón "➕ Más Herramientas".</span></div>
         <div class="nov-item"><span>🎁</span><span>Poképaradas! actualizado a la temporada Forever Forward (misión de Rocket "Derrota 3 Grunts" y ajustes en "Gira 5 PokéParadas").</span></div>
@@ -2957,6 +2977,7 @@ function toggleMegaActiveNow(megaId) {
 
 function toggleMegaDevMode(on) {
   _megaDevMode = on;
+  window._megaDevMode = on; // el manejador global de zoom lo consulta para no ampliar en modo edición
   renderMegaGrids();
 }
 
@@ -5999,7 +6020,7 @@ try { history.pushState({app:1}, ''); } catch(e){}
 
 // ── BOOT ──────────────────────────────────────────────────────────────────────
 // ── TIPS / LECTURA / BIENVENIDA ───────────────────────────────────────────────
-const APP_TIPS = [
+const DEFAULT_TIPS = [
   {i:'⭐', t:'Ataque Legacy', x:`Movimiento especial que ya no se aprende normalmente. Solo se obtuvo en eventos pasados (Días de la Comunidad). Para enseñárselo ahora hace falta una <b>MT Élite</b>, muy escasa.`},
   {i:'👤', t:'Shadow / Oscuro', x:`Pokémon capturado al derrotar al Team GO Rocket o en <b>Incursiones Oscuras</b>. Tienen <b>+20% Ataque</b> pero <b>-20% Defensa</b>. Los más poderosos en raids si aguantan.`},
   {i:'🔴', t:'Mega Evolución', x:`Forma temporal potenciada. Las <b>piedras Mega</b> se consiguen en Mega Incursiones, misiones o raramente en PokéParadas. Potencian a los aliados del mismo tipo en raid.`},
@@ -6009,6 +6030,18 @@ const APP_TIPS = [
   {i:'👥', t:'Equipos de la comunidad', x:`Puedes ver los equipos de otros miembros de tu comunidad desde <b>Perfil &gt; Miembros de la Comunidad</b>.`},
   {i:'🎯', t:'Completa tus equipos', x:`Completa tus equipos de Pokémon <b>Deseados</b> y añade información sobre si <b>tienes la base o al máximo</b> para tener un mejor filtro automáticamente.`},
 ];
+let APP_TIPS = DEFAULT_TIPS.slice();
+async function fbLoadTips(){
+  try{
+    const doc = await db.collection('config').doc('appTips').get();
+    if(doc.exists && Array.isArray(doc.data().tips) && doc.data().tips.length){ APP_TIPS = doc.data().tips; }
+  }catch(e){ console.warn('Tips load error:', e.code); }
+  _tipIdx=0; renderTip();
+}
+async function fbSaveTips(){
+  try{ await db.collection('config').doc('appTips').set({tips: APP_TIPS}); }
+  catch(e){ console.warn('Tips save error:', e.code); showToast('Error al guardar los consejos'); }
+}
 let _tipIdx = 0, _tipTimer = null;
 function renderTip(){
   const el = document.getElementById('home-tips'); if(!el) return;
@@ -6016,11 +6049,61 @@ function renderTip(){
   el.innerHTML = '<div style="font-size:11px;font-weight:700;opacity:.85;margin-bottom:4px">💡 CONSEJO</div>'
     + '<div style="font-size:15px;font-weight:800;margin-bottom:4px">'+t.i+' '+t.t+'</div>'
     + '<div style="font-size:12.5px;line-height:1.5;opacity:.95">'+t.x+'</div>'
-    + '<div style="font-size:10px;opacity:.8;text-align:right;margin-top:6px">'+(((_tipIdx % APP_TIPS.length)+APP_TIPS.length)%APP_TIPS.length + 1)+'/'+APP_TIPS.length+' · toca para otro</div>';
+    + '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">'
+    +   (isAdminUser(ST.globalUserId) ? '<button onclick="event.stopPropagation();openTipsAdmin()" style="font-size:10px;font-weight:700;background:rgba(255,255,255,.25);border:none;color:#fff;border-radius:12px;padding:3px 10px;cursor:pointer">✏️ Editar consejos</button>' : '<span></span>')
+    +   '<span style="font-size:10px;opacity:.8">'+(((_tipIdx % APP_TIPS.length)+APP_TIPS.length)%APP_TIPS.length + 1)+'/'+APP_TIPS.length+' · toca para otro</span>'
+    + '</div>';
+}
+// ── EDITOR DE CONSEJOS (solo admin) ──────────────────────────────────────────
+let _tipsDraft = null;
+function openTipsAdmin(){
+  if(!isAdminUser(ST.globalUserId)){ showToast('Solo el administrador'); return; }
+  _tipsDraft = JSON.parse(JSON.stringify(APP_TIPS));
+  document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
+  document.getElementById('tipsadmin-screen').style.display='block';
+  const hm=document.getElementById('home-menu'); if(hm) hm.style.display='none';
+  renderTipsAdmin(); window.scrollTo(0,0);
+}
+function closeTipsAdmin(){
+  document.querySelectorAll('.screen').forEach(s=>s.style.display='none');
+  document.getElementById('profile-screen').style.display='block';
+  document.getElementById('home-menu').style.display='block';
+  document.getElementById('home-profile-section').style.display='none';
+  document.getElementById('trainer-name-bar').textContent='👋 '+ST.cur;
+  updateHomeMenu(); window.scrollTo(0,0);
+}
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function renderTipsAdmin(){
+  const el=document.getElementById('tipsadmin-list'); if(!el) return;
+  el.innerHTML=_tipsDraft.map((t,i)=>`
+    <div style="background:#fff;border:1.5px solid #ddd;border-radius:12px;padding:10px 12px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <input value="${esc(t.i)}" oninput="tipEdit(${i},'i',this.value)" style="width:52px;padding:8px;border:1.5px solid #ccc;border-radius:8px;font-size:18px;text-align:center" placeholder="🎯">
+        <input value="${esc(t.t)}" oninput="tipEdit(${i},'t',this.value)" style="flex:1;padding:8px;border:1.5px solid #ccc;border-radius:8px;font-size:13px;font-weight:700" placeholder="Título">
+        <button onclick="delTipAdmin(${i})" style="background:#ffe0e0;border:1.5px solid #CC0000;color:#CC0000;border-radius:50%;width:30px;height:30px;flex-shrink:0;cursor:pointer;font-weight:700">✕</button>
+      </div>
+      <textarea oninput="tipEdit(${i},'x',this.value)" rows="3" style="width:100%;padding:8px;border:1.5px solid #ccc;border-radius:8px;font-size:12.5px;line-height:1.5;resize:vertical" placeholder="Texto del consejo (admite &lt;b&gt;)">${esc(t.x)}</textarea>
+      <div style="display:flex;gap:6px;justify-content:flex-end;margin-top:6px">
+        <button onclick="moveTipAdmin(${i},-1)" ${i===0?'disabled':''} style="border:1.5px solid #bbb;background:#fff;border-radius:6px;padding:3px 9px;cursor:pointer;opacity:${i===0?.4:1}">▲</button>
+        <button onclick="moveTipAdmin(${i},1)" ${i===_tipsDraft.length-1?'disabled':''} style="border:1.5px solid #bbb;background:#fff;border-radius:6px;padding:3px 9px;cursor:pointer;opacity:${i===_tipsDraft.length-1?.4:1}">▼</button>
+      </div>
+    </div>`).join('');
+}
+function tipEdit(i,k,v){ if(_tipsDraft[i]) _tipsDraft[i][k]=v; }
+function addTipAdmin(){ _tipsDraft.push({i:'💡',t:'Nuevo consejo',x:''}); renderTipsAdmin(); }
+function delTipAdmin(i){ if(_tipsDraft.length<=1){ showToast('Debe quedar al menos un consejo'); return; } _tipsDraft.splice(i,1); renderTipsAdmin(); }
+function moveTipAdmin(i,d){ const j=i+d; if(j<0||j>=_tipsDraft.length) return; const t=_tipsDraft[i]; _tipsDraft[i]=_tipsDraft[j]; _tipsDraft[j]=t; renderTipsAdmin(); }
+async function saveTipsAdmin(){
+  APP_TIPS=_tipsDraft.filter(t=>(t.t&&t.t.trim())||(t.x&&t.x.trim()));
+  if(!APP_TIPS.length) APP_TIPS=DEFAULT_TIPS.slice();
+  await fbSaveTips();
+  _tipIdx=0; renderTip();
+  showToast('✅ Consejos actualizados para todos');
+  closeTipsAdmin();
 }
 function startTips(){ if(_tipTimer) clearInterval(_tipTimer); _tipTimer = setInterval(()=>{ _tipIdx++; renderTip(); }, 10000); }
 function nextTip(){ _tipIdx++; renderTip(); startTips(); }
-function initTips(){ renderTip(); startTips(); }
+function initTips(){ renderTip(); startTips(); if(typeof db!=='undefined'&&db) fbLoadTips(); }
 
 function readState(){ try{ return JSON.parse(localStorage.getItem('pokeBCN_read')||'{}'); }catch(e){ return {}; } }
 function isRead(k){ return !!readState()[k]; }
