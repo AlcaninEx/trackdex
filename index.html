@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.985.b</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.985.c</p>
   </div>
 </div>
 
@@ -557,7 +557,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           </button>
         </div>
         <button class="home-btn-small" onclick="openNovedades()" style="background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          <span data-i18n="news">🆕 Novedades</span> · v0.985.b
+          <span data-i18n="news">🆕 Novedades</span> · v0.985.c
         </button>
       </div>
 
@@ -1369,14 +1369,15 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1 data-i18n="news">🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0"><span data-i18n="news_current_version">Versión actual:</span> <b style="color:#5e35b1">v0.985.b</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0"><span data-i18n="news_current_version">Versión actual:</span> <b style="color:#5e35b1">v0.985.c</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.985.b · actual</span><span class="nov-version-tag">Más traducción al inglés</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.985.c · actual</span><span class="nov-version-tag">Más traducción al inglés</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🌐</span><span>Muchas más pantallas traducidas al inglés: Tracker IVs, Mis Pokémon, Eficacia de Tipos, Megas, Diarias, Legacy, Poképaradas, Trackers, Pokémon Objetivo, Comunidad y más.</span></div>
         <div class="nov-item"><span>🐛</span><span>Arreglado: al marcar un Pokémon "al máximo" cuando ya no quedaba ninguna copia pendiente de esa familia, se guardaba un progreso de caramelos "fantasma" que podía hacer que una copia nueva añadida más tarde (p.ej. otra base recién capturada) apareciera ya como completada en Pokémon Objetivo sin estarlo. Ahora se resetea ese progreso al completar la familia.</span></div>
         <div class="nov-item"><span>✅</span><span>Las tarjetas ya completadas en Pokémon Objetivo ahora muestran también el texto "Completado" (no solo el tick), para verlas claramente al final de la lista.</span></div>
+        <div class="nov-item"><span>⚡</span><span>Añadidos Deino/Zweilous/Hydreigon y Feebas/Milotic al reconocimiento de Dynamax (debutaron como Dynamax el 13 y 27 de julio respectivamente): ahora se marcan correctamente como Dynamax en el filtro inteligente.</span></div>
       </div>
     </div>
 
@@ -2387,7 +2388,8 @@ const DMAX_NAMES=new Set([
   "grookey","thwackey","rillaboom","scorbunny","raboot","cinderace",
   "sobble","drizzile","inteleon","skwovet","greedent",
   "rookidee","corvisquire","corviknight","wooloo","dubwool",
-  "toxtricity","hatenna","hattrem","hatterene","grimmsnarl","falinks","duraludon"
+  "toxtricity","hatenna","hattrem","hatterene","grimmsnarl","falinks","duraludon",
+  "deino","zweilous","hydreigon","feebas","milotic"
 ]);
 const BASE_STATS={
   'f-mega-lucario-l':[236,144,172],
@@ -2559,7 +2561,7 @@ const PD=[
   {id:'dk-shd-hydrei-l',name:'Hydreigon (Shadow)',type:'dark',evo:['633','634','635'],img:'635',tags:['shadow','legacy'],fast:'Mordisco',charge:'Giro Maléfico*',dps:27.20},
   {id:'dk-mega-absol-l',name:'Mega Absol',type:'dark',evo:['359'],img:'10057',tags:['mega','legacy'],fast:'Embargo*',charge:'Pulso Umbrío',dps:25.40},
   {id:'dk-mega-hound',name:'Mega Houndoom',type:'dark',evo:['228','229'],img:'10048',tags:['mega'],fast:'Embargo',charge:'Truco Sucio',dps:22.80},
-  {id:'dk-hydreigon',name:'Hydreigon',type:'dark',evo:['633','634','635'],img:'635',tags:[],fast:'Mordisco',charge:'Giro Maléfico',dps:21.40},
+  {id:'dk-hydreigon',name:'Hydreigon',type:'dark',evo:['633','634','635'],img:'635',tags:['dynamax'],fast:'Mordisco',charge:'Giro Maléfico',dps:21.40},
   {id:'fa-mega-garde',name:'Mega Gardevoir',type:'fairy',evo:['280','281','282'],img:'10051',tags:['mega','dynamax'],fast:'Encanto',charge:'Joya de la Luz',dps:28.40},
   {id:'fa-gardevoir',name:'Gardevoir',type:'fairy',evo:['280','281','282'],img:'282',tags:['dynamax'],fast:'Encanto',charge:'Joya de la Luz',dps:21.80},
   {id:'fa-togekiss',name:'Togekiss',type:'fairy',evo:['175','176','468'],img:'468',tags:[],fast:'Encanto',charge:'Joya de la Luz',dps:23.40},
