@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.985.c</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.985.d</p>
   </div>
 </div>
 
@@ -557,7 +557,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           </button>
         </div>
         <button class="home-btn-small" onclick="openNovedades()" style="background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          <span data-i18n="news">🆕 Novedades</span> · v0.985.c
+          <span data-i18n="news">🆕 Novedades</span> · v0.985.d
         </button>
       </div>
 
@@ -1369,15 +1369,16 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1 data-i18n="news">🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0"><span data-i18n="news_current_version">Versión actual:</span> <b style="color:#5e35b1">v0.985.c</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0"><span data-i18n="news_current_version">Versión actual:</span> <b style="color:#5e35b1">v0.985.d</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.985.c · actual</span><span class="nov-version-tag">Más traducción al inglés</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.985.d · actual</span><span class="nov-version-tag">Más traducción al inglés</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🌐</span><span>Muchas más pantallas traducidas al inglés: Tracker IVs, Mis Pokémon, Eficacia de Tipos, Megas, Diarias, Legacy, Poképaradas, Trackers, Pokémon Objetivo, Comunidad y más.</span></div>
         <div class="nov-item"><span>🐛</span><span>Arreglado: al marcar un Pokémon "al máximo" cuando ya no quedaba ninguna copia pendiente de esa familia, se guardaba un progreso de caramelos "fantasma" que podía hacer que una copia nueva añadida más tarde (p.ej. otra base recién capturada) apareciera ya como completada en Pokémon Objetivo sin estarlo. Ahora se resetea ese progreso al completar la familia.</span></div>
         <div class="nov-item"><span>✅</span><span>Las tarjetas ya completadas en Pokémon Objetivo ahora muestran también el texto "Completado" (no solo el tick), para verlas claramente al final de la lista.</span></div>
         <div class="nov-item"><span>⚡</span><span>Añadidos Deino/Zweilous/Hydreigon y Feebas/Milotic al reconocimiento de Dynamax (debutaron como Dynamax el 13 y 27 de julio respectivamente): ahora se marcan correctamente como Dynamax en el filtro inteligente.</span></div>
+        <div class="nov-item"><span>📊</span><span>Actualizado el ranking Top DPS Dynamax de tipo Siniestro con los datos más recientes de Pokémon GO Hub: entran Dynamax Hydreigon (#2), Dynamax Gyarados (#5), Dynamax Zweilous (#7) y Dynamax Sableye (#10); salen Blastoise, Greedent y Umbreon.</span></div>
       </div>
     </div>
 
@@ -2360,7 +2361,7 @@ const DMAX={
   rock:[{n:'D-Gigalith',dps:524,fast:'Smack Down',charge:'Max Rockfall',img:'526'},{n:'D-Omastar',dps:483,fast:'Rock Throw',charge:'Max Rockfall',img:'139'},{n:'D-Regirock',dps:422,fast:'Rock Throw',charge:'Max Rockfall',img:'377'},{n:'D-Boldore',dps:411,fast:'Smack Down',charge:'Max Rockfall',img:'525'},{n:'D-Blastoise',dps:337,fast:'Water Gun',charge:'Max Rockfall',img:'9'},{n:'D-Roggenrola',dps:296,fast:'Smack Down',charge:'Max Rockfall',img:'524'}],
   ghost:[{n:'G-Gengar',dps:651,fast:'Shadow Claw',charge:'G-Max Terror',img:'94'},{n:'D-Gengar',dps:506,fast:'Shadow Claw',charge:'Max Phantasm',img:'94'},{n:'D-Haunter',dps:437,fast:'Shadow Claw',charge:'Max Phantasm',img:'93'},{n:'D-Metagross',dps:416,fast:'Shadow Ball',charge:'Max Phantasm',img:'376'},{n:'D-Gastly',dps:369,fast:'Shadow Claw',charge:'Max Phantasm',img:'92'}],
   dragon:[{n:'D-Eternatus',dps:600,fast:'Dragon Tail',charge:'Dynamax Cannon',img:'890'},{n:'D-Latios',dps:451,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'381'},{n:'D-Duraludon',dps:405,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'884'},{n:'D-Latias',dps:387,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'380'},{n:'D-Flygon',dps:351,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'330'},{n:'D-Charizard',dps:316,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'6'},{n:'D-Lugia',dps:276,fast:'Dragon Tail',charge:'Max Wyrmwind',img:'249'},{n:'D-Vibrava',dps:238,fast:'Dragon Breath',charge:'Max Wyrmwind',img:'329'}],
-  dark:[{n:'G-Grimmsnarl',dps:559,fast:'Sucker Punch',charge:'G-Max Snooze',img:'861'},{n:'D-Urshifu Single',dps:484,fast:'Sucker Punch',charge:'Max Darkness',img:'892'},{n:'D-Gengar',dps:414,fast:'Shadow Claw',charge:'Max Darkness',img:'94'},{n:'D-Arcanine',dps:363,fast:'Bite',charge:'Max Darkness',img:'59'},{n:'D-Gastly',dps:301,fast:'Shadow Claw',charge:'Max Darkness',img:'92'},{n:'D-Suicune',dps:292,fast:'Snarl',charge:'Max Darkness',img:'245'},{n:'D-Blastoise',dps:279,fast:'Bite',charge:'Max Darkness',img:'9'},{n:'D-Greedent',dps:262,fast:'Bite',charge:'Max Darkness',img:'820'},{n:'D-Umbreon',dps:254,fast:'Snarl',charge:'Max Darkness',img:'197'},{n:'D-Growlithe',dps:227,fast:'Bite',charge:'Max Darkness',img:'58'}],
+  dark:[{n:'G-Grimmsnarl',dps:336.08,fast:'Low Kick',charge:'G-Max Snooze',img:'861'},{n:'D-Hydreigon',dps:292.85,fast:'Bite',charge:'Max Darkness',img:'635'},{n:'D-Urshifu Single',dps:290.69,fast:'Sucker Punch',charge:'Max Darkness',img:'892'},{n:'D-Gengar',dps:248.69,fast:'Sucker Punch',charge:'Max Darkness',img:'94'},{n:'D-Gyarados',dps:227.15,fast:'Bite',charge:'Max Darkness',img:'130'},{n:'D-Arcanine',dps:218.18,fast:'Snarl',charge:'Max Darkness',img:'59'},{n:'D-Zweilous',dps:188.38,fast:'Bite',charge:'Max Darkness',img:'634'},{n:'D-Gastly',dps:181.38,fast:'Sucker Punch',charge:'Max Darkness',img:'92'},{n:'D-Suicune',dps:176.00,fast:'Snarl',charge:'Max Darkness',img:'245'},{n:'D-Sableye',dps:169.00,fast:'Feint Attack',charge:'Max Darkness',img:'302'}],
   steel:[{n:'D-Crowned Zacian',dps:555,fast:'Metal Claw',charge:'Steel G-Max',img:'888'},{n:'D-Metagross',dps:435,fast:'Bullet Punch',charge:'Max Steelspike',img:'376'},{n:'D-Excadrill',dps:432,fast:'Metal Claw',charge:'Max Steelspike',img:'530'},{n:'D-Crowned Zamazenta',dps:424,fast:'Metal Claw',charge:'Steel G-Max',img:'889'},{n:'D-Duraludon',dps:406,fast:'Metal Claw',charge:'Max Steelspike',img:'884'},{n:'D-Kingler',dps:340,fast:'Metal Claw',charge:'Max Steelspike',img:'99'},{n:'D-Ho-Oh',dps:339,fast:'Steel Wing',charge:'Max Steelspike',img:'250'},{n:'D-Machamp',dps:332,fast:'Bullet Punch',charge:'Max Steelspike',img:'68'},{n:'D-Unfezant',dps:321,fast:'Steel Wing',charge:'Max Steelspike',img:'521'},{n:'D-Corviknight',dps:285,fast:'Steel Wing',charge:'Max Steelspike',img:'879'}],
   fairy:[{n:'D-Gardevoir',dps:457,fast:'Charm',charge:'Max Starfall',img:'282'},{n:'D-Hatterene',dps:457,fast:'Dazzling Gleam',charge:'Max Starfall',img:'858'},{n:'D-Sylveon',dps:395,fast:'Charm',charge:'Max Starfall',img:'700'},{n:'D-Gallade',dps:381,fast:'Charm',charge:'Max Starfall',img:'475'},{n:'D-Latias',dps:367,fast:'Charm',charge:'Max Starfall',img:'380'},{n:'D-Tsareena',dps:358,fast:'Charm',charge:'Max Starfall',img:'763'},{n:'D-Whimsicott',dps:324,fast:'Charm',charge:'Max Starfall',img:'547'},{n:'D-Raichu',dps:314,fast:'Charm',charge:'Max Starfall',img:'26'},{n:'D-Hattrem',dps:254,fast:'Dazzling Gleam',charge:'Max Starfall',img:'857'},{n:'D-Hatenna',dps:171,fast:'Dazzling Gleam',charge:'Max Starfall',img:'856'}],
   normal:[{n:'G-Snorlax',dps:292,fast:'Lick',charge:'G-Max Replenish',img:'143'},{n:'D-Darmanitan',dps:257,fast:'Tackle',charge:'Max Strike',img:'555'},{n:'D-Inteleon',dps:256,fast:'Quick Attack',charge:'Max Strike',img:'818'},{n:'D-Rillaboom',dps:235,fast:'Scratch',charge:'Max Strike',img:'812'},{n:'D-Cinderace',dps:234,fast:'Quick Attack',charge:'Max Strike',img:'815'},{n:'D-Gigalith',dps:223,fast:'Quick Attack',charge:'Max Strike',img:'526'},{n:'D-Leafeon',dps:214,fast:'Quick Attack',charge:'Max Strike',img:'470'},{n:'D-Sylveon',dps:202,fast:'Quick Attack',charge:'Max Strike',img:'700'},{n:'D-Greedent',dps:194,fast:'Lick',charge:'Max Strike',img:'820'},{n:'D-Dubwool',dps:193,fast:'Quick Attack',charge:'Max Strike',img:'832'}],
