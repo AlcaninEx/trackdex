@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.985.g</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.985.h</p>
   </div>
 </div>
 
@@ -557,7 +557,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           </button>
         </div>
         <button class="home-btn-small" onclick="openNovedades()" style="background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          <span data-i18n="news">🆕 Novedades</span> · v0.985.g
+          <span data-i18n="news">🆕 Novedades</span> · v0.985.h
         </button>
       </div>
 
@@ -1369,10 +1369,10 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1 data-i18n="news">🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0"><span data-i18n="news_current_version">Versión actual:</span> <b style="color:#5e35b1">v0.985.g</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0"><span data-i18n="news_current_version">Versión actual:</span> <b style="color:#5e35b1">v0.985.h</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.985.g · actual</span><span class="nov-version-tag">Más traducción al inglés</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.985.h · actual</span><span class="nov-version-tag">Más traducción al inglés</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🌐</span><span>Muchas más pantallas traducidas al inglés: Tracker IVs, Mis Pokémon, Eficacia de Tipos, Megas, Diarias, Legacy, Poképaradas, Trackers, Pokémon Objetivo, Comunidad y más.</span></div>
         <div class="nov-item"><span>🐛</span><span>Arreglado: al marcar un Pokémon "al máximo" cuando ya no quedaba ninguna copia pendiente de esa familia, se guardaba un progreso de caramelos "fantasma" que podía hacer que una copia nueva añadida más tarde (p.ej. otra base recién capturada) apareciera ya como completada en Pokémon Objetivo sin estarlo. Ahora se resetea ese progreso al completar la familia.</span></div>
@@ -1382,6 +1382,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
         <div class="nov-item"><span>⚡</span><span>Nuevo interruptor "⚡ ¿Es Dinamax?" en las fichas de Incursión de Mis Pokémon (solo aparece si la especie puede ser Dynamax): actívalo cuando ese ejemplar concreto también se use como copia Dynamax, así Pokémon Objetivo no te pide una copia de más. Por defecto va desactivado, no cambia nada si no lo tocas.</span></div>
         <div class="nov-item"><span>⚠️</span><span>Pokémon Objetivo avisa ahora si tienes algún Pokémon obtenido que puede ser Dynamax pero todavía no has contestado "¿Es Dinamax?": te lo señala arriba porque puede cambiar tu filtro.</span></div>
         <div class="nov-item"><span>🐛</span><span>Corregido: "¿Es Dinamax?" era un interruptor único y no dejaba marcar explícitamente "No". Ahora son dos casillas independientes (Sí / No) para poder decidir de verdad, en vez de solo activar/desactivar.</span></div>
+        <div class="nov-item"><span>🔗</span><span>Nuevo: los ejemplares de Incursión marcados "⚡ ¿Es Dinamax? Sí" ahora se enlazan automáticamente con un hueco de tu equipo Dynamax de la misma especie (compartiendo IVs, Obtenido y Maxed), priorizando siempre a los de mejores IVs. Si tienes varios, cada uno se empareja con un hueco distinto en vez de quedar todos iguales.</span></div>
       </div>
     </div>
 
@@ -3246,6 +3247,7 @@ function addFromRanking(id) {
     if(isDmaxEntry&&!_tt.includes('dynamax'))_tt.push('dynamax');
     p.custom[newId]={n:data.n,dps:data.dps||0,img:data.img||'',fast:_ft,charge:_ct,type:type,tags:_tt,isDmax:isDmaxEntry};
   }
+  if(isDmaxEntry) autoLinkDmaxCopies(p, pkSpeciesKey(p,newId));
   save(); renderAlbum(); renderRanking(); renderMain();
   // Toast con huecos restantes
   if(isDmaxEntry){
@@ -3396,6 +3398,48 @@ function linkedIds(p,id){
   if(others.length!==1||mine.length!==1) return [id];
   return [id,others[0]];
 }
+// ── ENLACE AUTOMÁTICO Incursión ↔ Dynamax (mismo ejemplar físico) ───────────
+// Empareja copias de Incursión marcadas "⚡ ¿Es Dinamax? Sí" con huecos del equipo
+// Dynamax de la misma especie que aún no estén enlazados a ninguna otra ficha,
+// priorizando siempre las mejores IVs (mismo peso que Tracker IVs: Ataque×100,
+// Defensa×20, Vida×30). Una vez enlazados comparten IVs/Obtenido/Maxed.
+function ivScoreOf(p,id){
+  const pk=(p&&p.pk&&p.pk[id])||{};
+  return (pk.ivAtk||0)*100+(pk.ivDef||0)*20+(pk.ivHp||0)*30;
+}
+function autoLinkDmaxCopies(p, speciesKey){
+  if(!p||!p.album||!speciesKey||speciesKey==='sh:') return false;
+  const raidCands=Object.keys(p.album).filter(id=>p.album[id]===true
+    && !String(id).includes('-dmax-')
+    && pkSpeciesKey(p,id)===speciesKey
+    && hasDmaxTag(id,p)
+    && p.pk && p.pk[id] && p.pk[id].isDmaxCopy===true
+    && !(p.pk[id].linkTo) && !(p.pk[id].noLink)
+  ).sort((a,b)=>ivScoreOf(p,b)-ivScoreOf(p,a));
+  const dmaxCands=Object.keys(p.album).filter(id=>p.album[id]===true
+    && String(id).includes('-dmax-')
+    && pkSpeciesKey(p,id)===speciesKey
+    && !(p.pk && p.pk[id] && p.pk[id].linkTo)
+  );
+  const n=Math.min(raidCands.length,dmaxCands.length);
+  let changed=false;
+  for(let i=0;i<n;i++){
+    const rId=raidCands[i], dId=dmaxCands[i];
+    if(!p.pk[rId])p.pk[rId]={}; if(!p.pk[dId])p.pk[dId]={};
+    p.pk[rId].linkTo=dId; p.pk[dId].linkTo=rId;
+    const src=p.pk[rId];
+    Object.assign(p.pk[dId],{ivAtk:src.ivAtk||0,ivDef:src.ivDef||0,ivHp:src.ivHp||0,owned:src.owned||false,maxed:src.maxed||false});
+    changed=true;
+  }
+  return changed;
+}
+function autoLinkAllDmax(p){
+  if(!p||!p.album) return false;
+  const keys=new Set(Object.keys(p.album).filter(id=>p.album[id]===true).map(id=>pkSpeciesKey(p,id)));
+  let changed=false;
+  keys.forEach(k=>{ if(k&&k!=='sh:'&&autoLinkDmaxCopies(p,k)) changed=true; });
+  return changed;
+}
 function syncLinked(p,id,fields){
   linkedIds(p,id).forEach(x=>{
     if(x===id) return;
@@ -3458,6 +3502,7 @@ function togDmaxCopy(id,v) {
   const p=goc(ST.cur); if(!p.pk[id])p.pk[id]={};
   if (v === null) { delete p.pk[id].isDmaxCopy; } else { p.pk[id].isDmaxCopy=v; }
   syncLinked(p,id,{isDmaxCopy: v===null?undefined:v});
+  if (v===true) autoLinkDmaxCopies(p, pkSpeciesKey(p,id));
   save();
   if(ST.albumTab==='dmax') renderAlbumDmax(); else renderAlbum();
 }
@@ -3689,6 +3734,10 @@ function renderAlbumDmax() {
   if(!rows.length){el.innerHTML='<p style="text-align:center;padding:20px;color:#aaa">Sin datos Dynamax.</p>';return;}
   const p2=gp(ST.view||ST.cur);
   ensureValidTeam(p2);
+  // Pase oportunista: engancha cualquier "Es Dinamax: Sí" y hueco Dynamax que hayan quedado
+  // sueltos (p.ej. marcados antes de esta función, o añadidos por separado). Nunca en modo
+  // solo lectura (ST.view), para no tocar el perfil de otra persona.
+  if(!isV && autoLinkAllDmax(p2)) save();
   const dmaxOwnedIds=p2&&p2.album?Object.keys(p2.album).filter(id=>p2.album[id]===true&&id.startsWith(ST.type+'-dmax-')&&entryInTeam(p2,id,ST.curTeam||1)):[];
   const dmaxOwnedCount=dmaxOwnedIds.filter(id=>p2&&p2.pk&&p2.pk[id]&&p2.pk[id].owned).length;
   const dmaxTeamHeader=`<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 14px 6px;background:rgba(0,0,0,.35)">${teamBarHtml(p2)}<span style="font-size:12px;font-weight:700;color:#fff;flex-shrink:0">En propiedad ${dmaxOwnedCount}/6</span></div>`;
