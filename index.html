@@ -419,7 +419,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
       <button class="auth-btn" onclick="doGlobalLogin()" data-i18n="enter">Entrar</button>
       <p style="text-align:center;font-size:13px;color:#666;margin-top:14px"><span data-i18n="no_account">¿No tienes cuenta?</span> <a href="#" onclick="showGlobalRegister();return false" style="color:#CC0000;font-weight:700" data-i18n="create_account">Crear cuenta</a></p>
     </div>
-    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.980</p>
+    <p id="login-version" style="text-align:center;font-size:11px;color:#bbb;margin-top:16px">TrackDex v0.981</p>
   </div>
 </div>
 
@@ -557,7 +557,7 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
           </button>
         </div>
         <button class="home-btn-small" onclick="openNovedades()" style="background:#ede7f6;border-color:#5e35b1;color:#4527a0">
-          <span data-i18n="news">🆕 Novedades</span> · v0.980
+          <span data-i18n="news">🆕 Novedades</span> · v0.981
         </button>
       </div>
 
@@ -1360,10 +1360,18 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <h1>🆕 Novedades</h1>
   </div>
   <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px">
-    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.980</b></p>
+    <p style="text-align:center;font-size:12px;color:#888;padding:12px 14px 0">Versión actual: <b style="color:#5e35b1">v0.981</b></p>
 
     <div class="nov-version nov-item-current">
-      <div class="nov-version-head"><span class="nov-version-num">v0.980 · actual</span><span class="nov-version-tag">Cabecera oscura y ajustes</span></div>
+      <div class="nov-version-head"><span class="nov-version-num">v0.981 · actual</span><span class="nov-version-tag">Objetivo más limpio</span></div>
+      <div class="nov-list">
+        <div class="nov-item"><span>🧹</span><span>Pokémon Objetivo más despejado: fuera la cabecera con tu nombre y el bloque de caramelos. Ahora todo (para qué sirve la pantalla y los caramelos para subir al máximo) está en el botón de info "i".</span></div>
+        <div class="nov-item"><span>✓</span><span>Cuando apuntas todos los caramelos XL que necesita un Pokémon, se marca como completado y baja al final de la lista. Su ficha sigue siendo editable por si te equivocas.</span></div>
+      </div>
+    </div>
+
+    <div class="nov-version">
+      <div class="nov-version-head"><span class="nov-version-num">v0.980</span><span class="nov-version-tag">Cabecera oscura y ajustes</span></div>
       <div class="nov-list">
         <div class="nov-item"><span>🎨</span><span>Nueva cabecera en gris oscuro y botón "Comunidad" en rojo, para diferenciarlo de Pokémon Objetivo.</span></div>
         <div class="nov-item"><span>🔍</span><span>Buscador de comunidades en la pantalla de selección: filtra por nombre al escribir.</span></div>
@@ -1920,22 +1928,15 @@ body.dark .btn-admin-del{background:#1e1e1e;color:#aaa;border-color:#444}
     <button class="filtro-info-btn" onclick="toggleObjInfo(true)">i</button>
   </div>
   <div id="obj-info-pop" onclick="toggleObjInfo(false)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:center;justify-content:center">
-    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:20px;max-width:340px;width:90%">
-      <h3 style="margin:0 0 10px;font-size:16px;color:#CC0000">🎯 ¿Cómo se ordena esta lista?</h3>
-      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px">Los Pokémon se ordenan por los <b>caramelos que te faltan</b>, usando la equivalencia real del juego: <b>1 caramelo XL = 100 caramelos normales</b>. Cuanto más te falte, más arriba aparece.</p>
-      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:12px">Toca cualquier Pokémon para ver su detalle: escribe los <b>caramelos normales</b> que tienes y ajusta tus <b>XL</b>, y la lista se reordena sola. Los completados se van al final con ✓.</p>
+    <div onclick="event.stopPropagation()" style="background:#fff;border-radius:16px;padding:20px;max-width:350px;width:92%;max-height:82vh;overflow-y:auto">
+      <h3 style="margin:0 0 10px;font-size:16px;color:#CC0000">🎯 Pokémon Objetivo</h3>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:8px">Esta pantalla te dice <b>qué Pokémon capturar y cuántos caramelos te faltan</b> para completar tus equipos (subir todas tus copias al máximo). Toca un Pokémon para apuntar los caramelos normales y XL que ya tienes: la lista se reordena poniendo arriba lo que más te falta.</p>
+      <p style="font-size:12.5px;line-height:1.7;color:#333;margin-bottom:10px">El orden usa la equivalencia real del juego: <b>1 caramelo XL = 100 caramelos normales</b>. Cuando completas los XL necesarios de un Pokémon, se marca ✓ y baja al final.</p>
+      <div style="background:#fffde7;border:1px solid #ffe082;border-radius:10px;padding:10px 12px;margin-bottom:12px">
+        <p style="font-size:12px;font-weight:800;color:#5d4037;margin-bottom:6px">🍬 Caramelos para subir un Pokémon al máximo</p>
+        <p style="font-size:11.5px;color:#5d4037;line-height:1.8;margin:0">Normal / Mega: ~250 + 296 XL<br>Purificado: ~220 + 268 XL<br>Oscuro: ~298 + 360 XL<br>⚡ Dynamax: ~600 + 416 XL (base + habilidades)</p>
+      </div>
       <button onclick="toggleObjInfo(false)" style="width:100%;padding:10px;background:#CC0000;color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer">Entendido</button>
-    </div>
-  </div>
-  <div id="obj-trainer-bar" style="padding:8px 14px;background:#fff;border-bottom:1px solid #e0e0e0;font-size:13px;color:#555;font-weight:600"></div>
-  <div style="background:#fffde7;border-bottom:1px solid #ffe082">
-    <div onclick="toggleObjInfo()" style="padding:8px 14px;font-size:11px;color:#5d4037;font-weight:700;display:flex;justify-content:space-between;align-items:center;cursor:pointer">
-      <span>🍬 Caramelos para subir al máximo</span>
-      <span id="obj-info-toggle-label" style="font-size:10px;color:#8d6e63">+Info ▾</span>
-    </div>
-    <div id="obj-info-detail" style="display:none;padding:0 14px 8px;font-size:11px;color:#5d4037;line-height:1.7">
-      Normal / Mega: ~250 + 296XL &nbsp;·&nbsp; Purificado: ~220 + 268XL<br>
-      Oscuro: ~298 + 360XL &nbsp;·&nbsp; ⚡Dynamax: ~600 + 416XL (base + habilidades)
     </div>
   </div>
   <button onclick="openFiltro()" style="display:block;width:100%;padding:13px;background:#1565c0;color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.3px">🛠️ Crea tu filtro para Pokémon GO</button>
@@ -5136,8 +5137,15 @@ function buildObjetivoData(profileName) {
 
   // Sort: pending first (by REMAINING candy weight desc, accounting for saved progress), completed (done) at the end
   const candyProgress = p.candyProgress || {};
+  // "Completado" visual también si ya tienes todos los caramelos XL necesarios
+  // (xlDone: baja al fondo y se marca ✓, pero su ficha sigue siendo editable)
+  results.forEach(r => {
+    const pr = candyProgress[r.id] || {c:0, xl:0};
+    r.xlDone = r.totalXL > 0 && pr.xl >= r.totalXL;
+  });
+  const isDone = r => r.done || r.xlDone;
   return results.sort((a,b) => {
-    if (a.done !== b.done) return a.done ? 1 : -1;
+    if (isDone(a) !== isDone(b)) return isDone(a) ? 1 : -1;
     const pa = candyProgress[a.id] || {c:0, xl:0};
     const pb = candyProgress[b.id] || {c:0, xl:0};
     // peso restante = caramelos+XL que aún faltan (total - lo que ya tienes guardado)
@@ -5807,13 +5815,6 @@ function closeFiltro() {
 }
 
 
-function toggleObjInfo() {
-  const detail = document.getElementById('obj-info-detail');
-  const label = document.getElementById('obj-info-toggle-label');
-  const isOpen = detail.style.display === 'block';
-  detail.style.display = isOpen ? 'none' : 'block';
-  label.textContent = isOpen ? '+Info ▾' : '-Info ▴';
-}
 
 function setObjTeamMode(m) {
   ST.objTeamMode = m;
@@ -5840,16 +5841,14 @@ function openObjetivo(keepScroll) {
   const _sy = keepScroll ? window.scrollY : 0;
   populateObjTeamSelect();
   const data = buildObjetivoData(ST.cur);
-  const bar = document.getElementById('obj-trainer-bar');
   const grid = document.getElementById('obj-grid');
-  bar.innerHTML = '👤 <b>' + ST.cur + '</b> &nbsp;·&nbsp; ' + data.length + ' Pokémon iniciales &nbsp;·&nbsp; ordenados por prioridad';
   if (!data.length) {
     grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px 20px;color:#aaa;font-size:14px">No tienes Pokémon en ningún equipo deseado aún.<br><br>Añade Pokémon a tus equipos primero.</div>';
   } else {
     grid.innerHTML = data.map((d,i) => {
       const imgUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/' + d.id + '.png';
-      if (d.done) {
-        // Completado: check verde, sin badge de cantidad, imagen atenuada
+      if (d.done || d.xlDone) {
+        // Completado: check verde, imagen atenuada
         return '<div class="obj-card obj-done" onclick="openObjPopup(' + i + ')" style="cursor:pointer;opacity:.55">' +
           '<div class="obj-badge" style="background:#43a047">✓</div>' +
           '<img class="obj-img" src="' + imgUrl + '" alt="' + d.n + '" onerror="this.style.opacity=.2">' +
